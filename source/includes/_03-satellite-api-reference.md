@@ -16,7 +16,7 @@ DataMesh have published a library to Maven Central which wraps the Satellite API
 
 ### How to include the library
 
-`implementation "com.datameshgroup.fusion:fusion-sdk:1.0.1"`
+`implementation "com.datameshgroup.fusion:fusion-sdk:1.1.0"`
 
 If you are using Android you will need to add Java 8 syntax desugaring. In your app's build.gradle
 
@@ -42,60 +42,31 @@ The Satellite API utilises an Android intent with request/response objects based
 The app uses intents to send and receive messages
 
 ```java
-Intent intent = getPackageManager().getLaunchIntentForPackage("au.com.dmg.axispay");
-if (intent == null) {
-    Toast.makeText(this, "AxisPay not Available.", Toast.LENGTH_SHORT).show();
-    return;
-}
+Intent intent = new Intent(Message.INTENT_ACTION_SALETOPOI_REQUEST);
 
-// wrapper of request.
-SaleToPOIRequest request // You need to build this yourself first.
+// All messages to and from the terminal are wrapped inside a Message object.
+// Here request is a SaleToPOIRequest object.
 Message message = new Message(request);
 
-// this is required for the intent filter.
-intent.setAction("au.com.axispay.action.SaleToPOIRequest");
-
-// this is required for the intent filter.
-intent.addCategory(Intent.CATEGORY_DEFAULT);
 intent.putExtra(Message.INTENT_EXTRA_MESSAGE, message.toJson());
-intent.putExtra(Message.INTENT_EXTRA_PARENT_ID, this.getPackageName());
-
 // name of this app, that get's treated as the POS label by the terminal.
-intent.putExtra("ApplicationName", "DemoPOS");
-intent.putExtra("SoftwareVersion", "1.0.0");
-startActivity(intent);
+intent.putExtra(Message.INTENT_EXTRA_APPLICATION_NAME, "DemoPOS");
+intent.putExtra(Message.INTENT_EXTRA_APPLICATION_VERSION, "1.0.0");
+
+// we are using 100 as the request code - but you can use anything you want.
+startActivityForResult(intent, 100);
 ```
 
 ### Intent response
 
-In your AndroidManifest.xml you must place an android intent filter to receive the response.
-
-```
-<intent-filter>
-  <action android:name="au.com.axispay.action.SaleToPOIResponse" />
-  <category android:name="android.intent.category.DEFAULT" />
-</intent-filter>
-```
-
-Add this to the activity you wish to receive the response on. Then on that activity, add the following code.
-
-
+In the same activity, add the following code.
 
 ```java
-onCreate( ... ){
-    ...
-    // add this code to the onCreate method of your activity.
-    Intent intent = getIntent();
-    if(intent != null && intent.hasExtra(Message.INTENT_EXTRA_MESSAGE){
-        handleResponseIntent(intent);
-    }
-}
-
 @Override
-protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-    if (isResponseIntent(intent)) {
-        handleResponseIntent(intent);
+protected void onActivityResult(int requestCode, int responseCode, Intent data){
+    super.onActivityResult(requestCode, responseCode, data);
+    if(data != null && data.hasExtra(Message.INTENT_EXTRA_MESSAGE)) {
+        this.handleResponseIntent(data);
     }
 }
 
