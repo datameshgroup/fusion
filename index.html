@@ -6070,7 +6070,7 @@ The new Fusion Satellite API documented below is currently unavailable in produc
 <li>Library source code <a href="https://github.com/datameshgroup/fusionsatellite-sdk-java">fusionsatellite-sdk-java</a></li>
 </ul>
 <h3 id='satellite-api-reference-libraries-how-to-include-the-library'>How to include the library</h3>
-<p><code>implementation &quot;com.datameshgroup.fusion:fusion-sdk:1.0.1&quot;</code></p>
+<p><code>implementation &quot;com.datameshgroup.fusion:fusion-sdk:1.1.0&quot;</code></p>
 
 <p>If you are using Android you will need to add Java 8 syntax desugaring. In your app&#39;s build.gradle</p>
 <div class="highlight"><pre class="highlight plaintext"><code>android {
@@ -6087,50 +6087,26 @@ dependencies {
 <p>The Satellite API utilises an Android intent with request/response objects based on the Nexo <code>SaleToPOIRequest</code> and <code>SaleToPOIResponse</code></p>
 <h3 id='satellite-api-reference-sending-messages-intent-request'>Intent request</h3>
 <p>The app uses intents to send and receive messages</p>
-<div class="highlight"><pre class="highlight java tab-java"><code><span class="nc">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="n">getPackageManager</span><span class="o">().</span><span class="na">getLaunchIntentForPackage</span><span class="o">(</span><span class="s">"au.com.dmg.axispay"</span><span class="o">);</span>
-<span class="k">if</span> <span class="o">(</span><span class="n">intent</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nc">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="s">"AxisPay not Available."</span><span class="o">,</span> <span class="nc">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
-    <span class="k">return</span><span class="o">;</span>
-<span class="o">}</span>
+<div class="highlight"><pre class="highlight java tab-java"><code><span class="nc">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Intent</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_ACTION_SALETOPOI_REQUEST</span><span class="o">);</span>
 
-<span class="c1">// wrapper of request.</span>
-<span class="nc">SaleToPOIRequest</span> <span class="n">request</span> <span class="c1">// You need to build this yourself first.</span>
+<span class="c1">// All messages to and from the terminal are wrapped inside a Message object.</span>
+<span class="c1">// Here request is a SaleToPOIRequest object.</span>
 <span class="nc">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Message</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
 
-<span class="c1">// this is required for the intent filter.</span>
-<span class="n">intent</span><span class="o">.</span><span class="na">setAction</span><span class="o">(</span><span class="s">"au.com.axispay.action.SaleToPOIRequest"</span><span class="o">);</span>
-
-<span class="c1">// this is required for the intent filter.</span>
-<span class="n">intent</span><span class="o">.</span><span class="na">addCategory</span><span class="o">(</span><span class="nc">Intent</span><span class="o">.</span><span class="na">CATEGORY_DEFAULT</span><span class="o">);</span>
 <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_EXTRA_MESSAGE</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">toJson</span><span class="o">());</span>
-<span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_EXTRA_PARENT_ID</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">());</span>
-
 <span class="c1">// name of this app, that get's treated as the POS label by the terminal.</span>
-<span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="s">"ApplicationName"</span><span class="o">,</span> <span class="s">"DemoPOS"</span><span class="o">);</span>
-<span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="s">"SoftwareVersion"</span><span class="o">,</span> <span class="s">"1.0.0"</span><span class="o">);</span>
-<span class="n">startActivity</span><span class="o">(</span><span class="n">intent</span><span class="o">);</span>
-</code></pre></div><h3 id='satellite-api-reference-sending-messages-intent-response'>Intent response</h3>
-<p>In your AndroidManifest.xml you must place an android intent filter to receive the response.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>&lt;intent-filter&gt;
-  &lt;action android:name="au.com.axispay.action.SaleToPOIResponse" /&gt;
-  &lt;category android:name="android.intent.category.DEFAULT" /&gt;
-&lt;/intent-filter&gt;
-</code></pre></div>
-<p>Add this to the activity you wish to receive the response on. Then on that activity, add the following code.</p>
-<div class="highlight"><pre class="highlight java tab-java"><code><span class="n">onCreate</span><span class="o">(</span> <span class="o">...</span> <span class="o">){</span>
-    <span class="o">...</span>
-    <span class="c1">// add this code to the onCreate method of your activity.</span>
-    <span class="nc">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="n">getIntent</span><span class="o">();</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">intent</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">intent</span><span class="o">.</span><span class="na">hasExtra</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_EXTRA_MESSAGE</span><span class="o">){</span>
-        <span class="n">handleResponseIntent</span><span class="o">(</span><span class="n">intent</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+<span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_EXTRA_APPLICATION_NAME</span><span class="o">,</span> <span class="s">"DemoPOS"</span><span class="o">);</span>
+<span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_EXTRA_APPLICATION_VERSION</span><span class="o">,</span> <span class="s">"1.0.0"</span><span class="o">);</span>
 
-<span class="nd">@Override</span>
-<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onNewIntent</span><span class="o">(</span><span class="nc">Intent</span> <span class="n">intent</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">.</span><span class="na">onNewIntent</span><span class="o">(</span><span class="n">intent</span><span class="o">);</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">isResponseIntent</span><span class="o">(</span><span class="n">intent</span><span class="o">))</span> <span class="o">{</span>
-        <span class="n">handleResponseIntent</span><span class="o">(</span><span class="n">intent</span><span class="o">);</span>
+<span class="c1">// we are using 100 as the request code - but you can use anything you want.</span>
+<span class="n">startActivityForResult</span><span class="o">(</span><span class="n">intent</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+</code></pre></div><h3 id='satellite-api-reference-sending-messages-intent-response'>Intent response</h3>
+<p>In the same activity, add the following code.</p>
+<div class="highlight"><pre class="highlight java tab-java"><code><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onActivityResult</span><span class="o">(</span><span class="kt">int</span> <span class="n">requestCode</span><span class="o">,</span> <span class="kt">int</span> <span class="n">responseCode</span><span class="o">,</span> <span class="nc">Intent</span> <span class="n">data</span><span class="o">){</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onActivityResult</span><span class="o">(</span><span class="n">requestCode</span><span class="o">,</span> <span class="n">responseCode</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">data</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">data</span><span class="o">.</span><span class="na">hasExtra</span><span class="o">(</span><span class="nc">Message</span><span class="o">.</span><span class="na">INTENT_EXTRA_MESSAGE</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">handleResponseIntent</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
 
