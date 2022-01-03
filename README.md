@@ -40,6 +40,16 @@ To build static HTML files for production deployment, run `bundle exec middleman
 Stylesheets be be edited under `source/stylesheets` 
 * added extra ToC heading to 'all_nosearch.js' in the javascript folder to allow the search engine to include the new ToC heading
 
+# Deploy
+
+The Fusion docs are deployed using GitHub pages to [datameshgroup.github.io/fusion](https://datameshgroup.github.io/fusion). The pages source is configured ([here](https://github.com/datameshgroup/fusion/settings/pages)) to the [gh-pages](https://github.com/datameshgroup/fusion/tree/gh-pages) branch.
+
+To deploy:
+* Build source using `bundle exec middleman build --clean`
+* Source will be written to the /source directory
+* Update gh-pages branch with contents of /source
+
+
 ## Notes
 
 Updated ToC as per https://github.com/slatedocs/slate/wiki/Deeper-Nesting
