@@ -1,0 +1,60 @@
+title Payment with error recovery lifecycle
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale system
+fontawesome5solid f0c2 Unify
+materialdesignicons f11d POI terminal
+
+
+Merchant->Sale system: Launch sale system
+
+Sale system->Unify: Open websocket
+
+Sale system->Unify: Login request
+activate Unify
+
+Unify->POI terminal: Login request
+activate POI terminal
+
+POI terminal-->Unify: Login response
+deactivate POI terminal
+
+Unify-->Sale system: Login response
+deactivate Unify
+
+group Payment with error recovery
+
+Merchant->Sale system: Initiate payment
+Sale system->Unify: Payment request
+activate Unify
+Unify->POI terminal: Payment request
+activate POI terminal
+
+Sale systemx#red:3-POI terminal:No payment response within timeout period
+
+group Error recovery - Verify Transaction status
+Sale system->Unify: Transaction status request
+activate Unify
+Unify->POI terminal: Transaction status request
+activate POI terminal
+
+POI terminal-->Unify: Transaction status response
+deactivate POI terminal
+
+Unify-->Sale system: Transaction status response
+
+deactivate Unify
+end
+end
+
+Merchant->Sale system: Close sale system
+
+Sale system->Unify: Logout request
+activate Unify
+
+Unify-->Sale system: Logout response
+deactivate Unify
+
+Sale system->Unify: Close websocket

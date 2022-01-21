@@ -4,9 +4,14 @@ The Fusion Cloud API allows the Sale System to communicate with a POI terminal v
 
 ## Reference code  
 
-- A DotNet NuGet package implementing the DataMesh Fusion API is available [on Nuget](https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/)
-- Source is on [GitHub](https://github.com/datameshgroup/sdk-dotnet)
-- Demo applications implementing the sdk are also available on [GitHub](https://github.com/datameshgroup/sdk-dotnet-purchasedemo)
+Development Language  | Description | Location |
+:-----------------:                        | -----------------                        | ----------- |
+.Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
+ | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
+ | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
+Java | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java) | 
+ | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
+Delphi | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-delphi) | 
 
 ## Security requirements
 
@@ -767,7 +772,7 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
   [DebitPreferredFlag](#debitpreferredflag)  |  | Boolean| If present, debit processing is preferred to credit processing.
   [ForceOnlineFlag](#data-dictionary-forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
   [MerchantCategoryCode](#data-dictionary-merchantcategorycode)|  | String | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
- **[SaleItem](#data-dictionary-saleitem)**                   | ✔ | Array  | Array of [SaleItem](#data-dictionary-saleitem) objects which represent the product basket attached to this transaction. See [SaleItem](#data-dictionary-saleitem) for examples.
+ **[SaleItem](#data-dictionary-saleitem)**                   | ✔ | Array  | Array of [SaleItem](#data-dictionary-s) objects which represent the product basket attached to this transaction. See [SaleItem](#data-dictionary-saleitem) for examples.
   [ItemID](#data-dictionary-itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
   [ProductCode](#data-dictionary-productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
   [EanUpc](#data-dictionary-eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
@@ -1577,20 +1582,20 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
  [ServiceID](#data-dictionary-serviceid)                      | ✔ | String | The [ServiceID](#data-dictionary-serviceid) of the transaction to cancel
  [SaleID](#data-dictionary-saleid)                            |  | String | The [SaleID](#data-dictionary-saleid) of the transaction to cancel. Only required if different from the [SaleID](#data-dictionary-saleid) provided in the `MessageHeader`
  [POIID](#data-dictionary-poiid)                              |  | String | The [POIID](#data-dictionary-poiid) of the transaction to cancel. Only required if different from the [POIID](#data-dictionary-poiid) provided in the `MessageHeader`
-[AbortReason](#abortreason)                   | ✔ | String | Any text describing the reason for cancelling the transaction. For example, "User cancel"
+[AbortReason](#abortreason)                   | ✔ | String | Any text describing the reason for cancelling the transaction. For example, "User Cancel"
 
 
 #### Abort transaction response
 
-There is no direct response to an Abort message.
+Once an abort transaction request has been sent, please continue to wait for the payment response.
 
-If the transaction can be aborted, a payment response is returned with `Result` = "Failure" and `ErrorCondition` = "Aborted".
+If the transaction is successfully aborted, a payment response is returned with `Result` = "Failure" and `ErrorCondition` = "Aborted".
 
-If the transaction cannot be aborted, a normal payment response is sent back in time.
+If the transaction cannot be aborted, a normal payment response (`Result` = "Success") is sent back in time.
 
-However, if the Abort Request cannot be accepted due to a message format error or if it references a transaction that is not found, an Event Notification is returned. 
+However, if the abort transaction request message contains an invalid data (e.g. message format error) or if the referenced transaction cannot be not found (e.g. due to an incorrect ServiceID value), an Event Notification will be returned. 
 
-> Abort transaction response
+> Abort transaction response 
 
 ```json
 {
@@ -1930,26 +1935,52 @@ The card acquisition request allows the Sale System to tokenise a card which can
 
 When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](#payment_request) it will receive a [payment response](#payment-response).
 
-The Sale System should handle errors by checking the [Response.Result](#data-dictionary-result) and [Response.ErrorCondition](#data-dictionary-errorcondition) fields in the response.
+The Sale System should verify the result of the transaction by checking the [Response.Result](#data-dictionary-result) field in the response.
 
-In the event the Sale System does not receive a response (for example, due to network error or timeout) it must enter an error handling loop.
+- If the [Response.Result](#data-dictionary-result) is "Success", the payment transaction was successful.
+- If the [Response.Result](#data-dictionary-result) is "Failure", the payment transaction failed.  The Sale System may check for any errors specified in the [Response.ErrorCondition](#data-dictionary-errorcondition) field in the same response message and handle the error accordingly.
 
-Error handling due to network error or timeout is outlined in the diagram below. 
+In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it must enter error handling.
 
-1. Cashier initiates a payment
-1. Sale System sends a [payment request](#cloud-api-reference-methods-payment)
-1. Network error or timeout occurs
-1. Sale System awaits Internet availability
-1. Sale System enters a loop for a maximum of 90 seconds
-1. Sale System sends a [transaction status request](#transaction-status-request) and awaits a [transaction status response](#transaction-status-response)
-1. Sale System handles the transaction status response 
-  1. If `Response.Result` is "Success", the transaction result will be contained in `RepeatedMessageResponse` and the Sale System can exit the error loop
-  1. If `Response.Result` is "Failure" and `Response.ErrorCondition` is "InProgress" the Terminal is still processing the payment. The Sale System should wait 5 seconds and send the [transaction status request](#transaction_status_request) again.
-  1. If `Response.Result` is "Failure" and `Response.ErrorCondition` is not "InProgress" the payment failed
+Error handling due to network error, timeout, or any other unexpected error is outlined in the diagram below. 
 
-<aside class="success">
-If the Sale System is unable retrieve a result within 90 seconds the payment has failed.
-</aside>
+1. Cashier initiates a payment.
+1. Sale System sets txn_in_progress flag in local persistent storage.
+1. Sale System sends a [payment request](#cloud-api-reference-methods-payment).  The timeout period for waiting for a response is 60 seconds.  This should reset every time a response (for example, [display request](#cloud-api-reference-methods-display)) is received.
+1. Sale System saves message reference details in local persistent storage.
+1. Network error/timeout/any other unexpected error occurs.
+1. Sale System awaits Internet availability.
+1. Sale System enters error handling:
+    1. Sale System sends an [abort transaction request](#cloud-api-reference-methods-abort-transaction).
+       - Sale System must set the `AbortRequest.AbortReason` field to describe the reason for cancelling the transaction.
+        
+        <div style="width:220px">`AbortRequest.AbortReason` value</div>      | Description |
+        :-----------------:                             | ----------- |
+        Network Error |  Network related error occured.  |
+        Timeout | No response from the host after the timeout period. |
+        Message Format Error | An error occured while converting a message. |
+        Invalid Data | An invalid data was received. |
+        Other Exception | An unwanted exception has occured. |
+    1. For a maximum of 90 seconds, the Sale System should perform the below in a loop:
+        1. Sale System sends a [transaction status request](#transaction-status-request) and awaits a [transaction status response](#transaction-status-response)
+        1. Sale System handles the transaction status response:
+
+        <div style="width:150px">`Response.Result` value</div>      | <div style="width:200px">`Response.ErrorCondition` value</div>| Description |
+        :-----------------:                             | :-----------: | ----------- |
+        Success | | The transaction was successful. |
+         | | The transaction result will be contained in `RepeatedMessageResponse`. | 
+         | | The `RepeatedMessageResponse` will contain the [payment response](#payment-response). |  
+        Failure | "InProgress" |  The Terminal is still processing the payment. |
+         | | The Sale System should wait for 5 seconds and send a [transaction status request](#transaction_status_request) again. |
+        Failure | any other value aside from "InProgress" | The payment failed. |
+         | | The Sale System can exit the loop. |
+
+    1. If the Sale System is unable retrieve a result within 90 seconds:
+        - Sale System must display UI to ask Cashier to check the transaction history in the POI terminal.
+        - Cashier confirms in the Sale System whether the payment transaction succeeded or failed basing on the transaction record in the transaction history in the POI terminal.
+    1. Sale System clears the message reference details in the local persistent storage.
+    1. Sale System clears the txn_in_progress flag in the local persistent storage.
+1. Sale System proceeds with its successful/failed transaction processing, depending on the transaction result.
 
 ![](images/payment-error-handling.png)
 
@@ -1958,11 +1989,21 @@ If the Sale System is unable retrieve a result within 90 seconds the payment has
 
 The Sale System can handle a power failure by checking a local transaction status on start up.
 
-1. Cashier initiates a payment
-1. Sale System sets txn_in_progress flag
+1. Cashier initiates a payment.
+1. Sale System sets txn_in_progress flag in local persistent storage.
 1. Sale System sends a [payment request](#cloud-api-reference-methods-payment)
-1. Sale System power failure occurs
-1. Sale System start up after power failure
-1. Sale System checks if txn_in_progress flag is set. If so, enter error handling
+1. Sale System saves message reference details in local persistent storage.
+1. Sale System power failure occurs.
+1. Sale System start up after power failure.
+1. Sale System checks if txn_in_progress flag is set. If so, access and use message reference details and enter error handling.
+   1. Sale System sends an [abort transaction request](#cloud-api-reference-methods-abort-transaction).
+        - Sale System must set the `AbortRequest.AbortReason` field to "Power Failure".
+   1. For a maximum of 90 seconds, Sale System enters loop to check transaction status.
+   1. If the Sale System is unable retrieve a result within 90 seconds:
+        - Sale System must display UI to ask Cashier to check the transaction history in the POI terminal.
+        - Cashier confirms in the Sale System whether the payment transaction succeeded or failed basing on the transaction record in the transaction history in the POI terminal.
+   1. Sale System clears the message reference details in the local persistent storage.
+   1. Sale System clears the txn_in_progress flag in the local persistent storage.
+1. Sale System proceeds with its successful/failed transaction processing, depending on the transaction result.
 
 ![](images/payment-error-handling-power-failure.png)

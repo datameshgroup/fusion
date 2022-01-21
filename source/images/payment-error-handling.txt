@@ -15,27 +15,44 @@ fontawesome5solid f1ec POI terminal
 
 Cashier->Sale system: Initiate payment
 
-Sale system->Sale system: Set txn_in_progress flag\nin local persistent storage
+Sale system->Sale system: Set txn_in_progress flag in local persistent storage
 
 
-Sale system->Unify: Payment request
+Sale system->Unify: <align:center>Payment request\n//ServiceID=17//\n//Wait for response timeout = 60seconds//</align>
 activate Unify
-Unify->POI terminal: Payment request
+Unify->POI terminal: Payment request\n//ServiceID=17//
 activate POI terminal
 space
 deactivate POI terminal
-Unify-#redxSale system: Network error or Timeout
+Sale system->Sale system: Set message_reference details\nin local persistent storage
+Unify-#redxSale system: <align:center>Network Error or \nTimeout or \nMessage Format Error or\nInvalid Data or\n Other Exception</align>
 deactivate Unify
 
-note over Sale system: Sale System awaits Internet\navailability before entering\nthe error handling loop
+note over Sale system: Sale System awaits Internet\navailability before entering\nthe error handling
+group Error handling
+Sale system->Unify: <align:center>Abort request\n//ServiceID = 17//\n//AbortReason="Network Error"//</align>
+activate Unify
+Unify->POI terminal: <align:center>Abort request\n//ServiceID = 17//\n//AbortReason="Network Error"//</align>
+activate POI terminal
+space
+deactivate POI terminal
+deactivate Unify
 
-group #f0f0f0 while (Result=Failure AND ErrorCondition=InProgress)
-
+group Loop timeout=90 seconds[Result=Failure AND ErrorCondition=InProgress]
 Sale system->Unify: Transaction status request
 activate Unify
 Unify-->Sale system: Transaction status response
 deactivate Unify
-
 end
 
+group If unable to retrieve result within 90 seconds
+note over Sale system: Sale System asks Cashier\nto check transaction history\nin the POI terminal.
+Cashier->Sale system:<align:center>Confirm whether transaction \nsucceeded or failed\n basing on\n transaction history</align>
+end
+
+Sale system->Sale system: Clear message_reference details
+
 Sale system->Sale system: Clear txn_in_progress flag
+end
+
+note over Sale system: Sale System proceeds\nwith its processing basing\non the transaction result

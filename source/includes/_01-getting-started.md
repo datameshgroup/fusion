@@ -14,22 +14,29 @@ Integration into the DataMesh payment platform requires a DataMesh Satellite ter
 
 After creating your development account, you will be provided the following settings which are associated with a Sale System version. These settings must be included in each login request.
 
-- `ProviderIdentification`, the name of the busniess which creates the Sale System.
-- `ApplicationName`, the name of the Sale System.
-- `CertificationCode`, a GUID which uniquly identifies the Sale System. 
-- `SoftwareVersion`, the internal build version of this Sale System. DataMesh must configure this value on Unify. 
+    <div style="width:100px">Setting</div>  | Description |
+    -----------------                        | ----------------- |
+    `ProviderIdentification` | The name of the busniess which creates the Sale System. |
+    `ApplicationName` | The name of the Sale System. |
+    `CertificationCode` | A GUID which uniquly identifies the Sale System. |
+    `SoftwareVersion` | The internal build version of this Sale System. DataMesh must configure this value on Unify. |
 	
 When the Sale System accreditation is complete and the Sale System is ready for production deployment, DataMesh will provide production settings to be included with the production Sale System build.
 
-Each Sale System lane is authenticated and authorised with a unique [SaleID](#data-dictionary-saleid) + [KEK](#data-dictionary-kek) combination, and each POI Terminal is identified by a unique [POIID](#data-dictionary-poiid). 
+Each Sale System lane is authenticated and authorised with a unique [SaleID](#data-dictionary-saleid) + [KEK](#data-dictionary-kek) combination.
+
+Each POI Terminal is identified by a unique [POIID](#data-dictionary-poiid). 
 
 DataMesh associates [SaleID](#data-dictionary-saleid) and [POIID](#data-dictionary-poiid) values on Unify to enforce access restrictions between specific Sale System lanes and terminals.
 
-When requesting a development account, let us know if you plan on working with multiple Sale System instances connected to the same terminal, or multiple terminals connected to one Sale System. 
+When requesting a development account, let us know if you plan on working with:
+
+ - Multiple Sale System instances connected to the same terminal, or 
+ - Multiple terminals connected to one Sale System. 
+ 
 DataMesh will provide the correct number of [SaleID](#data-dictionary-saleid), [KEK](#data-dictionary-kek), and [POIID](#data-dictionary-poiid) values and terminals, and ensure the correct associations are implemented on Unify. 
 
 You can request a terminal and a development account via [integrations@datameshgroup.com](mailto:integrations@datameshgroup.com)
-
 
 ## Design your integration
 
@@ -47,7 +54,7 @@ You should refer to the accreditation [test script](#testing) as a guide to ensu
 
 Below is a an overview of the mandatory integration requirements.
 
-- Support for [purchase](#cloud-api-reference-perform-a-purchase) and [refund](#cloud-api-reference-perform-a-refund) payment types
+- Support for [purchase](#cloud-api-reference-perform-a-purchase) and [refund](#getting-started-design-your-integration-refunds) payment types
 - Include [product data](#getting-started-design-your-integration-product-data) in each payment request
 - Support for TLS and other [security requirements](#cloud-api-reference-security-requirements)
 - Additional fields will be added to the message specification over time. To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages. This includes valid MAC handling in the SecurityTrailer.
@@ -59,13 +66,38 @@ Below is a an overview of the mandatory integration requirements.
 
 **Other features**
 
-- [Dynamic Surcharge](#getting-started-design-your-integration-dynamic-surcharge)
-- [Tipping](#getting-started-design-your-integration-tipping)
-- Payments [user interface](#getting-started-design-your-integration-user-interface) for all displays and inputs
 - Sale System [receipt printing](#getting-started-design-your-integration-receipt-printing)
-- [Tokenisation](#getting-started-design-your-integration-tokenisation)
-- [Settlement](#getting-started-design-your-integration-settlement)
+- Payments [user interface](#getting-started-design-your-integration-user-interface) for all displays and inputs
 - [Cash out](#getting-started-design-your-integration-cash-out)
+- [Settlement](#getting-started-design-your-integration-settlement)
+- [Tokenisation](#getting-started-design-your-integration-tokenisation)
+- [Tipping](#getting-started-design-your-integration-tipping)
+- [Dynamic Surcharge](#getting-started-design-your-integration-dynamic-surcharge)
+
+**APIs**
+
+- [Cloud API](#cloud-api-reference)
+
+The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch.
+
+    <div style="width:200px">Development Language</div>  | Description | Location |
+    :-----------------:                        | -----------------                        | ----------- |
+    .Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
+     | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
+     | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
+    Java | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java) | 
+     | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
+    Delphi | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-delphi) | 
+
+- [Satellite API](#satellite-api-reference)
+
+The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with Android intents.
+
+Description | Location |
+-----------------                        | ----------- |
+Library | on [Maven Central] (https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk) |
+Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java) | 
+Demo Application utilising the library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) |
 
 <aside class="success">
 For help on scoping your development work, or to discuss integration requirements, please contact the Data Mesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>
@@ -76,19 +108,23 @@ For help on scoping your development work, or to discuss integration requirement
 
 The payment lifecycle, including the required API requests, is outlined in the diagram below. 
 
-1. Merchant launches the Sale System
-1. Sale System opens the websocket connection
+1. Merchant launches the Sale System.
+1. Sale System opens the websocket connection.
 1. Sale System has the option to [link](#terminal-linking) with a POI Terminal by performing a [login request](#cloud-api-reference-methods-login) either: 
   1. When the Sale System launches or
   1. Before the first payment request is sent
-1. Sale System receives a successful login response
-1. Merchant initiates a payment
-1. Sale System sends a [payment request](#cloud-api-reference-methods-payment)
-1. Sale System handles [display requests](#cloud-api-reference-methods-display), [print requests](#cloud-api-reference-methods-print), and [input requests](#cloud-api-reference-methods-input)
-1. Sale System receives a payment response
-1. Merchant closes the Sale System
-1. Sale System can optionally send a [logout request](#cloud-api-reference-methods-logout)
-1. Sale System closes the websocket
+1. Sale System receives a successful login response.
+1. Merchant initiates a payment.
+1. Sale System sets txn_in_progress flag in local persistent storage. (This is will be used for [error handling](#cloud-api-reference-error-handling).)
+1. Sale System sends a [payment request](#cloud-api-reference-methods-payment).
+1. Sale System saves message reference details in local persistent storage.  (This is will be used for [error handling](#cloud-api-reference-error-handling).)
+1. Sale System handles [display requests](#cloud-api-reference-methods-display), [print requests](#cloud-api-reference-methods-print), and [input requests](#cloud-api-reference-methods-input).
+1. Sale System receives a payment response.
+1. Sale System clears the message reference details in the local persistent storage.
+1. Sale System clears the txn_in_progress flag in the local persistent storage.
+1. Merchant closes the Sale System.
+1. Sale System can optionally send a [logout request](#cloud-api-reference-methods-logout).
+1. Sale System closes the websocket.
 
 ![](images/payment-lifecycle-basic.png)
 
@@ -166,21 +202,34 @@ Supported [payment](#cloud-api-reference-methods-payment) types are:
 
 The Sale System indicates the payment type in the payment request with the [PaymentType](#data-dictionary-paymenttype) field.
 
-
 ### Payment identification 
 
-Each transaction request and response is identified by a `TransactionIdentification` object which contains the fields: 
+A sale is a transaction between two or more parties, typically a buyer and a seller, in which goods or services are exchanged for payment.  
+Each sale can have one or more transaction request and response messages.  
+Each transaction request and response message is identified by a `TransactionIdentification` object which contains following the fields: 
 
 - [TransactionID](#data-dictionary-transactionid)
 - [TimeStamp](#data-dictionary-timestamp)
 
-In a payment request, the Sale System sends this identification in [SaleData.SaleTransactionID](#data-dictionary-saletransactionid). The Sale System must ensure the [SaleData.SaleTransactionID](#data-dictionary-saletransactionid) uniquely identifies a **sale** for a given [SaleId](#data-dictionary-saleid).
+Message | `TransactionIdentification` field | Description |
+:-----------------:                        | -----------------                        | ----------- |
+Payment Request | [SaleData.SaleTransactionID](#data-dictionary-saletransactionid) | This uniquely identifies a single sale.|
+ | |The Sale System must ensure that the [SaleData.SaleTransactionID](#data-dictionary-saletransactionid) for each **sale** for a given [SaleID](#data-dictionary-saleid) is unique. |
+ | | A sale can have multiple payment requests (for example, in the case of split payments, where one sale is paid with multiple payments).  |
+  | | The <a href="#data-dictionary-saletransactionid">SaleTransactionID</a> is the same for each payment request sent for the same sale and from the same <a href="#data-dictionary-saleid">SaleID</a>. |
+Payment Response | [SaleData.POITransactionID](#data-dictionary-poitransactionid) | This uniquely identifies a specific payment. |
+ | | The POI System will ensure the [SaleData.POITransactionID](#data-dictionary-poitransactionid) uniquely identifies a **payment** for a given [POIID](#data-dictionary-poiid). |
+ | | A sale can have multiple payment responses (for example, in the case of split payments, where one sale is paid with multiple payments).  |
+ | | The <a href="#data-dictionary-poitransactionid">POITransactionID</a> returned in each payment response is guaranteed to be unique (even for the same sale) for a given <a href="#data-dictionary-poiid">POIID</a>. |
 
-In a payment response, the POI System sends this identification in [SaleData.POITransactionID](#data-dictionary-poitransactionid). The POI System will ensure the [SaleData.POITransactionID](#data-dictionary-poitransactionid) uniquely identifies a **payment** for a given [POIId](#data-dictionary-poiid).
 
-<aside class="success">
-Whilst the <a href="#data-dictionary-saletransactionid">SaleTransactionID</a> in the payment request uniquely identifies the sale, it isn't neccessarily unique for each payment sent from the <a href="#data-dictionary-saleid">SaleId</a> (for example, in the case of split payments, where one sale is paid with multiple payments). However the <a href="#data-dictionary-poitransactionid">POITransactionID</a> returned in the payment response is guaranteed to be unique for a given <a href="#data-dictionary-poiid">POIID</a>.
-</aside>
+The [ServiceID](#data-dictionary-serviceid) field uniquely identifies a specific payment transaction in a sale.
+
+Each payment request and response message are linked via the [ServiceID](#data-dictionary-serviceid) field.  
+
+When processing a response message, the Sale System should verify that the [ServiceID](#data-dictionary-serviceid) in the payment response or transaction status response message matches the exact [ServiceID](#data-dictionary-serviceid) value in the payment request message before processing the response message.
+
+The [ServiceID](#data-dictionary-serviceid) is also used by the Sale System in the [abort transaction request](#cloud-api-reference-methods-abort-transaction) to cancel a specific payment transaction.  This means that the exact [ServiceID](#data-dictionary-serviceid) value in the payment request must be provided as the [ServiceID](#data-dictionary-serviceid) in the  [abort transaction request](#cloud-api-reference-methods-abort-transaction) when attempting to cancel that specific payment request.
 
 ![](images/payment-identification.png)
 
@@ -257,17 +306,19 @@ To enable display and input handling on the Sale System, [SaleTerminalData.SaleC
 The DataMesh Nexo API is event based. The Sale System sends a payment request, handles events as they are received, and eventually receives a payment response.
 </aside>
 
-#### Cancelling a sale in progress
+### Cancelling a sale in progress
 
 Whilst a payment is in progress the Sale System should present UI to the cashier which enables them to request a cancellation of the payment. 
 
-If the cashier initiates a payment cancellation, the Sale System sends an [abort transaction request](#cloud-api-reference-methods-abort-transaction) and continues to wait for the payment response. 
+If the cashier initiates a payment cancellation, the Sale System sends an [abort transaction request](#cloud-api-reference-methods-abort-transaction) (with `AbortRequest.AbortReason` field set to "User Cancel").  Then, the Sale System continues to wait for the payment response. 
 
 The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.
 
 <aside class="success">
-There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request. 
+There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
 </aside>
+
+![](images/payment-cancellation.png)
 
 #### Initial UI
 
@@ -460,6 +511,35 @@ See [SaleItem](#data-dictionary-saleitem) for all available fields and examples.
 Including all available product information in each payment request will improve the merchant experiance. See <a href="#data-dictionary-saleitem">SaleItem</a> for a full list of available fields. 
 </aside>
 
+### Refunds
+
+Refund is paying back the customer the amount corresponding to some or all of the goods/services that the customer previously availed. The total refund amount must include any surcharge amount applied to the specific goods/services in the original sale transaction. 
+
+Types of Refund:
+
+- [Matched refund](#getting-started-design-your-integration-refunds-matched-refund)
+
+- [Unmatched refund](#getting-started-design-your-integration-refunds-unmatched-refund)
+
+More details about the [refund implementation](#data-dictionary-saleitem-discounts).
+
+#### Matched refund
+
+- A matched refund is paired with an original purchase. 
+- The Sale System must specify the [POITransactionID](#data-dictionary-poitransactionid) from the original payment response message in the [OriginalPOITransaction](#data-dictionary-originalpoitransaction) field of the refund payment request message.
+- When [dynamic surcharge](#getting-started-design-your-integration-dynamic-surcharge) is enabled: 
+  - The matched refund should include the surcharged amount.
+  - The total amount must be equal to the original purchase amount + dynamic surcharge amount.
+- When [dynamic surcharge](#getting-started-design-your-integration-dynamic-surcharge) is "NOT" enabled: 
+ - The total amount must be equal to the original purchase amount.
+
+#### Unmatched refund
+- An unmatched refund is not paired with an original purchase.
+- Unmatched refunds don't have any extra requirements/restrictions.
+- When [dynamic surcharge](#getting-started-design-your-integration-dynamic-surcharge) is enabled:
+ - The total amount must be equal to the purchase amount to be refunded + portion of the surcharge amount, which corresponds to the purchase amount to be refunded.
+
+ ![](images/payment-refund.png)
 
 ### Cash out
 
@@ -652,6 +732,13 @@ Dynamic surcharge example:
 The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="#requestedamount">RequestedAmount</a> sent in the payment request
 </aside>
 
+### Error handling
+
+When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](#payment_request), it will receive a [payment response](#payment-response).
+
+However, in unusual scenarios wherein the Sale System sends a request but doesn't receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.
+
+More information about how to handle such scenario can be found in the [Error handling section of the Cloud API](#cloud-api-reference-error-handling)
 
 #### Merchant responsibilities
 

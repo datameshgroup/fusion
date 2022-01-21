@@ -21,7 +21,7 @@ Instructions below detail how to compile Slate using WSL2 & Ubuntu 20.04 LTS
   * `sudo apt-get update`
   * `sudo apt install make g++ zlibc zlib1g zlib1g-dev nodejs ruby-bundler ruby-full`
   * `sudo apt install ruby ruby-dev build-essential libffi-dev zlib1g-dev liblzma-dev nodejs patch`
-  * `sudo gem update --system`
+  * `sudo gem update --system`  (if you encounter an error on running this command, try this one instead 'sudo gem update --system 3.1.3')
   * `sudo gem install bundler`
 * Change to the documentation install directory e.g. Run `cd /mnt/c/Docs.UnifyCloudPOS/doc`
 * Run `bundle install`
@@ -47,7 +47,7 @@ The Fusion docs are deployed using GitHub pages to [datameshgroup.github.io/fusi
 To deploy:
 * Build source using `bundle exec middleman build --clean`
 * Source will be written to the /source directory
-* Update gh-pages branch with contents of /source
+* Update gh-pages branch with contents of /build
 
 
 ## Notes

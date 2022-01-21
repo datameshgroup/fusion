@@ -165,6 +165,54 @@ Certification code for this Sale System.
 
 DataMesh will provide a `CertificationCode` to be used for the UAT environment. Once the Sale System is certified, DataMesh will provide a `CertificationCode` to be included in the production build of the Sale System. 
 
+## CustomFields
+```json
+{
+    "SaleItem": [
+        {
+            "CustomFields": [
+              {
+                "Key": "FuelProductCode",
+                "Type": "integer",
+                "Value": "21"
+              },
+              {
+                "Key": "SomethingElse",
+                "Type": "string",
+                "Value": "Blah blah"
+              },                
+              {
+                "Key": "AnArray",
+                "Type": "array",
+                "Value": "[\"1\",\"2\",\"3\"]"
+              },    
+              {
+                "Key": "AnObject",
+                "Type": "object",
+                "Value": "{\"FuelProductCodes\": [21,22]}"
+              }
+            ]
+        }
+    ]
+}
+```
+
+Array of key/type/value objects containing additional information
+
+
+<div style="width:100px">Field Name</div>   | Type | Description |
+-----------------  | ------ | ----------- |
+Key                | String | Defines a unique name for the `Value`.              |
+Type               | Enum   | The content of `Value` represented as a string. |
+                   |        | Available values:                               |
+                   |        |    - "integer": `Value` an integral number (represented as a string) |              
+                   |        |    - "number": `Value` contains any numeric type. Either integer or floating point. (represented as a string)|
+                   |        |    - "string": `Value` contains a string of characters |
+                   |        |    - "array": `Value` contains a json array of string  |
+                   |        |    - "object": `Value` contains a json object|
+`Value`            | String | The value represented as a string |
+
+
 ## DateTime
 
 Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. This will be included in receipts. e.g. "2019-09-02T09:13:51.0+01:00" 
@@ -527,7 +575,7 @@ This last POISerialNumber returned in an earlier login response. If this is the 
 
 ## POITransactionID
 
-Unique identification of a POI transaction for a [POIId](#data-dictionary-poiid). 
+Unique identification of a POI transaction for a [POIID](#data-dictionary-poiid). 
 
 Contains the following fields: 
 
@@ -904,8 +952,7 @@ Discounts applied to the basket should be reflected by the `SaleItem` array base
   * Include a `SaleItem` with a negative `ItemAmount` 
   * Set `Discount` to the discount value 
   * Set `DiscountReason` to the reason for the discount
-
-
+  
 ### Refunds 
 
 If the sale items are known for a refund, they should be represented in the `SaleItem` array, otherwise the `SaleItem` array can be left empty.
@@ -1059,6 +1106,7 @@ For example:
 [ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#data-dictionary-itemid) of the parent `SaleItem`
 [CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
 [Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
+[DiscountReason](#discount-reason)                         |  | String | Explains about the discount applied
 [Categories](#data-dictionary-categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#data-dictionary-categories) for more information.
 [Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
 [QuantityInStock](#data-dictionary-quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
@@ -1071,6 +1119,7 @@ For example:
 [Colour](#colour)                                          |  | String | Colour of the sale item
 [Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
 [WeightUnitOfMeasure](#data-dictionary-unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
+[CustomFields](#data-dictionary-customfields)              |  | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
 
 ## SaleChannel
 

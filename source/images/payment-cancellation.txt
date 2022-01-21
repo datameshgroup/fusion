@@ -1,4 +1,4 @@
-title Payment lifecycle
+title Cancelling a sale in progress
 
 lifelinestyle #A0A0A0
 
@@ -24,41 +24,24 @@ deactivate POI terminal
 Unify-->Sale system: Login response
 deactivate Unify
 
-group Payment (0...n)
+group Payment with cancellation
 
 Merchant->Sale system: Initiate payment
-Sale system->Sale system: Set txn_in_progress flag in local persistent storage
 Sale system->Unify: Payment request
 activate Unify
 Unify->POI terminal: Payment request
 activate POI terminal
-Sale system->Sale system: Set message_reference details\nin local persistent storage
-Unify->Sale system: Display request (0..n)
-activate Sale system
-Sale system-->Unify: Display response
-deactivate Sale system
-
-Unify->Sale system: Input request (0..n)
-activate Sale system
-Sale system-->Unify: Input response
-deactivate Sale system
-
-Unify->Sale system: Print request (0..n)
-activate Sale system
-Sale system-->Unify: Print response
-deactivate Sale system
-
-
+Sale system->Unify: <align:center>Abort request\n//AbortReason="User Cancel"//</align>
+activate Unify
+Unify->POI terminal: <align:center>Abort request\n//AbortReason="User Cancel"//</align>
+activate POI terminal
+space
 POI terminal-->Unify: Payment response
 deactivate POI terminal
 
 Unify-->Sale system: Payment response
 
 deactivate Unify
-
-Sale system->Sale system: Clear message_reference details
-
-Sale system->Sale system: Clear txn_in_progress flag
 
 end 
 
@@ -71,4 +54,3 @@ Unify-->Sale system: Logout response
 deactivate Unify
 
 Sale system->Unify: Close websocket
-

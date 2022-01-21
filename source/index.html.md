@@ -3,10 +3,13 @@ title: Fusion API
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - json: JSON
+  - c#: C#
   - java: Java
+  - delphi: Delphi
+  - swift: Swift
 
 toc_footers:
-  - 2020-09-13
+  - 2022-01-20
   - <a href='https://www.datameshgroup.com'>DataMesh Group</a>
   - <a href='https://github.com/datameshgroup'>GitHub</a>
 
