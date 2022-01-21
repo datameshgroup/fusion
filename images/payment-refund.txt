@@ -1,0 +1,39 @@
+title Matched refund with no surcharge
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale System
+materialdesignicons f11d POI Terminal
+
+Merchant->Sale System: Create sale ($100)
+
+Sale System->Sale System: Open sale //96//
+
+Merchant->Sale System: Initiate payment ($100)
+
+Sale System->POI Terminal: Payment request\n//ServiceID=14//
+activate POI Terminal
+
+POI Terminal->POI Terminal: Process payment //2042//\n//AuthorisedAmount=$100
+
+POI Terminal-->Sale System: Payment response\n//POITransactionID=2042//\n//ServiceID=14//
+deactivate POI Terminal
+
+Sale System->Sale System: Close sale //96//
+
+Merchant->Sale System: Create sale refund ($100)
+
+Sale System->Sale System: Open sale refund //200//
+
+Merchant->Sale System: Initiate refund ($100)
+
+Sale System->POI Terminal: Refund payment request\n//OriginalPOITransaction.POITransactionID=2042//\nServiceID=100//
+activate POI Terminal
+
+POI Terminal->POI Terminal: Process refund payment //2042//
+
+POI Terminal-->Sale System: Refund payment response\n//POITransactionID=2042//\n//ServiceID=100//
+deactivate POI Terminal
+
+Sale System->Sale System: Close sale refund //200//

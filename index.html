@@ -291,7 +291,7 @@
     </script>
   </head>
 
-  <body class="index" data-languages="[&quot;json&quot;,&quot;java&quot;]">
+  <body class="index" data-languages="[&quot;json&quot;,&quot;c#&quot;,&quot;java&quot;,&quot;delphi&quot;,&quot;swift&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -302,7 +302,10 @@
       <img src="images/logo-5dd9e93d.png" class="logo" alt="" />
         <div class="lang-selector">
               <a href="#" data-language-name="json">JSON</a>
+              <a href="#" data-language-name="c#">C#</a>
               <a href="#" data-language-name="java">Java</a>
+              <a href="#" data-language-name="delphi">Delphi</a>
+              <a href="#" data-language-name="swift">Swift</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -345,7 +348,13 @@
 							<a href="#getting-started-design-your-integration-payment-user-interface" class="toc-h3 toc-link" data-title="Payment user interface">Payment user interface</a>
 						  </li>
 						  <li>
+							<a href="#getting-started-design-your-integration-cancelling-a-sale-in-progress" class="toc-h3 toc-link" data-title="Cancelling a sale in progress">Cancelling a sale in progress</a>
+						  </li>
+						  <li>
 							<a href="#getting-started-design-your-integration-product-data" class="toc-h3 toc-link" data-title="Product data">Product data</a>
+						  </li>
+						  <li>
+							<a href="#getting-started-design-your-integration-refunds" class="toc-h3 toc-link" data-title="Refunds">Refunds</a>
 						  </li>
 						  <li>
 							<a href="#getting-started-design-your-integration-cash-out" class="toc-h3 toc-link" data-title="Cash out">Cash out</a>
@@ -364,6 +373,9 @@
 						  </li>
 						  <li>
 							<a href="#getting-started-design-your-integration-dynamic-surcharge" class="toc-h3 toc-link" data-title="Dynamic surcharge">Dynamic surcharge</a>
+						  </li>
+						  <li>
+							<a href="#getting-started-design-your-integration-error-handling" class="toc-h3 toc-link" data-title="Error handling">Error handling</a>
 						  </li>
 					  </ul>
                   </li>
@@ -533,6 +545,10 @@
                   </li>
                   <li>
                     <a href="#data-dictionary-certificationcode" class="toc-h2 toc-link" data-title="CertificationCode">CertificationCode</a>
+					
+                  </li>
+                  <li>
+                    <a href="#data-dictionary-customfields" class="toc-h2 toc-link" data-title="CustomFields">CustomFields</a>
 					
                   </li>
                   <li>
@@ -873,7 +889,7 @@
           </li>
       </ul>
         <ul class="toc-footer">
-            <li>2020-09-13</li>
+            <li>2022-01-20</li>
             <li><a href='https://www.datameshgroup.com'>DataMesh Group</a></li>
             <li><a href='https://github.com/datameshgroup'>GitHub</a></li>
         </ul>
@@ -956,21 +972,46 @@ wss://prod1.datameshgroup.io:4000
 
 <p>After creating your development account, you will be provided the following settings which are associated with a Sale System version. These settings must be included in each login request.</p>
 
-<ul>
-<li><code>ProviderIdentification</code>, the name of the busniess which creates the Sale System.</li>
-<li><code>ApplicationName</code>, the name of the Sale System.</li>
-<li><code>CertificationCode</code>, a GUID which uniquly identifies the Sale System. </li>
-<li><code>SoftwareVersion</code>, the internal build version of this Sale System. DataMesh must configure this value on Unify. </li>
-</ul>
+<table><thead>
+<tr>
+<th><div style="width:100px">Setting</div></th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>ProviderIdentification</code></td>
+<td>The name of the busniess which creates the Sale System.</td>
+</tr>
+<tr>
+<td><code>ApplicationName</code></td>
+<td>The name of the Sale System.</td>
+</tr>
+<tr>
+<td><code>CertificationCode</code></td>
+<td>A GUID which uniquly identifies the Sale System.</td>
+</tr>
+<tr>
+<td><code>SoftwareVersion</code></td>
+<td>The internal build version of this Sale System. DataMesh must configure this value on Unify.</td>
+</tr>
+</tbody></table>
 
 <p>When the Sale System accreditation is complete and the Sale System is ready for production deployment, DataMesh will provide production settings to be included with the production Sale System build.</p>
 
-<p>Each Sale System lane is authenticated and authorised with a unique <a href="#data-dictionary-saleid">SaleID</a> + <a href="#data-dictionary-kek">KEK</a> combination, and each POI Terminal is identified by a unique <a href="#data-dictionary-poiid">POIID</a>. </p>
+<p>Each Sale System lane is authenticated and authorised with a unique <a href="#data-dictionary-saleid">SaleID</a> + <a href="#data-dictionary-kek">KEK</a> combination.</p>
+
+<p>Each POI Terminal is identified by a unique <a href="#data-dictionary-poiid">POIID</a>. </p>
 
 <p>DataMesh associates <a href="#data-dictionary-saleid">SaleID</a> and <a href="#data-dictionary-poiid">POIID</a> values on Unify to enforce access restrictions between specific Sale System lanes and terminals.</p>
 
-<p>When requesting a development account, let us know if you plan on working with multiple Sale System instances connected to the same terminal, or multiple terminals connected to one Sale System. 
-DataMesh will provide the correct number of <a href="#data-dictionary-saleid">SaleID</a>, <a href="#data-dictionary-kek">KEK</a>, and <a href="#data-dictionary-poiid">POIID</a> values and terminals, and ensure the correct associations are implemented on Unify. </p>
+<p>When requesting a development account, let us know if you plan on working with:</p>
+
+<ul>
+<li>Multiple Sale System instances connected to the same terminal, or </li>
+<li>Multiple terminals connected to one Sale System. </li>
+</ul>
+
+<p>DataMesh will provide the correct number of <a href="#data-dictionary-saleid">SaleID</a>, <a href="#data-dictionary-kek">KEK</a>, and <a href="#data-dictionary-poiid">POIID</a> values and terminals, and ensure the correct associations are implemented on Unify. </p>
 
 <p>You can request a terminal and a development account via <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a></p>
 <h2 id='getting-started-design-your-integration'>Design your integration</h2>
@@ -989,7 +1030,7 @@ This section will make reference to methods and data structures documented in th
 <p>Below is a an overview of the mandatory integration requirements.</p>
 
 <ul>
-<li>Support for <a href="#cloud-api-reference-perform-a-purchase">purchase</a> and <a href="#cloud-api-reference-perform-a-refund">refund</a> payment types</li>
+<li>Support for <a href="#cloud-api-reference-perform-a-purchase">purchase</a> and <a href="#getting-started-design-your-integration-refunds">refund</a> payment types</li>
 <li>Include <a href="#getting-started-design-your-integration-product-data">product data</a> in each payment request</li>
 <li>Support for TLS and other <a href="#cloud-api-reference-security-requirements">security requirements</a></li>
 <li>Additional fields will be added to the message specification over time. To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages. This includes valid MAC handling in the SecurityTrailer.</li>
@@ -1003,14 +1044,87 @@ This section will make reference to methods and data structures documented in th
 <p><strong>Other features</strong></p>
 
 <ul>
-<li><a href="#getting-started-design-your-integration-dynamic-surcharge">Dynamic Surcharge</a></li>
-<li><a href="#getting-started-design-your-integration-tipping">Tipping</a></li>
-<li>Payments <a href="#getting-started-design-your-integration-user-interface">user interface</a> for all displays and inputs</li>
 <li>Sale System <a href="#getting-started-design-your-integration-receipt-printing">receipt printing</a></li>
-<li><a href="#getting-started-design-your-integration-tokenisation">Tokenisation</a></li>
-<li><a href="#getting-started-design-your-integration-settlement">Settlement</a></li>
+<li>Payments <a href="#getting-started-design-your-integration-user-interface">user interface</a> for all displays and inputs</li>
 <li><a href="#getting-started-design-your-integration-cash-out">Cash out</a></li>
+<li><a href="#getting-started-design-your-integration-settlement">Settlement</a></li>
+<li><a href="#getting-started-design-your-integration-tokenisation">Tokenisation</a></li>
+<li><a href="#getting-started-design-your-integration-tipping">Tipping</a></li>
+<li><a href="#getting-started-design-your-integration-dynamic-surcharge">Dynamic Surcharge</a></li>
 </ul>
+
+<p><strong>APIs</strong></p>
+
+<ul>
+<li><a href="#cloud-api-reference">Cloud API</a></li>
+</ul>
+
+<p>The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch.</p>
+
+<table><thead>
+<tr>
+<th style="text-align: center"><div style="width:200px">Development Language</div></th>
+<th>Description</th>
+<th>Location</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">.Net</td>
+<td>.Net NuGet package</td>
+<td>on <a href="https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/">Nuget</a></td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td>Source Code</td>
+<td>on <a href="https://github.com/datameshgroup/sdk-dotnet">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td>Demo Application implementing the sdk</td>
+<td>on <a href="https://github.com/datameshgroup/sdk-dotnet-purchasedemo">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center">Java</td>
+<td>Source Code</td>
+<td>on <a href="https://github.com/datameshgroup/fusioncloud-sdk-java">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td>Demo Application implementing the sdk</td>
+<td>on <a href="https://github.com/datameshgroup/fusioncloud-sdk-java-demo">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center">Delphi</td>
+<td>Source Code</td>
+<td>on <a href="https://github.com/datameshgroup/fusioncloud-sdk-delphi">GitHub</a></td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><a href="#satellite-api-reference">Satellite API</a></li>
+</ul>
+
+<p>The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with Android intents.</p>
+
+<table><thead>
+<tr>
+<th>Description</th>
+<th>Location</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Library</td>
+<td>on <a href="https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk">Maven Central</a></td>
+</tr>
+<tr>
+<td>Library</td>
+<td>on <a href="https://github.com/datameshgroup/fusionsatellite-sdk-java">GitHub</a></td>
+</tr>
+<tr>
+<td>Demo Application utilising the library</td>
+<td>on <a href="https://github.com/datameshgroup/fusionsatellite-sdk-android-demo">GitHub</a></td>
+</tr>
+</tbody></table>
 
 <aside class="success">
 For help on scoping your development work, or to discuss integration requirements, please contact the Data Mesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>
@@ -1019,25 +1133,29 @@ For help on scoping your development work, or to discuss integration requirement
 <p>The payment lifecycle, including the required API requests, is outlined in the diagram below. </p>
 
 <ol>
-<li>Merchant launches the Sale System</li>
-<li>Sale System opens the websocket connection</li>
+<li>Merchant launches the Sale System.</li>
+<li>Sale System opens the websocket connection.</li>
 <li>Sale System has the option to <a href="#terminal-linking">link</a> with a POI Terminal by performing a <a href="#cloud-api-reference-methods-login">login request</a> either: 
 
 <ol>
 <li>When the Sale System launches or</li>
 <li>Before the first payment request is sent</li>
 </ol></li>
-<li>Sale System receives a successful login response</li>
-<li>Merchant initiates a payment</li>
-<li>Sale System sends a <a href="#cloud-api-reference-methods-payment">payment request</a></li>
-<li>Sale System handles <a href="#cloud-api-reference-methods-display">display requests</a>, <a href="#cloud-api-reference-methods-print">print requests</a>, and <a href="#cloud-api-reference-methods-input">input requests</a></li>
-<li>Sale System receives a payment response</li>
-<li>Merchant closes the Sale System</li>
-<li>Sale System can optionally send a <a href="#cloud-api-reference-methods-logout">logout request</a></li>
-<li>Sale System closes the websocket</li>
+<li>Sale System receives a successful login response.</li>
+<li>Merchant initiates a payment.</li>
+<li>Sale System sets txn_in_progress flag in local persistent storage. (This is will be used for <a href="#cloud-api-reference-error-handling">error handling</a>.)</li>
+<li>Sale System sends a <a href="#cloud-api-reference-methods-payment">payment request</a>.</li>
+<li>Sale System saves message reference details in local persistent storage.  (This is will be used for <a href="#cloud-api-reference-error-handling">error handling</a>.)</li>
+<li>Sale System handles <a href="#cloud-api-reference-methods-display">display requests</a>, <a href="#cloud-api-reference-methods-print">print requests</a>, and <a href="#cloud-api-reference-methods-input">input requests</a>.</li>
+<li>Sale System receives a payment response.</li>
+<li>Sale System clears the message reference details in the local persistent storage.</li>
+<li>Sale System clears the txn_in_progress flag in the local persistent storage.</li>
+<li>Merchant closes the Sale System.</li>
+<li>Sale System can optionally send a <a href="#cloud-api-reference-methods-logout">logout request</a>.</li>
+<li>Sale System closes the websocket.</li>
 </ol>
 
-<p><img src="images/payment-lifecycle-basic-a1b6433d.png" alt="" /></p>
+<p><img src="images/payment-lifecycle-basic-95d889c3.png" alt="" /></p>
 <h3 id='getting-started-design-your-integration-terminal-linking'>Terminal linking</h3>
 <p>The POS (Sale System) communicates with a POI terminal using both a <a href="#data-dictionary-saleid">SaleID</a> and <a href="#data-dictionary-kek">KEK</a> (which identifies the Sale System) and <a href="#data-dictionary-poiid">POIID</a> (which identifies the terminal).</p>
 
@@ -1130,22 +1248,73 @@ A "pairing" API request will be available in a future API release which will ena
 
 <p>The Sale System indicates the payment type in the payment request with the <a href="#data-dictionary-paymenttype">PaymentType</a> field.</p>
 <h3 id='getting-started-design-your-integration-payment-identification'>Payment identification</h3>
-<p>Each transaction request and response is identified by a <code>TransactionIdentification</code> object which contains the fields: </p>
+<p>A sale is a transaction between two or more parties, typically a buyer and a seller, in which goods or services are exchanged for payment.<br>
+Each sale can have one or more transaction request and response messages.<br>
+Each transaction request and response message is identified by a <code>TransactionIdentification</code> object which contains following the fields: </p>
 
 <ul>
 <li><a href="#data-dictionary-transactionid">TransactionID</a></li>
 <li><a href="#data-dictionary-timestamp">TimeStamp</a></li>
 </ul>
 
-<p>In a payment request, the Sale System sends this identification in <a href="#data-dictionary-saletransactionid">SaleData.SaleTransactionID</a>. The Sale System must ensure the <a href="#data-dictionary-saletransactionid">SaleData.SaleTransactionID</a> uniquely identifies a <strong>sale</strong> for a given <a href="#data-dictionary-saleid">SaleId</a>.</p>
+<table><thead>
+<tr>
+<th style="text-align: center">Message</th>
+<th><code>TransactionIdentification</code> field</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">Payment Request</td>
+<td><a href="#data-dictionary-saletransactionid">SaleData.SaleTransactionID</a></td>
+<td>This uniquely identifies a single sale.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td></td>
+<td>The Sale System must ensure that the <a href="#data-dictionary-saletransactionid">SaleData.SaleTransactionID</a> for each <strong>sale</strong> for a given <a href="#data-dictionary-saleid">SaleID</a> is unique.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td></td>
+<td>A sale can have multiple payment requests (for example, in the case of split payments, where one sale is paid with multiple payments).</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td></td>
+<td>The <a href="#data-dictionary-saletransactionid">SaleTransactionID</a> is the same for each payment request sent for the same sale and from the same <a href="#data-dictionary-saleid">SaleID</a>.</td>
+</tr>
+<tr>
+<td style="text-align: center">Payment Response</td>
+<td><a href="#data-dictionary-poitransactionid">SaleData.POITransactionID</a></td>
+<td>This uniquely identifies a specific payment.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td></td>
+<td>The POI System will ensure the <a href="#data-dictionary-poitransactionid">SaleData.POITransactionID</a> uniquely identifies a <strong>payment</strong> for a given <a href="#data-dictionary-poiid">POIID</a>.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td></td>
+<td>A sale can have multiple payment responses (for example, in the case of split payments, where one sale is paid with multiple payments).</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td></td>
+<td>The <a href="#data-dictionary-poitransactionid">POITransactionID</a> returned in each payment response is guaranteed to be unique (even for the same sale) for a given <a href="#data-dictionary-poiid">POIID</a>.</td>
+</tr>
+</tbody></table>
 
-<p>In a payment response, the POI System sends this identification in <a href="#data-dictionary-poitransactionid">SaleData.POITransactionID</a>. The POI System will ensure the <a href="#data-dictionary-poitransactionid">SaleData.POITransactionID</a> uniquely identifies a <strong>payment</strong> for a given <a href="#data-dictionary-poiid">POIId</a>.</p>
+<p>The <a href="#data-dictionary-serviceid">ServiceID</a> field uniquely identifies a specific payment transaction in a sale.</p>
 
-<aside class="success">
-Whilst the <a href="#data-dictionary-saletransactionid">SaleTransactionID</a> in the payment request uniquely identifies the sale, it isn't neccessarily unique for each payment sent from the <a href="#data-dictionary-saleid">SaleId</a> (for example, in the case of split payments, where one sale is paid with multiple payments). However the <a href="#data-dictionary-poitransactionid">POITransactionID</a> returned in the payment response is guaranteed to be unique for a given <a href="#data-dictionary-poiid">POIID</a>.
-</aside>
+<p>Each payment request and response message are linked via the <a href="#data-dictionary-serviceid">ServiceID</a> field.  </p>
 
-<p><img src="images/payment-identification-73e9e38c.png" alt="" /></p>
+<p>When processing a response message, the Sale System should verify that the <a href="#data-dictionary-serviceid">ServiceID</a> in the payment response or transaction status response message matches the exact <a href="#data-dictionary-serviceid">ServiceID</a> value in the payment request message before processing the response message.</p>
+
+<p>The <a href="#data-dictionary-serviceid">ServiceID</a> is also used by the Sale System in the <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a> to cancel a specific payment transaction.  This means that the exact <a href="#data-dictionary-serviceid">ServiceID</a> value in the payment request must be provided as the <a href="#data-dictionary-serviceid">ServiceID</a> in the  <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a> when attempting to cancel that specific payment request.</p>
+
+<p><img src="images/payment-identification-0f0a6c65.png" alt="" /></p>
 <h3 id='getting-started-design-your-integration-receipt-printing'>Receipt printing</h3>
 <p>The POI Terminal will produce payment receipts which must be printed as a part of the transaction flow.</p>
 
@@ -1213,17 +1382,19 @@ The <code>Input UI</code> elements are not currently available, and will be supp
 <aside class="success">
 The DataMesh Nexo API is event based. The Sale System sends a payment request, handles events as they are received, and eventually receives a payment response.
 </aside>
-<h4 id='getting-started-design-your-integration-payment-user-interface-cancelling-a-sale-in-progress'>Cancelling a sale in progress</h4>
+<h3 id='getting-started-design-your-integration-cancelling-a-sale-in-progress'>Cancelling a sale in progress</h3>
 <p>Whilst a payment is in progress the Sale System should present UI to the cashier which enables them to request a cancellation of the payment. </p>
 
-<p>If the cashier initiates a payment cancellation, the Sale System sends an <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a> and continues to wait for the payment response. </p>
+<p>If the cashier initiates a payment cancellation, the Sale System sends an <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a> (with <code>AbortRequest.AbortReason</code> field set to &quot;User Cancel&quot;).  Then, the Sale System continues to wait for the payment response. </p>
 
 <p>The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.</p>
 
 <aside class="success">
-There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request. 
+There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
 </aside>
-<h4 id='getting-started-design-your-integration-payment-user-interface-initial-ui'>Initial UI</h4>
+
+<p><img src="images/payment-cancellation-887c89b3.png" alt="" /></p>
+<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-initial-ui'>Initial UI</h4>
 <p>The Sale System should immediately display an initial UI after sending a <a href="#cloud-api-reference-methods-payment">payment</a> request which informs the cashier the payment is in progress. This UI is required to handle instances where the first display/input message from the POI System is not present, or delayed.</p>
 
 <p>This UI should also enable the cashier to request a cancellation of the transaction.</p>
@@ -1231,7 +1402,7 @@ There are a number of instances where the Terminal may be unable to cancel a pay
 <p><em>Example</em></p>
 
 <p><img src="images/dialog-initial-ui-55c3ef23.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-payment-user-interface-display-ui'>Display UI</h4>
+<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-display-ui'>Display UI</h4>
 <blockquote>
 <p>Display request</p>
 </blockquote>
@@ -1277,7 +1448,7 @@ There are a number of instances where the Terminal may be unable to cancel a pay
 <p><em>Example</em></p>
 
 <p><img src="images/dialog-display-509f218b.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-payment-user-interface-input-ui'>Input UI</h4>
+<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-input-ui'>Input UI</h4>
 <aside class="warning">
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
 </aside>
@@ -1374,7 +1545,7 @@ The option for the cashier to 'Cancel' is optional on the <code>GetConfirmation<
 <p><em>Example</em></p>
 
 <p><img src="images/dialog-input-getmenuentry-28430f31.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-payment-user-interface-final-ui'>Final UI</h4>
+<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-final-ui'>Final UI</h4>
 <p>The Sale System should display a final UI after the response has been received to inform the cashier of the transaction result. </p>
 
 <p>This UI is constructed using the <a href="#data-dictionary-result">Result</a>, <a href="#data-dictionary-errorcondition">ErrorCondition</a>, and <a href="#additionalresponse">AdditionalResponse</a> fields of the <code>Response</code> object.</p>
@@ -1408,6 +1579,45 @@ The option for the cashier to 'Cancel' is optional on the <code>GetConfirmation<
 <aside class="success">
 Including all available product information in each payment request will improve the merchant experiance. See <a href="#data-dictionary-saleitem">SaleItem</a> for a full list of available fields. 
 </aside>
+<h3 id='getting-started-design-your-integration-refunds'>Refunds</h3>
+<p>Refund is paying back the customer the amount corresponding to some or all of the goods/services that the customer previously availed. The total refund amount must include any surcharge amount applied to the specific goods/services in the original sale transaction. </p>
+
+<p>Types of Refund:</p>
+
+<ul>
+<li><p><a href="#getting-started-design-your-integration-refunds-matched-refund">Matched refund</a></p></li>
+<li><p><a href="#getting-started-design-your-integration-refunds-unmatched-refund">Unmatched refund</a></p></li>
+</ul>
+
+<p>More details about the <a href="#data-dictionary-saleitem-discounts">refund implementation</a>.</p>
+<h4 id='getting-started-design-your-integration-refunds-matched-refund'>Matched refund</h4>
+<ul>
+<li>A matched refund is paired with an original purchase. </li>
+<li>The Sale System must specify the <a href="#data-dictionary-poitransactionid">POITransactionID</a> from the original payment response message in the <a href="#data-dictionary-originalpoitransaction">OriginalPOITransaction</a> field of the refund payment request message.</li>
+<li>When <a href="#getting-started-design-your-integration-dynamic-surcharge">dynamic surcharge</a> is enabled: 
+
+<ul>
+<li>The matched refund should include the surcharged amount.</li>
+<li>The total amount must be equal to the original purchase amount + dynamic surcharge amount.</li>
+</ul></li>
+<li>When <a href="#getting-started-design-your-integration-dynamic-surcharge">dynamic surcharge</a> is &quot;NOT&quot; enabled: 
+
+<ul>
+<li>The total amount must be equal to the original purchase amount.</li>
+</ul></li>
+</ul>
+<h4 id='getting-started-design-your-integration-refunds-unmatched-refund'>Unmatched refund</h4>
+<ul>
+<li>An unmatched refund is not paired with an original purchase.</li>
+<li>Unmatched refunds don&#39;t have any extra requirements/restrictions.</li>
+<li>When <a href="#getting-started-design-your-integration-dynamic-surcharge">dynamic surcharge</a> is enabled:
+
+<ul>
+<li>The total amount must be equal to the purchase amount to be refunded + portion of the surcharge amount, which corresponds to the purchase amount to be refunded.</li>
+</ul></li>
+</ul>
+
+<p><img src="images/payment-refund-0d2e2b60.png" alt="" /></p>
 <h3 id='getting-started-design-your-integration-cash-out'>Cash out</h3>
 <p>The Sale System can optionally support cash out payments on the POI Terminal. There are two cash out methods supported based on where the cash out amount is entered; cash out on Sale System, and cash out on POI Terminal. </p>
 <h4 id='getting-started-design-your-integration-cash-out-cash-out-on-sale-system'>Cash out on Sale System</h4>
@@ -1610,7 +1820,13 @@ The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the p
 <aside class="success">
 The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="#requestedamount">RequestedAmount</a> sent in the payment request
 </aside>
-<h4 id='getting-started-design-your-integration-dynamic-surcharge-merchant-responsibilities'>Merchant responsibilities</h4>
+<h3 id='getting-started-design-your-integration-error-handling'>Error handling</h3>
+<p>When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a <a href="#payment_request">payment request</a>, it will receive a <a href="#payment-response">payment response</a>.</p>
+
+<p>However, in unusual scenarios wherein the Sale System sends a request but doesn&#39;t receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.</p>
+
+<p>More information about how to handle such scenario can be found in the <a href="#cloud-api-reference-error-handling">Error handling section of the Cloud API</a></p>
+<h4 id='getting-started-design-your-integration-error-handling-merchant-responsibilities'>Merchant responsibilities</h4>
 <ul>
 <li>Merchants are required to notify the cardholder that a surcharge will be applied. For example, by ensuring signage at the point of purchase</li>
 <li>The RBA surcharge framework indicates merchants should review the level of any surcharge applied at least once a year</li>
@@ -1624,11 +1840,44 @@ The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the p
 <h1 id='cloud-api-reference'>Cloud API Reference</h1>
 <p>The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. </p>
 <h2 id='cloud-api-reference-reference-code'>Reference code</h2>
-<ul>
-<li>A DotNet NuGet package implementing the DataMesh Fusion API is available <a href="https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/">on Nuget</a></li>
-<li>Source is on <a href="https://github.com/datameshgroup/sdk-dotnet">GitHub</a></li>
-<li>Demo applications implementing the sdk are also available on <a href="https://github.com/datameshgroup/sdk-dotnet-purchasedemo">GitHub</a></li>
-</ul>
+<table><thead>
+<tr>
+<th style="text-align: center">Development Language</th>
+<th>Description</th>
+<th>Location</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">.Net</td>
+<td>.Net NuGet package</td>
+<td>on <a href="https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/">Nuget</a></td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td>Source Code</td>
+<td>on <a href="https://github.com/datameshgroup/sdk-dotnet">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td>Demo Application implementing the sdk</td>
+<td>on <a href="https://github.com/datameshgroup/sdk-dotnet-purchasedemo">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center">Java</td>
+<td>Source Code</td>
+<td>on <a href="https://github.com/datameshgroup/fusioncloud-sdk-java">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td>Demo Application implementing the sdk</td>
+<td>on <a href="https://github.com/datameshgroup/fusioncloud-sdk-java-demo">GitHub</a></td>
+</tr>
+<tr>
+<td style="text-align: center">Delphi</td>
+<td>Source Code</td>
+<td>on <a href="https://github.com/datameshgroup/fusioncloud-sdk-delphi">GitHub</a></td>
+</tr>
+</tbody></table>
 <h2 id='cloud-api-reference-security-requirements'>Security requirements</h2>
 <p>Unify utilises secure websockets for communication between Sale System and POI Server.</p>
 
@@ -3123,7 +3372,7 @@ will be rejected by the POI System until the next Login.</p>
 <td> <strong><a href="#data-dictionary-saleitem">SaleItem</a></strong></td>
 <td>✔</td>
 <td>Array</td>
-<td>Array of <a href="#data-dictionary-saleitem">SaleItem</a> objects which represent the product basket attached to this transaction. See <a href="#data-dictionary-saleitem">SaleItem</a> for examples.</td>
+<td>Array of <a href="#data-dictionary-s">SaleItem</a> objects which represent the product basket attached to this transaction. See <a href="#data-dictionary-saleitem">SaleItem</a> for examples.</td>
 </tr>
 <tr>
 <td>  <a href="#data-dictionary-itemid">ItemID</a></td>
@@ -5176,20 +5425,20 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 <td><a href="#abortreason">AbortReason</a></td>
 <td>✔</td>
 <td>String</td>
-<td>Any text describing the reason for cancelling the transaction. For example, &quot;User cancel&quot;</td>
+<td>Any text describing the reason for cancelling the transaction. For example, &quot;User Cancel&quot;</td>
 </tr>
 </tbody></table>
 <h4 id='cloud-api-reference-methods-abort-transaction-abort-transaction-response'>Abort transaction response</h4>
-<p>There is no direct response to an Abort message.</p>
+<p>Once an abort transaction request has been sent, please continue to wait for the payment response.</p>
 
-<p>If the transaction can be aborted, a payment response is returned with <code>Result</code> = &quot;Failure&quot; and <code>ErrorCondition</code> = &quot;Aborted&quot;.</p>
+<p>If the transaction is successfully aborted, a payment response is returned with <code>Result</code> = &quot;Failure&quot; and <code>ErrorCondition</code> = &quot;Aborted&quot;.</p>
 
-<p>If the transaction cannot be aborted, a normal payment response is sent back in time.</p>
+<p>If the transaction cannot be aborted, a normal payment response (<code>Result</code> = &quot;Success&quot;) is sent back in time.</p>
 
-<p>However, if the Abort Request cannot be accepted due to a message format error or if it references a transaction that is not found, an Event Notification is returned. </p>
+<p>However, if the abort transaction request message contains an invalid data (e.g. message format error) or if the referenced transaction cannot be not found (e.g. due to an incorrect ServiceID value), an Event Notification will be returned. </p>
 
 <blockquote>
-<p>Abort transaction response</p>
+<p>Abort transaction response </p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
    </span><span class="nl">"SaleToPOIRequest"</span><span class="p">:{</span><span class="w">
@@ -6013,48 +6262,157 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 <h2 id='cloud-api-reference-error-handling'>Error handling</h2>
 <p>When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a <a href="#payment_request">payment request</a> it will receive a <a href="#payment-response">payment response</a>.</p>
 
-<p>The Sale System should handle errors by checking the <a href="#data-dictionary-result">Response.Result</a> and <a href="#data-dictionary-errorcondition">Response.ErrorCondition</a> fields in the response.</p>
+<p>The Sale System should verify the result of the transaction by checking the <a href="#data-dictionary-result">Response.Result</a> field in the response.</p>
 
-<p>In the event the Sale System does not receive a response (for example, due to network error or timeout) it must enter an error handling loop.</p>
+<ul>
+<li>If the <a href="#data-dictionary-result">Response.Result</a> is &quot;Success&quot;, the payment transaction was successful.</li>
+<li>If the <a href="#data-dictionary-result">Response.Result</a> is &quot;Failure&quot;, the payment transaction failed.  The Sale System may check for any errors specified in the <a href="#data-dictionary-errorcondition">Response.ErrorCondition</a> field in the same response message and handle the error accordingly.</li>
+</ul>
 
-<p>Error handling due to network error or timeout is outlined in the diagram below. </p>
+<p>In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it must enter error handling.</p>
+
+<p>Error handling due to network error, timeout, or any other unexpected error is outlined in the diagram below. </p>
 
 <ol>
-<li>Cashier initiates a payment</li>
-<li>Sale System sends a <a href="#cloud-api-reference-methods-payment">payment request</a></li>
-<li>Network error or timeout occurs</li>
-<li>Sale System awaits Internet availability</li>
-<li>Sale System enters a loop for a maximum of 90 seconds</li>
+<li>Cashier initiates a payment.</li>
+<li>Sale System sets txn_in_progress flag in local persistent storage.</li>
+<li>Sale System sends a <a href="#cloud-api-reference-methods-payment">payment request</a>.  The timeout period for waiting for a response is 60 seconds.  This should reset every time a response (for example, <a href="#cloud-api-reference-methods-display">display request</a>) is received.</li>
+<li>Sale System saves message reference details in local persistent storage.</li>
+<li>Network error/timeout/any other unexpected error occurs.</li>
+<li>Sale System awaits Internet availability.</li>
+<li><p>Sale System enters error handling:</p>
+
+<ol>
+<li><p>Sale System sends an <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a>.</p>
+
+<ul>
+<li>Sale System must set the <code>AbortRequest.AbortReason</code> field to describe the reason for cancelling the transaction.</li>
+</ul>
+
+<table><thead>
+<tr>
+<th style="text-align: center"><div style="width:220px"><code>AbortRequest.AbortReason</code> value</div></th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">Network Error</td>
+<td>Network related error occured.</td>
+</tr>
+<tr>
+<td style="text-align: center">Timeout</td>
+<td>No response from the host after the timeout period.</td>
+</tr>
+<tr>
+<td style="text-align: center">Message Format Error</td>
+<td>An error occured while converting a message.</td>
+</tr>
+<tr>
+<td style="text-align: center">Invalid Data</td>
+<td>An invalid data was received.</td>
+</tr>
+<tr>
+<td style="text-align: center">Other Exception</td>
+<td>An unwanted exception has occured.</td>
+</tr>
+</tbody></table></li>
+<li><p>For a maximum of 90 seconds, the Sale System should perform the below in a loop:</p>
+
+<ol>
 <li>Sale System sends a <a href="#transaction-status-request">transaction status request</a> and awaits a <a href="#transaction-status-response">transaction status response</a></li>
-<li>Sale System handles the transaction status response 
-
-<ol>
-<li>If <code>Response.Result</code> is &quot;Success&quot;, the transaction result will be contained in <code>RepeatedMessageResponse</code> and the Sale System can exit the error loop</li>
-<li>If <code>Response.Result</code> is &quot;Failure&quot; and <code>Response.ErrorCondition</code> is &quot;InProgress&quot; the Terminal is still processing the payment. The Sale System should wait 5 seconds and send the <a href="#transaction_status_request">transaction status request</a> again.</li>
-<li>If <code>Response.Result</code> is &quot;Failure&quot; and <code>Response.ErrorCondition</code> is not &quot;InProgress&quot; the payment failed</li>
-</ol></li>
+<li>Sale System handles the transaction status response:</li>
 </ol>
 
-<aside class="success">
-If the Sale System is unable retrieve a result within 90 seconds the payment has failed.
-</aside>
+<table><thead>
+<tr>
+<th style="text-align: center"><div style="width:150px"><code>Response.Result</code> value</div></th>
+<th style="text-align: center"><div style="width:200px"><code>Response.ErrorCondition</code> value</div></th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">Success</td>
+<td style="text-align: center"></td>
+<td>The transaction was successful.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center"></td>
+<td>The transaction result will be contained in <code>RepeatedMessageResponse</code>.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center"></td>
+<td>The <code>RepeatedMessageResponse</code> will contain the <a href="#payment-response">payment response</a>.</td>
+</tr>
+<tr>
+<td style="text-align: center">Failure</td>
+<td style="text-align: center">&quot;InProgress&quot;</td>
+<td>The Terminal is still processing the payment.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center"></td>
+<td>The Sale System should wait for 5 seconds and send a <a href="#transaction_status_request">transaction status request</a> again.</td>
+</tr>
+<tr>
+<td style="text-align: center">Failure</td>
+<td style="text-align: center">any other value aside from &quot;InProgress&quot;</td>
+<td>The payment failed.</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center"></td>
+<td>The Sale System can exit the loop.</td>
+</tr>
+</tbody></table></li>
+<li><p>If the Sale System is unable retrieve a result within 90 seconds:</p>
 
-<p><img src="images/payment-error-handling-dee8ee36.png" alt="" /></p>
+<ul>
+<li>Sale System must display UI to ask Cashier to check the transaction history in the POI terminal.</li>
+<li>Cashier confirms in the Sale System whether the payment transaction succeeded or failed basing on the transaction record in the transaction history in the POI terminal.</li>
+</ul></li>
+<li><p>Sale System clears the message reference details in the local persistent storage.</p></li>
+<li><p>Sale System clears the txn_in_progress flag in the local persistent storage.</p></li>
+</ol></li>
+<li><p>Sale System proceeds with its successful/failed transaction processing, depending on the transaction result.</p></li>
+</ol>
+
+<p><img src="images/payment-error-handling-3921c024.png" alt="" /></p>
 
 <p><strong>Power failure handling</strong></p>
 
 <p>The Sale System can handle a power failure by checking a local transaction status on start up.</p>
 
 <ol>
-<li>Cashier initiates a payment</li>
-<li>Sale System sets txn_in_progress flag</li>
+<li>Cashier initiates a payment.</li>
+<li>Sale System sets txn_in_progress flag in local persistent storage.</li>
 <li>Sale System sends a <a href="#cloud-api-reference-methods-payment">payment request</a></li>
-<li>Sale System power failure occurs</li>
-<li>Sale System start up after power failure</li>
-<li>Sale System checks if txn_in_progress flag is set. If so, enter error handling</li>
+<li>Sale System saves message reference details in local persistent storage.</li>
+<li>Sale System power failure occurs.</li>
+<li>Sale System start up after power failure.</li>
+<li>Sale System checks if txn_in_progress flag is set. If so, access and use message reference details and enter error handling.
+
+<ol>
+<li>Sale System sends an <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a>.
+
+<ul>
+<li>Sale System must set the <code>AbortRequest.AbortReason</code> field to &quot;Power Failure&quot;.</li>
+</ul></li>
+<li>For a maximum of 90 seconds, Sale System enters loop to check transaction status.</li>
+<li>If the Sale System is unable retrieve a result within 90 seconds:
+
+<ul>
+<li>Sale System must display UI to ask Cashier to check the transaction history in the POI terminal.</li>
+<li>Cashier confirms in the Sale System whether the payment transaction succeeded or failed basing on the transaction record in the transaction history in the POI terminal.</li>
+</ul></li>
+<li>Sale System clears the message reference details in the local persistent storage.</li>
+<li>Sale System clears the txn_in_progress flag in the local persistent storage.</li>
+</ol></li>
+<li>Sale System proceeds with its successful/failed transaction processing, depending on the transaction result.</li>
 </ol>
 
-<p><img src="images/payment-error-handling-power-failure-0f301d91.png" alt="" /></p>
+<p><img src="images/payment-error-handling-power-failure-3210e45f.png" alt="" /></p>
 <h1 id='satellite-api-reference'>Satellite API Reference</h1>
 <aside class="warning">
 The new Fusion Satellite API documented below is currently unavailable in production. Please contact the Data Mesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> for details on how to use the Fusion Satellite API.
@@ -6064,11 +6422,25 @@ The new Fusion Satellite API documented below is currently unavailable in produc
 <h2 id='satellite-api-reference-libraries'>Libraries</h2>
 <p>DataMesh have published a library to Maven Central which wraps the Satellite API. This is the recommended method of interacting with the Fusion Satellite API.</p>
 
-<ul>
-<li>Library on Maven Central <a href="https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk">fusion-sdk</a></li>
-<li>Demo application which utilises the library <a href="https://github.com/datameshgroup/fusionsatellite-sdk-android-demo">fusionsatellite-sdk-android-demo</a></li>
-<li>Library source code <a href="https://github.com/datameshgroup/fusionsatellite-sdk-java">fusionsatellite-sdk-java</a></li>
-</ul>
+<table><thead>
+<tr>
+<th>Description</th>
+<th>Location</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Library</td>
+<td>on <a href="https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk">Maven Central</a></td>
+</tr>
+<tr>
+<td>Library</td>
+<td>on <a href="https://github.com/datameshgroup/fusionsatellite-sdk-java">GitHub</a></td>
+</tr>
+<tr>
+<td>Demo Application utilising the library</td>
+<td>on <a href="https://github.com/datameshgroup/fusionsatellite-sdk-android-demo">GitHub</a></td>
+</tr>
+</tbody></table>
 <h3 id='satellite-api-reference-libraries-how-to-include-the-library'>How to include the library</h3>
 <p><code>implementation &quot;com.datameshgroup.fusion:fusion-sdk:1.1.0&quot;</code></p>
 
@@ -7774,6 +8146,90 @@ Sale System should allow for a "catch all" which handles currently undefined err
 <p>Certification code for this Sale System.</p>
 
 <p>DataMesh will provide a <code>CertificationCode</code> to be used for the UAT environment. Once the Sale System is certified, DataMesh will provide a <code>CertificationCode</code> to be included in the production build of the Sale System. </p>
+<h2 id='data-dictionary-customfields'>CustomFields</h2><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"SaleItem"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"CustomFields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"Key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FuelProductCode"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"21"</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"Key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomethingElse"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Blah blah"</span><span class="w">
+              </span><span class="p">},</span><span class="w">                
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"Key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AnArray"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"array"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[</span><span class="se">\"</span><span class="s2">1</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">2</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">3</span><span class="se">\"</span><span class="s2">]"</span><span class="w">
+              </span><span class="p">},</span><span class="w">    
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"Key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AnObject"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"Value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">FuelProductCodes</span><span class="se">\"</span><span class="s2">: [21,22]}"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Array of key/type/value objects containing additional information</p>
+
+<table><thead>
+<tr>
+<th><div style="width:100px">Field Name</div></th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Key</td>
+<td>String</td>
+<td>Defines a unique name for the <code>Value</code>.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Enum</td>
+<td>The content of <code>Value</code> represented as a string.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Available values:</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>- &quot;integer&quot;: <code>Value</code> an integral number (represented as a string)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>- &quot;number&quot;: <code>Value</code> contains any numeric type. Either integer or floating point. (represented as a string)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>- &quot;string&quot;: <code>Value</code> contains a string of characters</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>- &quot;array&quot;: <code>Value</code> contains a json array of string</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>- &quot;object&quot;: <code>Value</code> contains a json object</td>
+</tr>
+<tr>
+<td><code>Value</code></td>
+<td>String</td>
+<td>The value represented as a string</td>
+</tr>
+</tbody></table>
 <h2 id='data-dictionary-datetime'>DateTime</h2>
 <p>Current Sale System time, formatted as <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO8601</a> DateTime. This will be included in receipts. e.g. &quot;2019-09-02T09:13:51.0+01:00&quot; </p>
 <h2 id='data-dictionary-eanupc'>EanUpc</h2>
@@ -8262,7 +8718,7 @@ Please note that this list may expand in the future as new payment types are add
 <h2 id='data-dictionary-poiserialnumber'>POISerialNumber</h2>
 <p>This last POISerialNumber returned in an earlier login response. If this is the first login from the Sale System, this field is absent.</p>
 <h2 id='data-dictionary-poitransactionid'>POITransactionID</h2>
-<p>Unique identification of a POI transaction for a <a href="#data-dictionary-poiid">POIId</a>. </p>
+<p>Unique identification of a POI transaction for a <a href="#data-dictionary-poiid">POIID</a>. </p>
 
 <p>Contains the following fields: </p>
 
@@ -9063,6 +9519,12 @@ Please contact the Data Mesh integrations team at <a href="mailto:integrations@d
 <td>If applied, the amount this sale item was discounted by</td>
 </tr>
 <tr>
+<td><a href="#discount-reason">DiscountReason</a></td>
+<td></td>
+<td>String</td>
+<td>Explains about the discount applied</td>
+</tr>
+<tr>
 <td><a href="#data-dictionary-categories">Categories</a></td>
 <td></td>
 <td>Array</td>
@@ -9133,6 +9595,12 @@ Please contact the Data Mesh integrations team at <a href="mailto:integrations@d
 <td></td>
 <td>String</td>
 <td>Unit of measure of the <code>Weight</code>.</td>
+</tr>
+<tr>
+<td><a href="#data-dictionary-customfields">CustomFields</a></td>
+<td></td>
+<td>Array</td>
+<td>Array of key/type/value objects containing additional information which may be used for sale processing</td>
 </tr>
 </tbody></table>
 <h2 id='data-dictionary-salechannel'>SaleChannel</h2>
@@ -9648,7 +10116,10 @@ If a `Payment` is requested using a PaymentToken of the same TokenRequestedType 
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="json">JSON</a>
+                <a href="#" data-language-name="c#">C#</a>
                 <a href="#" data-language-name="java">Java</a>
+                <a href="#" data-language-name="delphi">Delphi</a>
+                <a href="#" data-language-name="swift">Swift</a>
           </div>
       </div>
     </div>
