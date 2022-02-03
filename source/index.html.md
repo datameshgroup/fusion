@@ -3,7 +3,7 @@ title: Fusion API
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - json: JSON
-  - c#: C#
+  - csharp: C#
   - java: Java
   - delphi: Delphi
   - swift: Swift
