@@ -1,9 +1,5 @@
 # Satellite API Reference
 
-<aside class="warning">
-The new Fusion Satellite API documented below is currently unavailable in production. Please contact the Data Mesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> for details on how to use the Fusion Satellite API.
-</aside>
-
 The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with [Android intents](https://developer.android.com/guide/components/intents-filters).
 
 ## Libraries

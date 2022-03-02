@@ -690,7 +690,7 @@ For example:
 
 1. Cashier opens $100 sale on the Sale System and initiates payment
 1. Sale System sends a [payment request](#cloud-api-reference-methods-payment) request to the POI Terminal and sets
-  - [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount) to $110 (sale amount + tip)
+  - [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount) to $100 (sale amount + tip)
   - [PaymentTransaction.AmountsReq.TipAmount](#tipamount) to $0
 1. POI Terminal presents UI to the card holder which allows them to enter a tip
 1. Card holder enters tip amount of $10
