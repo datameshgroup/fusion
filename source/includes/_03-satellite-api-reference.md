@@ -466,9 +466,8 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
   [Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
   [WeightUnitOfMeasure](#data-dictionary-unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
  **PaymentData**                             | ✔ | Object | Object representing the payment method. Present only if any of the JSON elements within are present.
-  [PaymentType](#data-dictionary-paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", or "CashAdvance". See [PaymentType](#data-dictionary-paymenttype)
+  [PaymentType](#data-dictionary-paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", "CashAdvance", "FirstReservation", or "Completion". See [PaymentType](#data-dictionary-paymenttype)
   **[PaymentInstrumentData](#data-dictionary-paymentinstrumentdata)** |  | Object | Object with represents card details for token or manually enter card details. See  for object structure
-
 
 #### Payment response
 
