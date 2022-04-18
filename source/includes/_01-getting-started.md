@@ -72,9 +72,8 @@ Below is a an overview of the mandatory integration requirements.
 - [Settlement](#getting-started-design-your-integration-settlement)
 - [Tokenisation](#getting-started-design-your-integration-tokenisation)
 - [Tipping](#getting-started-design-your-integration-tipping)
-- [Dynamic Surcharge](#getting-started-design-your-integration-dynamic-surcharge)
-- [Pre-authorisation](#getting-started-design-your-integration-pre-authorisation)
-- [Completion](#getting-started-design-your-integration-completion)
+- [Dynamic surcharge](#getting-started-design-your-integration-dynamic-surcharge)
+- [Pre-authorisation / completion](#getting-started-design-your-integration-pre-auth-completion)
 
 **APIs**
 
@@ -201,7 +200,8 @@ Supported [payment](#cloud-api-reference-methods-payment) types are:
 <!--
 - Pre-authorisation
 - Pre-authorisation top-up
-- Completion
+- Pre-authorisation cancel
+- Pre-authorisation extend
 -->
 
 The Sale System indicates the payment type in the payment request with the [PaymentType](#data-dictionary-paymenttype) field.
@@ -573,18 +573,57 @@ A cash out sale can be cash out only, or cash out + purchase.
 
 - Cash out only (no sale items are included)
   - Set [PaymentData.PaymentType](#data-dictionary-paymenttype) to "CashAdvance"
-  - Set [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount) to 0
-  - Set [PaymentTransaction.AmountsReq.CashBackAmount](#cashbackamount) to 0
-  - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
-  - The [PaymentTransaction.AmountsReq.CashBackAmount](#cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
-  - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#authorizedamount) field in the payment response will include the cash back amount entered by the card holder  
+  - Set [PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) to 0
+  - Set [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) to 0
+  - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#data-dictionary-maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
+  - The [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
+  - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#data-dictionary-authorizedamount) field in the payment response will include the cash back amount entered by the card holder  
 - Purchase plus cash out (sale items are included)
   - Set [PaymentData.PaymentType](#data-dictionary-paymenttype) to "Normal"
-  - Set [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount) to the value of the sale items
-  - Set [PaymentTransaction.AmountsReq.CashBackAmount](#cashbackamount) to 0
-  - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
-  - The [PaymentTransaction.AmountsReq.CashBackAmount](#cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
-  - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#authorizedamount) field in the payment response will include the cash back amount entered by the card holder
+  - Set [PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) to the value of the sale items
+  - Set [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) to 0
+  - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#data-dictionary-maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
+  - The [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
+  - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#data-dictionary-authorizedamount) field in the payment response will include the cash back amount entered by the card holder
+
+
+### Pre-auth / completion
+
+The Sale System can optionally support pre-authorisation and completion payments on the POI Terminal.
+
+<aside class="warning">
+The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
+</aside>
+
+#### Pre-authorisation
+
+Pre-authorisation holds funds in reserve on a customers card and allows the payment to be completed at a later date.
+
+To perform a pre-authorisation:
+
+- Build a standard [payment request](#satellite-api-reference-methods-payment)
+- Set [PaymentRequest.PaymentData.PaymentType](#data-dictionary-paymenttype) to "FirstReservation"
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) to the amount to reserve 
+- Set [PaymentRequest.SaleData.SaleReferenceID](#data-dictionary-salereferenceid) to a unique [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+
+On pre-authorisation response, the POS should record: 
+
+- [PaymentRequest.SaleData.SaleReferenceID](#data-dictionary-salereferenceid) from the request
+- [PaymentResponse.POIData.POITransactionID](#data-dictionary-poitransactionid) from the response
+- [PaymentResponse.PaymentResult.AmountsResp.AuthorizedAmount](#data-dictionary-authorizedamount) from the response (the reserved amount)
+
+#### Completion
+
+Completion captures/settles payment of the amount previously reserved through pre-authorisation.
+
+To perform a completion:
+
+- Build a standard [payment request](#satellite-api-reference-methods-payment)
+- Set [PaymentRequest.PaymentData.PaymentType](#data-dictionary-paymenttype) to "Completion"
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) the completion amount. Must be less than or equal to reserved amount
+- Set [PaymentRequest.SaleData.SaleReferenceID](#data-dictionary-salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](#data-dictionary-poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](#data-dictionary-poitransactionid) from the original pre-authorisation response
+
 
 ### Settlement
 
@@ -735,35 +774,6 @@ Dynamic surcharge example:
 The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="#requestedamount">RequestedAmount</a> sent in the payment request
 </aside>
 
-### Error handling
-
-When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](#payment_request), it will receive a [payment response](#payment-response).
-
-However, in unusual scenarios wherein the Sale System sends a request but doesn't receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.
-
-More information about how to handle such scenario can be found in the [Error handling section of the Cloud API](#cloud-api-reference-error-handling)
-
-### Pre-authorisation
-
-Pre-authorisation processes a payment that is deferred on a later date rather than immediately.
-
-[PaymentRequest.PaymentData.PaymentType](#data-dictionary-paymenttype) in the [payment request](#satellite-api-reference-methods-payment) must be set to "FirstReservation".
-
-### Completion
-
-Completion captures/settles payment of a previously authorised amount (through [Pre-authorisation](#pre-authorisation-for-satellite)).
-
-[PaymentRequest.PaymentData.PaymentType](#data-dictionary-paymenttype) in the [payment request](#satellite-api-reference-methods-payment) must be set to "Completion".
-
-The [POITransactionID](#data-dictionary-poitransactionid) from the original (Pre-authorisation) payment response message must be specified in the [OriginalPOITransaction](#data-dictionary-originalpoitransaction) field of the Completion payment request message.
-
-<aside class="warning">
-
-The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
-
-</aside>
-
-
 #### Merchant responsibilities
 
 - Merchants are required to notify the cardholder that a surcharge will be applied. For example, by ensuring signage at the point of purchase
@@ -774,3 +784,11 @@ The Pre-authorisation and Completion transactions are currently available only f
 ### Pay at Table 
 <aside class="warning">TODO</aside>
 -->
+
+### Error handling
+
+When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](#payment_request), it will receive a [payment response](#payment-response).
+
+However, in unusual scenarios wherein the Sale System sends a request but doesn't receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.
+
+More information about how to handle such scenario can be found in the [Error handling section of the Cloud API](#cloud-api-reference-error-handling)
