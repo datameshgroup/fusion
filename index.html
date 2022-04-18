@@ -377,6 +377,12 @@
 						  <li>
 							<a href="#getting-started-design-your-integration-error-handling" class="toc-h3 toc-link" data-title="Error handling">Error handling</a>
 						  </li>
+						  <li>
+							<a href="#getting-started-design-your-integration-pre-authorisation" class="toc-h3 toc-link" data-title="Pre-authorisation">Pre-authorisation</a>
+						  </li>
+						  <li>
+							<a href="#getting-started-design-your-integration-completion" class="toc-h3 toc-link" data-title="Completion">Completion</a>
+						  </li>
 					  </ul>
                   </li>
               </ul>
@@ -1051,6 +1057,8 @@ This section will make reference to methods and data structures documented in th
 <li><a href="#getting-started-design-your-integration-tokenisation">Tokenisation</a></li>
 <li><a href="#getting-started-design-your-integration-tipping">Tipping</a></li>
 <li><a href="#getting-started-design-your-integration-dynamic-surcharge">Dynamic Surcharge</a></li>
+<li><a href="#getting-started-design-your-integration-pre-authorisation">Pre-authorisation</a></li>
+<li><a href="#getting-started-design-your-integration-completion">Completion</a></li>
 </ul>
 
 <p><strong>APIs</strong></p>
@@ -1238,6 +1246,8 @@ A "pairing" API request will be available in a future API release which will ena
 <li>Cash-Out</li>
 <li>Purchase with Cash-Out</li>
 <li>Refund</li>
+<li>Pre-Authorisation (for Satellite API)</li>
+<li>Completion (for Satellite API)</li>
 </ul>
 
 <!--
@@ -1826,7 +1836,23 @@ The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the p
 <p>However, in unusual scenarios wherein the Sale System sends a request but doesn&#39;t receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.</p>
 
 <p>More information about how to handle such scenario can be found in the <a href="#cloud-api-reference-error-handling">Error handling section of the Cloud API</a></p>
-<h4 id='getting-started-design-your-integration-error-handling-merchant-responsibilities'>Merchant responsibilities</h4>
+<h3 id='getting-started-design-your-integration-pre-authorisation'>Pre-authorisation</h3>
+<p>Pre-authorisation processes a payment that is deferred on a later date rather than immediately.</p>
+
+<p><a href="#data-dictionary-paymenttype">PaymentRequest.PaymentData.PaymentType</a> in the <a href="#satellite-api-reference-methods-payment">payment request</a> must be set to &quot;FirstReservation&quot;.</p>
+<h3 id='getting-started-design-your-integration-completion'>Completion</h3>
+<p>Completion captures/settles payment of a previously authorised amount (through <a href="#pre-authorisation-for-satellite">Pre-authorisation</a>).</p>
+
+<p><a href="#data-dictionary-paymenttype">PaymentRequest.PaymentData.PaymentType</a> in the <a href="#satellite-api-reference-methods-payment">payment request</a> must be set to &quot;Completion&quot;.</p>
+
+<p>The <a href="#data-dictionary-poitransactionid">POITransactionID</a> from the original (Pre-authorisation) payment response message must be specified in the <a href="#data-dictionary-originalpoitransaction">OriginalPOITransaction</a> field of the Completion payment request message.</p>
+
+<aside class="warning">
+
+The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
+
+</aside>
+<h4 id='getting-started-design-your-integration-completion-merchant-responsibilities'>Merchant responsibilities</h4>
 <ul>
 <li>Merchants are required to notify the cardholder that a surcharge will be applied. For example, by ensuring signage at the point of purchase</li>
 <li>The RBA surcharge framework indicates merchants should review the level of any surcharge applied at least once a year</li>
@@ -7246,7 +7272,7 @@ In most cases the Sale System should attempt to
 <td>  <a href="#data-dictionary-paymenttype">PaymentType</a></td>
 <td>✔</td>
 <td>String</td>
-<td>Defaults to &quot;Normal&quot;. Indicates the type of payment to process. &quot;Normal&quot;, &quot;Refund&quot;, or &quot;CashAdvance&quot;. See <a href="#data-dictionary-paymenttype">PaymentType</a></td>
+<td>Defaults to &quot;Normal&quot;. Indicates the type of payment to process. &quot;Normal&quot;, &quot;Refund&quot;, &quot;CashAdvance&quot;, &quot;FirstReservation&quot;, or &quot;Completion&quot;. See <a href="#data-dictionary-paymenttype">PaymentType</a></td>
 </tr>
 <tr>
 <td>  <strong><a href="#data-dictionary-paymentinstrumentdata">PaymentInstrumentData</a></strong></td>
@@ -8692,12 +8718,22 @@ Please note that this list may expand in the future as new payment types are add
 <h2 id='data-dictionary-paymenttype'>PaymentType</h2>
 <p>Indicates the type of payment to process. If not present in the payment request the value will default to &quot;Normal&quot;. </p>
 
-<p>Available values: </p>
+<p>Cloud API - PaymentType available values: </p>
+
+<ul>
+<li>&quot;Normal&quot; a purchase transaction or purchase with cash-out transaction</li>
+<li>&quot;Refund&quot; a refund transaction</li>
+<li>&quot;CashAdvance&quot; a cash-out only transaction</li>
+</ul>
+
+<p>Satellite API - PaymentType available values: </p>
 
 <ul>
 <li>&quot;Normal&quot; a purchase transaction or purchase with cash-out transaction</li>
 <li>&quot;Refund&quot; a refund</li>
 <li>&quot;CashAdvance&quot; a cash-out only transaction</li>
+<li>&quot;FirstReservation&quot; a pre-authorisation transaction</li>
+<li>&quot;Completion&quot; a completion transaction</li>
 </ul>
 <h2 id='data-dictionary-poiid'>POIID</h2>
 <p>Uniquely identifies the POI Terminal. This value is provided by DataMesh.</p>
@@ -8708,7 +8744,7 @@ Please note that this list may expand in the future as new payment types are add
 
 <p>Allows counting of transactions by both parties in the Sale to POI reconciliation.</p>
 
-<p>Returned in a <a href="#payment-response">payment response</a> if <a href="#data-dictionary-result">result</a> &quot;Success&quot; or &quot;Partial&quot;.</p>
+<p>Returned in a <a href="#cloud-api-reference-payment-response">payment response</a> if <a href="#data-dictionary-result">result</a> &quot;Success&quot; or &quot;Partial&quot;.</p>
 
 <p>In the Reconciliation request, when <a href="#reconciliationtype">ReconciliationType</a> is &quot;PreviousReconciliation&quot;, this field allows to request the reconciliation result of a previous period of transaction.</p>
 <h2 id='data-dictionary-poiserialnumber'>POISerialNumber</h2>
