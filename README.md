@@ -46,7 +46,7 @@ The Fusion docs are deployed using GitHub pages to [datameshgroup.github.io/fusi
 
 To deploy:
 * Build source using `bundle exec middleman build --clean`
-* Source will be written to the /source directory
+* Compiled build will be written to the /build directory
 * Update gh-pages branch with contents of /build
 
 
@@ -56,5 +56,7 @@ Updated ToC as per https://github.com/slatedocs/slate/wiki/Deeper-Nesting
 
 ## Version History
 
-### v1.0.0 ??
+### 2022-04-18 - Added pre-auth/completion 
+
+
 
