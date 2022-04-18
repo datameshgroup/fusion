@@ -73,6 +73,8 @@ Below is a an overview of the mandatory integration requirements.
 - [Tokenisation](#getting-started-design-your-integration-tokenisation)
 - [Tipping](#getting-started-design-your-integration-tipping)
 - [Dynamic Surcharge](#getting-started-design-your-integration-dynamic-surcharge)
+- [Pre-authorisation](#getting-started-design-your-integration-pre-authorisation)
+- [Completion](#getting-started-design-your-integration-completion)
 
 **APIs**
 
@@ -193,6 +195,8 @@ Supported [payment](#cloud-api-reference-methods-payment) types are:
 - Cash-Out
 - Purchase with Cash-Out
 - Refund
+- Pre-Authorisation (for Satellite API)
+- Completion (for Satellite API)
 
 <!--
 - Pre-authorisation
@@ -582,7 +586,6 @@ A cash out sale can be cash out only, or cash out + purchase.
   - The [PaymentTransaction.AmountsReq.CashBackAmount](#cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
   - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#authorizedamount) field in the payment response will include the cash back amount entered by the card holder
 
-
 ### Settlement
 
 The Sale System can reconcile with the POI System periodically but should normally be once a day as it affects settlements with acquirers.
@@ -739,6 +742,27 @@ When the Sale System sends a request, it will receive a matching response. For e
 However, in unusual scenarios wherein the Sale System sends a request but doesn't receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.
 
 More information about how to handle such scenario can be found in the [Error handling section of the Cloud API](#cloud-api-reference-error-handling)
+
+### Pre-authorisation
+
+Pre-authorisation processes a payment that is deferred on a later date rather than immediately.
+
+[PaymentRequest.PaymentData.PaymentType](#data-dictionary-paymenttype) in the [payment request](#satellite-api-reference-methods-payment) must be set to "FirstReservation".
+
+### Completion
+
+Completion captures/settles payment of a previously authorised amount (through [Pre-authorisation](#pre-authorisation-for-satellite)).
+
+[PaymentRequest.PaymentData.PaymentType](#data-dictionary-paymenttype) in the [payment request](#satellite-api-reference-methods-payment) must be set to "Completion".
+
+The [POITransactionID](#data-dictionary-poitransactionid) from the original (Pre-authorisation) payment response message must be specified in the [OriginalPOITransaction](#data-dictionary-originalpoitransaction) field of the Completion payment request message.
+
+<aside class="warning">
+
+The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
+
+</aside>
+
 
 #### Merchant responsibilities
 

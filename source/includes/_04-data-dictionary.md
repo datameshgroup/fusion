@@ -543,12 +543,19 @@ Label                | Description
 
 Indicates the type of payment to process. If not present in the payment request the value will default to "Normal". 
 
-Available values: 
+Cloud API - PaymentType available values: 
+
+- "Normal" a purchase transaction or purchase with cash-out transaction
+- "Refund" a refund transaction
+- "CashAdvance" a cash-out only transaction
+
+Satellite API - PaymentType available values: 
 
 - "Normal" a purchase transaction or purchase with cash-out transaction
 - "Refund" a refund
 - "CashAdvance" a cash-out only transaction
-
+- "FirstReservation" a pre-authorisation transaction
+- "Completion" a completion transaction
 
 ## POIID 
 
@@ -563,7 +570,7 @@ Identification of the reconciliation period between Sale and POI, to provide the
 
 Allows counting of transactions by both parties in the Sale to POI reconciliation.
 
-Returned in a [payment response](#payment-response) if [result](#data-dictionary-result) "Success" or "Partial".
+Returned in a [payment response](#cloud-api-reference-payment-response) if [result](#data-dictionary-result) "Success" or "Partial".
 
 In the Reconciliation request, when [ReconciliationType](#reconciliationtype) is "PreviousReconciliation", this field allows to request the reconciliation result of a previous period of transaction.
 
