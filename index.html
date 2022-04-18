@@ -360,6 +360,9 @@
 							<a href="#getting-started-design-your-integration-cash-out" class="toc-h3 toc-link" data-title="Cash out">Cash out</a>
 						  </li>
 						  <li>
+							<a href="#getting-started-design-your-integration-pre-auth-completion" class="toc-h3 toc-link" data-title="Pre-auth / completion">Pre-auth / completion</a>
+						  </li>
+						  <li>
 							<a href="#getting-started-design-your-integration-settlement" class="toc-h3 toc-link" data-title="Settlement">Settlement</a>
 						  </li>
 						  <li>
@@ -376,12 +379,6 @@
 						  </li>
 						  <li>
 							<a href="#getting-started-design-your-integration-error-handling" class="toc-h3 toc-link" data-title="Error handling">Error handling</a>
-						  </li>
-						  <li>
-							<a href="#getting-started-design-your-integration-pre-authorisation" class="toc-h3 toc-link" data-title="Pre-authorisation">Pre-authorisation</a>
-						  </li>
-						  <li>
-							<a href="#getting-started-design-your-integration-completion" class="toc-h3 toc-link" data-title="Completion">Completion</a>
 						  </li>
 					  </ul>
                   </li>
@@ -1056,9 +1053,8 @@ This section will make reference to methods and data structures documented in th
 <li><a href="#getting-started-design-your-integration-settlement">Settlement</a></li>
 <li><a href="#getting-started-design-your-integration-tokenisation">Tokenisation</a></li>
 <li><a href="#getting-started-design-your-integration-tipping">Tipping</a></li>
-<li><a href="#getting-started-design-your-integration-dynamic-surcharge">Dynamic Surcharge</a></li>
-<li><a href="#getting-started-design-your-integration-pre-authorisation">Pre-authorisation</a></li>
-<li><a href="#getting-started-design-your-integration-completion">Completion</a></li>
+<li><a href="#getting-started-design-your-integration-dynamic-surcharge">Dynamic surcharge</a></li>
+<li><a href="#getting-started-design-your-integration-pre-auth-completion">Pre-authorisation / completion</a></li>
 </ul>
 
 <p><strong>APIs</strong></p>
@@ -1253,7 +1249,8 @@ A "pairing" API request will be available in a future API release which will ena
 <!--
 - Pre-authorisation
 - Pre-authorisation top-up
-- Completion
+- Pre-authorisation cancel
+- Pre-authorisation extend
 -->
 
 <p>The Sale System indicates the payment type in the payment request with the <a href="#data-dictionary-paymenttype">PaymentType</a> field.</p>
@@ -1661,22 +1658,59 @@ Including all available product information in each payment request will improve
 
 <ul>
 <li>Set <a href="#data-dictionary-paymenttype">PaymentData.PaymentType</a> to &quot;CashAdvance&quot;</li>
-<li>Set <a href="#requestedamount">PaymentTransaction.AmountsReq.RequestedAmount</a> to 0</li>
-<li>Set <a href="#cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to 0</li>
-<li>Set <a href="#maximumcashbackamount">PaymentTransaction.AmountsReq.MaximumCashBackAmount</a> to the maximum about the terminal should allow the card holder to enter </li>
-<li>The <a href="#cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> field in the payment response will reflect the cash back amount entered by the card holder</li>
-<li>The <a href="#authorizedamount">PaymentTransaction.AmountsReq.AuthorizedAmount</a> field in the payment response will include the cash back amount entered by the card holder<br></li>
+<li>Set <a href="#data-dictionary-requestedamount">PaymentTransaction.AmountsReq.RequestedAmount</a> to 0</li>
+<li>Set <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to 0</li>
+<li>Set <a href="#data-dictionary-maximumcashbackamount">PaymentTransaction.AmountsReq.MaximumCashBackAmount</a> to the maximum about the terminal should allow the card holder to enter </li>
+<li>The <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> field in the payment response will reflect the cash back amount entered by the card holder</li>
+<li>The <a href="#data-dictionary-authorizedamount">PaymentTransaction.AmountsReq.AuthorizedAmount</a> field in the payment response will include the cash back amount entered by the card holder<br></li>
 </ul></li>
 <li>Purchase plus cash out (sale items are included)
 
 <ul>
 <li>Set <a href="#data-dictionary-paymenttype">PaymentData.PaymentType</a> to &quot;Normal&quot;</li>
-<li>Set <a href="#requestedamount">PaymentTransaction.AmountsReq.RequestedAmount</a> to the value of the sale items</li>
-<li>Set <a href="#cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to 0</li>
-<li>Set <a href="#maximumcashbackamount">PaymentTransaction.AmountsReq.MaximumCashBackAmount</a> to the maximum about the terminal should allow the card holder to enter </li>
-<li>The <a href="#cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> field in the payment response will reflect the cash back amount entered by the card holder</li>
-<li>The <a href="#authorizedamount">PaymentTransaction.AmountsReq.AuthorizedAmount</a> field in the payment response will include the cash back amount entered by the card holder</li>
+<li>Set <a href="#data-dictionary-requestedamount">PaymentTransaction.AmountsReq.RequestedAmount</a> to the value of the sale items</li>
+<li>Set <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to 0</li>
+<li>Set <a href="#data-dictionary-maximumcashbackamount">PaymentTransaction.AmountsReq.MaximumCashBackAmount</a> to the maximum about the terminal should allow the card holder to enter </li>
+<li>The <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> field in the payment response will reflect the cash back amount entered by the card holder</li>
+<li>The <a href="#data-dictionary-authorizedamount">PaymentTransaction.AmountsReq.AuthorizedAmount</a> field in the payment response will include the cash back amount entered by the card holder</li>
 </ul></li>
+</ul>
+<h3 id='getting-started-design-your-integration-pre-auth-completion'>Pre-auth / completion</h3>
+<p>The Sale System can optionally support pre-authorisation and completion payments on the POI Terminal.</p>
+
+<aside class="warning">
+The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
+</aside>
+<h4 id='getting-started-design-your-integration-pre-auth-completion-pre-authorisation'>Pre-authorisation</h4>
+<p>Pre-authorisation holds funds in reserve on a customers card and allows the payment to be completed at a later date.</p>
+
+<p>To perform a pre-authorisation:</p>
+
+<ul>
+<li>Build a standard <a href="#satellite-api-reference-methods-payment">payment request</a></li>
+<li>Set <a href="#data-dictionary-paymenttype">PaymentRequest.PaymentData.PaymentType</a> to &quot;FirstReservation&quot;</li>
+<li>Set <a href="#data-dictionary-requestedamount">PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount</a> to the amount to reserve </li>
+<li>Set <a href="#data-dictionary-salereferenceid">PaymentRequest.SaleData.SaleReferenceID</a> to a unique <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a></li>
+</ul>
+
+<p>On pre-authorisation response, the POS should record: </p>
+
+<ul>
+<li><a href="#data-dictionary-salereferenceid">PaymentRequest.SaleData.SaleReferenceID</a> from the request</li>
+<li><a href="#data-dictionary-poitransactionid">PaymentResponse.POIData.POITransactionID</a> from the response</li>
+<li><a href="#data-dictionary-authorizedamount">PaymentResponse.PaymentResult.AmountsResp.AuthorizedAmount</a> from the response (the reserved amount)</li>
+</ul>
+<h4 id='getting-started-design-your-integration-pre-auth-completion-completion'>Completion</h4>
+<p>Completion captures/settles payment of the amount previously reserved through pre-authorisation.</p>
+
+<p>To perform a completion:</p>
+
+<ul>
+<li>Build a standard <a href="#satellite-api-reference-methods-payment">payment request</a></li>
+<li>Set <a href="#data-dictionary-paymenttype">PaymentRequest.PaymentData.PaymentType</a> to &quot;Completion&quot;</li>
+<li>Set <a href="#data-dictionary-requestedamount">PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount</a> the completion amount. Must be less than or equal to reserved amount</li>
+<li>Set <a href="#data-dictionary-salereferenceid">PaymentRequest.SaleData.SaleReferenceID</a> to the same <code>SaleReferenceID</code> as used in the pre-authoristaion request</li>
+<li>Set <a href="#data-dictionary-poitransactionid">PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID</a> to the value returned in <a href="#data-dictionary-poitransactionid">PaymentResponse.POIData.POITransactionID</a> from the original pre-authorisation response</li>
 </ul>
 <h3 id='getting-started-design-your-integration-settlement'>Settlement</h3>
 <p>The Sale System can reconcile with the POI System periodically but should normally be once a day as it affects settlements with acquirers.</p>
@@ -1830,29 +1864,7 @@ The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the p
 <aside class="success">
 The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="#requestedamount">RequestedAmount</a> sent in the payment request
 </aside>
-<h3 id='getting-started-design-your-integration-error-handling'>Error handling</h3>
-<p>When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a <a href="#payment_request">payment request</a>, it will receive a <a href="#payment-response">payment response</a>.</p>
-
-<p>However, in unusual scenarios wherein the Sale System sends a request but doesn&#39;t receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.</p>
-
-<p>More information about how to handle such scenario can be found in the <a href="#cloud-api-reference-error-handling">Error handling section of the Cloud API</a></p>
-<h3 id='getting-started-design-your-integration-pre-authorisation'>Pre-authorisation</h3>
-<p>Pre-authorisation processes a payment that is deferred on a later date rather than immediately.</p>
-
-<p><a href="#data-dictionary-paymenttype">PaymentRequest.PaymentData.PaymentType</a> in the <a href="#satellite-api-reference-methods-payment">payment request</a> must be set to &quot;FirstReservation&quot;.</p>
-<h3 id='getting-started-design-your-integration-completion'>Completion</h3>
-<p>Completion captures/settles payment of a previously authorised amount (through <a href="#pre-authorisation-for-satellite">Pre-authorisation</a>).</p>
-
-<p><a href="#data-dictionary-paymenttype">PaymentRequest.PaymentData.PaymentType</a> in the <a href="#satellite-api-reference-methods-payment">payment request</a> must be set to &quot;Completion&quot;.</p>
-
-<p>The <a href="#data-dictionary-poitransactionid">POITransactionID</a> from the original (Pre-authorisation) payment response message must be specified in the <a href="#data-dictionary-originalpoitransaction">OriginalPOITransaction</a> field of the Completion payment request message.</p>
-
-<aside class="warning">
-
-The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
-
-</aside>
-<h4 id='getting-started-design-your-integration-completion-merchant-responsibilities'>Merchant responsibilities</h4>
+<h4 id='getting-started-design-your-integration-dynamic-surcharge-merchant-responsibilities'>Merchant responsibilities</h4>
 <ul>
 <li>Merchants are required to notify the cardholder that a surcharge will be applied. For example, by ensuring signage at the point of purchase</li>
 <li>The RBA surcharge framework indicates merchants should review the level of any surcharge applied at least once a year</li>
@@ -1863,6 +1875,12 @@ The Pre-authorisation and Completion transactions are currently available only f
 ### Pay at Table 
 <aside class="warning">TODO</aside>
 -->
+<h3 id='getting-started-design-your-integration-error-handling'>Error handling</h3>
+<p>When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a <a href="#payment_request">payment request</a>, it will receive a <a href="#payment-response">payment response</a>.</p>
+
+<p>However, in unusual scenarios wherein the Sale System sends a request but doesn&#39;t receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.</p>
+
+<p>More information about how to handle such scenario can be found in the <a href="#cloud-api-reference-error-handling">Error handling section of the Cloud API</a></p>
 <h1 id='cloud-api-reference'>Cloud API Reference</h1>
 <p>The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. </p>
 <h2 id='cloud-api-reference-reference-code'>Reference code</h2>
