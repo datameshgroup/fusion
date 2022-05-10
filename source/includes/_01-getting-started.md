@@ -310,20 +310,6 @@ To enable display and input handling on the Sale System, [SaleTerminalData.SaleC
 The DataMesh Nexo API is event based. The Sale System sends a payment request, handles events as they are received, and eventually receives a payment response.
 </aside>
 
-### Cancelling a sale in progress
-
-Whilst a payment is in progress the Sale System should present UI to the cashier which enables them to request a cancellation of the payment. 
-
-If the cashier initiates a payment cancellation, the Sale System sends an [abort transaction request](#cloud-api-reference-methods-abort-transaction) (with `AbortRequest.AbortReason` field set to "User Cancel").  Then, the Sale System continues to wait for the payment response. 
-
-The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.
-
-<aside class="success">
-There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
-</aside>
-
-![](images/payment-cancellation.png)
-
 #### Initial UI
 
 The Sale System should immediately display an initial UI after sending a [payment](#cloud-api-reference-methods-payment) request which informs the cashier the payment is in progress. This UI is required to handle instances where the first display/input message from the POI System is not present, or delayed.
@@ -491,6 +477,20 @@ This UI is constructed using the [Result](#data-dictionary-result), [ErrorCondit
 *Result="Failure" Example*
 
 ![](images/dialog-final-ui-failure.png)
+
+#### Cancelling a sale in progress
+
+Whilst a payment is in progress the Sale System should present UI to the cashier which enables them to request a cancellation of the payment. 
+
+If the cashier initiates a payment cancellation, the Sale System sends an [abort transaction request](#cloud-api-reference-methods-abort-transaction) (with `AbortRequest.AbortReason` field set to "User Cancel").  Then, the Sale System continues to wait for the payment response. 
+
+The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.
+
+<aside class="success">
+There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
+</aside>
+
+![](images/payment-cancellation.png)
 
 
 ### Product data
