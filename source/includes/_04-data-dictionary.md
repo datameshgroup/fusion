@@ -806,6 +806,155 @@ The sum of the sale items could be more than <code>RequestedAmount</code> in cas
 Please contact the Data Mesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to discuss how to map the Sale System basket to the SaleItem array.
 </aside>
 
+### SaleItem fields
+
+> Example sale item array
+
+```json
+"SaleItem":[
+  {
+    "ItemID":0,
+    "ProductCode":"5000112576009",
+    "EanUpc":"5000112576009",
+    "UnitOfMeasure":"Other",
+    "Quantity":"4",
+    "UnitPrice":"1.95",
+    "ItemAmount":"7.80",
+    "ProductLabel":"Coca-Cola No Sugar 1.25L",
+    "CostBase":"0.75",
+    "Discount":"0.00",
+	"Categories":["Drinks", "Soft Drink"],
+    "Brand":"Coca-Cola",
+    "QuantityInStock":"42"
+  },
+  {
+    "ItemID":1,
+    "ProductCode":"HHBY663",
+    "EanUpc":"9310015241925",
+    "UnitOfMeasure":"Other",
+    "Quantity":"1",
+    "UnitPrice":"1.75",
+    "ItemAmount":"1.75",
+    "ProductLabel":"Doritos Corn Chips Cheese Supreme Share Pack 170g",
+    "CostBase":"1.42",
+    "Discount":"0.24",
+	"Categories":["Snacks & Confectionery", "Chips"],
+    "Brand":"Doritos",
+    "QuantityInStock":"15"
+  },   
+  {
+    "ItemID":2,
+    "ProductCode":"HGY865",
+    "UnitOfMeasure":"Litre",
+    "Quantity":"54.25",
+    "UnitPrice":"1.45",
+    "ItemAmount":"78.66",
+    "ProductLabel":"Fuel Unleaded 91",
+    "Discount":"0.0",
+    "Category":"Fuel"
+  },  
+  {
+    "ItemID":3,
+    "ProductCode":"XXVH776",
+    "UnitOfMeasure":"Other",
+    "Quantity":"1",
+    "UnitPrice":"54.00",
+    "ItemAmount":"54.00",
+    "ProductLabel":"Sirloin steak",
+    "Categories":["Food", "Mains"]
+  },
+  {
+    "ItemID":4,
+    "ProductCode":"XXVH776.0",
+    "UnitOfMeasure":"Other",
+    "Quantity":"1",
+    "ItemAmount":"0",
+    "ProductLabel":"Pepper sauce",
+    "Categories":["Food", "Mains"]
+  },  
+  {
+    "ItemID":5,
+    "ProductCode":"XXVH776.1",
+    "UnitOfMeasure":"Other",
+    "Quantity":"1",
+    "ItemAmount":"0",
+    "ProductLabel":"Side of fries",
+    "Categories":["Food", "Sides"]
+  },
+  {
+    "ItemID":6,
+    "ProductCode":"24115522",
+    "UnitOfMeasure":"Other",
+    "Quantity":"1",
+    "UnitPrice":"79.95",
+    "ItemAmount":"79.95",
+    "ProductLabel":"NOLTE LS SHIRT",
+    "CostBase":"40.00",
+    "Discount":"0.00",
+    "Categories":["Men", "Clothing", "Shirts"],
+    "Brand":"ACADEMY BRAND",
+    "QuantityInStock":"55",
+	"PageURL":"https://myweb/24115522/Nolte-LS-Shirt.html",
+	"ImageURLs":["https://myweb/productimages/24115522.jpg"],
+	"Size":"XL",
+	"Colour":"SLATE GREEN CHECK",
+	"Weight":1000,
+	"WeightUnitOfMeasure":"Gram"
+  },
+  {
+    "ItemID":7,
+    "ProductCode":"24390516",
+    "UnitOfMeasure":"Other",
+    "Quantity":"1",
+    "UnitPrice":"1650",
+    "ItemAmount":"1650",
+    "ProductLabel":"JIMMY CHOO LUIS 90 PUMP",
+    "Categories":["Women","Shoes","Heels"],
+    "Brand":"JIMMY CHOO",
+    "QuantityInStock":"2",
+	"PageURL":"https://website/24390516/Luis-90-Pump.html",
+	"ImageURLs":["https://website/productimages/24390516.jpg"],
+	"Size":"38 EU",
+	"Colour":"BALLET PINK/CRYSTAL",
+	"Weight":500,
+	"WeightUnitOfMeasure":"Gram"
+  }
+]
+```
+
+
+
+<div style="width:180px">Attribute</div>   | Requ.  | Format | Description |
+-----------------                          | ------ | ------ | ----------- |
+[ItemID](#data-dictionary-itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+[ProductCode](#data-dictionary-productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+[EanUpc](#data-dictionary-eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+[UnitOfMeasure](#data-dictionary-unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
+[Quantity](#data-dictionary-quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
+[UnitPrice](#data-dictionary-unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
+[ItemAmount](#data-dictionary-itemamount)                  | ✔ | Decimal| Total amount of the sale item
+[TaxCode](#data-dictionary-taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
+[SaleChannel](#data-dictionary-salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
+[ProductLabel](#data-dictionary-productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+[AdditionalProductInfo](#data-dictionary-additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
+[ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#data-dictionary-itemid) of the parent `SaleItem`
+[CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
+[Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
+[DiscountReason](#discount-reason)                         |  | String | Explains about the discount applied
+[Categories](#data-dictionary-categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#data-dictionary-categories) for more information.
+[Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
+[QuantityInStock](#data-dictionary-quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
+[Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
+[Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
+[PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
+[ImageURLs](#productimageurls)                             |  | Array | String array of images URLs for this sale item
+[Style](#style)                                            |  | String | Style of the sale item
+[Size](#size)                                            |  | String | Size of the sale item
+[Colour](#colour)                                          |  | String | Colour of the sale item
+[Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
+[WeightUnitOfMeasure](#data-dictionary-unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
+[CustomFields](#data-dictionary-customfields)              |  | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
+
 ### Sale items with a UPC/EAN/ISBN
 
 > Example `SaleItem` with UPC
@@ -977,156 +1126,6 @@ For example:
 * The fields marked as mandatory are still mandatory  
 * Each `ItemAmount` is a positive amount which reflects the amount being refunded
 * The `Quantity` reflects the number of the sale item being refunded
-
-
-### SaleItem fields
-
-> Example sale item array
-
-```json
-"SaleItem":[
-  {
-    "ItemID":0,
-    "ProductCode":"5000112576009",
-    "EanUpc":"5000112576009",
-    "UnitOfMeasure":"Other",
-    "Quantity":"4",
-    "UnitPrice":"1.95",
-    "ItemAmount":"7.80",
-    "ProductLabel":"Coca-Cola No Sugar 1.25L",
-    "CostBase":"0.75",
-    "Discount":"0.00",
-	"Categories":["Drinks", "Soft Drink"],
-    "Brand":"Coca-Cola",
-    "QuantityInStock":"42"
-  },
-  {
-    "ItemID":1,
-    "ProductCode":"HHBY663",
-    "EanUpc":"9310015241925",
-    "UnitOfMeasure":"Other",
-    "Quantity":"1",
-    "UnitPrice":"1.75",
-    "ItemAmount":"1.75",
-    "ProductLabel":"Doritos Corn Chips Cheese Supreme Share Pack 170g",
-    "CostBase":"1.42",
-    "Discount":"0.24",
-	"Categories":["Snacks & Confectionery", "Chips"],
-    "Brand":"Doritos",
-    "QuantityInStock":"15"
-  },   
-  {
-    "ItemID":2,
-    "ProductCode":"HGY865",
-    "UnitOfMeasure":"Litre",
-    "Quantity":"54.25",
-    "UnitPrice":"1.45",
-    "ItemAmount":"78.66",
-    "ProductLabel":"Fuel Unleaded 91",
-    "Discount":"0.0",
-    "Category":"Fuel"
-  },  
-  {
-    "ItemID":3,
-    "ProductCode":"XXVH776",
-    "UnitOfMeasure":"Other",
-    "Quantity":"1",
-    "UnitPrice":"54.00",
-    "ItemAmount":"54.00",
-    "ProductLabel":"Sirloin steak",
-    "Categories":["Food", "Mains"]
-  },
-  {
-    "ItemID":4,
-    "ProductCode":"XXVH776.0",
-    "UnitOfMeasure":"Other",
-    "Quantity":"1",
-    "ItemAmount":"0",
-    "ProductLabel":"Pepper sauce",
-    "Categories":["Food", "Mains"]
-  },  
-  {
-    "ItemID":5,
-    "ProductCode":"XXVH776.1",
-    "UnitOfMeasure":"Other",
-    "Quantity":"1",
-    "ItemAmount":"0",
-    "ProductLabel":"Side of fries",
-    "Categories":["Food", "Sides"]
-  },
-  {
-    "ItemID":6,
-    "ProductCode":"24115522",
-    "UnitOfMeasure":"Other",
-    "Quantity":"1",
-    "UnitPrice":"79.95",
-    "ItemAmount":"79.95",
-    "ProductLabel":"NOLTE LS SHIRT",
-    "CostBase":"40.00",
-    "Discount":"0.00",
-    "Categories":["Men", "Clothing", "Shirts"],
-    "Brand":"ACADEMY BRAND",
-    "QuantityInStock":"55",
-	"PageURL":"https://myweb/24115522/Nolte-LS-Shirt.html",
-	"ImageURLs":["https://myweb/productimages/24115522.jpg"],
-	"Size":"XL",
-	"Colour":"SLATE GREEN CHECK",
-	"Weight":1000,
-	"WeightUnitOfMeasure":"Gram"
-  },
-  {
-    "ItemID":7,
-    "ProductCode":"24390516",
-    "UnitOfMeasure":"Other",
-    "Quantity":"1",
-    "UnitPrice":"1650",
-    "ItemAmount":"1650",
-    "ProductLabel":"JIMMY CHOO LUIS 90 PUMP",
-    "Categories":["Women","Shoes","Heels"],
-    "Brand":"JIMMY CHOO",
-    "QuantityInStock":"2",
-	"PageURL":"https://website/24390516/Luis-90-Pump.html",
-	"ImageURLs":["https://website/productimages/24390516.jpg"],
-	"Size":"38 EU",
-	"Colour":"BALLET PINK/CRYSTAL",
-	"Weight":500,
-	"WeightUnitOfMeasure":"Gram"
-  }
-]
-```
-
-
-
-<div style="width:180px">Attribute</div>   | Requ.  | Format | Description |
------------------                          | ------ | ------ | ----------- |
-[ItemID](#data-dictionary-itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-[ProductCode](#data-dictionary-productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-[EanUpc](#data-dictionary-eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-[UnitOfMeasure](#data-dictionary-unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
-[Quantity](#data-dictionary-quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
-[UnitPrice](#data-dictionary-unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
-[ItemAmount](#data-dictionary-itemamount)                  | ✔ | Decimal| Total amount of the sale item
-[TaxCode](#data-dictionary-taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
-[SaleChannel](#data-dictionary-salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
-[ProductLabel](#data-dictionary-productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-[AdditionalProductInfo](#data-dictionary-additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
-[ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#data-dictionary-itemid) of the parent `SaleItem`
-[CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
-[Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
-[DiscountReason](#discount-reason)                         |  | String | Explains about the discount applied
-[Categories](#data-dictionary-categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#data-dictionary-categories) for more information.
-[Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
-[QuantityInStock](#data-dictionary-quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
-[Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
-[Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
-[PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
-[ImageURLs](#productimageurls)                             |  | Array | String array of images URLs for this sale item
-[Style](#style)                                            |  | String | Style of the sale item
-[Size](#size)                                            |  | String | Size of the sale item
-[Colour](#colour)                                          |  | String | Colour of the sale item
-[Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
-[WeightUnitOfMeasure](#data-dictionary-unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
-[CustomFields](#data-dictionary-customfields)              |  | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
 
 ## SaleChannel
 
