@@ -525,7 +525,7 @@ Types of Refund:
 
 - [Unmatched refund](#getting-started-design-your-integration-refunds-unmatched-refund)
 
-More details about the [refund implementation](#data-dictionary-saleitem-discounts).
+More details about the [refund implementation](#data-dictionary-saleitem-refunds).
 
 #### Matched refund
 
