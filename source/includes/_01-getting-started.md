@@ -564,7 +564,7 @@ A cash out sale can be cash out only, or cash out + purchase.
   - Set [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount) to the value of the sale items, plus the cash out amount 
   - Set [PaymentTransaction.AmountsReq.CashBackAmount](#cashbackamount) to the cash out amount 
 
-
+<!---
 #### Cash out on POI Terminal
 
 When performing cash out on the POI Terminal, the Sale System sends the payment request to the POI Terminal without a cash out amount. The POI Terminal gives the option for the card holder to enter a cash out amount. The payment response will contain any cash out amount entered by the card holder.
@@ -585,7 +585,7 @@ A cash out sale can be cash out only, or cash out + purchase.
   - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#data-dictionary-maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
   - The [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
   - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#data-dictionary-authorizedamount) field in the payment response will include the cash back amount entered by the card holder
-
+-->
 
 ### Pre-auth / completion
 
