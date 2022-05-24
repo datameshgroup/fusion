@@ -348,9 +348,6 @@
 							<a href="#getting-started-design-your-integration-payment-user-interface" class="toc-h3 toc-link" data-title="Payment user interface">Payment user interface</a>
 						  </li>
 						  <li>
-							<a href="#getting-started-design-your-integration-cancelling-a-sale-in-progress" class="toc-h3 toc-link" data-title="Cancelling a sale in progress">Cancelling a sale in progress</a>
-						  </li>
-						  <li>
 							<a href="#getting-started-design-your-integration-product-data" class="toc-h3 toc-link" data-title="Product data">Product data</a>
 						  </li>
 						  <li>
@@ -751,6 +748,9 @@
 					
 					  <ul class="toc-list-h3">
 						  <li>
+							<a href="#data-dictionary-saleitem-saleitem-fields" class="toc-h3 toc-link" data-title="SaleItem fields">SaleItem fields</a>
+						  </li>
+						  <li>
 							<a href="#data-dictionary-saleitem-sale-items-with-a-upc-ean-isbn" class="toc-h3 toc-link" data-title="Sale items with a UPC/EAN/ISBN">Sale items with a UPC/EAN/ISBN</a>
 						  </li>
 						  <li>
@@ -764,9 +764,6 @@
 						  </li>
 						  <li>
 							<a href="#data-dictionary-saleitem-refunds" class="toc-h3 toc-link" data-title="Refunds">Refunds</a>
-						  </li>
-						  <li>
-							<a href="#data-dictionary-saleitem-saleitem-fields" class="toc-h3 toc-link" data-title="SaleItem fields">SaleItem fields</a>
 						  </li>
 					  </ul>
                   </li>
@@ -892,7 +889,7 @@
           </li>
       </ul>
         <ul class="toc-footer">
-            <li>2022-03-03</li>
+            <li>2022-05-10</li>
             <li><a href='https://www.datameshgroup.com'>DataMesh Group</a></li>
             <li><a href='https://github.com/datameshgroup'>GitHub</a></li>
         </ul>
@@ -1389,19 +1386,7 @@ The <code>Input UI</code> elements are not currently available, and will be supp
 <aside class="success">
 The DataMesh Nexo API is event based. The Sale System sends a payment request, handles events as they are received, and eventually receives a payment response.
 </aside>
-<h3 id='getting-started-design-your-integration-cancelling-a-sale-in-progress'>Cancelling a sale in progress</h3>
-<p>Whilst a payment is in progress the Sale System should present UI to the cashier which enables them to request a cancellation of the payment. </p>
-
-<p>If the cashier initiates a payment cancellation, the Sale System sends an <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a> (with <code>AbortRequest.AbortReason</code> field set to &quot;User Cancel&quot;).  Then, the Sale System continues to wait for the payment response. </p>
-
-<p>The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.</p>
-
-<aside class="success">
-There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
-</aside>
-
-<p><img src="images/payment-cancellation-887c89b3.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-initial-ui'>Initial UI</h4>
+<h4 id='getting-started-design-your-integration-payment-user-interface-initial-ui'>Initial UI</h4>
 <p>The Sale System should immediately display an initial UI after sending a <a href="#cloud-api-reference-methods-payment">payment</a> request which informs the cashier the payment is in progress. This UI is required to handle instances where the first display/input message from the POI System is not present, or delayed.</p>
 
 <p>This UI should also enable the cashier to request a cancellation of the transaction.</p>
@@ -1409,7 +1394,7 @@ There are a number of instances where the Terminal may be unable to cancel a pay
 <p><em>Example</em></p>
 
 <p><img src="images/dialog-initial-ui-55c3ef23.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-display-ui'>Display UI</h4>
+<h4 id='getting-started-design-your-integration-payment-user-interface-display-ui'>Display UI</h4>
 <blockquote>
 <p>Display request</p>
 </blockquote>
@@ -1455,7 +1440,7 @@ There are a number of instances where the Terminal may be unable to cancel a pay
 <p><em>Example</em></p>
 
 <p><img src="images/dialog-display-509f218b.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-input-ui'>Input UI</h4>
+<h4 id='getting-started-design-your-integration-payment-user-interface-input-ui'>Input UI</h4>
 <aside class="warning">
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
 </aside>
@@ -1552,7 +1537,7 @@ The option for the cashier to 'Cancel' is optional on the <code>GetConfirmation<
 <p><em>Example</em></p>
 
 <p><img src="images/dialog-input-getmenuentry-28430f31.png" alt="" /></p>
-<h4 id='getting-started-design-your-integration-cancelling-a-sale-in-progress-final-ui'>Final UI</h4>
+<h4 id='getting-started-design-your-integration-payment-user-interface-final-ui'>Final UI</h4>
 <p>The Sale System should display a final UI after the response has been received to inform the cashier of the transaction result. </p>
 
 <p>This UI is constructed using the <a href="#data-dictionary-result">Result</a>, <a href="#data-dictionary-errorcondition">ErrorCondition</a>, and <a href="#additionalresponse">AdditionalResponse</a> fields of the <code>Response</code> object.</p>
@@ -1564,6 +1549,18 @@ The option for the cashier to 'Cancel' is optional on the <code>GetConfirmation<
 <p><em>Result=&quot;Failure&quot; Example</em></p>
 
 <p><img src="images/dialog-final-ui-failure-c1bf753f.png" alt="" /></p>
+<h4 id='getting-started-design-your-integration-payment-user-interface-cancelling-a-sale-in-progress'>Cancelling a sale in progress</h4>
+<p>Whilst a payment is in progress the Sale System should present UI to the cashier which enables them to request a cancellation of the payment. </p>
+
+<p>If the cashier initiates a payment cancellation, the Sale System sends an <a href="#cloud-api-reference-methods-abort-transaction">abort transaction request</a> (with <code>AbortRequest.AbortReason</code> field set to &quot;User Cancel&quot;).  Then, the Sale System continues to wait for the payment response. </p>
+
+<p>The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.</p>
+
+<aside class="success">
+There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
+</aside>
+
+<p><img src="images/payment-cancellation-887c89b3.png" alt="" /></p>
 <h3 id='getting-started-design-your-integration-product-data'>Product data</h3>
 <p>The Sale System must include product information about the sale items attached to each purchase request. </p>
 
@@ -1596,7 +1593,7 @@ Including all available product information in each payment request will improve
 <li><p><a href="#getting-started-design-your-integration-refunds-unmatched-refund">Unmatched refund</a></p></li>
 </ul>
 
-<p>More details about the <a href="#data-dictionary-saleitem-discounts">refund implementation</a>.</p>
+<p>More details about the <a href="#data-dictionary-saleitem-refunds">refund implementation</a>.</p>
 <h4 id='getting-started-design-your-integration-refunds-matched-refund'>Matched refund</h4>
 <ul>
 <li>A matched refund is paired with an original purchase. </li>
@@ -1648,33 +1645,29 @@ Including all available product information in each payment request will improve
 <li>Set <a href="#cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to the cash out amount </li>
 </ul></li>
 </ul>
-<h4 id='getting-started-design-your-integration-cash-out-cash-out-on-poi-terminal'>Cash out on POI Terminal</h4>
-<p>When performing cash out on the POI Terminal, the Sale System sends the payment request to the POI Terminal without a cash out amount. The POI Terminal gives the option for the card holder to enter a cash out amount. The payment response will contain any cash out amount entered by the card holder.</p>
 
-<p>A cash out sale can be cash out only, or cash out + purchase. </p>
+<!---
+#### Cash out on POI Terminal
 
-<ul>
-<li>Cash out only (no sale items are included)
+When performing cash out on the POI Terminal, the Sale System sends the payment request to the POI Terminal without a cash out amount. The POI Terminal gives the option for the card holder to enter a cash out amount. The payment response will contain any cash out amount entered by the card holder.
 
-<ul>
-<li>Set <a href="#data-dictionary-paymenttype">PaymentData.PaymentType</a> to &quot;CashAdvance&quot;</li>
-<li>Set <a href="#data-dictionary-requestedamount">PaymentTransaction.AmountsReq.RequestedAmount</a> to 0</li>
-<li>Set <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to 0</li>
-<li>Set <a href="#data-dictionary-maximumcashbackamount">PaymentTransaction.AmountsReq.MaximumCashBackAmount</a> to the maximum about the terminal should allow the card holder to enter </li>
-<li>The <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> field in the payment response will reflect the cash back amount entered by the card holder</li>
-<li>The <a href="#data-dictionary-authorizedamount">PaymentTransaction.AmountsReq.AuthorizedAmount</a> field in the payment response will include the cash back amount entered by the card holder<br></li>
-</ul></li>
-<li>Purchase plus cash out (sale items are included)
+A cash out sale can be cash out only, or cash out + purchase. 
 
-<ul>
-<li>Set <a href="#data-dictionary-paymenttype">PaymentData.PaymentType</a> to &quot;Normal&quot;</li>
-<li>Set <a href="#data-dictionary-requestedamount">PaymentTransaction.AmountsReq.RequestedAmount</a> to the value of the sale items</li>
-<li>Set <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> to 0</li>
-<li>Set <a href="#data-dictionary-maximumcashbackamount">PaymentTransaction.AmountsReq.MaximumCashBackAmount</a> to the maximum about the terminal should allow the card holder to enter </li>
-<li>The <a href="#data-dictionary-cashbackamount">PaymentTransaction.AmountsReq.CashBackAmount</a> field in the payment response will reflect the cash back amount entered by the card holder</li>
-<li>The <a href="#data-dictionary-authorizedamount">PaymentTransaction.AmountsReq.AuthorizedAmount</a> field in the payment response will include the cash back amount entered by the card holder</li>
-</ul></li>
-</ul>
+- Cash out only (no sale items are included)
+  - Set [PaymentData.PaymentType](#data-dictionary-paymenttype) to "CashAdvance"
+  - Set [PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) to 0
+  - Set [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) to 0
+  - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#data-dictionary-maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
+  - The [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
+  - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#data-dictionary-authorizedamount) field in the payment response will include the cash back amount entered by the card holder  
+- Purchase plus cash out (sale items are included)
+  - Set [PaymentData.PaymentType](#data-dictionary-paymenttype) to "Normal"
+  - Set [PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) to the value of the sale items
+  - Set [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) to 0
+  - Set [PaymentTransaction.AmountsReq.MaximumCashBackAmount](#data-dictionary-maximumcashbackamount) to the maximum about the terminal should allow the card holder to enter 
+  - The [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) field in the payment response will reflect the cash back amount entered by the card holder
+  - The [PaymentTransaction.AmountsReq.AuthorizedAmount](#data-dictionary-authorizedamount) field in the payment response will include the cash back amount entered by the card holder
+-->
 <h3 id='getting-started-design-your-integration-pre-auth-completion'>Pre-auth / completion</h3>
 <p>The Sale System can optionally support pre-authorisation and completion payments on the POI Terminal.</p>
 
@@ -9189,179 +9182,6 @@ Never send the SensitiveCardData object in the clear. This represents the conten
 <aside class="success">
 Please contact the Data Mesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to discuss how to map the Sale System basket to the SaleItem array.
 </aside>
-<h3 id='data-dictionary-saleitem-sale-items-with-a-upc-ean-isbn'>Sale items with a UPC/EAN/ISBN</h3>
-<blockquote>
-<p>Example <code>SaleItem</code> with UPC</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"SaleItem"</span><span class="p">:[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"5000112576009"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"EanUpc"</span><span class="p">:</span><span class="s2">"5000112576009"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"1.95"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"1.95"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Coca-Cola No Sugar 1.25L"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
-<ul>
-<li>Items which have a UPC/EAN/ISBN must include the UPC/EAN/ISBN in the <a href="#data-dictionary-eanupc">EanUpc</a> field. </li>
-<li>Both <a href="#data-dictionary-productcode">ProductCode</a> and <a href="#data-dictionary-eanupc">EanUpc</a> should be populated, even if they are the same value</li>
-<li>Other standard mandatory fields in sale item are still mandatory.</li>
-</ul>
-<h3 id='data-dictionary-saleitem-sale-items-with-modifiers'>Sale items with modifiers</h3>
-<blockquote>
-<p>Example <code>SaleItem</code> with modifiers</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"SaleItem"</span><span class="p">:[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"15.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"15.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Big Kahuna Burger"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ParentItemID"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776-0"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Extra pineapple"</span><span class="w">
-  </span><span class="p">},</span><span class="w">  
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ParentItemID"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776-1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Side of fries"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXYU998"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"5.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"5.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Tasty Beverage"</span><span class="w">
-  </span><span class="p">},</span><span class="w">  
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
-<p>A sale system may represent sale items in the basket as a hierarchy of sale items and sub items, typically referred to as &#39;modifiers&#39;, or &#39;substitutions&#39;. </p>
-
-<p>Examples of products with modifiers: </p>
-
-<ul>
-<li>a &quot;Big Kahuna Burger&quot; could contain &quot;Extra pineapple&quot; or &quot;Side of fries&quot; as modifiers.</li>
-<li>a &quot;Sirloin steak&quot; could contain &quot;Pepper sauce&quot; or &quot;Medium rare&quot; as modifiers.</li>
-<li>a &quot;Cappuccino&quot; could contain &quot;Sugar&quot; or &quot;Large&quot; as modifiers.</li>
-</ul>
-
-<p>If the Sale System basket contains sale items and modifiers: </p>
-
-<ul>
-<li>Include both sale items and modifiers as <code>SaleItem</code> objects in the <code>SaleItem</code> array.</li>
-<li>For each modifier, set the <code>ParentItemID</code> field to the value of the parent sale item <code>ItemID</code></li>
-<li>Set the <code>ItemAmount</code> to the value of the modifier, or set to zero if no value </li>
-<li>The total amount of an item will be the sum of <code>ItemAmount</code> in the sale item, and all associated modifiers</li>
-<li>Modifiers may contain a unique <code>ProductCode</code> or share the same <code>ProductCode</code> as the parent sale item</li>
-</ul>
-
-<p>Some sale Sale Systems do not record modifiers as individual items. For example, they are stored in a &#39;notes&#39; or &#39;cooking instructions&#39; field. In this case the additional notes should be included in the <a href="#data-dictionary-additionalproductinfo">AdditionalProductInfo</a> field. </p>
-<h3 id='data-dictionary-saleitem-item-bundles'>Item bundles</h3>
-<p>A Sale System may sell items which are bundled together. </p>
-
-<p>Examples of item &quot;bundles&quot;:</p>
-
-<ul>
-<li>a &quot;lunch special&quot;, containing a main, a dessert, and a drink</li>
-<li>a &quot;Valentines day&quot; bundle, containing flowers, and chocolates </li>
-<li>a &quot;mixed wine case&quot;, containing a selection of different wines </li>
-<li>a &quot;burger meal&quot;, containing burger, chips and a drink</li>
-</ul>
-
-<p>The Sale System should populate the <code>SaleItem</code> array based on how the &quot;bundle&quot; is represented in the basket. </p>
-
-<p>If the &quot;bundle&quot; is represented as a unique product with a title and a price, include the &quot;bundle&quot; product as a <code>SaleItem</code>. Contents of the bundle can then be included either as &quot;modifiers&quot; associated with the bundle, or as a text description in the <a href="#data-dictionary-additionalproductinfo">AdditionalProductInfo</a> field. </p>
-
-<p>If the &quot;bundle&quot; is a shortcut in the Sale System which has no value associated and is simply used to add multiple products to the basket, include each product as a <code>SaleItem</code>.</p>
-
-<p>Any <code>SaleItem</code> discounts associated with the &quot;item bundle&quot; should be included in the <code>Discount</code> field.</p>
-<h3 id='data-dictionary-saleitem-discounts'>Discounts</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"SaleItem"</span><span class="p">:[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"100.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"80.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Shirt"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"DiscountReason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20% OFF SALE"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ParentItemID"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH777"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"-10.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"$10 voucher"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.00"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"DiscountReason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$10 voucher"</span><span class="w"> 
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
-<p>Discounts applied to the basket should be reflected by the <code>SaleItem</code> array based on how the Sale System handles discounts: </p>
-
-<ul>
-<li>For discounts applied across the basket or to an individual item:
-
-<ul>
-<li>Set <code>UnitPrice</code> to the original item price</li>
-<li>Update <code>ItemAmount</code> to reflect the discounted amount</li>
-<li>Set <code>Discount</code> to reflect the discounted amount per item </li>
-<li>Set <code>DiscountReason</code> to the reason the item was discounted</li>
-</ul></li>
-<li>For a discount or voucher applied as a sale item:
-
-<ul>
-<li>Set <code>UnitPrice</code> to <code>0</code></li>
-<li>Include a <code>SaleItem</code> with a negative <code>ItemAmount</code> </li>
-<li>Set <code>Discount</code> to the discount value </li>
-<li>Set <code>DiscountReason</code> to the reason for the discount</li>
-</ul></li>
-</ul>
-<h3 id='data-dictionary-saleitem-refunds'>Refunds</h3>
-<p>If the sale items are known for a refund, they should be represented in the <code>SaleItem</code> array, otherwise the <code>SaleItem</code> array can be left empty.</p>
-
-<p>For example, if a customer purchases three pairs of shoes, and returns one pair:</p>
-
-<ul>
-<li>If the Sale System records the returned item, it should include that item in the <code>SaleItem</code> array with the refund </li>
-<li>If the Sale System does not record the returned item, but is able to match to the original purchase, it should populate the <code>SaleItem</code> array with the items from the orignial purchase. </li>
-<li>If the Sale System does not record the return item, and is unable to match to the original purchase, the <code>SaleItem</code> array can be left empty</li>
-</ul>
-
-<p>Refund <code>SaleItem</code> objects are represented the same as purchase <code>SaleItem</code> objects.</p>
-
-<p>For example:</p>
-
-<ul>
-<li>The fields marked as mandatory are still mandatory<br></li>
-<li>Each <code>ItemAmount</code> is a positive amount which reflects the amount being refunded</li>
-<li>The <code>Quantity</code> reflects the number of the sale item being refunded</li>
-</ul>
 <h3 id='data-dictionary-saleitem-saleitem-fields'>SaleItem fields</h3>
 <blockquote>
 <p>Example sale item array</p>
@@ -9653,6 +9473,179 @@ Please contact the Data Mesh integrations team at <a href="mailto:integrations@d
 <td>Array of key/type/value objects containing additional information which may be used for sale processing</td>
 </tr>
 </tbody></table>
+<h3 id='data-dictionary-saleitem-sale-items-with-a-upc-ean-isbn'>Sale items with a UPC/EAN/ISBN</h3>
+<blockquote>
+<p>Example <code>SaleItem</code> with UPC</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"SaleItem"</span><span class="p">:[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"5000112576009"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"EanUpc"</span><span class="p">:</span><span class="s2">"5000112576009"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"1.95"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"1.95"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Coca-Cola No Sugar 1.25L"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li>Items which have a UPC/EAN/ISBN must include the UPC/EAN/ISBN in the <a href="#data-dictionary-eanupc">EanUpc</a> field. </li>
+<li>Both <a href="#data-dictionary-productcode">ProductCode</a> and <a href="#data-dictionary-eanupc">EanUpc</a> should be populated, even if they are the same value</li>
+<li>Other standard mandatory fields in sale item are still mandatory.</li>
+</ul>
+<h3 id='data-dictionary-saleitem-sale-items-with-modifiers'>Sale items with modifiers</h3>
+<blockquote>
+<p>Example <code>SaleItem</code> with modifiers</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"SaleItem"</span><span class="p">:[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"15.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"15.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Big Kahuna Burger"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ParentItemID"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776-0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Extra pineapple"</span><span class="w">
+  </span><span class="p">},</span><span class="w">  
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ParentItemID"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776-1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Side of fries"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXYU998"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"5.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"5.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Tasty Beverage"</span><span class="w">
+  </span><span class="p">},</span><span class="w">  
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>A sale system may represent sale items in the basket as a hierarchy of sale items and sub items, typically referred to as &#39;modifiers&#39;, or &#39;substitutions&#39;. </p>
+
+<p>Examples of products with modifiers: </p>
+
+<ul>
+<li>a &quot;Big Kahuna Burger&quot; could contain &quot;Extra pineapple&quot; or &quot;Side of fries&quot; as modifiers.</li>
+<li>a &quot;Sirloin steak&quot; could contain &quot;Pepper sauce&quot; or &quot;Medium rare&quot; as modifiers.</li>
+<li>a &quot;Cappuccino&quot; could contain &quot;Sugar&quot; or &quot;Large&quot; as modifiers.</li>
+</ul>
+
+<p>If the Sale System basket contains sale items and modifiers: </p>
+
+<ul>
+<li>Include both sale items and modifiers as <code>SaleItem</code> objects in the <code>SaleItem</code> array.</li>
+<li>For each modifier, set the <code>ParentItemID</code> field to the value of the parent sale item <code>ItemID</code></li>
+<li>Set the <code>ItemAmount</code> to the value of the modifier, or set to zero if no value </li>
+<li>The total amount of an item will be the sum of <code>ItemAmount</code> in the sale item, and all associated modifiers</li>
+<li>Modifiers may contain a unique <code>ProductCode</code> or share the same <code>ProductCode</code> as the parent sale item</li>
+</ul>
+
+<p>Some sale Sale Systems do not record modifiers as individual items. For example, they are stored in a &#39;notes&#39; or &#39;cooking instructions&#39; field. In this case the additional notes should be included in the <a href="#data-dictionary-additionalproductinfo">AdditionalProductInfo</a> field. </p>
+<h3 id='data-dictionary-saleitem-item-bundles'>Item bundles</h3>
+<p>A Sale System may sell items which are bundled together. </p>
+
+<p>Examples of item &quot;bundles&quot;:</p>
+
+<ul>
+<li>a &quot;lunch special&quot;, containing a main, a dessert, and a drink</li>
+<li>a &quot;Valentines day&quot; bundle, containing flowers, and chocolates </li>
+<li>a &quot;mixed wine case&quot;, containing a selection of different wines </li>
+<li>a &quot;burger meal&quot;, containing burger, chips and a drink</li>
+</ul>
+
+<p>The Sale System should populate the <code>SaleItem</code> array based on how the &quot;bundle&quot; is represented in the basket. </p>
+
+<p>If the &quot;bundle&quot; is represented as a unique product with a title and a price, include the &quot;bundle&quot; product as a <code>SaleItem</code>. Contents of the bundle can then be included either as &quot;modifiers&quot; associated with the bundle, or as a text description in the <a href="#data-dictionary-additionalproductinfo">AdditionalProductInfo</a> field. </p>
+
+<p>If the &quot;bundle&quot; is a shortcut in the Sale System which has no value associated and is simply used to add multiple products to the basket, include each product as a <code>SaleItem</code>.</p>
+
+<p>Any <code>SaleItem</code> discounts associated with the &quot;item bundle&quot; should be included in the <code>Discount</code> field.</p>
+<h3 id='data-dictionary-saleitem-discounts'>Discounts</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"SaleItem"</span><span class="p">:[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH776"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"100.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"80.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"Shirt"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"DiscountReason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20% OFF SALE"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ItemID"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ParentItemID"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductCode"</span><span class="p">:</span><span class="s2">"XXVH777"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitOfMeasure"</span><span class="p">:</span><span class="s2">"Other"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Quantity"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"UnitPrice"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ItemAmount"</span><span class="p">:</span><span class="s2">"-10.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ProductLabel"</span><span class="p">:</span><span class="s2">"$10 voucher"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"DiscountReason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$10 voucher"</span><span class="w"> 
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Discounts applied to the basket should be reflected by the <code>SaleItem</code> array based on how the Sale System handles discounts: </p>
+
+<ul>
+<li>For discounts applied across the basket or to an individual item:
+
+<ul>
+<li>Set <code>UnitPrice</code> to the original item price</li>
+<li>Update <code>ItemAmount</code> to reflect the discounted amount</li>
+<li>Set <code>Discount</code> to reflect the discounted amount per item </li>
+<li>Set <code>DiscountReason</code> to the reason the item was discounted</li>
+</ul></li>
+<li>For a discount or voucher applied as a sale item:
+
+<ul>
+<li>Set <code>UnitPrice</code> to <code>0</code></li>
+<li>Include a <code>SaleItem</code> with a negative <code>ItemAmount</code> </li>
+<li>Set <code>Discount</code> to the discount value </li>
+<li>Set <code>DiscountReason</code> to the reason for the discount</li>
+</ul></li>
+</ul>
+<h3 id='data-dictionary-saleitem-refunds'>Refunds</h3>
+<p>If the sale items are known for a refund, they should be represented in the <code>SaleItem</code> array, otherwise the <code>SaleItem</code> array can be left empty.</p>
+
+<p>For example, if a customer purchases three pairs of shoes, and returns one pair:</p>
+
+<ul>
+<li>If the Sale System records the returned item, it should include that item in the <code>SaleItem</code> array with the refund </li>
+<li>If the Sale System does not record the returned item, but is able to match to the original purchase, it should populate the <code>SaleItem</code> array with the items from the orignial purchase. </li>
+<li>If the Sale System does not record the return item, and is unable to match to the original purchase, the <code>SaleItem</code> array can be left empty</li>
+</ul>
+
+<p>Refund <code>SaleItem</code> objects are represented the same as purchase <code>SaleItem</code> objects.</p>
+
+<p>For example:</p>
+
+<ul>
+<li>The fields marked as mandatory are still mandatory<br></li>
+<li>Each <code>ItemAmount</code> is a positive amount which reflects the amount being refunded</li>
+<li>The <code>Quantity</code> reflects the number of the sale item being refunded</li>
+</ul>
 <h2 id='data-dictionary-salechannel'>SaleChannel</h2>
 <p>Commercial or distribution channel of the item. Default = &quot;Unknown&quot;</p>
 <h2 id='data-dictionary-salereferenceid'>SaleReferenceID</h2>
