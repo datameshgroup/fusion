@@ -1,0 +1,33 @@
+title Split payment 
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale System
+materialdesignicons f11d POI Terminal
+
+Merchant->Sale System: Create sale ($100.00)
+
+Sale System->Sale System: Open sale //96//
+
+Merchant->Sale System: Initiate payment ($20.00)
+
+Sale System->POI Terminal: Payment request\n//SaleTransactionID=96\nRequestedAmount=20.00\nSplitPaymentFlag=true\nMinimumSplitAmount=0.00\nPaidAmount=0.00//
+activate POI Terminal
+
+POI Terminal->POI Terminal: Process split payment //2042//
+
+POI Terminal-->Sale System: Payment response\n//POITransactionID=2042//
+deactivate POI Terminal
+
+Merchant->Sale System: Initiate payment ($80.00)
+
+Sale System->POI Terminal: Payment request\n//SaleTransactionID=96\nRequestedAmount=80.00\nSplitPaymentFlag=true\nMinimumSplitAmount=0.00\nPaidAmount=20.00//
+activate POI Terminal
+
+POI Terminal->POI Terminal: Process split payment //2043//
+
+POI Terminal-->Sale System: Payment response\n//POITransactionID=2043//
+deactivate POI Terminal
+
+Sale System->Sale System: Close sale //96//

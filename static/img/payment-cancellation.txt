@@ -1,0 +1,56 @@
+title Cancelling a sale in progress
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale system
+fontawesome5solid f0c2 Unify
+materialdesignicons f11d POI terminal
+
+
+Merchant->Sale system: Launch sale system
+
+Sale system->Unify: Open websocket
+
+Sale system->Unify: Login request
+activate Unify
+
+Unify->POI terminal: Login request
+activate POI terminal
+
+POI terminal-->Unify: Login response
+deactivate POI terminal
+
+Unify-->Sale system: Login response
+deactivate Unify
+
+group Payment with cancellation
+
+Merchant->Sale system: Initiate payment
+Sale system->Unify: Payment request
+activate Unify
+Unify->POI terminal: Payment request
+activate POI terminal
+Sale system->Unify: <align:center>Abort request\n//AbortReason="User Cancel"//</align>
+activate Unify
+Unify->POI terminal: <align:center>Abort request\n//AbortReason="User Cancel"//</align>
+activate POI terminal
+space
+POI terminal-->Unify: Payment response
+deactivate POI terminal
+
+Unify-->Sale system: Payment response
+
+deactivate Unify
+
+end 
+
+Merchant->Sale system: Close sale system
+
+Sale system->Unify: Logout request
+activate Unify
+
+Unify-->Sale system: Logout response
+deactivate Unify
+
+Sale system->Unify: Close websocket

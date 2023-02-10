@@ -1,0 +1,74 @@
+title Payment lifecycle
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale system
+fontawesome5solid f0c2 Unify
+materialdesignicons f11d POI terminal
+
+
+Merchant->Sale system: Launch sale system
+
+Sale system->Unify: Open websocket
+
+Sale system->Unify: Login request
+activate Unify
+
+Unify->POI terminal: Login request
+activate POI terminal
+
+POI terminal-->Unify: Login response
+deactivate POI terminal
+
+Unify-->Sale system: Login response
+deactivate Unify
+
+group Payment (0...n)
+
+Merchant->Sale system: Initiate payment
+Sale system->Sale system: Set txn_in_progress flag in local persistent storage
+Sale system->Unify: Payment request
+activate Unify
+Unify->POI terminal: Payment request
+activate POI terminal
+Sale system->Sale system: Set message_reference details\nin local persistent storage
+Unify->Sale system: Display request (0..n)
+activate Sale system
+Sale system-->Unify: Display response
+deactivate Sale system
+
+Unify->Sale system: Input request (0..n)
+activate Sale system
+Sale system-->Unify: Input response
+deactivate Sale system
+
+Unify->Sale system: Print request (0..n)
+activate Sale system
+Sale system-->Unify: Print response
+deactivate Sale system
+
+
+POI terminal-->Unify: Payment response
+deactivate POI terminal
+
+Unify-->Sale system: Payment response
+
+deactivate Unify
+
+Sale system->Sale system: Clear message_reference details
+
+Sale system->Sale system: Clear txn_in_progress flag
+
+end 
+
+Merchant->Sale system: Close sale system
+
+Sale system->Unify: Logout request
+activate Unify
+
+Unify-->Sale system: Logout response
+deactivate Unify
+
+Sale system->Unify: Close websocket
+

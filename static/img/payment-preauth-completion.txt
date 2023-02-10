@@ -1,0 +1,33 @@
+title Pre-auth / Completion
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale System
+materialdesignicons f11d POI Terminal
+
+Merchant->Sale System: Pre-auth ($100.00)
+
+Sale System->Sale System: Record SaleReferenceID=xx-yy-zz
+
+Sale System->POI Terminal: Payment request\n//PaymentType=FirstReservation\nSaleReferenceID=xx-yy-zz//
+activate POI Terminal
+
+POI Terminal->POI Terminal: Process pre-auth
+
+POI Terminal-->Sale System: Payment response\n//POITransactionID=2042//
+deactivate POI Terminal
+
+Sale System->Sale System: Record POITransactionID = 2042
+
+Merchant->Sale System: Completion ($100.00)
+
+Sale System->POI Terminal: Payment request\n//PaymentType=Completion\nSaleReferenceID=xx-yy-zz\nPOITransactionID=2042\nReuseCardDataFlag=true//
+activate POI Terminal
+
+POI Terminal->POI Terminal: Retrieve token using TxnID=2042
+
+POI Terminal->POI Terminal: Process completion
+
+POI Terminal-->Sale System: Payment response
+deactivate POI Terminal

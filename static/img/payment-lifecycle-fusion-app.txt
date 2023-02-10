@@ -1,0 +1,70 @@
+title Payment lifecycle - Fusion App
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons f0a07 Sale system
+materialdesignicons f0675 Fusion App
+fontawesome5solid f0c2 Unify
+materialdesignicons f011c POI terminal
+
+
+Merchant->Sale system: Launch sale system
+
+group Payment (0...n)
+
+Merchant->Sale system: Initiate payment
+
+Sale system->Fusion App: Payment request
+
+
+group Payment 0
+
+Fusion App->Unify: Open websocket
+
+Fusion App->Unify: Login request
+activate Unify
+
+Unify->POI terminal: Login request
+activate POI terminal
+
+POI terminal-->Unify: Login response
+deactivate POI terminal
+
+Unify-->Fusion App: Login response
+deactivate Unify
+
+end
+
+Fusion App->Unify: Payment request
+activate Unify
+Unify->POI terminal: Payment request
+activate POI terminal
+Unify->Fusion App: Display request (0..n)
+activate Fusion App
+Fusion App-->Unify: Display response
+deactivate Fusion App
+
+Unify->Fusion App: Input request (0..n)
+activate Fusion App
+Fusion App-->Unify: Input response
+deactivate Fusion App
+
+Unify->Fusion App: Print request (0..n)
+activate Fusion App
+Fusion App-->Unify: Print response
+deactivate Fusion App
+
+
+POI terminal-->Unify: Payment response
+deactivate POI terminal
+
+Unify-->Fusion App: Payment response
+
+deactivate Unify
+
+Fusion App-->Sale system: Payment response
+
+end 
+
+Merchant->Sale system: Close sale system

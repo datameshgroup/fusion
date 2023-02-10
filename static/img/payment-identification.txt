@@ -1,0 +1,45 @@
+title Payment identification
+
+lifelinestyle #A0A0A0
+
+actor Merchant
+materialdesignicons fa06 Sale System
+materialdesignicons f11d POI Terminal
+
+Merchant->Sale System: Create sale ($100)
+
+Sale System->Sale System: Open sale //96//
+
+Merchant->Sale System: Initiate payment ($20)
+
+Sale System->Sale System: Set txn_in_progress flag\nin local persistent storage
+
+Sale System->POI Terminal: Payment request\n//SaleTransactionID=96//\n//ServiceID=14//
+activate POI Terminal
+
+Sale System->Sale System: Set message_reference details\nin local persistent storage
+
+POI Terminal->POI Terminal: Process split payment //2042//
+
+POI Terminal-->Sale System: Payment response\n//POITransactionID=2042//\n//ServiceID=14//
+deactivate POI Terminal
+
+Sale System->Sale System: Clear message_reference details
+
+Merchant->Sale System: Initiate payment ($80)
+
+Sale System->POI Terminal: Payment request\n//SaleTransactionID=96//\n//ServiceID=15//
+activate POI Terminal
+
+Sale System->Sale System: Set message_reference details\nin local persistent storage
+
+POI Terminal->POI Terminal: Process split payment //2043//
+
+POI Terminal-->Sale System: Payment response\n//POITransactionID=2043//\n//ServiceID=15//
+deactivate POI Terminal
+
+Sale System->Sale System: Clear message_reference details
+
+Sale System->Sale System: Clear txn_in_progress flag
+
+Sale System->Sale System: Close sale //96//
