@@ -43,9 +43,9 @@ Unify utilises secure websockets for communication between Sale System and POI S
   - A full list of ca files can be downloaded from [here](files/root-ca-list.zip). -->
 
 
-<aside class="success">
+:::tip
 Over time, Data Mesh may require the Sale System to update the TLS requirements provided above if a security risk is identified. In this situation DataMesh will provide the new requirements and allow a reasonable amount of time to allow the Sale System to meet the new requirements. 
-</aside>
+:::
 
 ## Endpoints
 
@@ -108,10 +108,10 @@ Supported primitive data elements are:
 decimal point (eg. 00320.00 is expressed 320, and 56.10 is expressed 56.1). This simplifies parsing and MAC calculations.
 1. **Null** optional types can be represented as null
 
-<aside class="success">
+:::tip
 Additional fields will be added to the message specification over time. To ensure forwards compatibility 
 the Sale System must ignore when extra objects and fields are present in response messages. 
-</aside>
+:::
 
 The base of every message is the `SaleToPOIRequest` object for requests, and `SaleToPOIResponse` object for responses. 
 
@@ -223,9 +223,9 @@ Attribute   |Requ.| Format | Description |
   [MAC](#data-dictionary-mac)                              | ✔ | String | MAC of message content. See [MAC](#data-dictionary-mac)
 
 
-<aside class="notice">
+:::info
 For brevity the <code>SecurityTrailer</code> has been excluded from examples.
-</aside>
+:::
 
 ## Perform a purchase
 
@@ -1116,9 +1116,9 @@ Attribute      |Requ.| Format | Description |
 
 ### Input
 
-<aside class="warning">
+:::caution
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
-</aside>
+:::
 
 
 During a payment, the POI System will input requests to the Sale System if cashier interaction is required (e.g. signature approved yes/no)
@@ -1545,11 +1545,11 @@ Attribute      |Requ.| Format  | Description |
 
 The Sale System can send an `abort transaction` message to request cancellation of the in-progress transaction. 
 
-<aside class="success">
+:::tip
 Cancel transaction is a "request to cancel". Cancellation of the transaction is not guaranteed. There are a number of instances where cancellation is not possible (for example, when the payment has already completed). 
 
 After sending a cancel transaction request, the Sale System should <b>always</b> wait for the payment/card acquisition response and validate the success of the sale by checking the `Result` property.
-</aside>
+:::
 
 
 
