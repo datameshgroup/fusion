@@ -191,7 +191,7 @@ The payment lifecycles, including the required API requests, are outlined in the
 1. Sale System sets txn_in_progress flag in local persistent storage. (This is will be used for [error handling](./APIs/cloud-api-reference#error-handling).)
 1. Sale System sends a [payment request](./APIs/cloud-api-reference#payment).
 1. Sale System saves message reference details in local persistent storage.  (This is will be used for [error handling](./APIs/cloud-api-reference#error-handling).)
-1. Sale System handles [display requests](./APIs/cloud-api-reference#display), [print requests](./APIs/cloud-api-reference#print), and [input requests](./APIs/cloud-api-reference-methods#input).
+1. Sale System handles [display requests](./APIs/cloud-api-reference#display), [print requests](./APIs/cloud-api-reference#print), and [input requests](./APIs/cloud-api-reference#input).
 1. Sale System receives a payment response.
 1. Sale System clears the message reference details in the local persistent storage.
 1. Sale System clears the txn_in_progress flag in the local persistent storage.

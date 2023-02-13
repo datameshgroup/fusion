@@ -1,0 +1,37 @@
+{
+  "SaleToPOIRequest":{
+    "MessageHeader":{
+      "ProtocolVersion":"3.2",
+      "MessageClass":"Service",
+      "MessageCategory":"Login",
+      "MessageType":"Request",
+      "ServiceID":"4432",
+      "SaleID":"POS Register A",
+      "POIID":"A9201001"
+    },
+    "LoginRequest":{
+      "DateTime":"2019-09-19T14:30:23.234+11.00",
+      "SaleSoftware":{
+        "ProviderIdentification":"DMG",
+        "ApplicationName":"POS NEXO DEMO",
+        "SoftwareVersion":"01.00.00",
+        "CertificationCode":"98cf9dfc-0db7-4a92-8b8cb66d4d2d7169"
+      },
+      "SaleTerminalData":{
+        "TerminalEnvironment":"Attended",
+        "SaleCapabilities":[
+          "CashierStatus",
+          "CashierError",
+          "CashierInput",
+          "CustomerAssistance",
+          "PrinterReceipt"
+        ],
+        "TotalsGroupID":"20190919"
+      },
+      "OperatorLanguage":"en",
+      "OperatorID":"Cashier01",
+      "ShiftNumber":"1"
+    },
+    "SecurityTrailer":{}
+  }
+}
