@@ -1,0 +1,64 @@
+{
+   "SaleToPOIResponse":{
+      "MessageHeader":{
+         "MessageClass":"Service",
+         "MessageCategory":"Payment",
+         "MessageType":"Response",
+         "ServiceID":"444PAY",
+         "SaleID":"POS RegisterA"
+      },
+      "PaymentResponse":{
+         "Response":{
+            "Result":"Success", 
+            "ErrorCondition": null, 
+            "AdditionalResponse": null
+         },
+         "SaleData":{
+            "OperatorID":"Cashier01",
+            "OperatorLanguage":"en",
+            "ShiftNumber":"1",
+            "SaleTransactionID":{
+               "TransactionID":"sale_txn_id",
+               "TimeStamp":"2019-09-19T14:35:34.349+11.00"
+            },
+            "SaleReferenceID":"5295592",
+            "TokenRequestedType":"Customer"
+         },
+         "POIData":{
+            "POITransactionID":{
+               "TransactionID":"5e005be5fa61995d7abae2c8",
+               "TimeStamp":"2019-12-23T17:17:13.291+11:00"
+            },
+            "POIReconciliationID":"201912231"
+         },
+         "PaymentResult":{
+            "PaymentType":"Normal",
+            "PaymentInstrumentData":{
+               "PaymentInstrumentType":"Card",
+               "CardData":{
+                  "EntryMode":"MagStripe",
+                  "PaymentBrand":"VISA",
+                  "MaskedPAN":"444433...1111",
+                  "PaymentToken":{
+                     "TokenRequestedType":"Customer",
+                     "TokenValue":"106802844442909489523562431639"
+                  }
+               }
+            },
+            "AmountsResp":{
+               "Currency":"AUD",
+               "AuthorizedAmount":33.75,
+               "CashBackAmount":0
+            },
+            "OnlineFlag":true
+         },
+         "PaymentReceipt":{
+            "OutputContent":{
+               "OutputFormat":"XHTML",
+               "OutputXHTML":"<p>Receipt</p>"
+            }
+         }
+      },
+      "SecurityTrailer":{...}
+   }
+}

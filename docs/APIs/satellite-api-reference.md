@@ -175,10 +175,10 @@ Supported primitive data elements are:
 decimal point (eg. 00320.00 is expressed 320, and 56.10 is expressed 56.1). This simplifies parsing and MAC calculations.
 1. **Null** optional types can be represented as null
 
-<aside class="success">
+:::tip
 Additional fields will be added to the message specification over time. To ensure forwards compatibility 
 the Sale System must ignore when extra objects and fields are present in response messages. 
-</aside>
+:::
 
 The base of every message is the `SaleToPOIRequest` object for requests, and `SaleToPOIResponse` object for responses. 
 
@@ -811,11 +811,11 @@ Attribute      |Requ.| Format  | Description |
 
 A successful payment transaction can be voided/reversed by sending a reversal request message. 
 
-<aside class="warning">
+:::caution
 There are only specific cases wherein the reversal request message must be sent.  In most cases, refund request message should be sent instead.  
 
 Please discuss first with the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you plan to implement any void/reversal processing.
-</aside>
+:::
 
 When the Sale System receives the successful payment response, the Sale System needs to store the **TransactionID** (*Response.POIData.POITransactionID.TransactionID*) since this will be used in the reversal request message.
 

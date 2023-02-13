@@ -1,0 +1,74 @@
+{
+  "SaleToPOIRequest":{
+    "MessageHeader":{
+      "MessageClass":"Service",
+      "MessageCategory":"Payment",
+      "MessageType":"Request",
+      "ServiceID":"444PAY",
+      "SaleID":"POS Register A",
+      "POIID":"A9201001"
+    },
+    "PaymentRequest":{
+      "SaleData":{
+        "OperatorID":"Cashier01",
+        "OperatorLanguage":"en",
+        "ShiftNumber":"1",
+        "SaleTransactionID":{
+          "TransactionID":"sale_txn_id",
+          "TimeStamp":"2019-09-19T14:35:34.349+11.00"
+        },
+        "SaleReferenceID":"5295592",
+        "TokenRequestedType":"Customer"
+      },
+      "PaymentTransaction":{
+        "AmountReq":{
+          "Currency":"AUD",
+          "RequestedAmount":33.75,
+          "CashBackAmount":0
+        },
+        "SaleItem":[
+          {
+            "ItemID":"item_id_0",
+            "ProductCode":"a_product_code",
+            "EanUpc":"84116369",
+            "UnitOfMeasure":"Unit",
+            "Quantity":1,
+            "UnitPrice":21.5,
+            "ItemAmount":21.5,
+            "TaxCode":"GST",
+            "SaleChannel":"Direct",
+            "ProductLabel":"Movie Ticket"
+          },
+          {
+            "ItemID":"item_id_3",
+            "ProductCode":"a_product_code",
+            "EanUpc":"84116369",
+            "UnitOfMeasure":"Unit",
+            "Quantity":1,
+            "UnitPrice":7,
+            "ItemAmount":7,
+            "TaxCode":"GST",
+            "SaleChannel":"Direct",
+            "ProductLabel":"Bag ofChips"
+          },
+          {
+            "ItemID":"item_id_4",
+            "ProductCode":"a_product_code",
+            "EanUpc":"84116369",
+            "UnitOfMeasure":"Unit",
+            "Quantity":1,
+            "UnitPrice":5.25,
+            "ItemAmount":5.25,
+            "TaxCode":"GST",
+            "SaleChannel":"Direct",
+            "ProductLabel":"Chocolate Bar"
+          }
+        ]
+      },
+      "PaymentData":{
+        "PaymentType":"Normal"
+      }
+    },
+    "SecurityTrailer":{...}
+  }
+}

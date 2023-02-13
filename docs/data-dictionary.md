@@ -21,10 +21,10 @@ Additional information related to the product item
 
 Provides extended response detail in the event of an error which may be used for analysis or diagnostics.  
 
-<aside class="success">
+:::tip
 Error conditions may be added over time. To ensure forwards compatibility any error handling in the 
 Sale System should allow for a "catch all" which handles currently undefined error conditions.
-</aside>
+:::
 
 The possible `AdditionalResponse` values are based on the value of [ErrorCondition](#errorcondition)
 
@@ -356,9 +356,9 @@ Input                | Merchant input is required.
 POIReplication       | Information displayed on the Cardholder POI interface, replicated on the Cashier interface.
 CustomerAssistance   | If card holder input is required but the merchant may assist by providing the input data via the CashierInput device.
 
-<aside class="success">
+:::tip
 For all input types, the card holder input may also be provided on the POI terminal. 
-</aside>
+:::
 
 ## InputCommand
 
@@ -517,9 +517,9 @@ Label                | Description
 
 Identifies the payment brand used for a payment. 
 
-<aside class="notice">
+:::info
 Please note that this list may expand in the future as new payment types are added. 
-</aside>
+:::
 
 Available values:
 
@@ -720,9 +720,9 @@ Attribute   | Requ.  | Format | Description |
   [TokenRequestedType](#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
   [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
 
-<aside class="warning">
+:::caution
 Never send the SensitiveCardData object in the clear. This represents the content to be encrypted and sent within the `ProtectedCardData` element
-</aside>
+:::
 
 **SensitiveCardData**
 
@@ -833,9 +833,9 @@ The `SaleItem` array defines the basket attached to this transaction. Each item 
 
 The sum of the sale items could be more than <code>RequestedAmount</code> in case of split payment without split of the items (split basket).
 
-<aside class="success">
+:::tip
 Please contact the DataMesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to discuss how to map the Sale System basket to the SaleItem array.
-</aside>
+:::
 
 ### SaleItem fields
 
@@ -1276,9 +1276,9 @@ The `TokenRequestedType` is an optional field per transaction. Indicates if a to
 * If set to "Transaction" a token is created which is only valid for the transaction. For example to process a subsequent Refund or Void/Reversal.
 * If set to "Customer" a token is created which represents the PAN, and can be used to represent the card holder for a longer period.
 
-<aside class="warning">
+:::caution
 If a `Payment` is requested using a PaymentToken of the same TokenRequestedType and this JSON element is present, the existing Token is replaced. This can affect other Sale Terminals, so use with caution.
-</aside>
+:::
 
 
 ## TransactionID
