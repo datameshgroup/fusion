@@ -9,7 +9,7 @@ The steps outlined below will guide you through creating a dev account, scoping 
 1. [Create a test account](#create-a-test-account)
 1. [Determine your integration type](#determine-your-integration-type)
 1. [Design your integration](#design-your-integration)
-1. [Code your POS integration](./APIs)
+1. [Code your POS integration](./category/APIs/)
 1. [POS accreditation](./testing)
 1. [Production deployment](./production)
 

@@ -63,7 +63,7 @@ const config = {
             type: 'doc',
             docId: 'getting-started',
             position: 'left',
-            label: 'Details',
+            label: 'Documentation',
           },        
           {
             href: 'https://github.com/datameshgroup',
