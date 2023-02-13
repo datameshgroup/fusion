@@ -1,8 +1,14 @@
----
-sidebar_position: 1
----
+import clsx from 'clsx';
+import Link from '@docusaurus/Link';
+import styles from './index.module.css';
 
-# Introduction
+<header className={clsx('hero hero--primary', styles.heroBanner)}>
+<div className="container">
+<h1 style={{textAlign:'center'}}>DataMesh Fusion API</h1>
+</div>
+</header>
+
+<br />
 
 The DataMesh Fusion API enables a POS (the *Sale System*) to take payments using a DataMesh Satellite terminal (the *POI terminal*). 
 
@@ -14,3 +20,12 @@ Unify orchestrates the message flow between Sale System and terminal, and assist
 
 ![](/img/overview-diagram.png)
 
+<br />
+
+<div className={styles.buttons}>
+<Link
+className="button button--secondary button--lg"
+to="/docs/getting-started">
+DataMesh Fusion API Docs 📝
+</Link>
+</div>
