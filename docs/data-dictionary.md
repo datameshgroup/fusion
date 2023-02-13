@@ -26,7 +26,7 @@ Error conditions may be added over time. To ensure forwards compatibility any er
 Sale System should allow for a "catch all" which handles currently undefined error conditions.
 </aside>
 
-The possible `AdditionalResponse` values are based on the value of [ErrorCondition](#data-dictionary-errorcondition)
+The possible `AdditionalResponse` values are based on the value of [ErrorCondition](#errorcondition)
 
 When `ErrorCondition` is "MessageFormat"
 
@@ -106,7 +106,7 @@ Defines the key algorithm.
 
 Set to "des-ede3-cbc"
 
-The data encryption session key = [EncryptedKey](#data-dictionary-encryptedkey) is 3DES CBC encrypted by an agreed KEK 3DES key which should be unique per Sale Terminal or Sale System (To be agreed).
+The data encryption session key = [EncryptedKey](#encryptedkey) is 3DES CBC encrypted by an agreed KEK 3DES key which should be unique per Sale Terminal or Sale System (To be agreed).
 
 ## AllowedPaymentBrands
 
@@ -253,7 +253,7 @@ Present as a string in hex.
 
 ## EncryptedKey
 
-A double length 3DES key (i.e. 16 bytes) that is a unique Data Encryption Key which must be changed every time new sensitive data is sent and is encrypted by the KEK using the [Algorithm](#data-dictionary-algorithm).
+A double length 3DES key (i.e. 16 bytes) that is a unique Data Encryption Key which must be changed every time new sensitive data is sent and is encrypted by the KEK using the [Algorithm](#algorithm).
 
 The key value is represented in hex (32 hex digits). For example: "F8131F320E499A1474A15B14F42F3E06".
 
@@ -474,9 +474,9 @@ Type of message of the Sale to POI protocol. Available values:
 
 ## OperatorId
 
-An optional value sent in the [Login Request](#cloud-api-reference-methods-login) for information only. Used to identify the cashier using the Sale Terminal during the session.
+An optional value sent in the [Login Request](./APIs/cloud-api-reference#login) for information only. Used to identify the cashier using the Sale Terminal during the session.
 
-If present, totals in the [ReconciliationResponse](#cloud-api-reference-methods-reconciliation) will be grouped by this value. If not present, payment transactions that do not specify a `OperatorId` will not be grouped under a `OperatorId`.
+If present, totals in the [ReconciliationResponse](./APIs/cloud-api-reference#reconciliation) will be grouped by this value. If not present, payment transactions that do not specify a `OperatorId` will not be grouped under a `OperatorId`.
 
 Note that different cashiers may still transact during the same login session by setting an `OperatorId` per payment. 
 
@@ -588,7 +588,7 @@ Identification of the reconciliation period between Sale and POI, to provide the
 
 Allows counting of transactions by both parties in the Sale to POI reconciliation.
 
-Returned in a [payment response](#cloud-api-reference-payment-response) if [result](#data-dictionary-result) "Success" or "Partial".
+Returned in a [payment response](./APIs/cloud-api-reference#payment-response) if [result](#result) "Success" or "Partial".
 
 In the Reconciliation request, when [ReconciliationType](#reconciliationtype) is "PreviousReconciliation", this field allows to request the reconciliation result of a previous period of transaction.
 
@@ -600,14 +600,14 @@ This last POISerialNumber returned in an earlier login response. If this is the 
 
 ## POITransactionID
 
-Unique identification of a POI transaction for a [POIID](#data-dictionary-poiid). 
+Unique identification of a POI transaction for a [POIID](#poiid). 
 
 Contains the following fields: 
 
 Attribute |Requ.| Format | Description |
 -----------------                        |----| ------ | ----------- |
-[TransactionID](#data-dictionary-transactionid)          | ✔ | String | A unique transaction id from the POI system
-[TimeStamp](#data-dictionary-timestamp)                  | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+[TransactionID](#transactionid)          | ✔ | String | A unique transaction id from the POI system
+[TimeStamp](#timestamp)                  | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
 
 
 ## ProductCode
@@ -693,9 +693,9 @@ Object with represents card details for token or manually enter card details.
 
 Attribute   | Requ.  | Format | Description |
 -----------------                          | ------ | ------ | ----------- |
-[PaymentInstrumentType](#data-dictionary-paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](#data-dictionary-paymentinstrumenttype)
+[PaymentInstrumentType](#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](#paymentinstrumenttype)
 **CardData**                               |  | Object | 
- [EntryMode](#data-dictionary-entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
+ [EntryMode](#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
  **ProtectedCardData**                     |  | Object | Only present if `EntryMode` is "Keyed"
   [ContentType](#contenttype)              | ✔ | String | Set to "id-envelopedData"
   **EnvelopedData**                        | ✔ | Object |  
@@ -704,20 +704,20 @@ Attribute   | Requ.  | Format | Description |
      **KEK**                               | ✔ | Object | 
       [Version](#version)                  | ✔ | String | Set to "v4"
       **KEKIdentifier**                    | ✔ | Object |
-       [KeyIdentifier](#data-dictionary-keyidentifier)     | ✔ | String | "SpecV2TestDATKey" for test environment, and "SpecV2ProdDATKey" for production
-       [KeyVersion](#data-dictionary-keyversion)           | ✔ | String | An incrementing value. Either a counter or date formatted as YYYYMMDDHHmmss.mmm. See [KeyVersion](#data-dictionary-keyversion)
+       [KeyIdentifier](#keyidentifier)     | ✔ | String | "SpecV2TestDATKey" for test environment, and "SpecV2ProdDATKey" for production
+       [KeyVersion](#keyversion)           | ✔ | String | An incrementing value. Either a counter or date formatted as YYYYMMDDHHmmss.mmm. See [KeyVersion](#keyversion)
       **KeyEncryptionAlgorithm**           | ✔ | Object | 
-       [Algorithm](#data-dictionary-algorithm)             | ✔ | String | Set to "des-ede3-cbc". 
-      [EncryptedKey](#data-dictionary-encryptedkey)        | ✔ | String | A double length 3DES key. See [EncryptedKey](#data-dictionary-encryptedkey)
+       [Algorithm](#algorithm)             | ✔ | String | Set to "des-ede3-cbc". 
+      [EncryptedKey](#encryptedkey)        | ✔ | String | A double length 3DES key. See [EncryptedKey](#encryptedkey)
     **EncryptedContent**                   | ✔ | Object | 
      ContentType                           | ✔ | String | Set to "id-data"
      **ContentEncryptionAlgorithm**        | ✔ | Object | 
       Algorithm                            | ✔ | String | Set to "des-ede3-cbc"
       **Parameter**                        | ✔ | Object | 
       InitialisationVector                 | ✔ | String | An Initial Vector to use for the des-ede3-cbc encryption of the content = SensitiveCardData
-     [EncryptedData](#data-dictionary-encrypteddata)       | ✔ | String | Encrypted data. See [EncryptedData](#data-dictionary-encrypteddata)
- **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](#data-dictionary-entrymode) is "File". Object with identifies the payment token. 
-  [TokenRequestedType](#data-dictionary-tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
+     [EncryptedData](#encrypteddata)       | ✔ | String | Encrypted data. See [EncryptedData](#encrypteddata)
+ **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](#entrymode) is "File". Object with identifies the payment token. 
+  [TokenRequestedType](#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
   [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
 
 <aside class="warning">
@@ -749,14 +749,14 @@ An object representing a payment token. Consists of three fields:
 
 Attribute | Requ.  | Format | Description |
 -----------------                        | ------ | ------ | ----------- |
-[TokenRequestedType](#data-dictionary-tokenrequestedtype)| ✔ | String | Mirrored from the request
+[TokenRequestedType](#tokenrequestedtype)| ✔ | String | Mirrored from the request
 [TokenValue](#tokenvalue)                | ✔ | String | The value of the token
 [ExpiryDateTime](#expirydatetime)        | ✔ | String | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
 
 
 ## ProductLabel
 
-Product name of a [SaleItem](#data-dictionary-saleitem).
+Product name of a [SaleItem](#saleitem).
 
 The `ProductLabel` should contain a short, human readable, descriptive name of the product. 
 
@@ -957,24 +957,24 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
 
 Attribute   | Requ.  | Format | Description |
 -----------------                          | ------ | ------ | ----------- |
-[ItemID](#data-dictionary-itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-[ProductCode](#data-dictionary-productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-[EanUpc](#data-dictionary-eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-[UnitOfMeasure](#data-dictionary-unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
-[Quantity](#data-dictionary-quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
-[UnitPrice](#data-dictionary-unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
-[ItemAmount](#data-dictionary-itemamount)                  | ✔ | Decimal| Total amount of the sale item
-[TaxCode](#data-dictionary-taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
-[SaleChannel](#data-dictionary-salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
-[ProductLabel](#data-dictionary-productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-[AdditionalProductInfo](#data-dictionary-additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
-[ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#data-dictionary-itemid) of the parent `SaleItem`
+[ItemID](#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+[ProductCode](#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+[EanUpc](#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+[UnitOfMeasure](#unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
+[Quantity](#quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
+[UnitPrice](#unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
+[ItemAmount](#itemamount)                  | ✔ | Decimal| Total amount of the sale item
+[TaxCode](#taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
+[SaleChannel](#salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
+[ProductLabel](#productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+[AdditionalProductInfo](#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
+[ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#itemid) of the parent `SaleItem`
 [CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
 [Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
 [DiscountReason](#discount-reason)                         |  | String | Explains about the discount applied
-[Categories](#data-dictionary-categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#data-dictionary-categories) for more information.
+[Categories](#categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#categories) for more information.
 [Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
-[QuantityInStock](#data-dictionary-quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
+[QuantityInStock](#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
 [Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
 [Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
 [PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
@@ -983,8 +983,8 @@ Attribute   | Requ.  | Format | Description |
 [Size](#size)                                            |  | String | Size of the sale item
 [Colour](#colour)                                          |  | String | Colour of the sale item
 [Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
-[WeightUnitOfMeasure](#data-dictionary-unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
-[CustomFields](#data-dictionary-customfields)              |  | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
+[WeightUnitOfMeasure](#unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
+[CustomFields](#customfields)              |  | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
 
 ### Sale items with a UPC/EAN/ISBN
 
@@ -1005,8 +1005,8 @@ Attribute   | Requ.  | Format | Description |
 ]
 ```
 
-* Items which have a UPC/EAN/ISBN must include the UPC/EAN/ISBN in the [EanUpc](#data-dictionary-eanupc) field. 
-* Both [ProductCode](#data-dictionary-productcode) and [EanUpc](#data-dictionary-eanupc) should be populated, even if they are the same value
+* Items which have a UPC/EAN/ISBN must include the UPC/EAN/ISBN in the [EanUpc](#eanupc) field. 
+* Both [ProductCode](#productcode) and [EanUpc](#eanupc) should be populated, even if they are the same value
 * Other standard mandatory fields in sale item are still mandatory.
 
 ### Sale items with modifiers 
@@ -1074,7 +1074,7 @@ If the Sale System basket contains sale items and modifiers:
 * Modifiers may contain a unique `ProductCode` or share the same `ProductCode` as the parent sale item
 
 
-Some sale Sale Systems do not record modifiers as individual items. For example, they are stored in a 'notes' or 'cooking instructions' field. In this case the additional notes should be included in the [AdditionalProductInfo](#data-dictionary-additionalproductinfo) field. 
+Some sale Sale Systems do not record modifiers as individual items. For example, they are stored in a 'notes' or 'cooking instructions' field. In this case the additional notes should be included in the [AdditionalProductInfo](#additionalproductinfo) field. 
 
 
 ### Item bundles
@@ -1090,7 +1090,7 @@ Examples of item "bundles":
 
 The Sale System should populate the `SaleItem` array based on how the "bundle" is represented in the basket. 
 
-If the "bundle" is represented as a unique product with a title and a price, include the "bundle" product as a `SaleItem`. Contents of the bundle can then be included either as "modifiers" associated with the bundle, or as a text description in the [AdditionalProductInfo](#data-dictionary-additionalproductinfo) field. 
+If the "bundle" is represented as a unique product with a title and a price, include the "bundle" product as a `SaleItem`. Contents of the bundle can then be included either as "modifiers" associated with the bundle, or as a text description in the [AdditionalProductInfo](#additionalproductinfo) field. 
 
 If the "bundle" is a shortcut in the Sale System which has no value associated and is simply used to add multiple products to the basket, include each product as a `SaleItem`.
 
@@ -1170,27 +1170,27 @@ A globally unique value, used to link a related series of transactions.
 
 For example, a pre-authorisation, followed by a pre-authorisation top-up, and then a completion all require the same `SaleReferenceID` in the request.
 
-The Sale System must ensure the `SaleReferenceID` is unique across all [SaleID](#data-dictionary-saleid)'s and [POIID](#data-dictionary-poiid)'s across the merchant. If Sale Systems are not synchronised, it is recommended that this value should be a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) to ensure uniqueness.
+The Sale System must ensure the `SaleReferenceID` is unique across all [SaleID](#saleid)'s and [POIID](#poiid)'s across the merchant. If Sale Systems are not synchronised, it is recommended that this value should be a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) to ensure uniqueness.
 
 
 ## SaleTransactionID
 
-Identification of a transaction for a given [SaleId](#data-dictionary-saleid). 
+Identification of a transaction for a given [SaleId](#saleid). 
 
 Contains the following fields: 
 
 Attribute |Requ.| Format | Description |
 -----------------                        |----| ------ | ----------- |
-[TransactionID](#data-dictionary-transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#data-dictionary-transactionid)
-[TimeStamp](#data-dictionary-timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+[TransactionID](#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#transactionid)
+[TimeStamp](#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 
 
 
 ## ShiftNumber
 
-An optional value sent in the [Login Request](#cloud-api-reference-methods-login) for information only. Used to identify the shift that drives the Sale Terminal during the session.
+An optional value sent in the [Login Request](./APIs/cloud-api-reference#login) for information only. Used to identify the shift that drives the Sale Terminal during the session.
 
-If present, totals in the [ReconciliationResponse](#cloud-api-reference-methods-reconciliation) will be grouped by this value. If not present, payment transactions that do not specify a `ShiftNumber` will not be grouped under a `ShiftNumber`.
+If present, totals in the [ReconciliationResponse](./APIs/cloud-api-reference#reconciliation) will be grouped by this value. If not present, payment transactions that do not specify a `ShiftNumber` will not be grouped under a `ShiftNumber`.
 
 Note that different shifts may still occur during the same login session by setting a `ShiftNumber` per payment. 
 
@@ -1203,7 +1203,7 @@ The `ServiceID` of the message response is mirrored from the `ServiceID` in the 
 
 The POI System will validate that the `ServiceID` is different from the previous request. The Sale System should validate that the `ServiceID` in the response matches the `ServiceID` sent in the request.
 
-The `ServiceID` is used to identify a transaction to retrieve in a [transaction status](#cloud-api-reference-methods-transaction-status) request. 
+The `ServiceID` is used to identify a transaction to retrieve in a [transaction status](./APIs/cloud-api-reference#transaction-status) request. 
 
 ## SoftwareVersion
 
@@ -1290,7 +1290,7 @@ Used to identify a transaction on the Sale System or POI System.
 
 ## UnitOfMeasure
 
-Unit of measure of the [Quantity](#data-dictionary-quantity)
+Unit of measure of the [Quantity](#quantity)
 
 Available values: 
 

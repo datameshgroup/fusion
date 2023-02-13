@@ -204,19 +204,19 @@ A `MessageHeader` is included with each request and response. It defines the pro
 
 Attribute                             |Requ.| Format | Description |
 -----------------                     |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
-[MessageCategory](#data-dictionary-messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
-[MessageType](#data-dictionary-messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
-[ServiceID](#data-dictionary-serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](#data-dictionary-serviceid).
+[MessageClass](../data-dictionary#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
+[MessageCategory](../data-dictionary#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
+[MessageType](../data-dictionary#messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
+[ServiceID](../data-dictionary#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
 
  
 ### Payload
 
-An object which defines fields for the request/response. The object name depends on the [MessageCategory](#data-dictionary-messagecategory) defined in the `MessageHeader`
+An object which defines fields for the request/response. The object name depends on the [MessageCategory](../data-dictionary#messagecategory) defined in the `MessageHeader`
 
 e.g. a payment will include a `PaymentRequest`/`PaymentResponse`.
 
-The [Satellite API Reference](#satellite-api-reference) outlines the expected payload for each supported request.  
+The *Satellite API Reference* outlines the expected payload for each supported request.  
 
 
 <!-- 
@@ -225,30 +225,30 @@ The [Satellite API Reference](#satellite-api-reference) outlines the expected pa
 To perform a purchase the Sale System will need to implement requests, and handle responses outlined in the [payment lifecycle](#getting-started-design-your-integration-payment-lifecycle).
 
 
-- If a login hasn't already been sent for the session, send a login request as detailed in [login request](#cloud-api-reference-methods-login) 
-  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](#data-dictionary-salecapabilities) if payment receipts are to be redirected to the Sale System
+- If a login hasn't already been sent for the session, send a login request as detailed in [login request](./cloud-api-reference#login) 
+  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities) if payment receipts are to be redirected to the Sale System
 - Await the a login response and
-  - Ensure the [ServiceID](#data-dictionary-serviceid) in the result matches the request
-  - Record the [POISerialNumber](#data-dictionary-poiserialnumber) to be sent in subsequent login requests
-- Send a payment request, including all required fields, as detailed in [payment request](#cloud-api-reference-methods-payment) 
-  - Set [PaymentData.PaymentType](#data-dictionary-paymenttype) to "Normal"
+  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
+  - Record the [POISerialNumber](../data-dictionary#poiserialnumber) to be sent in subsequent login requests
+- Send a payment request, including all required fields, as detailed in [payment request](./cloud-api-reference#payment) 
+  - Set [PaymentData.PaymentType](../data-dictionary#paymenttype) to "Normal"
   - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount)
-  - Set [SaleTransactionID](#data-dictionary-saletransactionid) to a unique value for the sale on this Sale System
-  - Populate the [SaleItem](#data-dictionary-saleitem) array with the product basket for the transaction 
-- If configured in [SaleTerminalData.SaleCapabilities](#data-dictionary-salecapabilities), handle any [display](#cloud-api-reference-methods-display), [print](#cloud-api-reference-methods-print), and [input](#cloud-api-reference-methods-input) events the POI System sends
+  - Set [SaleTransactionID](../data-dictionary#saletransactionid) to a unique value for the sale on this Sale System
+  - Populate the [SaleItem](../data-dictionary#saleitem) array with the product basket for the transaction 
+- If configured in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities), handle any [display](./cloud-api-reference#display), [print](./cloud-api-reference#print), and [input](./cloud-api-reference#input) events the POI System sends
   - The expected user interface handling is outlined in [user interface](#user-interface)
   - The expected payment receipt handling is outlined in [receipt printing](#receipt-printing)
 - Await the payment response 
-  - Ensure the [ServiceID](#data-dictionary-serviceid) in the result matches the request
-  - Check [Response.Result](#data-dictionary-result) for the transaction result 
-  - If [Response.Result](#data-dictionary-result) is "Success", record the following to enable future matched refunds:
-    - [SaleID](#data-dictionary-saleid)
-	- [POIID](#data-dictionary-poiid)
-	- [POITransactionID](#data-dictionary-poitransactionid)
+  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
+  - Check [Response.Result](../data-dictionary#result) for the transaction result 
+  - If [Response.Result](../data-dictionary#result) is "Success", record the following to enable future matched refunds:
+    - [SaleID](../data-dictionary#saleid)
+	- [POIID](../data-dictionary#poiid)
+	- [POITransactionID](../data-dictionary#poitransactionid)
   - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
   - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](#surchargeamount)
   - Print the receipt contained in `PaymentReceipt`
-- Implement error handling outlined in [error handling](#cloud-api-reference-error-handling)
+- Implement error handling outlined in [error handling](./cloud-api-reference#error-handling)
 
 
 ## Perform a refund
@@ -258,29 +258,29 @@ To perform a refund the Sale System will need to implement requests, and handle 
 In most cases the Sale System should attempt to 
 //
 
-- If a login hasn't already been sent for the session, send a login request as detailed in [login request](#cloud-api-reference-methods-login) 
-  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](#data-dictionary-salecapabilities) if payment receipts are to be redirected to the Sale System
+- If a login hasn't already been sent for the session, send a login request as detailed in [login request](./cloud-api-reference#login) 
+  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities) if payment receipts are to be redirected to the Sale System
 - Await the a login response and
-  - Ensure the [ServiceID](#data-dictionary-serviceid) in the result matches the request
-  - Record the [POISerialNumber](#data-dictionary-poiserialnumber) to be sent in subsequent login requests
-- Send a payment request, including all required fields, as detailed in [payment request](#cloud-api-reference-methods-payment) 
-  - Set [PaymentData.PaymentType](#data-dictionary-paymenttype) to "Refund"
+  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
+  - Record the [POISerialNumber](../data-dictionary#poiserialnumber) to be sent in subsequent login requests
+- Send a payment request, including all required fields, as detailed in [payment request](./cloud-api-reference#payment) 
+  - Set [PaymentData.PaymentType](../data-dictionary#paymenttype) to "Refund"
   - Set the refund amount in [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount)
-  - Set [SaleTransactionID](#data-dictionary-saletransactionid) to a unique value for the sale on this Sale System
-  - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](#data-dictionary-originalpoitransaction)
-    - Set [SaleID](#data-dictionary-saleid) to the [SaleID](#data-dictionary-saleid) of the original purchase payment request 
-	- Set [POIID](#data-dictionary-poiid) to the [POIID](#data-dictionary-poiid) of the original purchase payment request 
-	- Set [POITransactionID](#data-dictionary-poitransactionid) to the value returned in [POIData.POITransactionID](#data-dictionary-poitransactionid) of the original purchase payment response 
+  - Set [SaleTransactionID](../data-dictionary#saletransactionid) to a unique value for the sale on this Sale System
+  - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](../data-dictionary#originalpoitransaction)
+    - Set [SaleID](../data-dictionary#saleid) to the [SaleID](../data-dictionary#saleid) of the original purchase payment request 
+	- Set [POIID](../data-dictionary#poiid) to the [POIID](../data-dictionary#poiid) of the original purchase payment request 
+	- Set [POITransactionID](../data-dictionary#poitransactionid) to the value returned in [POIData.POITransactionID](../data-dictionary#poitransactionid) of the original purchase payment response 
     - The product basket is not required for refunds
-- If configured in [SaleTerminalData.SaleCapabilities](#data-dictionary-salecapabilities), handle any [display](#cloud-api-reference-methods-display), [print](#cloud-api-reference-methods-print), and [input](#cloud-api-reference-methods-input) events the POI System sends
+- If configured in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities), handle any [display](./cloud-api-reference#display), [print](./cloud-api-reference#print), and [input](./cloud-api-reference#input) events the POI System sends
   - The expected user interface handling is outlined in [user interface](#user-interface)
   - The expected payment receipt handling is outlined in [receipt printing](#receipt-printing)
 - Await the payment response 
-  - Ensure the [ServiceID](#data-dictionary-serviceid) in the result matches the request
-  - Check [Response.Result](#data-dictionary-result) for the transaction result 
+  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
+  - Check [Response.Result](../data-dictionary#result) for the transaction result 
   - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
   - Print the receipt contained in `PaymentReceipt`
-- Implement error handling outlined in [error handling](#cloud-api-reference-error-handling)
+- Implement error handling outlined in [error handling](./cloud-api-reference#error-handling)
 
 -->
 
@@ -454,28 +454,28 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)             | ✔ | String | "Service"
-[MessageCategory](#data-dictionary-messagecategory)       | ✔ | String | "Payment"
-[MessageType](#data-dictionary-messagetype)               | ✔ | String | "Request"
-[ServiceID](#data-dictionary-serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](#data-dictionary-serviceid).
+[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
+[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Payment"
+[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
+[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
 
 **PaymentRequest**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
- [OperatorID](#data-dictionary-operatorid)                   |   | String | Only required if different from Login Request
+ [OperatorID](../data-dictionary#operatorid)                   |   | String | Only required if different from Login Request
  [OperatorLanguage](#operatorlanguage)       |   | String | Set to "en"
- [ShiftNumber](#data-dictionary-shiftnumber)                 |   | String | Only required if different from Login Request
- [SaleReferenceID](#data-dictionary-salereferenceid)         |  | String | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](#data-dictionary-salereferenceid)
- [TokenRequestedType](#data-dictionary-tokenrequestedtype)   |  | String | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](#data-dictionary-tokenrequestedtype)
+ [ShiftNumber](../data-dictionary#shiftnumber)                 |   | String | Only required if different from Login Request
+ [SaleReferenceID](../data-dictionary#salereferenceid)         |  | String | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](../data-dictionary#salereferenceid)
+ [TokenRequestedType](../data-dictionary#tokenrequestedtype)   |  | String | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](../data-dictionary#tokenrequestedtype)
  **SaleTransactionID**                       | ✔ | Object |
-  [TransactionID](#data-dictionary-transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#data-dictionary-transactionid)
-  [TimeStamp](#data-dictionary-timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](../data-dictionary#transactionid)
+  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
  **SaleTerminalData**                        |  | Object | Define Sale System configuration. Only include if elements within have different values to those in Login Request
-  [TerminalEnvironment](#data-dictionary-terminalenvironment)| | String | "Attended", "SemiAttended", or "Unattended"
-  [SaleCapabilities](#data-dictionary-salecapabilities)      | | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](#data-dictionary-salecapabilities) 
-  [TotalsGroupId](#data-dictionary-totalsgroupid)            |  | String | Groups transactions in a login session
+  [TerminalEnvironment](../data-dictionary#terminalenvironment)| | String | "Attended", "SemiAttended", or "Unattended"
+  [SaleCapabilities](../data-dictionary#salecapabilities)      | | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](../data-dictionary#salecapabilities) 
+  [TotalsGroupId](../data-dictionary#totalsgroupid)            |  | String | Groups transactions in a login session
 **PaymentTransaction**                       | ✔ | Object | 
  **AmountsReq**                               | ✔ | Object | Object which contains the various components which make up the payment amount
   [Currency](#currency)                      | ✔ | String | Three character currency code. Set to "AUD"
@@ -485,39 +485,39 @@ Attribute     |Requ.| Format | Description |
   [PaidAmount](#paidamount)                  |  | Decimal | Sum of the amount of sale items – `RequestedAmount`. Present only if an amount has already been paid in the case of a split payment.
   [MaximumCashBackAmount](#maximumcashbackamount)|  | Decimal | Available if `CashBackAmount` is not present. If present, the POI Terminal prompts for the cash back amount up to a maximum of `MaximumCashBackAmount`
   [MinimumSplitAmount](#minimumsplitamount)  |   | Decimal | Present only if the POI Terminal can process an amount less than the `RequestedAmount` as a split amount. Limits the minimum split amount allowed.
- **[OriginalPOITransaction](#data-dictionary-originalpoitransaction)** |  | Object | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](#data-dictionary-originalpoitransaction)
-  [SaleID](#data-dictionary-saleid)                          | ✔ | String | [SaleID](#data-dictionary-saleid) which performed the original transaction
-  [POIID](#data-dictionary-poiid)                            | ✔ | String | [POIID](#data-dictionary-poiid) which performed the original transaction
+ **[OriginalPOITransaction](../data-dictionary#originalpoitransaction)** |  | Object | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](../data-dictionary#originalpoitransaction)
+  [SaleID](../data-dictionary#saleid)                          | ✔ | String | [SaleID](../data-dictionary#saleid) which performed the original transaction
+  [POIID](../data-dictionary#poiid)                            | ✔ | String | [POIID](../data-dictionary#poiid) which performed the original transaction
   **POITransactionID**                       | ✔ | Object | 
-   [TransactionID](#data-dictionary-transactionid)           | ✔ | String | `TransactionID` from the original transaction
-   [TimeStamp](#data-dictionary-timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
+   [TransactionID](../data-dictionary#transactionid)           | ✔ | String | `TransactionID` from the original transaction
+   [TimeStamp](../data-dictionary#timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
   [ReuseCardDataFlag](#reusecarddataflag)    |  | Boolean| If 'true' the POI Terminal will retrieve the card data from file based on the `PaymentToken` included in the request. Otherwise the POI Terminal will read the same card again.
   [ApprovalCode](#approvalcode)              |  | String | Present if a referral code is obtained from an Acquirer
   [LastTransactionFlag](#lasttransactionflag)| ✔ | Boolean| Set to true to process the Last Transaction with a referral code
  **TransactionConditions**                   |  | Object | Optional transaction configuration. Present only if any of the JSON elements within are present.
-  [AllowedPaymentBrands](#data-dictionary-allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](#data-dictionary-allowedpaymentbrands)
-  [AcquirerID](#data-dictionary-paymenttransaction.transactionconditions.acquirerid) |  | Array  | Used to restrict the payment to specified acquirers. See [AcquirerID](#data-dictionary-paymenttransaction.transactionconditions.acquirerid)
+  [AllowedPaymentBrands](../data-dictionary#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](../data-dictionary#allowedpaymentbrands)
+  [AcquirerID](../data-dictionary#paymenttransaction.transactionconditions.acquirerid) |  | Array  | Used to restrict the payment to specified acquirers. See [AcquirerID](../data-dictionary#paymenttransaction.transactionconditions.acquirerid)
   [DebitPreferredFlag](#debitpreferredflag)  |  | Boolean| If present, debit processing is preferred to credit processing.
-  [ForceOnlineFlag](#data-dictionary-forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
-  [MerchantCategoryCode](#data-dictionary-merchantcategorycode)|  | String | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
- **[SaleItem](#data-dictionary-saleitem)**                   | ✔ | Array  | Array of [SaleItem](#data-dictionary-saleitem) objects which represent the product basket attached to this transaction. See [SaleItem](#data-dictionary-saleitem) for examples.
-  [ItemID](#data-dictionary-itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-  [ProductCode](#data-dictionary-productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-  [EanUpc](#data-dictionary-eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-  [UnitOfMeasure](#data-dictionary-unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
-  [Quantity](#data-dictionary-quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
-  [UnitPrice](#data-dictionary-unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
-  [ItemAmount](#data-dictionary-itemamount)                  | ✔ | Decimal| Total amount of the sale item
-  [TaxCode](#data-dictionary-taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
-  [SaleChannel](#data-dictionary-salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
-  [ProductLabel](#data-dictionary-productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-  [AdditionalProductInfo](#data-dictionary-additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
-  [ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#data-dictionary-itemid) of the parent `SaleItem`
+  [ForceOnlineFlag](../data-dictionary#forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
+  [MerchantCategoryCode](../data-dictionary#merchantcategorycode)|  | String | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
+ **[SaleItem](../data-dictionary#saleitem)**                   | ✔ | Array  | Array of [SaleItem](../data-dictionary#saleitem) objects which represent the product basket attached to this transaction. See [SaleItem](../data-dictionary#saleitem) for examples.
+  [ItemID](../data-dictionary#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+  [ProductCode](../data-dictionary#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+  [EanUpc](../data-dictionary#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+  [UnitOfMeasure](../data-dictionary#unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
+  [Quantity](../data-dictionary#quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
+  [UnitPrice](../data-dictionary#unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
+  [ItemAmount](../data-dictionary#itemamount)                  | ✔ | Decimal| Total amount of the sale item
+  [TaxCode](../data-dictionary#taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
+  [SaleChannel](../data-dictionary#salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
+  [ProductLabel](../data-dictionary#productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+  [AdditionalProductInfo](../data-dictionary#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
+  [ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](../data-dictionary#itemid) of the parent `SaleItem`
   [CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
   [Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
-  [Categories](#data-dictionary-categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#data-dictionary-categories) for more information.
+  [Categories](../data-dictionary#categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](../data-dictionary#categories) for more information.
   [Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
-  [QuantityInStock](#data-dictionary-quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
+  [QuantityInStock](../data-dictionary#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
   [Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
   [Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
   [PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
@@ -526,11 +526,11 @@ Attribute     |Requ.| Format | Description |
   [Size](#size)                                              |  | String | Size of the sale item
   [Colour](#colour)                                          |  | String | Colour of the sale item
   [Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
-  [WeightUnitOfMeasure](#data-dictionary-unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
+  [WeightUnitOfMeasure](../data-dictionary#unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
  **PaymentData**                             | ✔ | Object | Object representing the payment method. Present only if any of the JSON elements within are present.
-  [PaymentType](#data-dictionary-paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", "CashAdvance", "FirstReservation", or "Completion". See [PaymentType](#data-dictionary-paymenttype)
-  **[PaymentInstrumentData](#data-dictionary-paymentinstrumentdata)** |  | Object | Object with represents card details for token or manually enter card details. See  for object structure
- **[CustomFields](#data-dictionary-customfields)**                             |  | Array | Array of key/type/value objects containing additional payment information
+  [PaymentType](../data-dictionary#paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", "CashAdvance", "FirstReservation", or "Completion". See [PaymentType](../data-dictionary#paymenttype)
+  **[PaymentInstrumentData](../data-dictionary#paymentinstrumentdata)** |  | Object | Object with represents card details for token or manually enter card details. See  for object structure
+ **[CustomFields](../data-dictionary#customfields)**                             |  | Array | Array of key/type/value objects containing additional payment information
 
 #### Payment response
 
@@ -627,40 +627,40 @@ Attribute     |Requ.| Format | Description |
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)                | ✔ | String | "Service"
-[MessageCategory](#data-dictionary-messagecategory)          | ✔ | String | "Payment"
-[MessageType](#data-dictionary-messagetype)                  | ✔ | String | "Response"
-[ServiceID](#data-dictionary-serviceid)                      | ✔ | String | Mirrored from the request
+[MessageClass](../data-dictionary#messageclass)                | ✔ | String | "Service"
+[MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Payment"
+[MessageType](../data-dictionary#messagetype)                  | ✔ | String | "Response"
+[ServiceID](../data-dictionary#serviceid)                      | ✔ | String | Mirrored from the request
 
 **PaymentResponse**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
- [Result](#data-dictionary-result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](#data-dictionary-errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](#data-dictionary-errorcondition) for more information on possible values.
- [AdditionalResponse](#data-dictionary-additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](#data-dictionary-additionalresponse) for more information on possible values. 
+ [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
+ [AdditionalResponse](../data-dictionary#additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | Object | 
  **SaleTransactionID**                       | ✔ | Object | 
-  [TransactionID](#data-dictionary-transactionid)            | ✔ | String | Mirrored from the request
-  [TimeStamp](#data-dictionary-timestamp)                    | ✔ | String | Mirrored from the request
- [SaleReferenceID](#data-dictionary-salereferenceid)         |  | String | Mirrored from the request
+  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | Mirrored from the request
+  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Mirrored from the request
+ [SaleReferenceID](../data-dictionary#salereferenceid)         |  | String | Mirrored from the request
 **POIData**                                  | ✔ | Object | 
  **POITransactionID**                        | ✔ | Object | 
-  [TransactionID](#data-dictionary-transactionid)            | ✔ | String | A unique transaction id from the POI system
-  [TimeStamp](#data-dictionary-timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- [POIReconciliationID](#data-dictionary-poireconciliationid) |  | String | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](#data-dictionary-poireconciliationid)
+  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | A unique transaction id from the POI system
+  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+ [POIReconciliationID](../data-dictionary#poireconciliationid) |  | String | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](../data-dictionary#poireconciliationid)
 **PaymentResult**                            |  | Object | Object related to a processed payment
- [PaymentType](#data-dictionary-paymenttype)                 |  | String | Mirrored from the request
+ [PaymentType](../data-dictionary#paymenttype)                 |  | String | Mirrored from the request
  **PaymentInstrumentData**                   |  | Object 
-  [PaymentInstrumentType](#data-dictionary-paymentinstrumenttype) |  | String | "Card" or "Mobile"
+  [PaymentInstrumentType](../data-dictionary#paymentinstrumenttype) |  | String | "Card" or "Mobile"
   **CardData**                               |  | Object
-   [EntryMode](#data-dictionary-entrymode)                   | ✔ | String | Indicates how the card was presented. See [EntryMode](#data-dictionary-entrymode)
-   [PaymentBrand](#data-dictionary-paymentbrand)             | ✔ | String | Indicates the card type used. See [PaymentBrand](#data-dictionary-paymentbrand)
-   [MaskedPAN](#data-dictionary-maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
-   [Account](#data-dictionary-account)                       |  | String | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](#data-dictionary-account)
+   [EntryMode](../data-dictionary#entrymode)                   | ✔ | String | Indicates how the card was presented. See [EntryMode](../data-dictionary#entrymode)
+   [PaymentBrand](../data-dictionary#paymentbrand)             | ✔ | String | Indicates the card type used. See [PaymentBrand](../data-dictionary#paymentbrand)
+   [MaskedPAN](../data-dictionary#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
+   [Account](../data-dictionary#account)                       |  | String | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](../data-dictionary#account)
    **PaymentToken**                          |  | Object | Object representing a token. Only present if token was requested
-    [TokenRequestedType](#data-dictionary-tokenrequestedtype)| ✔ | String | Mirrored from the request
+    [TokenRequestedType](../data-dictionary#tokenrequestedtype)| ✔ | String | Mirrored from the request
     [TokenValue](#tokenvalue)                | ✔ | String | The value of the token
     [ExpiryDateTime](#expirydatetime)        | ✔ | String | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
  **AmountsResp**                             |  | Object | Present if `Result` is "Success" or "Partial"
@@ -672,12 +672,12 @@ Attribute     |Requ.| Format | Description |
   [SurchargeAmount](#surchargeamount)        |  | Decimal| The amount of any surcharge added to the transaction
  [OnlineFlag](#onlineflag)                   | ✔ | Boolean| True if the transaction was processed online, false otherwise
  **PaymentAcquirerData**                     |  | Object | Data related to the response from the payment acquirer
-  [AcquirerID](#data-dictionary-paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
+  [AcquirerID](../data-dictionary#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
   [MerchantID](#merchantid)                  | ✔ | String | The acquirer merchant ID (MID)
   [AcquirerPOIID](#acquirerPOIID)            | ✔ | String | The acquirer terminal ID (TID)
   **AcquirerTransactionID**                  | ✔ | Object | 
-   [TransactionID](#data-dictionary-transactionid)           | ✔ | String | The acquirer transaction ID
-   [TimeStamp](#data-dictionary-timestamp)                   | ✔ | String | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+   [TransactionID](../data-dictionary#transactionid)           | ✔ | String | The acquirer transaction ID
+   [TimeStamp](../data-dictionary#timestamp)                   | ✔ | String | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
   [ApprovalCode](#approvalcode)              | ✔ | String | The Acquirer Approval Code. Also referred to as the Authentication Code
   [ResponseCode](#responsecode)              | ✔ | String | The Acquirer Response Code. Also referred as the PINPad response code
   [STAN](#stan)                              |  | String | The Acquirer STAN if available
@@ -688,8 +688,8 @@ Attribute     |Requ.| Format | Description |
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "CustomerReceipt"
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
   **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-   [OutputFormat](#data-dictionary-outputformat)              | ✔ | String | "XHTML"  
-   [OutputXHTML](#data-dictionary-outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+   [OutputFormat](../data-dictionary#outputformat)              | ✔ | String | "XHTML"  
+   [OutputXHTML](../data-dictionary#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
 
 
 
@@ -733,18 +733,18 @@ A transaction status request can be used to obtain the status of a previous tran
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)             | ✔ | String | "Service"
-[MessageCategory](#data-dictionary-messagecategory)       | ✔ | String | "TransactionStatus"
-[MessageType](#data-dictionary-messagetype)               | ✔ | String | "Request"
-[ServiceID](#data-dictionary-serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](#data-dictionary-serviceid).
+[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
+[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
+[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
+[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
 
 **TransactionStatusRequest**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |----| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
- [MessageCategory](#data-dictionary-messagecategory)          |    | String | "Payment"
- [ServiceID](#data-dictionary-serviceid)                      |    | String | The [ServiceID](#data-dictionary-serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
+ [MessageCategory](../data-dictionary#messagecategory)          |    | String | "Payment"
+ [ServiceID](../data-dictionary#serviceid)                      |    | String | The [ServiceID](../data-dictionary#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
 
 
 #### Transaction status response
@@ -786,22 +786,22 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)             | ✔ | String | "Service"
-[MessageCategory](#data-dictionary-messagecategory)       | ✔ | String | "TransactionStatus"
-[MessageType](#data-dictionary-messagetype)               | ✔ | String | "Response"
-[ServiceID](#data-dictionary-serviceid)                   | ✔ | String | Mirrored from request
+[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
+[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
+[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
+[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from request
 
 **TransactionStatusResponse**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |----| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
- [Result](#data-dictionary-result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](#data-dictionary-errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](#data-dictionary-errorcondition) for more information on possible values.
- [AdditionalResponse](#data-dictionary-additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](#data-dictionary-additionalresponse) for more information on possible values. 
+ [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
+ [AdditionalResponse](../data-dictionary#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
 *MessageReference*                            |  | Object | Identification of a previous POI transaction. Present if `Result` is "Success", or `Result` is "Failure" and `ErrorCondition` is "InProgress"
- [MessageCategory](#data-dictionary-messagecategory)          | ✔ | String | Mirrored from request
- [ServiceID](#data-dictionary-serviceid)                      | ✔ | String | Mirrored from request, or `ServiceID` of last transaction if not present in request.
+ [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | Mirrored from request
+ [ServiceID](../data-dictionary#serviceid)                      | ✔ | String | Mirrored from request, or `ServiceID` of last transaction if not present in request.
 *RepeatedMessageResponse*                     |  | Object | Present if `Result` is "Success"
  *MessageHeader*                              | ✔ | Object | `MessageHeader` of the requested payment
  *PaymentResponse*                            | ✔ | Object | `PaymentResponse` of the requested payment
@@ -858,24 +858,24 @@ The reversal message is used to perform void/reversal request.
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)             | ✔ | String | "Service"
-[MessageCategory](#data-dictionary-messagecategory)       | ✔ | String | "Reversal"
-[MessageType](#data-dictionary-messagetype)               | ✔ | String | "Request"
-[ProtocolVersion](#data-dictionary-protocolversion)       | ✔ | String | "3.1-dmg"
-[ServiceID](#data-dictionary-serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](#data-dictionary-serviceid).
+[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
+[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Reversal"
+[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
+[ProtocolVersion](../data-dictionary#protocolversion)       | ✔ | String | "3.1-dmg"
+[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
 
 **ReversalRequest**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
- **[OriginalPOITransaction](#data-dictionary-originalpoitransaction)** | ✔ | Object | Identifies a previous POI transaction. See [OriginalPOITransaction](#data-dictionary-originalpoitransaction)
-  [SaleID](#data-dictionary-saleid)                          | ✔ | String | [SaleID](#data-dictionary-saleid) which performed the original transaction
-  [POIID](#data-dictionary-poiid)                            | ✔ | String | [POIID](#data-dictionary-poiid) which performed the original transaction
+ **[OriginalPOITransaction](../data-dictionary#originalpoitransaction)** | ✔ | Object | Identifies a previous POI transaction. See [OriginalPOITransaction](../data-dictionary#originalpoitransaction)
+  [SaleID](../data-dictionary#saleid)                          | ✔ | String | [SaleID](../data-dictionary#saleid) which performed the original transaction
+  [POIID](../data-dictionary#poiid)                            | ✔ | String | [POIID](../data-dictionary#poiid) which performed the original transaction
   [ReuseCardDataFlag](#reusecarddataflag)    |  | Boolean| If 'true' the POI Terminal will retrieve the card data from file based on the `PaymentToken` included in the request. Otherwise the POI Terminal will read the same card again.
   **POITransactionID**                       | ✔ | Object | 
-   [TransactionID](#data-dictionary-transactionid)           | ✔ | String | `TransactionID` from the original transaction
-   [TimeStamp](#data-dictionary-timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
- **[ReversalReason](#data-dictionary-reversal-reason)** | ✔ | Object | Reason for cancelling the successful payment transaction.  See [ReversalReason](#data-dictionary-reversalreason)
+   [TransactionID](../data-dictionary#transactionid)           | ✔ | String | `TransactionID` from the original transaction
+   [TimeStamp](../data-dictionary#timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
+ **[ReversalReason](../data-dictionary#reversal-reason)** | ✔ | Object | Reason for cancelling the successful payment transaction.  See [ReversalReason](../data-dictionary#reversalreason)
 
 #### Reversal response
 
@@ -929,27 +929,27 @@ Attribute     |Requ.| Format | Description |
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
-[MessageClass](#data-dictionary-messageclass)                | ✔ | String | "Service"
-[MessageCategory](#data-dictionary-messagecategory)          | ✔ | String | "Reversal"
-[MessageType](#data-dictionary-messagetype)                  | ✔ | String | "Response"
-[ProtocolVersion](#data-dictionary-protocolversion)       | ✔ | String | "3.1-dmg"
-[ServiceID](#data-dictionary-serviceid)                      | ✔ | String | Mirrored from the request
+[MessageClass](../data-dictionary#messageclass)                | ✔ | String | "Service"
+[MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Reversal"
+[MessageType](../data-dictionary#messagetype)                  | ✔ | String | "Response"
+[ProtocolVersion](../data-dictionary#protocolversion)       | ✔ | String | "3.1-dmg"
+[ServiceID](../data-dictionary#serviceid)                      | ✔ | String | Mirrored from the request
 
 **ReversalResponse**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
- [Result](#data-dictionary-result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](#data-dictionary-errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](#data-dictionary-errorcondition) for more information on possible values.
- [AdditionalResponse](#data-dictionary-additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](#data-dictionary-additionalresponse) for more information on possible values. 
+ [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
+ [AdditionalResponse](../data-dictionary#additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
 **POIData**                                  | ✔ | Object | 
  **POITransactionID**                        | ✔ | Object | 
-  [TransactionID](#data-dictionary-transactionid)            | ✔ | String | A unique transaction id from the POI system
-  [TimeStamp](#data-dictionary-timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | A unique transaction id from the POI system
+  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
  **PaymentReceipt**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "CustomerReceipt"
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
   **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-   [OutputFormat](#data-dictionary-outputformat)              | ✔ | String | "XHTML"  
-   [OutputXHTML](#data-dictionary-outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+   [OutputFormat](../data-dictionary#outputformat)              | ✔ | String | "XHTML"  
+   [OutputXHTML](../data-dictionary#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 

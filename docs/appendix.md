@@ -37,20 +37,20 @@ The DataMesh API supports two versions.
 
 Breaking changes when moving from "3.1" to "3.1-dmg"
 
-- [MessageHeader.ProtocolVersion](#data-dictionary-protocolversion) should be set to "3.1-dmg"
+- [MessageHeader.ProtocolVersion](./data-dictionary#protocolversion) should be set to "3.1-dmg"
 - Tip amount is now present in [PaymentResponse.PaymentResult.AmountsResp.TipAmount](#tipamount).
 - Surchage amount is now present in [PaymentResponse.PaymentResult.AmountsResp.SurchargeAmount](#surchargeamount).
 - `PaymentResponse.PaymentResult.PaymentReceipt` is now an array of receipts. This was a single object in "3.1"
 - For a successful payment, the acquirer STAN is returned in `PaymentResponse.PaymentResult.PaymentAcquirerData.STAN`. 
 - For a successful payment, the acquirer RRN is returned in `PaymentResponse.PaymentResult.PaymentAcquirerData.RRN`. 
 - POS should support the "3.1-dmg" `mandatory features checklist`
-  - Support for [purchase](#cloud-api-reference-perform-a-purchase) and [refund](#cloud-api-reference-perform-a-refund) payment types
-  - Include [product data](#cloud-api-reference-product-data) in each payment request
+  - Support for [purchase](./APIs/cloud-api-reference#perform-a-purchase) and [refund](./APIs/cloud-api-reference#perform-a-refund) payment types
+  - Include [product data](./APIs/cloud-api-reference#product-data) in each payment request
   - Additional fields will be added to the message specification over time. To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages. This includes valid MAC handling in the SecurityTrailer.
-  - Support for TLS and other [security requirements](#cloud-api-reference-security-requirements)
+  - Support for TLS and other [security requirements](./APIs/cloud-api-reference#security-requirements)
   - [Settings user interface](#settings-user-interface)
   - [Payments user interface](#payment-user-interface) which handles the `Initial UI`, `Final UI`, and `cancelling a sale in progress`
-  - Handle error scenarios as outlined in [error handling](#cloud-api-reference-error-handling)
+  - Handle error scenarios as outlined in [error handling](./APIs/cloud-api-reference#error-handling)
   - Ensure Sale System provides a unique [payment identification](#payment-identification)
 
 
@@ -64,9 +64,9 @@ The following is a guide for updating a previous integration to the new data mod
 
 Old Field            | New Field                                                         | Notes                |
 -------------------- | -------------------                                               | -------------------- |
-TransType            | [PaymentData.PaymentType](#data-dictionary-paymenttype)           |                      |
-Amount               | [PaymentTransaction.AmountsReq.RequestedAmount](#data-dictionary-requestedamount) | Amount was represented as an integer 'cents' in the previous API, where the new API `RequestedAmount` is represented as decimal dollar and cents | 
-CashOut              | [PaymentTransaction.AmountsReq.CashBackAmount](#data-dictionary-cashbackamount) | CashOut was represented as an integer 'cents' in the previous API, where the new API `CashBackAmount` is represented as decimal dollar and cents | 
+TransType            | [PaymentData.PaymentType](./data-dictionary#paymenttype)           |                      |
+Amount               | [PaymentTransaction.AmountsReq.RequestedAmount](./data-dictionary#requestedamount) | Amount was represented as an integer 'cents' in the previous API, where the new API `RequestedAmount` is represented as decimal dollar and cents | 
+CashOut              | [PaymentTransaction.AmountsReq.CashBackAmount](./data-dictionary#cashbackamount) | CashOut was represented as an integer 'cents' in the previous API, where the new API `CashBackAmount` is represented as decimal dollar and cents | 
 POS                  | ApplicationName | Set as extra data in the intent, not part of the `Request` json object |
 Source               | SoftwareVersion | Only include the software version, not the POS name. Set as extra data in the intent, not part of the `Request` json object |
 
@@ -75,18 +75,18 @@ Source               | SoftwareVersion | Only include the software version, not 
 
 Old Field            | New Field                                                         | Notes                |
 -------------------- | -------------------                                               | -------------------- |
-TransState           | [Response.Result](#data-dictionary-result)                        |                      |
-TransID              | [POIData.POITransactionID.TransactionID](#data-dictionary-poitransactionid) | |
-TerminalID           | [PaymentResult.PaymentAcquirerData.AcquirerPOIID](#data-dictionary-acquirerpoiid) | |
-PAN                  | [PaymentResult.PaymentInstrumentData.CardData.MaskedPAN](#data-dictionary-maskedpan) |  |
-Totalamount          | [PaymentResult.AmountsResp.AuthorizedAmount](#data-dictionary-authorizedamount) | Totalamount was represented as an integer 'cents' in the previous API, where the new API `AuthorizedAmount` is represented as decimal dollar and cents. Note the may not match [AuthorizedAmount](#data-dictionary-authorizedamount) may not match the [RequestedAmount](#data-dictionary-requestedamount). If implementing tipping or surcharge, the POS should also check for [TipAmount](#data-dictionary-tipamount) and [SurchargeAmount](#data-dictionary-surchargeamount). |
-STAN                 | [PaymentResult.PaymentAcquirerData.STAN](#data-dictionary-stan) |  |
-AcqRRN               | [PaymentResult.PaymentAcquirerData.RRN](#data-dictionary-rrn) |  |
-TransDateTime        | [POIData.POITransactionID.TimeStamp](#data-dictionary-poitransactionid) |  |
-EntryMode            | [PaymentResult.PaymentInstrumentData.CardData.EntryMode](#data-dictionary-entrymode) |  |
-MerchantID           | [PaymentResult.PaymentAcquirerData.MerchantID](#data-dictionary-merchantid) |  |
-HostErrorCode        | [PaymentResult.PaymentAcquirerData.ResponseCode](#data-dictionary-responsecode) |  |
-TokenValue           | [PaymentResult.PaymentInstrumentData.PaymentToken.TokenValue](#data-dictionary-tokenvalue) |  |
+TransState           | [Response.Result](./data-dictionary#result)                        |                      |
+TransID              | [POIData.POITransactionID.TransactionID](./data-dictionary#poitransactionid) | |
+TerminalID           | [PaymentResult.PaymentAcquirerData.AcquirerPOIID](./data-dictionary#acquirerpoiid) | |
+PAN                  | [PaymentResult.PaymentInstrumentData.CardData.MaskedPAN](./data-dictionary#maskedpan) |  |
+Totalamount          | [PaymentResult.AmountsResp.AuthorizedAmount](./data-dictionary#authorizedamount) | Totalamount was represented as an integer 'cents' in the previous API, where the new API `AuthorizedAmount` is represented as decimal dollar and cents. Note the may not match [AuthorizedAmount](./data-dictionary#authorizedamount) may not match the [RequestedAmount](./data-dictionary#requestedamount). If implementing tipping or surcharge, the POS should also check for [TipAmount](./data-dictionary#tipamount) and [SurchargeAmount](./data-dictionary#surchargeamount). |
+STAN                 | [PaymentResult.PaymentAcquirerData.STAN](./data-dictionary#stan) |  |
+AcqRRN               | [PaymentResult.PaymentAcquirerData.RRN](./data-dictionary#rrn) |  |
+TransDateTime        | [POIData.POITransactionID.TimeStamp](./data-dictionary#poitransactionid) |  |
+EntryMode            | [PaymentResult.PaymentInstrumentData.CardData.EntryMode](./data-dictionary#entrymode) |  |
+MerchantID           | [PaymentResult.PaymentAcquirerData.MerchantID](./data-dictionary#merchantid) |  |
+HostErrorCode        | [PaymentResult.PaymentAcquirerData.ResponseCode](./data-dictionary#responsecode) |  |
+TokenValue           | [PaymentResult.PaymentInstrumentData.PaymentToken.TokenValue](./data-dictionary#tokenvalue) |  |
     
 
 

@@ -85,7 +85,7 @@ Include [product data](#product-data) in each payment request| ✔ | ✔ | ✔ |
 Support for TLS and other [security requirements](./APIs/cloud-api-reference#security-requirements) |   | ✔ | ✔ |
 Additional fields will be added to the message specification over time.<br />To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages.<br />This includes valid MAC handling in the SecurityTrailer.|   | ✔ | ✔ |
 Implement [Sale System settings](#sale-system-settings) requirements |   | ✔ | ✔ |
-Implement [Payments user interface](#payment-user-interface) which handles the `Initial UI`, `Final UI`, `Display UI`, and `cancelling a sale in progress` |   | ✔ | ✔ |
+Implement [Payments user interface](#payment-user-interface) which handles the `Initial UI`, `Final UI`, `Display UI`, and `Cancelling a Sale in Progress` |   | ✔ | ✔ |
 Handle error scenarios as outlined in [error handling](#error-handling) |   | ✔ | ✔ |
 Ensure Sale System provides a unique [payment identification](#payment-identification) | ✔ | ✔ | ✔ |
 Pass the accreditation [test script](./testing) | ✔ | ✔ | ✔ |
@@ -93,7 +93,7 @@ Pass the accreditation [test script](./testing) | ✔ | ✔ | ✔ |
 ## Design your integration
 
 :::info
-This section will make reference to methods and data structures documented in the <a href="#cloud-api-reference">Cloud API Reference</a>. 
+This section will make reference to methods and data structures documented in the <a href="./APIs/cloud-api-reference">Cloud API Reference</a>. 
 :::
 
 Before development commences, you should familiarise yourself with the DataMesh payment platform, including the mandatory and optional features available. 
@@ -292,11 +292,11 @@ Message | `TransactionIdentification` field | Description |
 Payment Request | [SaleData.SaleTransactionID](./data-dictionary#saletransactionid) | This uniquely identifies a single sale.|
  | |The Sale System must ensure that the [SaleData.SaleTransactionID](./data-dictionary#saletransactionid) for each **sale** for a given [SaleID](./data-dictionary#saleid) is unique. |
  | | A sale can have multiple payment requests (for example, in the case of split payments, where one sale is paid with multiple payments).  |
-  | | The <a href="#data-dictionary-saletransactionid">SaleTransactionID</a> is the same for each payment request sent for the same sale and from the same <a href="#data-dictionary-saleid">SaleID</a>. |
+  | | The <a href="./data-dictionary#saletransactionid">SaleTransactionID</a> is the same for each payment request sent for the same sale and from the same <a href="./data-dictionary#saleid">SaleID</a>. |
 Payment Response | [SaleData.POITransactionID](./data-dictionary#poitransactionid) | This uniquely identifies a specific payment. |
  | | The POI System will ensure the [SaleData.POITransactionID](./data-dictionary#poitransactionid) uniquely identifies a **payment** for a given [POIID](./data-dictionary#poiid). |
  | | A sale can have multiple payment responses (for example, in the case of split payments, where one sale is paid with multiple payments).  |
- | | The <a href="#data-dictionary-poitransactionid">POITransactionID</a> returned in each payment response is guaranteed to be unique (even for the same sale) for a given <a href="#data-dictionary-poiid">POIID</a>. |
+ | | The <a href="./data-dictionary#poitransactionid">POITransactionID</a> returned in each payment response is guaranteed to be unique (even for the same sale) for a given <a href="./data-dictionary#poiid">POIID</a>. |
 
 
 The [ServiceID](./data-dictionary#serviceid) field uniquely identifies a specific payment transaction in a sale.
@@ -567,7 +567,7 @@ If the cashier initiates a payment cancellation, the Sale System sends an [abort
 The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.
 
 :::tip
-There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="#cloud-api-reference-error-handling">error handling</a>.
+There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="./APIs/cloud-api-reference#error-handling">error handling</a>.
 :::
 
 ![](/img/payment-cancellation.png)
