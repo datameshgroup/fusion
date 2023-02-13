@@ -1,0 +1,49 @@
+{
+  "SaleToPOIResponse":{
+    "MessageHeader":{
+      "ProtocolVersion":"3.2",
+      "MessageClass":"Service",
+      "MessageCategory":"Login",
+      "MessageType":"Response",
+      "ServiceID":"4432",
+      "SaleID":"POS Register A",
+      "POIID":"A9201001"
+    },
+    "LoginResponse":{
+      "Response":{
+        "Result":"Success",
+  "ErrorCondition": null,
+        "AdditionalResponse": null
+      },
+   
+      "POISystemData":{
+        "DateTime":"2021-05-10T12:19:30.00+10:00",
+        "POITerminalData":{
+          "TerminalEnvironment":"Attended",
+          "POICapabilities":[
+            "MagStripe",
+            "ICC",
+            "EMVContactless"
+          ],
+          "POIProfile":{
+            "GenericProfile":"Custom",
+            "ServiceProfiles":null
+          },
+          "POISerialNumber":"0821492109"
+        },
+        "POIStatus":{
+          "GlobalStatus":"OK",
+          "SecurityOKFlag":null,
+          "PEDOKFlag":true,
+          "CardReaderOKFlag":true,
+          "PrinterStatus":"OK",
+          "CommunicationOKFlag":true,
+          "CashHandlingDevice":null,
+          "FraudPreventionFlag":false
+        },
+        "TokenRequestStatus":true
+      }   
+    },
+    "SecurityTrailer":{}
+  }
+}
