@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 ---
+
 # Cloud API Reference
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. 
@@ -74,7 +75,8 @@ Test environment
 
 ## Message format
 
-> SaleToPOIRequest
+<details><summary>SaleToPOIRequest</summary>
+<p>
 
 ```json
 {
@@ -85,8 +87,11 @@ Test environment
   }
 }
 ```
+</p>
+</details>
 
-> SaleToPOIResponse
+<details><summary>SaleToPOIResponse</summary>
+<p>
 
 ```json
 {
@@ -97,6 +102,8 @@ Test environment
   }
 }
 ```
+</p>
+</details>
 
 All messages use JSON format with UTF-8 encoding. 
 
@@ -123,7 +130,8 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain three objects:
 
 ### MessageHeader
 
-> MessageHeader
+<details><summary>MessageHeader</summary>
+<p>
 
 ```json
 "MessageHeader":{
@@ -136,6 +144,8 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain three objects:
   "POIID":""
 }
 ```
+</p>
+</details>
 
 A `MessageHeader` is included with each request and response. It defines the protocol, message type, sale and POI id.
 
@@ -161,7 +171,8 @@ The *Cloud API Reference* outlines the expected payload for each supported reque
 
 ### SecurityTrailer
 
-> SecurityTrailer
+<details><summary>SecurityTrailer</summary>
+<p>
 
 ```json
 "SecurityTrailer":{
@@ -191,7 +202,8 @@ The *Cloud API Reference* outlines the expected payload for each supported reque
   }
 }
 ```
-
+</p>
+</details>
 
 A `SecurityTrailer` object is included with each request and response. 
 
@@ -307,7 +319,8 @@ sending another NEXO Login request.
 
 #### Login request
 
-> Login request
+<details><summary>Login request</summary>
+<p>
 
 ```json
 {
@@ -347,7 +360,8 @@ sending another NEXO Login request.
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -382,7 +396,8 @@ Attribute     |Requ.| Format | Description |
 
 #### Login response
 
-> Login response
+<details><summary>Login response</summary>
+<p>
 
 ```json
 {
@@ -436,6 +451,8 @@ Attribute     |Requ.| Format | Description |
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -488,7 +505,8 @@ The Sale System may send multiple Login requests without a Logout request.
 
 #### Logout request
 
-> Logout request
+<details><summary>Logout request</summary>
+<p>
 
 ```json
 {
@@ -508,7 +526,8 @@ The Sale System may send multiple Login requests without a Logout request.
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -529,7 +548,8 @@ Attribute     |Requ.| Format | Description |
 
 #### Logout response
 
-> Logout response
+<details><summary>Logout response</summary>
+<p>
 
 ```json
 {
@@ -551,7 +571,8 @@ Attribute     |Requ.| Format | Description |
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -581,7 +602,8 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 #### Payment request
 
-> Payment request
+<details><summary>Payment request</summary>
+<p>
 
 ```json
 {
@@ -738,7 +760,8 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -826,7 +849,8 @@ Attribute     |Requ.| Format | Description |
 
 #### Payment response
 
-> Payment response
+<details><summary>Payment response</summary>
+<p>
 
 ```json
 {
@@ -916,7 +940,8 @@ Attribute     |Requ.| Format | Description |
       "SecurityTrailer":{...}
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -997,7 +1022,8 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 #### Display request
 
-> Display request
+<details><summary>Display request</summary>
+<p>
 
 ```json
 {
@@ -1028,7 +1054,8 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1054,7 +1081,8 @@ Attribute                  |Requ.| Format | Description |
 
 #### Display response
 
-> Display response
+<details><summary>Display response</summary>
+<p>
 
 ```json
 {
@@ -1085,7 +1113,9 @@ Attribute                  |Requ.| Format | Description |
    }
 }
 ```
-
+</p>
+</details>
+ 
 The Sale System is expected to send a `DisplayResponse` if one or more displays in `DisplayOutput` have [ResponseRequiredFlag](../data-dictionary#responserequiredflag) set to true.
 
 
@@ -1127,7 +1157,8 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
  
 #### Input request
 
-> Input request
+<details><summary>Input request</summary>
+<p>
 
 ```json
 {
@@ -1174,7 +1205,8 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1213,7 +1245,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Input response
 
-> Input response
+<details><summary>Input response</summary>
+<p>
 
 ```json
 {
@@ -1257,7 +1290,8 @@ Attribute      |Requ.| Format  | Description |
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1309,7 +1343,8 @@ The final payment receipt, which is to be included in the Sale receipt, is retur
  
 #### Print request
 
-> Print request
+<details><summary>Print request</summary>
+<p>
 
 ```json
 {
@@ -1338,7 +1373,8 @@ The final payment receipt, which is to be included in the Sale receipt, is retur
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1367,7 +1403,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Print response
 
-> Print response
+<details><summary>Print response</summary>
+<p>
 
 ```json
 {
@@ -1393,7 +1430,8 @@ Attribute      |Requ.| Format  | Description |
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1425,7 +1463,8 @@ A transaction status request can be used to obtain the status of a previous tran
 
 #### Transaction status request
 
-> Transaction status request
+<details><summary>Transaction status request</summary>
+<p>
 
 ```json
 {
@@ -1450,6 +1489,8 @@ A transaction status request can be used to obtain the status of a previous tran
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1475,7 +1516,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Transaction status response
 
-> Transaction status response
+<details><summary>Transaction status response</summary>
+<p>
 
 ```json
 {
@@ -1511,6 +1553,8 @@ Attribute      |Requ.| Format  | Description |
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1555,7 +1599,8 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 
 #### Abort transaction request
 
-> Abort transaction request
+<details><summary>Abort transaction request</summary>
+<p>
 
 ```json
 {
@@ -1581,6 +1626,8 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1615,7 +1662,8 @@ If the transaction cannot be aborted, a normal payment response (`Result` = "Suc
 
 However, if the abort transaction request message contains an invalid data (e.g. message format error) or if the referenced transaction cannot be not found (e.g. due to an incorrect ServiceID value), an Event Notification will be returned. 
 
-> Abort transaction response 
+<details><summary>Abort transaction response </summary>
+<p>
 
 ```json
 {
@@ -1637,6 +1685,8 @@ However, if the abort transaction request message contains an invalid data (e.g.
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1662,7 +1712,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Reconciliation request
 
-> Reconciliation request
+<details><summary>Reconciliation request</summary>
+<p>
 
 ```json
 {
@@ -1683,6 +1734,8 @@ Attribute      |Requ.| Format  | Description |
   }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1705,7 +1758,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Reconciliation response
 
-> Reconciliation response
+<details><summary>Reconciliation response</summary>
+<p>
 
 ```json
 {
@@ -1750,6 +1804,8 @@ Attribute      |Requ.| Format  | Description |
   }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1791,7 +1847,8 @@ The card acquisition request allows the Sale System to tokenise a card which can
 
 #### Card acquisition request
 
-> Card acquisition request
+<details><summary>Card acquisition request</summary>
+<p>
 
 ```json
 {
@@ -1828,6 +1885,8 @@ The card acquisition request allows the Sale System to tokenise a card which can
     "SecurityTrailer": { ... }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1862,7 +1921,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Card acquisition response
 
-> Card acquisition response
+<details><summary>Card acquisition response</summary>
+<p>
 
 ```json
 {
@@ -1910,6 +1970,8 @@ Attribute      |Requ.| Format  | Description |
     }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -1947,9 +2009,6 @@ Attribute      |Requ.| Format  | Description |
  **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](../data-dictionary#entrymode) is "File". Object with identifies the payment token. 
   [TokenRequestedType](../data-dictionary#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
   [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
-
-
-
  
 ## Error handling
 

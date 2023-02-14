@@ -43,7 +43,7 @@ If your *Sale System on Pinpad* uses the device(s) listed below, the following c
 
 **If your *Sale System on Pinpad* only supports PAX:**
 
-- Modify the App Manifest file to add the following permission: `<uses-permission android:name="com.pax.permission.PRINTER" />`
+- Modify the App Manifest file to add the following permission: <br /> `<uses-permission android:name="com.pax.permission.PRINTER" />`
 
 **If your *Sale System on Pinpad* supports Ingenico or**
 
@@ -143,7 +143,8 @@ void handleResponseIntent(Intent intent){
 
 ### Request/response object
 
-> SaleToPOIRequest
+<details><summary>SaleToPOIRequest</summary>
+<p>
 
 ```json
 {
@@ -153,8 +154,11 @@ void handleResponseIntent(Intent intent){
   }
 }
 ```
+</p>
+</details>
 
-> SaleToPOIResponse
+<details><summary>SaleToPOIResponse</summary>
+<p>
 
 ```json
 {
@@ -164,6 +168,8 @@ void handleResponseIntent(Intent intent){
   }
 }
 ```
+</p>
+</details>
 
 All messages use JSON format with UTF-8 encoding. 
 
@@ -189,7 +195,8 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain two objects:
 
 ### MessageHeader
 
-> MessageHeader
+<details><summary>MessageHeader</summary>
+<p>
 
 ```json
 "MessageHeader":{
@@ -199,6 +206,8 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain two objects:
   "ServiceID":""
 }
 ```
+</p>
+</details>
 
 A `MessageHeader` is included with each request and response. It defines the protocol and message type.
 
@@ -292,7 +301,8 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 #### Payment request
 
-> Payment request
+<details><summary>Payment request</summary>
+<p>
 
 ```json
 {
@@ -448,7 +458,8 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
    }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -534,7 +545,8 @@ Attribute     |Requ.| Format | Description |
 
 #### Payment response
 
-> Payment response
+<details><summary>Payment response</summary>
+<p>
 
 ```json
 {
@@ -621,7 +633,8 @@ Attribute     |Requ.| Format | Description |
       }
 }
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -691,24 +704,14 @@ Attribute     |Requ.| Format | Description |
    [OutputFormat](../data-dictionary#outputformat)              | ✔ | String | "XHTML"  
    [OutputXHTML](../data-dictionary#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
 
-
-
-
-
-
-
-
-
-
-
-
 ### Transaction status 
 
 A transaction status request can be used to obtain the status of a previous transaction. Required for error handling. 
 
 #### Transaction status request
 
-> Transaction status request
+<details><summary>Transaction status request</summary>
+<p>
 
 ```json
 {
@@ -728,6 +731,8 @@ A transaction status request can be used to obtain the status of a previous tran
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -749,7 +754,8 @@ Attribute      |Requ.| Format  | Description |
 
 #### Transaction status response
 
-> Transaction status response
+<details><summary>Transaction status response</summary>
+<p>
 
 ```json
 {
@@ -781,6 +787,8 @@ Attribute      |Requ.| Format  | Description |
    }
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
@@ -823,7 +831,8 @@ When the Sale System receives the successful payment response, the Sale System n
 
 The reversal message is used to perform void/reversal request. 
 
-> Reversal request
+<details><summary>Reversal request</summary>
+<p>
 
 ```json
 
@@ -850,9 +859,9 @@ The reversal message is used to perform void/reversal request.
 		}
 	}
 }
-
 ```
-
+</p>
+</details>
 
 **MessageHeader**
 
@@ -879,7 +888,8 @@ Attribute     |Requ.| Format | Description |
 
 #### Reversal response
 
-> Reversal response
+<details><summary>Reversal response</summary>
+<p>
 
 ```json
 {
@@ -924,6 +934,8 @@ Attribute     |Requ.| Format | Description |
 	}
 }
 ```
+</p>
+</details>
 
 **MessageHeader**
 
