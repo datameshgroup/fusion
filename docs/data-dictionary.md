@@ -30,70 +30,70 @@ The possible `AdditionalResponse` values are based on the value of [ErrorConditi
 
 When `ErrorCondition` is "MessageFormat"
 
-- "Mandatory Data Element or Structure Absent: \<Absolute Data Name\>"
-- "Unexpected Data Element Value: \<Absolute Data Name\> - \<Expected Value(s) or Reason\>"
-- "\<Absolute Data Name\> Invalid Value \<Value\> for the Type \<Type\> [and Format \<Format\>]"
-- "\<Absolute Data Name\> Value is not part of the Enumerated or Cluster Type \<Type\>" 
-- "Repeated Message: \<ID Name\> - \<Value\>"
-- "Empty Cluster: \<Absolute Data Name\>"
-- "Unacceptable Value Combination: [ \<Absolute Data Name\> : \<Value\> ]*"
+- "Mandatory Data Element or Structure Absent: <Absolute Data Name\>"
+- "Unexpected Data Element Value: <Absolute Data Name\> - <Expected Value(s) or Reason\>"
+- "<Absolute Data Name\> Invalid Value <Value\> for the Type <Type\> [and Format <Format\>]"
+- "<Absolute Data Name\> Value is not part of the Enumerated or Cluster Type <Type\>" 
+- "Repeated Message: <ID Name\> - <Value\>"
+- "Empty Cluster: <Absolute Data Name\>"
+- "Unacceptable Value Combination: [ <Absolute Data Name\> : <Value\> ]*"
 
 When `ErrorCondition` is "DeviceOut"
 
-- "POI is Temporary Unavailable: \<Reason\>"
-- "POI is Permanently Unavailable: \<Reason\>"
-- "Security Alarm: \<Alarm\>"
+- "POI is Temporary Unavailable: <Reason\>"
+- "POI is Permanently Unavailable: <Reason\>"
+- "Security Alarm: <Alarm\>"
   - Alarm = The type of alarm. e.g. "crypto key unknown"
 
 
 When `ErrorCondition` is "LoggedOut"
 
-- "\<SaleID\> Never Login Since Last \<Event\> at \<Time\>"
+- "<SaleID\> Never Login Since Last <Event\> at <Time\>"
 
 When `ErrorCondition` is "Busy"
 
-- "POI \<Component\> Temporary Unavailable: \<Reason\>"
+- "POI <Component\> Temporary Unavailable: <Reason\>"
   - Component = "System" or "Terminal"
   - Reason = "Installation in progress", "Maintenance in progress", "Device busy"
 
-- "POI Terminal Busy to Process another Request: \<Request\>"
+- "POI Terminal Busy to Process another Request: <Request\>"
   - Request = 'PaymentRequest', 'LoginRequest'
 
 When `ErrorCondition` is "UnavailableService"
 
-- "Sale Protocol Version \<Version\> Too Old. Version Implemented: \<Version\>"
+- "Sale Protocol Version <Version\> Too Old. Version Implemented: <Version\>"
 
 When `ErrorCondition` is "Cancel"
 
-- "User Cancellation during \<Status\>"
-- "System Cancellation during \<Status\>"
+- "User Cancellation during <Status\>"
+- "System Cancellation during <Status\>"
 
 When `ErrorCondition` is "Abort"
 
-- "Service Aborted during \<Status\> - Reason: \<AbortReason\> - from: \<SaleID\> - MessageID: \<ServiceID\>"
+- "Service Aborted during <Status\> - Reason: <AbortReason\> - from: <SaleID\> - MessageID: <ServiceID\>"
 
 When `ErrorCondition` is "InvalidCard"
 
-- "No Card Entered after \<Time\> Seconds".
-- "Invalid Card \<Reason\>"
+- "No Card Entered after <Time\> Seconds".
+- "Invalid Card <Reason\>"
   - Reason = "Card Expired", "Card not allowed", "Suspicion of fraud", etc.
-- "Unknown Card \<BIN:val or AID:val\>
+- "Unknown Card <BIN:val or AID:val\>
 
 
 When `ErrorCondition` is "WrongPIN"
 
-- "Wrong PIN \<RetryNumber\> Retries - Remaining \<RemainingRetries\>
+- "Wrong PIN <RetryNumber\> Retries - Remaining <RemainingRetries\>
   - Retries and RemainingRetries only if available.
 
 When `ErrorCondition` is "UnreachableHost"
 
-- "Host Unreachable: \<Reason\>"
-- "No Host Answer: \<Reason\>"
+- "Host Unreachable: <Reason\>"
+- "No Host Answer: <Reason\>"
 
 When `ErrorCondition` is "Refusal"
 
-- "Payment Refused by Acquirer: \<Acquirer\> Reason: \<Reason\> Code: \<Code\>"
-- "Payment Refused Locally - Reason: \<Reason\>"
+- "Payment Refused by Acquirer: <Acquirer\> Reason: <Reason\> Code: <Code\>"
+- "Payment Refused Locally - Reason: <Reason\>"
 
 When `ErrorCondition` is "PaymentRestriction"
 
@@ -312,16 +312,16 @@ Label                | Description
 
 When `EventToNotify` is "Reject"
 
-- "Message not Found, last \<MessageCategory\> has ID \<ServiceID\>"
-- "Mandatory Data Element or Structure Absent: \<Absolute Data Name\>"
-- "General Parsing Error: \<Absolute Data Name\>"
-- "Unexpected Data Element or Structure: \<Absolute Data Element\>"
-- "Unexpected Data Element Value: \<Absolute Data Element\> - \<Expected value(s) or reason\>"
-- "Repeated Message: ServiceID - \<Value\>"
+- "Message not Found, last <MessageCategory\> has ID <ServiceID\>"
+- "Mandatory Data Element or Structure Absent: <Absolute Data Name\>"
+- "General Parsing Error: <Absolute Data Name\>"
+- "Unexpected Data Element or Structure: <Absolute Data Element\>"
+- "Unexpected Data Element Value: <Absolute Data Element\> - <Expected value(s) or reason\>"
+- "Repeated Message: ServiceID - <Value\>"
 
 When `EventToNotify` is "CompletedMessage"
 
-- "Service Not Aborted - Reason: Completed – from: \<SaleID\> - MessageID: \<ServiceID\>"
+- "Service Not Aborted - Reason: Completed – from: <SaleID\> - MessageID: <ServiceID\>"
 
 
 ## ForceEntryMode
