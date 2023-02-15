@@ -218,7 +218,7 @@ Array of key/type/value objects containing additional information.
 
 CustomFields are defined under the *PaymentRequest* (for additional Payment information) or *SaleItem* (for additional Sale Item information).
 
-Field Name   | Type | Description |
+| <div style={{width:'180px'}}>Field Name</div> | Type | Description |
 -----------------  | ------ | ----------- |
 Key                | String | Defines a unique name for the `Value`.              |
 Type               | Enum   | The content of `Value` represented as a string. |
@@ -605,7 +605,7 @@ Unique identification of a POI transaction for a [POIID](#poiid).
 Contains the following fields: 
 
 Attribute |Requ.| Format | Description |
------------------                        |----| ------ | ----------- |
+-----------------                        |:----:| ------ | ----------- |
 [TransactionID](#transactionid)          | ✔ | String | A unique transaction id from the POI system
 [TimeStamp](#timestamp)                  | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
 
@@ -692,7 +692,7 @@ Object with represents card details for token or manually enter card details.
 **PaymentInstrumentData**
 
 Attribute   | Requ.  | Format | Description |
------------------                          | ------ | ------ | ----------- |
+-----------------                          | :------: | ------ | ----------- |
 [PaymentInstrumentType](#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](#paymentinstrumenttype)
 **CardData**                               |  | Object | 
  [EntryMode](#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
@@ -727,7 +727,7 @@ Never send the SensitiveCardData object in the clear. This represents the conten
 **SensitiveCardData**
 
 Attribute | Requ.  | Format | Description |
------------------                        | ------ | ------ | ----------- |
+-----------------                        | :------: | ------ | ----------- |
 [PAN](#pan)                              | ✔ | String | The full credit card number
 [ExpiryDate](#expirydate)                | ✔ | String | The expiry date in "MMYY" format
 [CCV](#ccv)                              |  | String | The 3 or 4 digit security code associated with the card 
@@ -748,7 +748,7 @@ Indicates the card source for the payment. If not present in the payment default
 An object representing a payment token. Consists of three fields: 
 
 Attribute | Requ.  | Format | Description |
------------------                        | ------ | ------ | ----------- |
+-----------------                        | :------: | ------ | ----------- |
 [TokenRequestedType](#tokenrequestedtype)| ✔ | String | Mirrored from the request
 [TokenValue](#tokenvalue)                | ✔ | String | The value of the token
 [ExpiryDateTime](#expirydatetime)        | ✔ | String | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
@@ -956,7 +956,7 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
 
 
 Attribute   | Requ.  | Format | Description |
------------------                          | ------ | ------ | ----------- |
+-----------------                          | :------: | ------ | ----------- |
 [ItemID](#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
 [ProductCode](#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
 [EanUpc](#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
@@ -1180,7 +1180,7 @@ Identification of a transaction for a given [SaleId](#saleid).
 Contains the following fields: 
 
 Attribute |Requ.| Format | Description |
------------------                        |----| ------ | ----------- |
+-----------------                        |:----:| ------ | ----------- |
 [TransactionID](#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#transactionid)
 [TimeStamp](#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 

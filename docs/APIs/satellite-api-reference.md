@@ -212,7 +212,7 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain two objects:
 A `MessageHeader` is included with each request and response. It defines the protocol and message type.
 
 Attribute                             |Requ.| Format | Description |
------------------                     |----| ------ | ----------- |
+-----------------                     |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
 [MessageCategory](../data-dictionary#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
 [MessageType](../data-dictionary#messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
@@ -464,7 +464,7 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Payment"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -473,7 +473,7 @@ Attribute  |Requ.| Format | Description |
 **PaymentRequest**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
  [OperatorID](../data-dictionary#operatorid)                   |   | String | Only required if different from Login Request
  [OperatorLanguage](#operatorlanguage)       |   | String | Set to "en"
@@ -639,7 +639,7 @@ Attribute     |Requ.| Format | Description |
 **MessageHeader**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)                | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Payment"
 [MessageType](../data-dictionary#messagetype)                  | ✔ | String | "Response"
@@ -648,7 +648,7 @@ Attribute     |Requ.| Format | Description |
 **PaymentResponse**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
@@ -737,7 +737,7 @@ A transaction status request can be used to obtain the status of a previous tran
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -746,7 +746,7 @@ Attribute  |Requ.| Format | Description |
 **TransactionStatusRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
  [MessageCategory](../data-dictionary#messagecategory)          |    | String | "Payment"
  [ServiceID](../data-dictionary#serviceid)                      |    | String | The [ServiceID](../data-dictionary#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
@@ -793,7 +793,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -802,7 +802,7 @@ Attribute  |Requ.| Format | Description |
 **TransactionStatusResponse**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
  [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
@@ -866,7 +866,7 @@ The reversal message is used to perform void/reversal request.
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Reversal"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -876,7 +876,7 @@ Attribute  |Requ.| Format | Description |
 **ReversalRequest**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
  **[OriginalPOITransaction](../data-dictionary#originalpoitransaction)** | ✔ | Object | Identifies a previous POI transaction. See [OriginalPOITransaction](../data-dictionary#originalpoitransaction)
   [SaleID](../data-dictionary#saleid)                          | ✔ | String | [SaleID](../data-dictionary#saleid) which performed the original transaction
   [POIID](../data-dictionary#poiid)                            | ✔ | String | [POIID](../data-dictionary#poiid) which performed the original transaction
@@ -940,7 +940,7 @@ Attribute     |Requ.| Format | Description |
 **MessageHeader**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)                | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Reversal"
 [MessageType](../data-dictionary#messagetype)                  | ✔ | String | "Response"
@@ -950,7 +950,7 @@ Attribute     |Requ.| Format | Description |
 **ReversalResponse**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.

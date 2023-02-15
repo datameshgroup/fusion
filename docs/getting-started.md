@@ -143,8 +143,8 @@ Another POS on Pinpad Demo Application | on [GitHub] (https://github.com/datames
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch.
 
-| Development Language | Description | Location |
-|-----------------     | ----------------- | ----------- |
+| <div style={{width:'180px'}}>Development Language</div> | Description | Location |
+|:-----------------:     | ----------------- | ----------- |
 | .Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
 | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
 | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
@@ -287,7 +287,7 @@ Each transaction request and response message is identified by a `TransactionIde
 - [TransactionID](./data-dictionary#transactionid)
 - [TimeStamp](./data-dictionary#timestamp)
 
-Message | `TransactionIdentification` field | Description |
+| <div style={{width:'150px'}}>Message</div> | `TransactionIdentification` field | Description |
 :-----------------:                        | -----------------                        | ----------- |
 Payment Request | [SaleData.SaleTransactionID](./data-dictionary#saletransactionid) | This uniquely identifies a single sale.|
  | |The Sale System must ensure that the [SaleData.SaleTransactionID](./data-dictionary#saletransactionid) for each **sale** for a given [SaleID](./data-dictionary#saleid) is unique. |

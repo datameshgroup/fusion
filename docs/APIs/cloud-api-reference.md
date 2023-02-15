@@ -8,7 +8,7 @@ The Fusion Cloud API allows the Sale System to communicate with a POI terminal v
 
 ## Reference code  
 
-Development Language  | Description | Location |
+| <div style={{width:'180px'}}>Development Language</div> | Description | Location |
 :-----------------:                        | -----------------                        | ----------- |
 .Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
  | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
@@ -151,7 +151,7 @@ A `MessageHeader` is included with each request and response. It defines the pro
 
 
 Attribute                             |Requ.| Format | Description |
------------------                     |----| ------ | ----------- |
+-----------------                     |:----:| ------ | ----------- |
 [ProtocolVersion](../data-dictionary#protocolversion)   | ✔ | String | Version of the Sale to POI protocol specifications. Set to "3.1-dmg". Present when `MessageCategory` is "Login" otherwise absent.
 [MessageClass](../data-dictionary#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
 [MessageCategory](../data-dictionary#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
@@ -214,8 +214,8 @@ Session Keys are used to generate/verify a Message Authentication Code (MAC) to 
 
 **SecurityTrailer**
 
-Attribute   |Requ.| Format | Description |
------------------                          |----| ------ | ----------- |
+| <div style={{width:'180px'}}>Attribute</div> |Requ.| Format | Description |
+-----------------                          |:----:| ------ | ----------- |
 [ContentType](#contenttype)                | ✔ | String | Set to "id-ctauthData"
 *AuthenticatedData*                        | ✔ | Object |  
  [Version](#version)                       | ✔ | String | Set to "v0"
@@ -366,7 +366,7 @@ sending another NEXO Login request.
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [ProtocolVersion](../data-dictionary#protocolversion)       | ✔ | String | "3.1-dmg"       
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Login"
@@ -378,7 +378,7 @@ Attribute  |Requ.| Format | Description |
 **LoginRequest**
 
 Attribute     |Requ.| Format | Description |
------------------                            |---- | ------ | ----------- |
+-----------------                            |:----: | ------ | ----------- |
 [DateTime](../data-dictionary#datetime)                        | ✔ | String | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 **SaleSoftware**                            | ✔ | Object | Object containing Sale System identification
  [ProviderIdentification](../data-dictionary#provideridentification)| ✔ | String | The name of the company supplying the Sale System. Provided by DataMesh.
@@ -457,7 +457,7 @@ Attribute     |Requ.| Format | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [ProtocolVersion](../data-dictionary#protocolversion)       | ✔ | String | "3.1-dmg"       
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Login"
@@ -469,7 +469,7 @@ Attribute  |Requ.| Format | Description |
 **LoginResponse**
 
 Attribute     |Requ.| Format | Description |
------------------                            | -------- | ------ | ----------- |
+-----------------                            | :--------: | ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the login
  [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
@@ -532,7 +532,7 @@ The Sale System may send multiple Login requests without a Logout request.
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Logout"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -577,7 +577,7 @@ Attribute     |Requ.| Format | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Logout"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -588,7 +588,7 @@ Attribute  |Requ.| Format | Description |
 **LogoutResponse**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object which represents the result of the response
  [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
@@ -766,7 +766,7 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Payment"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -777,7 +777,7 @@ Attribute  |Requ.| Format | Description |
 ##### **PaymentRequest**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
  [OperatorID](../data-dictionary#operatorid)                   |   | String | Only required if different from Login Request
  [OperatorLanguage](#operatorlanguage)       |   | String | Set to "en"
@@ -946,7 +946,7 @@ Attribute     |Requ.| Format | Description |
 **MessageHeader**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)                | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Payment"
 [MessageType](../data-dictionary#messagetype)                  | ✔ | String | "Response"
@@ -957,7 +957,7 @@ Attribute     |Requ.| Format | Description |
 **PaymentResponse**
 
 Attribute     |Requ.| Format | Description |
------------------                            |----| ------ | ----------- |
+-----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
@@ -1060,7 +1060,7 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Display"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1071,7 +1071,7 @@ Attribute  |Requ.| Format | Description |
 **DisplayRequest**
 
 Attribute                  |Requ.| Format | Description |
------------------                                         |----| ------ | ----------- |
+-----------------                                         |:----:| ------ | ----------- |
 **DisplayOutput**                                         | ✔ | Object | Object which represents the display 
  [ResponseRequiredFlag](../data-dictionary#responserequiredflag)|  | Boolean | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
  [Device](#device)                                        | ✔ | String | "CashierDisplay"
@@ -1122,7 +1122,7 @@ The Sale System is expected to send a `DisplayResponse` if one or more displays 
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Display"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -1133,7 +1133,7 @@ Attribute  |Requ.| Format | Description |
 **DisplayResponse**
 
 Attribute      |Requ.| Format | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                | ✔ | Object | Response for Device/InfoQualify pair where corresponding `ResponseRequiredFlag` in the `DisplayRequest` is set to true.
  [Device](#device)                            | ✔ | String | Mirrored from display request
  [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | Mirrored from display request
@@ -1211,7 +1211,7 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Input"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1223,7 +1223,7 @@ Attribute  |Requ.| Format | Description |
 **InputRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 **DisplayOutput**                             |  | Object | Information to display and the way to process the display.
  [Device](#device)                            | ✔ | String | "CashierDisplay"
  [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | "POIReplication". See [InfoQualify](../data-dictionary#infoqualify)
@@ -1296,7 +1296,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Input"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -1308,7 +1308,7 @@ Attribute  |Requ.| Format | Description |
 **InputResponse**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                |    | Object | Present if `DisplayOutput` is present in the request
  [Device](#device)                            | ✔ | String | Mirrored from input request
  [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | Mirrored from input request
@@ -1379,7 +1379,7 @@ The final payment receipt, which is to be included in the Sale receipt, is retur
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Print"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1391,7 +1391,7 @@ Attribute  |Requ.| Format | Description |
 **PrintRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
  **PrintOutput**                              | ✔ | Object | 
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "CustomerReceipt"
   [IntegratedPrintFlag](#integratedprintflag) |  |Boolean| True if the receipt should be included with the Sale receipt, false if the receipt should be printed now and paper cut (e.g. for a signature receipt)
@@ -1436,7 +1436,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Print"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -1448,7 +1448,7 @@ Attribute  |Requ.| Format | Description |
 **PrintResponse**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 [DocumentQualifier](#documentqualifier)       | ✔ | String | Mirrored from print request
  *Response*                                   | ✔ | Object | 
   [Result](../data-dictionary#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](../data-dictionary#result).
@@ -1495,7 +1495,7 @@ A transaction status request can be used to obtain the status of a previous tran
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1506,7 +1506,7 @@ Attribute  |Requ.| Format | Description |
 **TransactionStatusRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
  [MessageCategory](../data-dictionary#messagecategory)          |    | String | "Payment"
  [ServiceID](../data-dictionary#serviceid)                      |    | String | The [ServiceID](../data-dictionary#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
@@ -1559,7 +1559,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -1570,7 +1570,7 @@ Attribute  |Requ.| Format | Description |
 **TransactionStatusResponse**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
  [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
@@ -1632,7 +1632,7 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Abort"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1643,7 +1643,7 @@ Attribute  |Requ.| Format | Description |
 **AbortRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            | ✔ | Object | Identification of a POI transaction
  [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Payment" or "CardAcquisition"
  [ServiceID](../data-dictionary#serviceid)                      | ✔ | String | The [ServiceID](../data-dictionary#serviceid) of the transaction to cancel
@@ -1691,7 +1691,7 @@ However, if the abort transaction request message contains an invalid data (e.g.
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Event"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Event"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Notification"
@@ -1702,7 +1702,7 @@ Attribute  |Requ.| Format | Description |
 **EventNotification**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
  [TimeStamp](../data-dictionary#timestamp)                      | ✔ | String | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
  [EventToNotify](../data-dictionary#eventtonotify)              | ✔ | String | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
  [EventDetails](../data-dictionary#eventdetails)                | ✔ | String | Extra detail on the reason for the event
@@ -1740,7 +1740,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Reconciliation"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1751,7 +1751,7 @@ Attribute  |Requ.| Format | Description |
 **ReconciliationRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 [ReconciliationType](#reconciliationtype)     | ✔ | String | "SaleReconciliation" to close the current period, "PreviousReconciliation" to request the result of a previous reconciliation
 [POIReconciliationID](../data-dictionary#poireconciliationid)   |   | String | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](../data-dictionary#poireconciliationid)
 
@@ -1810,7 +1810,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Reconciliation"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -1821,7 +1821,7 @@ Attribute  |Requ.| Format | Description |
 **ReconciliationResponse**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the login
  [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
@@ -1891,7 +1891,7 @@ The card acquisition request allows the Sale System to tokenise a card which can
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "CardAcquisition"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
@@ -1902,7 +1902,7 @@ Attribute  |Requ.| Format | Description |
 **CardAcquisitionRequest**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 *SaleData*                                    | ✔ | Object | Object Sale System information attached to this payment
  [OperatorID](../data-dictionary#operatorid)                    |  | String | Only required if different from Login Request
  [OperatorLanguage](#operatorlanguage)        |  | String | Set to "en"
@@ -1976,7 +1976,7 @@ Attribute      |Requ.| Format  | Description |
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
------------------                         |----| ------ | ----------- |
+-----------------                         |:----:| ------ | ----------- |
 [MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
 [MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "CardAcquisition"
 [MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
@@ -1987,7 +1987,7 @@ Attribute  |Requ.| Format | Description |
 **CardAcquisitionResponse**
 
 Attribute      |Requ.| Format  | Description |
------------------                             |----| ------ | ----------- |
+-----------------                             |:----:| ------ | ----------- |
 **Response**                                    | ✔ | Object | Object indicating the result of the login
  [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
  [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
