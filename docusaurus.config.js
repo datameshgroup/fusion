@@ -110,6 +110,15 @@ const config = {
         darkTheme: darkCodeTheme,
       }
     }),
+    plugins: [
+      [
+        require.resolve("@cmfcmf/docusaurus-search-local"),
+        {
+          indexBlog: false,
+          indexDocSidebarParentCategories: 8,
+        },
+      ],
+    ],
 };
 
 module.exports = config;
