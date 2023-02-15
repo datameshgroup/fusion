@@ -13,7 +13,7 @@
   --ifm-color-primary-light: #64a3e8;
   --ifm-color-primary-lighter: #7ab0eb;
   --ifm-color-primary-lightest: #90beef;
-  --ifm-link-color:  #112F50;
+  --ifm-link-color:  #047af8;
   --ifm-background-color: transparent;
   --ifm-background-surface-color: var(--ifm-color-content-inverse);
   --ifm-code-font-size: 95%;
@@ -49,4 +49,8 @@ html[data-theme='light'] footer {
 
 html[data-theme='light'] nav {
   background-color: white;
+}
+
+a:hover {
+  color: #26539b;
 }
