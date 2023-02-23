@@ -93,9 +93,7 @@ TokenValue           | [PaymentResult.PaymentInstrumentData.PaymentToken.TokenVa
 
 ## Terminal configuration 
 
-### PAX terminals
-
-#### Enable access to the home screen
+### Enable access to the home screen
 
 In a production environment a terminal will typically be locked to the payment application, however in development and test it is useful to enable access to the home screen. 
 
@@ -113,8 +111,7 @@ In a production environment a terminal will typically be locked to the payment a
 - Hit the "home" button on the terminal to view the home page
 
 
-
-#### Configure terminal environment
+### Configure terminal environment
 
 Your development terminal will be conncted to the UAT environment, which is the correct environemnt for testing. 
 
@@ -133,21 +130,7 @@ To confirm or change the environemnt:
   - Close the Satellite payment app
   - Launch the Satellite payment app again 
 
-
-#### Connect to Wi-Fi
-
-The terminal can be connected to Wi-Fi where cellular access isn't avaiable. 
-
-- Press the Home button 
-- Launch the "Settings" app (⚙icon)
-
-![](/img/pinpad-launch-settings-270x480.png)
-
-- If it asks for a password, enter `pax9876@@`
-- Select Wi-Fi open, choose your Wi-Fi network and enter the password
-- You should see your Wi-Fi network with a "Connected" status underneath 
-
-#### Update settings
+### Update settings
 
 The terminal will periodically connect to the host and download updated settings.
 
@@ -160,7 +143,7 @@ To force a settings update:
 
 ![](/img/pinpad-info-270x480.png)
 
-#### Update software
+### Update software
 
 The terminal will periodically connect to the host and update to the configured software version. 
 
@@ -172,7 +155,7 @@ To force a software update:
 - Select the `SOFTWARE UPGRADE` option and select `YES` on the confirmation dialog
 - The software will be downloaded, and Satellite will restart
 
-#### Checking Wi-Fi connection
+### Checking Wi-Fi connection
 
 To check Wi-FI connection status at any time:
 
@@ -180,25 +163,93 @@ To check Wi-FI connection status at any time:
 - Swipe down again to expand the notification shade
 - Top left icon will be your Wi-Fi status and connected access point
 
+### PAX
+
+#### Connect to Wi-Fi
+
+The terminal can be connected to Wi-Fi where cellular access isn't avaiable. 
+
+- Press the Home button 
+- Launch the "Settings" app (⚙icon)
+
+  ![](/img/pinpad-launch-settings-270x480.png)
+
+- If it asks for a password, enter `pax9876@@`
+- Select the Wi-Fi option and tap the `On` toggle switch - Wi-Fi is enabled when the toggle switch is green
+- Choose your Wi-Fi network and enter the password
+- You should see your Wi-Fi network with a "Connected" status underneath
+
 #### Loading a custom APK
 
 For Fusion Satellite integrations, the DataMesh debug development POI terminals are configured to allow loading of custom APK's.
 
 There are two methods for completing this process: 
 
-1. Connect the terminal to Android Development Studio
+<details><summary>Connect the terminal to Android Development Studio</summary>
+<p>
+
   - Connect the USB port on the side of the POI Terminal to your PC
   - The terminal will appear in the list of connected devices in Android Development Studio
   - You can choose to either deploy or debug your custom APK on the terminal
-1. Copy the APK to the terminal
-  - Connect the USB port on the side of the POI Terminal to your PC
-  - The terminal will appear as "MTP USB Device" in the PC file manager
-  - Navigate to "MTP USB Device", and copy your APK to the terminal "download" directory
-  - ![](/img/load-apk-01.png)  
-  - On the terminal, launch "File Manager" and navigate to the "download" directory.
-  - ![](/img/load-apk-02.png)  
-  - Tap your APK version and accept the install.
-  - ![](/img/load-apk-03.png)  
 
-  
-  
+</p>
+</details>
+
+<details><summary>Copy the APK to the terminal</summary>
+<p>
+
+  - Connect the USB port on the side of the POI Terminal to your PC
+  - The terminal will appear as "MTP USB Device" (or "A920" or "A930") in the PC file manager
+  - Navigate to "MTP USB Device", and copy your APK to the terminal "Download" directory
+    ![](/img/load-apk-01.png)  
+  - On the terminal, launch "File Manager" and navigate to the "Download" directory.
+    ![](/img/load-apk-02.png)  
+  - Tap your APK version and accept the install.
+    ![](/img/load-apk-03.png)  
+
+</p>
+</details>
+
+### Ingenico
+
+#### Connect to Wi-Fi
+
+The terminal can be connected to Wi-Fi where cellular access isn't avaiable. 
+
+- Press the Home button
+- Launch the "Settings" app (⚙icon)
+- If it asks for a password, enter `350000`
+- Select Network & Internet option and then select Wi-Fi
+- Tap the `Use Wi-Fi` toggle switch - Wi-Fi is enabled when the toggle switch is green
+- Choose your Wi-Fi network and enter the password
+- You should see your Wi-Fi network with a "Connected" status underneath
+
+#### Loading a custom APK
+
+For Fusion Satellite integrations, the DataMesh debug development POI terminals are configured to allow loading of custom APK's.
+
+There are two methods for completing this process: 
+
+<details><summary>Connect the terminal to Android Development Studio</summary>
+<p>
+
+  - Connect the USB port on the side of the POI Terminal to your PC
+  - The terminal will appear in the list of connected devices in Android Development Studio
+  - You can choose to either deploy or debug your custom APK on the terminal
+
+</p>
+</details>
+
+<details><summary>Install through AxToolkit</summary>
+<p>
+
+  - Connect the USB port on the side of the POI Terminal to your PC
+  - Install AxToolkit (Contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you don't have an AxToolkit)
+  - Open the AxToolkit.
+  - Access Tools > Software Manager > Run
+    ![](/img/Ingenico-AxToolkit.png)  
+  - `Append` the file that you want to be installed and click on `Start`
+    ![](/img/Ingenico-AppendAndStart.png)  
+
+</p>
+</details>

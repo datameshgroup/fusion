@@ -74,11 +74,15 @@ const config = {
           },
         ],
       },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 4,
+      },
       footer: {
         style: 'dark',
         links: [
           {
-            title: '15-02-2023',
+            title: '23-02-2023',
           },
           {
             title: 'Useful Links',
