@@ -251,7 +251,7 @@ To perform a purchase the Sale System will need to implement requests, and handl
   - Record the [POISerialNumber](../data-dictionary#poiserialnumber) to be sent in subsequent login requests
 - Send a payment request, including all required fields, as detailed in [payment request](#payment) 
   - Set [PaymentData.PaymentType](../data-dictionary#paymenttype) to "Normal"
-  - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount)
+  - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](../data-dictionary#requestedamount)
   - Set [SaleTransactionID](../data-dictionary#saletransactionid) to a unique value for the sale on this Sale System
   - Populate the [SaleItem](../data-dictionary#saleitem) array with the product basket for the transaction 
 - If configured in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities), handle any [display](#display), [print](#print), and [input](#input) events the POI System sends
@@ -262,7 +262,7 @@ To perform a purchase the Sale System will need to implement requests, and handl
   - Check [Response.Result](../data-dictionary#result) for the transaction result 
   - If [Response.Result](../data-dictionary#result) is "Success", record the following to enable future matched refunds: [SaleID](../data-dictionary#saleid), [POIID](../data-dictionary#poiid), and [POITransactionID](../data-dictionary#poitransactionid)
   - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
-  - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](#surchargeamount)
+  - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](../data-dictionary#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](../data-dictionary#surchargeamount)
   - Print the receipt contained in `PaymentReceipt`
 - Implement error handling outlined in [error handling](#error-handling)
 
@@ -282,7 +282,7 @@ If refunding a previous purchase, the Sale System should include details of the 
   - Record the [POISerialNumber](../data-dictionary#poiserialnumber) to be sent in subsequent login requests
 - Send a payment request, including all required fields, as detailed in [payment request](#payment) 
   - Set [PaymentData.PaymentType](../data-dictionary#paymenttype) to "Refund"
-  - Set the refund amount in [PaymentTransaction.AmountsReq.RequestedAmount](#requestedamount)
+  - Set the refund amount in [PaymentTransaction.AmountsReq.RequestedAmount](../data-dictionary#requestedamount)
   - Set [SaleTransactionID](../data-dictionary#saletransactionid) to a unique value for the sale on this Sale System
   - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](../data-dictionary#originalpoitransaction)
     - Set [SaleID](../data-dictionary#saleid) to the [SaleID](../data-dictionary#saleid) of the original purchase payment request 

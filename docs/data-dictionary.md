@@ -147,6 +147,9 @@ Available values:
 - "PayPal"
 - "Card"
 
+## CashBackAmount
+
+The amount of cash to be handed back to the customer from their account.
 
 ## Categories
 
@@ -161,7 +164,6 @@ Example                         | Array
 SaleItem with a single category | `{ "categories": [ "Shirts" ] }`
 SaleItem with a main and sub category | `{ "categories": [ "Food", "Mains" ] }`
 SaleItem with multiple categories | `{ "categories": [ "Computers", "Accessories", "Keyboards" ] }`
-
 
 ## CertificationCode
 
@@ -767,6 +769,9 @@ For example, `ProductLabel` could contain the product name typically printed on 
 
 Item unit quantity
 
+## RequestedAmount
+
+Total amount requested for authorization - (including any cash back amount and tip amount).
 
 ## ResponseRequiredFlag
 
@@ -1215,6 +1220,10 @@ Must be the software version of the current Sale System build.
 
 Indicates if a payment is a split payment. Default to false. 
 
+## SurchargeAmount
+
+The amount of any surcharge added to the transaction
+
 ## TaxCode
 
 Type of tax associated with the item. Default = "GST"
@@ -1266,7 +1275,11 @@ Date and time of a transaction for the Sale System, the POI System or the Acquir
 Formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601). e.g. "2019-09-02T09:13:51.0+01:00"
 
 Used to ensure the uniqueness of a transaction for Sale System, the POI System or the Acquirer, or indicates the time when the event occurs in the `EventNotification` message.
- 
+
+
+## TipAmount
+
+The Tip amount included in the transaction.  In the PaymentRequest, TipAmount to 0 will display the Tip Entry screen in the POI Terminal.  Do not set TipAmount to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
 
 ## TokenRequestedType
 

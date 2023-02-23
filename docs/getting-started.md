@@ -809,7 +809,7 @@ For example:
 1. POI Terminal approves payment and returns the result to the Sale System
 
 :::caution
-If the <a href="#tipamount">PaymentTransaction.AmountsReq.TipAmount</a> is set to 0 in the payment request, the Tip Entry screen will be displayed in the POI terminal.<br />Do not set <a href="#tipamount">PaymentTransaction.AmountsReq.TipAmount</a> to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
+If the <a href="./data-dictionary#tipamount">PaymentTransaction.AmountsReq.TipAmount</a> is set to 0 in the payment request, the Tip Entry screen will be displayed in the POI terminal.<br />Do not set <a href="./data-dictionary#tipamount">PaymentTransaction.AmountsReq.TipAmount</a> to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
 :::
 
 #### Tip on POI Terminal
@@ -831,7 +831,7 @@ For example:
 1. The Sale System records the approved payment, and optionally records the tip amount of $10
 
 :::tip
-The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="#requestedamount">RequestedAmount</a> sent in the payment request
+The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="./data-dictionary#requestedamount">RequestedAmount</a> sent in the payment request
 :::
 
 ### Dynamic surcharge
@@ -859,7 +859,7 @@ Dynamic surcharge example:
 1. The Sale System records the `AuthorizedAmount`, and optionally records the `SurchargeAmount` of $1.90
 
 :::tip
-The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="#requestedamount">RequestedAmount</a> sent in the payment request
+The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the payment result may be differ from the <a href="./data-dictionary#requestedamount">RequestedAmount</a> sent in the payment request
 :::
 
 #### Merchant responsibilities

@@ -38,8 +38,8 @@ The DataMesh API supports two versions.
 Breaking changes when moving from "3.1" to "3.1-dmg"
 
 - [MessageHeader.ProtocolVersion](./data-dictionary#protocolversion) should be set to "3.1-dmg"
-- Tip amount is now present in [PaymentResponse.PaymentResult.AmountsResp.TipAmount](#tipamount).
-- Surchage amount is now present in [PaymentResponse.PaymentResult.AmountsResp.SurchargeAmount](#surchargeamount).
+- Tip amount is now present in [PaymentResponse.PaymentResult.AmountsResp.TipAmount](./data-dictionary#tipamount).
+- Surchage amount is now present in [PaymentResponse.PaymentResult.AmountsResp.SurchargeAmount](./data-dictionary#surchargeamount).
 - `PaymentResponse.PaymentResult.PaymentReceipt` is now an array of receipts. This was a single object in "3.1"
 - For a successful payment, the acquirer STAN is returned in `PaymentResponse.PaymentResult.PaymentAcquirerData.STAN`. 
 - For a successful payment, the acquirer RRN is returned in `PaymentResponse.PaymentResult.PaymentAcquirerData.RRN`. 
@@ -201,11 +201,11 @@ There are two methods for completing this process:
   - Connect the USB port on the side of the POI Terminal to your PC
   - The terminal will appear as "MTP USB Device" (or "A920" or "A930") in the PC file manager
   - Navigate to "MTP USB Device", and copy your APK to the terminal "Download" directory
-    ![](/img/load-apk-01.png)  
-  - On the terminal, launch "File Manager" and navigate to the "Download" directory.
-    ![](/img/load-apk-02.png)  
+  - ![](/img/load-apk-01.png)  
+  - On the terminal, launch "File Manager" and navigate to the "Download" directory
+  - ![](/img/load-apk-02.png)  
   - Tap your APK version and accept the install.
-    ![](/img/load-apk-03.png)  
+  - ![](/img/load-apk-03.png)  
 
 </p>
 </details>
