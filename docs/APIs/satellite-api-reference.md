@@ -9,7 +9,7 @@ The Fusion Satellite API allows a Sale System running on the POI terminal to com
 
 DataMesh have published a library to Maven Central which wraps the Satellite API. This is the recommended method of interacting with the Fusion Satellite API.
 
-Description | Location | |
+Description | Location | <div style={{width:'180px'}}></div> |
 -----------------                        | ----------- | ----------- |
 Library | on [Maven Central] (https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk) | |
 Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java) | |

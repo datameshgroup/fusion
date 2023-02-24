@@ -56,7 +56,7 @@ Windows-based POS where it's possible to install the DataMesh middleware<br />on
 POS on Pinpad/POI Terminal |   | ✔ |   |  
 Other POS type including Legacy POS/On-Premises POS/Traditional POS and POS on Mobile (iOS/Android) device |   |   | ✔ |  
 
-### **Fusion App**
+### Fusion App
 
 The Fusion App is a DataMesh middleware that is installed in the same Winodws PC where the Sale System application is running on.  
 
@@ -68,13 +68,13 @@ The Sale System does not need to handle the different scenarios that could occur
 
 ![](/img/POS-fusion-app.png)
 
-###  **[Fusion Satellite](./APIs/satellite-api-reference)**
+###  [Fusion Satellite](./APIs/satellite-api-reference)
 
 The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with [Android intents](https://developer.android.com/guide/components/intents-filters).
 
 ![](/img/POS-fusion-satellite.png)
 
-### **[Fusion Cloud](./APIs/cloud-api-reference)**
+### [Fusion Cloud](./APIs/cloud-api-reference)
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. 
 
@@ -128,7 +128,7 @@ Depending on your Sale System design, other features may be required.
 
 ### APIs
 
-#### Fusion App API
+- **Fusion App API**
 
 The Fusion App is a DataMesh middleware that is installed in the same Windows PC where the Sale System application is running on. 
 
@@ -140,7 +140,7 @@ Requests and responses are sent and received through the Fusion App's local HTTP
 
 :::info
 
-Once you have installed the Fusion App in your local Windows PC, you should be able to access its Swagger API documentation at <a href="http://localhost:4242/swagger">`http://localhost:4242/swagger`</a> in your local PC.
+Once you have installed the Fusion App in your local Windows PC, you should be able to access its Swagger API documentation at <a href="http://localhost:4242/swagger">`http://localhost:4242/swagger`</a> in the same PC.
 
 :::
 
@@ -150,7 +150,7 @@ To get the complete and updated Fusion App API details, please refer to the <a h
 
 <!-- Start of Fusion App Sample -->
 
-##### *Fusion App* Payment Processing
+*Fusion App* Payment Processing
 
 Sends a payment request to the DataMesh Unify payments platform.
 
@@ -459,7 +459,7 @@ Internal application error. Enter error recovery.
 </p>
 </details>
 
-##### *Fusion App* Error Recovery
+*Fusion App* Error Recovery
 
 Enters error recovery for a previous payment where the POS didn't receive a payment response
 
@@ -731,18 +731,18 @@ Internal application error.
 
 <!-- End of Fusion App Sample -->
 
-#### [Fusion Satellite API](./APIs/satellite-api-reference)
+- **[Fusion Satellite API](./APIs/satellite-api-reference)**
 
 The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with Android intents.
 
-| Description | Location |
+| Description | Location | <div style={{width:'180px'}}></div>
 -----------------                        | ----------- | ----------- |
 Library | on [Maven Central] (https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk) | |
 Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java) | |
 Demo Application utilising the library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) | Tested on PAX (PAX 920) |
 Another POS on Pinpad Demo Application | on [GitHub] (https://github.com/datameshgroup/pos-on-pinpad-demo) | Tested on PAX (PAX 920) and Ingenico (DX8000) |
 
-#### [Fusion Cloud API](./APIs/cloud-api-reference)
+- ** [Fusion Cloud API](./APIs/cloud-api-reference)**
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch.
 
