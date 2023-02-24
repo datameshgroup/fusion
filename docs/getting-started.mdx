@@ -2,6 +2,9 @@
 sidebar_position: 1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Getting started
 
 The steps outlined below will guide you through creating a dev account, scoping your Sale System requirements based on the DataMesh functionality, coding and testing your integration, getting accredited with DataMesh, and finally deploying your solution into production.
@@ -53,19 +56,25 @@ Windows-based POS where it's possible to install the DataMesh middleware<br />on
 POS on Pinpad/POI Terminal |   | ✔ |   |  
 Other POS type including Legacy POS/On-Premises POS/Traditional POS and POS on Mobile (iOS/Android) device |   |   | ✔ |  
 
-**Fusion App**
+### **Fusion App**
 
-The Fusion App is a DataMesh middleware that is installed in the same PC where the Sale System application is running on.  The Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch (Fusion Cloud API).  The Sale System sends a payment request and receives a payment result through the Fusion App's local HTTP end point for payments.  The Sale System does not need to handle the different scenarios that could occur during the actual payment processing after a payment request has been sent.  This is because the Fusion App already handles the full payment lifecycle (including all the necessary message handling and UI display) which is a mandatory requirement when either Fusion Cloud or Fusion Satellite is used.  If the Sale system doesn't receive a payment response from the Fusion App, the Sale system just needs to call a single error handling API to enter error recovery.
+The Fusion App is a DataMesh middleware that is installed in the same Winodws PC where the Sale System application is running on.  
+
+The Fusion App uses the [Fusion Cloud API](./APIs/cloud-api-reference).  It communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.  
+
+The Sale System sends a payment request and receives a payment result through the Fusion App's local HTTP end point for payments.  
+
+The Sale System does not need to handle the different scenarios that could occur during the actual payment processing after a payment request has been sent.  This is because the Fusion App already handles the full payment lifecycle (including all the necessary message handling and UI display) which is a mandatory requirement when either Fusion Cloud or Fusion Satellite is used.  If the Sale system doesn't receive a payment response from the Fusion App, the Sale system just needs to call a single error handling API to enter error recovery.
 
 ![](/img/POS-fusion-app.png)
 
-**[Fusion Satellite](./APIs/satellite-api-reference)**
+###  **[Fusion Satellite](./APIs/satellite-api-reference)**
 
 The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with [Android intents](https://developer.android.com/guide/components/intents-filters).
 
 ![](/img/POS-fusion-satellite.png)
 
-**[Fusion Cloud](./APIs/cloud-api-reference)**
+### **[Fusion Cloud](./APIs/cloud-api-reference)**
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. 
 
@@ -117,18 +126,612 @@ Depending on your Sale System design, other features may be required.
 - [Dynamic surcharge](#dynamic-surcharge)
 - [Pre-authorisation / completion](#pre-auth-completion)
 
-**APIs**
+### APIs
 
-- Fusion App API
+#### Fusion App API
 
-The Fusion App is a DataMesh middleware that is installed in the same PC where the Sale System application is running on. It communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch (Fusion Cloud API). Requests and responses are sent and received through the Fusion App's local HTTP end points.
+The Fusion App is a DataMesh middleware that is installed in the same Windows PC where the Sale System application is running on. 
 
-Once you have installed the Fusion App in your local PC, you should be able to access its Swagger API documentation at `http://localhost:4242/swagger` in your local PC.
+The Fusion App uses the [Fusion Cloud API](./APIs/cloud-api-reference).  It communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch. 
 
-*Contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you need the Fusion App installer or to discuss further about the Fusion App and its API.*
+Requests and responses are sent and received through the Fusion App's local HTTP end points.
 
+*Contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you need the latest Fusion App installer.*
 
-- [Fusion Satellite API](./APIs/satellite-api-reference)
+:::info
+
+Once you have installed the Fusion App in your local Windows PC, you should be able to access its Swagger API documentation at <a href="http://localhost:4242/swagger">`http://localhost:4242/swagger`</a> in your local PC.
+
+:::
+
+Below are *sample* http requests available in the Fusion App. 
+
+To get the complete and updated Fusion App API details, please refer to the <a href="http://localhost:4242/swagger">Fusion App Swagger API documentation</a>, which is accessible *after you've installed the Fusion App* in your local PC.
+
+<!-- Start of Fusion App Sample -->
+
+##### *Fusion App* Payment Processing
+
+Sends a payment request to the DataMesh Unify payments platform.
+
+<details><summary><b>[POST]</b> /fusion/v1/payments/<i><b>SessionID</b></i></summary>
+<p>
+
+<Tabs>
+  <TabItem value="parameters" label="Request" default>
+
+```jsx title="Parameters"
+
+SessionID - Unique identifier for this request, formatted as a UUIDv4
+
+```
+
+<details><summary>Request Body</summary>
+<p>
+
+```jsx title="Example Value"
+
+{
+  "PaymentRequest": {
+    "SaleData": {
+      "OperatorID": "string",
+      "OperatorLanguage": "string",
+      "ShiftNumber": "string",
+      "CustomerLanguage": "string",
+      "SaleTransactionID": {
+        "TransactionID": "string",
+        "TimeStamp": "2023-02-24T02:43:02.236Z"
+      },
+      "SaleReferenceID": "string",
+      "SaleTerminalData": {
+        "TerminalEnvironment": "Unknown",
+        "SaleCapabilities": [
+          "Unknown"
+        ],
+        "SaleProfile": {
+          "GenericProfile": "Unknown"
+        },
+        "TotalsGroupID": "string"
+      },
+      "TokenRequestedType": "Unknown",
+      "CustomerOrderID": "string",
+      "CustomerOrderReq": [
+        "Unknown"
+      ],
+      "SaleToPOIData": "string",
+      "SaleToAcquirerData": "string"
+    },
+    "PaymentTransaction": {
+      "AmountsReq": {
+        "Currency": "Unknown",
+        "RequestedAmount": 0,
+        "CashBackAmount": 0,
+        "TipAmount": 0,
+        "SurchargeAmount": 0,
+        "PaidAmount": 0,
+        "MinimumAmountDeliver": 0,
+        "MaximumCashBackAmount": 0,
+        "MinimumSplitAmount": 0
+      },
+      "OriginalPOITransaction": {
+        "SaleID": "string",
+        "POIID": "string",
+        "POITransactionID": {
+          "TransactionID": "string",
+          "TimeStamp": "2023-02-24T02:43:02.236Z"
+        },
+        "ReuseCardDataFlag": true,
+        "ApprovalCode": "string",
+        "CustomerLanguage": "string",
+        "AcquirerID": "string",
+        "AmountValue": 0,
+        "HostTransactionID": {
+          "TransactionID": "string",
+          "TimeStamp": "2023-02-24T02:43:02.236Z"
+        },
+        "LastTransactionFlag": true
+      },
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [
+          "Unknown"
+        ],
+        "AcquirerID": [
+          "string"
+        ],
+        "DebitPreferredFlag": true,
+        "LoyaltyHandling": "string",
+        "CustomerLanguage": "string",
+        "ForceOnlineFlag": true,
+        "ForceEntryMode": [
+          "Unknown"
+        ],
+        "MerchantCategoryCode": "string"
+      },
+      "SaleItem": [
+        {
+          "ItemID": 0,
+          "ParentItemID": 0,
+          "ProductCode": "string",
+          "EanUpc": "string",
+          "UnitOfMeasure": "Unknown",
+          "Quantity": 0,
+          "UnitPrice": 0,
+          "ItemAmount": 0,
+          "TaxCode": "string",
+          "SaleChannel": "string",
+          "ProductLabel": "string",
+          "AdditionalProductInfo": "string",
+          "CostBase": 0,
+          "Discount": 0,
+          "DiscountReason": "string",
+          "Categories": [
+            "string"
+          ],
+          "Brand": "string",
+          "QuantityInStock": 0,
+          "Tags": [
+            "string"
+          ],
+          "Restricted": true,
+          "PageURL": "string",
+          "ImageURLs": [
+            "string"
+          ],
+          "Style": "string",
+          "Size": "string",
+          "Colour": "string",
+          "Weight": 0,
+          "WeightUnitOfMeasure": "Unknown",
+          "CustomFields": [
+            {
+              "Name": "string",
+              "Type": "Unknown",
+              "Value": "string"
+            }
+          ]
+        }
+      ]
+    },
+    "PaymentData": {
+      "PaymentType": "Unknown",
+      "CardAcquisitionReference": {
+        "TransactionID": "string",
+        "TimeStamp": "2023-02-24T02:43:02.236Z"
+      },
+      "RequestedValidityDate": "string",
+      "PaymentInstrumentData": {
+        "PaymentInstrumentType": "Unknown",
+        "CardData": {
+          "PaymentBrand": "string",
+          "Account": "Unknown",
+          "MaskedPAN": "string",
+          "EntryMode": "Unknown",
+          "CardCountryCode": "string",
+          "ProtectedCardData": {
+            "ContentType": "string",
+            "EnvelopedData": {
+              "Version": "string",
+              "KEK": {
+                "Version": "string",
+                "KEKIdentifier": {
+                  "KeyIdentifier": "string",
+                  "KeyVersion": "string"
+                },
+                "KeyEncryptionAlgorithm": {
+                  "Algorithm": "string"
+                },
+                "EncryptedKey": "string"
+              },
+              "EncryptedContent": {
+                "ContentType": "string",
+                "ContentEncryptionAlgorithm": {
+                  "Algorithm": "string",
+                  "Parameter": {
+                    "InitialisationVector": "string"
+                  }
+                },
+                "EncryptedData": "string"
+              }
+            }
+          },
+          "PaymentToken": {
+            "TokenRequestedType": "Unknown",
+            "TokenValue": "string",
+            "ExpiryDateTime": "2023-02-24T02:43:02.236Z"
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+</p>
+</details>
+
+</TabItem>
+<TabItem value="response" label="Responses">
+
+<details><summary>Status Code: <b>200</b></summary>
+<p>
+
+```jsx
+
+Successful Operation
+
+```
+
+```jsx title="Response body (Example Value)"
+{
+    "PaymentResponse": {
+        "Response": {
+            "Result": "Success"
+        },
+        "SaleData": {
+            "SaleTransactionID": {
+                "TransactionID": "f03ca0a2-044e-4782-b824-f8882b298863",
+                "TimeStamp": "2023-02-24T12:31:20+11:00"
+            }
+        },
+        "POIData": {
+            "POITransactionID": {
+                "TransactionID": "63f81369a138f54ffa8e4030",
+                "TimeStamp": "2023-02-24T12:31:43.777+11:00"
+            },
+            "POIReconciliationID": "624fbb8bd8dd1a41e1c9caf9"
+        },
+        "PaymentResult": {
+            "PaymentType": "Normal",
+            "PaymentInstrumentData": {
+                "PaymentInstrumentType": "Card",
+                "CardData": {
+                    "PaymentBrand": "VISA",
+                    "Account": "Credit",
+                    "MaskedPAN": "419957XXXXXX1234",
+                    "EntryMode": "Tapped"
+                }
+            },
+            "AmountsResp": {
+                "Currency": "AUD",
+                "AuthorizedAmount": 10.16,
+                "TotalFeesAmount": 0,
+                "CashBackAmount": 0,
+                "TipAmount": 0,
+                "SurchargeAmount": 0.16
+            },
+            "OnlineFlag": true,
+            "PaymentAcquirerData": {
+                "AcquirerID": "xxxxxx",
+                "MerchantID": "xxxxxxxxx",
+                "AcquirerPOIID": "xxxxxx",
+                "AcquirerTransactionID": {
+                    "TransactionID": "xxxxxxxxxxxxxxxxxxxxxxxx",
+                    "TimeStamp": "2023-02-24T01:31:44.079Z"
+                },
+                "ApprovalCode": "xxxxxxx",
+                "ResponseCode": "xx",
+                "RRN": "xxx",
+                "HostReconciliationID": "xxx"
+            }
+        },
+        "PaymentReceipt": [
+            {
+                "DocumentQualifier": "SaleReceipt",
+                "IntegratedPrintFlag": true,
+                "RequiredSignatureFlag": false,
+                "OutputContent": {
+                    "OutputFormat": "XHTML",
+                    "OutputXHTML": "xxx",
+                    "ContentAsPlainText": "xxx"
+                }
+            }
+        ]
+    }
+}
+
+```
+
+</p>
+</details>
+
+```jsx title="Status Code: 400"
+	
+Request format is invalid. Check body for failure reason
+
+```
+
+```jsx title="Status Code: 415"
+		
+ACCEPT header is not set to application/json
+
+```
+
+```jsx title="Status Code: 500"
+	
+Internal application error. Enter error recovery.
+
+```
+
+</TabItem>
+</Tabs>
+
+</p>
+</details>
+
+##### *Fusion App* Error Recovery
+
+Enters error recovery for a previous payment where the POS didn't receive a payment response
+
+<details><summary><b>[GET]</b> /fusion/v1/payments/<i><b>SessionID</b></i></summary>
+<p>
+
+<Tabs>
+  <TabItem value="parameters" label="Request" default>
+
+```jsx title="Parameters"
+
+SessionID - Unique identifier for this request, formatted as a UUIDv4
+
+```
+
+</TabItem>
+<TabItem value="response" label="Responses">
+
+<details><summary>Status Code: <b>200</b></summary>
+<p>
+
+```jsx
+	
+If a payment response could be returned. Check Response.Result for financial payment result.
+
+```
+
+```jsx title="Response body (Example Value)"
+{
+  "PaymentResponse": {
+    "Response": {
+      "Result": "Unknown",
+      "ErrorCondition": "Unknown",
+      "AdditionalResponse": "string"
+    },
+    "SaleData": {
+      "OperatorID": "string",
+      "OperatorLanguage": "string",
+      "ShiftNumber": "string",
+      "CustomerLanguage": "string",
+      "SaleTransactionID": {
+        "TransactionID": "string",
+        "TimeStamp": "2023-02-24T04:00:27.284Z"
+      },
+      "SaleReferenceID": "string",
+      "SaleTerminalData": {
+        "TerminalEnvironment": "Unknown",
+        "SaleCapabilities": [
+          "Unknown"
+        ],
+        "SaleProfile": {
+          "GenericProfile": "Unknown",
+          "ServiceProfiles": [
+            "Unknown"
+          ]
+        },
+        "TotalsGroupID": "string"
+      },
+      "TokenRequestedType": "Unknown",
+      "CustomerOrderID": "string",
+      "CustomerOrderReq": [
+        "Unknown"
+      ],
+      "SaleToPOIData": "string",
+      "SaleToAcquirerData": "string"
+    },
+    "POIData": {
+      "POITransactionID": {
+        "TransactionID": "string",
+        "TimeStamp": "2023-02-24T04:00:27.284Z"
+      },
+      "POIReconciliationID": "string"
+    },
+    "PaymentResult": {
+      "PaymentType": "Unknown",
+      "PaymentInstrumentData": {
+        "PaymentInstrumentType": "Unknown",
+        "CardData": {
+          "PaymentBrand": "string",
+          "Account": "Unknown",
+          "MaskedPAN": "string",
+          "EntryMode": "Unknown",
+          "CardCountryCode": "string",
+          "ProtectedCardData": {
+            "ContentType": "string",
+            "EnvelopedData": {
+              "Version": "string",
+              "KEK": {
+                "Version": "string",
+                "KEKIdentifier": {
+                  "KeyIdentifier": "string",
+                  "KeyVersion": "string"
+                },
+                "KeyEncryptionAlgorithm": {
+                  "Algorithm": "string"
+                },
+                "EncryptedKey": "string"
+              },
+              "EncryptedContent": {
+                "ContentType": "string",
+                "ContentEncryptionAlgorithm": {
+                  "Algorithm": "string",
+                  "Parameter": {
+                    "InitialisationVector": "string"
+                  }
+                },
+                "EncryptedData": "string"
+              }
+            }
+          },
+          "PaymentToken": {
+            "TokenRequestedType": "Unknown",
+            "TokenValue": "string",
+            "ExpiryDateTime": "2023-02-24T04:00:27.284Z"
+          }
+        }
+      },
+      "AmountsResp": {
+        "Currency": "Unknown",
+        "AuthorizedAmount": 0,
+        "TotalRebatesAmount": 0,
+        "TotalFeesAmount": 0,
+        "CashBackAmount": 0,
+        "TipAmount": 0,
+        "SurchargeAmount": 0,
+        "RequestedAmount": 0,
+        "PartialAuthorizedAmount": 0
+      },
+      "CurrencyConversion": {
+        "CustomerApprovedFlag": true,
+        "ConvertedAmount": {
+          "AmountValue": 0,
+          "Currency": "string"
+        },
+        "Rate": "string",
+        "Markup": "string",
+        "Commission": "string",
+        "Declaration": "string"
+      },
+      "CustomerLanguage": "string",
+      "OnlineFlag": true,
+      "AuthenticationMethod": [
+        "Unknown"
+      ],
+      "ValidityDate": "string",
+      "PaymentAcquirerData": {
+        "AcquirerID": "string",
+        "MerchantID": "string",
+        "AcquirerPOIID": "string",
+        "AcquirerTransactionID": {
+          "TransactionID": "string",
+          "TimeStamp": "2023-02-24T04:00:27.284Z"
+        },
+        "ApprovalCode": "string",
+        "ResponseCode": "string",
+        "RRN": "string",
+        "STAN": "string",
+        "HostReconciliationID": "string"
+      }
+    },
+    "LoyaltyResult": [
+      {
+        "LoyaltyAccount": {
+          "LoyaltyAccountID": {
+            "EntryMode": "Unknown",
+            "IdentificationType": "Unknown",
+            "IdentificationSupport": "Unknown",
+            "LoyaltyID": "string"
+          },
+          "LoyaltyBrand": "Unknown"
+        },
+        "CurrentBalance": 0,
+        "LoyaltyAmount": {
+          "LoyaltyUnit": "Unknown",
+          "Currency": "Unknown",
+          "AmountValue": 0
+        },
+        "LoyaltyAcquirerData": {
+          "LoyaltyAcquirerID": "string",
+          "ApprovalCode": "string",
+          "LoyaltyTransactionID": {
+            "TransactionID": "string",
+            "TimeStamp": "2023-02-24T04:00:27.284Z"
+          },
+          "HostReconciliationID": "string"
+        },
+        "Rebates": {
+          "TotalRebate": 0,
+          "RebateLabel": "string",
+          "SaleItemRebate": [
+            {
+              "ItemID": 0,
+              "ProductCode": "string",
+              "EanUpc": "string",
+              "UnitOfMeasure": "Unknown",
+              "Quantity": 0,
+              "ItemAmount": 0,
+              "RebateLabel": "string"
+            }
+          ]
+        }
+      }
+    ],
+    "PaymentReceipt": [
+      {
+        "DocumentQualifier": "Unknown",
+        "IntegratedPrintFlag": true,
+        "RequiredSignatureFlag": true,
+        "OutputContent": {
+          "OutputFormat": "Unknown",
+          "PredefinedContent": {
+            "ReferenceID": "string",
+            "Language": "string"
+          },
+          "OutputXHTML": "string",
+          "OutputText": {
+            "Text": "string"
+          },
+          "ContentAsPlainText": "string"
+        }
+      }
+    ],
+    "CustomerOrder": {
+      "CustomerOrderID": "string",
+      "SaleReferenceId": "string",
+      "OpenOrderState": true,
+      "StartDate": "string",
+      "EndDate": "string",
+      "ForecastedAmount": 0,
+      "CurrentAmount": 0,
+      "Currency": "string",
+      "AccessedBy": "string",
+      "AdditionalInformation": "string"
+    },
+    "AllowedProductCode": [
+      "string"
+    ]
+  }
+}
+
+```
+
+</p>
+</details>
+
+```jsx title="Status Code: 400"
+	
+Request format is invalid. Check body for failure reason
+
+```
+
+```jsx title="Status Code: 415"
+		
+ACCEPT header is not set to application/json
+
+```
+
+```jsx title="Status Code: 500"
+	
+Internal application error.
+
+```
+
+</TabItem>
+</Tabs>
+
+</p>
+</details>
+
+<!-- End of Fusion App Sample -->
+
+#### [Fusion Satellite API](./APIs/satellite-api-reference)
 
 The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with Android intents.
 
@@ -139,7 +742,7 @@ Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java
 Demo Application utilising the library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) | Tested on PAX (PAX 920) |
 Another POS on Pinpad Demo Application | on [GitHub] (https://github.com/datameshgroup/pos-on-pinpad-demo) | Tested on PAX (PAX 920) and Ingenico (DX8000) |
 
-- [Fusion Cloud API](./APIs/cloud-api-reference)
+#### [Fusion Cloud API](./APIs/cloud-api-reference)
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch.
 
