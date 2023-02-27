@@ -174,7 +174,7 @@ The terminal can be connected to Wi-Fi where cellular access isn't avaiable.
 
   ![](/img/pinpad-launch-settings-270x480.png)
 
-- If it asks for a password, enter `pax9876@@`
+- If it asks for a password, enter `pax9876@@`- if this doesn't work, please try `pax9876` or `9876`
 - Select the Wi-Fi option and tap the `On` toggle switch - Wi-Fi is enabled when the toggle switch is green
 - Choose your Wi-Fi network and enter the password
 - You should see your Wi-Fi network with a "Connected" status underneath
