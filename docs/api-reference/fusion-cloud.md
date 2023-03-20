@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Cloud API Reference
+# Fusion Cloud
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. 
 
@@ -38,7 +38,7 @@ Unify utilises secure websockets for communication between Sale System and POI S
   - If certificate validation fails the Sale System must display an error and drop the connection.
 - The Sale System must resolve the DNS address before each connection attempt, and never hard code IP addresses
 - The Sale System should manage SSL certificate revocation lists and ensure OS security updates are applied
-- The Sale System should store the [SaleID](../data-dictionary#saleid), [POIID](../data-dictionary#poiid), and [KEK](../data-dictionary#kek) in a secure location. These values are used to identify the Sale System and authenticate the [SecurityTrailer](#securitytrailer)
+- The Sale System should store the [SaleID](/docs/api-reference/data-model#saleid), [POIID](/docs/api-reference/data-model#poiid), and [KEK](/docs/api-reference/data-model#kek) in a secure location. These values are used to identify the Sale System and authenticate the [SecurityTrailer](#securitytrailer)
 
 <!--  - Unify utilises one of the root CA's provided by [Sectigo](https://sectigo.com/resource-library/sectigo-root-intermediate-certificate-files) and [Digicert](https://www.digicert.com/kb/digicert-root-certificates.htm). The Sale System must ensure all certificate authorities from these sources are loaded into the certificate store used to validate the server. 
   - A full list of ca files can be downloaded from [here](files/root-ca-list.zip). -->
@@ -152,18 +152,18 @@ A `MessageHeader` is included with each request and response. It defines the pro
 
 Attribute                             |Requ.| Format | Description |
 -----------------                     |:----:| ------ | ----------- |
-[ProtocolVersion](../data-dictionary#protocolversion)   | ✔ | String | Version of the Sale to POI protocol specifications. Set to "3.1-dmg". Present when `MessageCategory` is "Login" otherwise absent.
-[MessageClass](../data-dictionary#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
-[MessageCategory](../data-dictionary#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
-[MessageType](../data-dictionary#messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
-[ServiceID](../data-dictionary#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                     | ✔ | String | Uniquely identifies the Sale System. The [SaleID](../data-dictionary#saleid) is provided by DataMesh, and must match the SaleID configured in Unify.
-[POIID](../data-dictionary#poiid)                       | ✔ | String | Uniquely identifies the POI Terminal. The [POIID](../data-dictionary#poiid) is provided by DataMesh, and must match the POIID configured in Unify. For Sale Systems that do not need a POI Terminal, the value must be "POI Server"
+[ProtocolVersion](/docs/api-reference/data-model#protocolversion)   | ✔ | String | Version of the Sale to POI protocol specifications. Set to "3.1-dmg". Present when `MessageCategory` is "Login" otherwise absent.
+[MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
+[MessageType](/docs/api-reference/data-model#messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
+[ServiceID](/docs/api-reference/data-model#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                     | ✔ | String | Uniquely identifies the Sale System. The [SaleID](/docs/api-reference/data-model#saleid) is provided by DataMesh, and must match the SaleID configured in Unify.
+[POIID](/docs/api-reference/data-model#poiid)                       | ✔ | String | Uniquely identifies the POI Terminal. The [POIID](/docs/api-reference/data-model#poiid) is provided by DataMesh, and must match the POIID configured in Unify. For Sale Systems that do not need a POI Terminal, the value must be "POI Server"
 
  
 ### Payload
 
-An object which defines fields for the request/response. The object name depends on the [MessageCategory](../data-dictionary#messagecategory) defined in the `MessageHeader`
+An object which defines fields for the request/response. The object name depends on the [MessageCategory](/docs/api-reference/data-model#messagecategory) defined in the `MessageHeader`
 
 e.g. a login will include `LoginRequest`/`LoginResponse`, and a payment will include a `PaymentRequest`/`PaymentResponse`.
 
@@ -207,7 +207,7 @@ The *Cloud API Reference* outlines the expected payload for each supported reque
 
 A `SecurityTrailer` object is included with each request and response. 
 
-Unify authenticates requests from the Sale System by examining the `SecurityTrailer`, along with the [SaleID](../data-dictionary#saleid), [POIID](../data-dictionary#poiid), and `CertificationCode`
+Unify authenticates requests from the Sale System by examining the `SecurityTrailer`, along with the [SaleID](/docs/api-reference/data-model#saleid), [POIID](/docs/api-reference/data-model#poiid), and `CertificationCode`
 
 Session Keys are used to generate/verify a Message Authentication Code (MAC) to prove the authenticity of transactions. They are also used to protect Sensitive Card Data if sent from the Sale System. Session keys must change for every message.
 
@@ -223,16 +223,16 @@ Session Keys are used to generate/verify a Message Authentication Code (MAC) to 
   *KEK*                                    | ✔ | Object | 
    [Version](#version)                     | ✔ | String | Set to "v4"
    *KEKIdentifier*                         | ✔ | Object |
-    [KeyIdentifier](../data-dictionary#keyidentifier)        | ✔ | String | "SpecV2TestMACKey" for test environment, and "SpecV2ProdMACKey" for production
-    [KeyVersion](../data-dictionary#keyversion)              | ✔ | String | An incrementing value. Either a counter or date formatted as YYYYMMDDHHmmss.mmm. See [KeyVersion](../data-dictionary#keyversion)
+    [KeyIdentifier](/docs/api-reference/data-model#keyidentifier)        | ✔ | String | "SpecV2TestMACKey" for test environment, and "SpecV2ProdMACKey" for production
+    [KeyVersion](/docs/api-reference/data-model#keyversion)              | ✔ | String | An incrementing value. Either a counter or date formatted as YYYYMMDDHHmmss.mmm. See [KeyVersion](/docs/api-reference/data-model#keyversion)
    *KeyEncryptionAlgorithm*                | ✔ | Object | 
-    [Algorithm](../data-dictionary#algorithm)                | ✔ | String | Set to "des-ede3-cbc". 
-   [EncryptedKey](../data-dictionary#encryptedkey)           | ✔ | String | A double length 3DES key. See [EncryptedKey](../data-dictionary#encryptedkey)
+    [Algorithm](/docs/api-reference/data-model#algorithm)                | ✔ | String | Set to "des-ede3-cbc". 
+   [EncryptedKey](/docs/api-reference/data-model#encryptedkey)           | ✔ | String | A double length 3DES key. See [EncryptedKey](/docs/api-reference/data-model#encryptedkey)
   *MACAlgorithm*                           | ✔ | Object | 
-   [Algorithm](../data-dictionary#algorithm)                 | ✔ | String | Set to "id-retail-cbc-mac-sha-256"
+   [Algorithm](/docs/api-reference/data-model#algorithm)                 | ✔ | String | Set to "id-retail-cbc-mac-sha-256"
    *EncapsulatedContent*                   | ✔ | Object | 
     [ContentType](#contenttype)            | ✔ | String | Set to "iddata"
-  [MAC](../data-dictionary#mac)                              | ✔ | String | MAC of message content. See [MAC](../data-dictionary#mac)
+  [MAC](/docs/api-reference/data-model#mac)                              | ✔ | String | MAC of message content. See [MAC](/docs/api-reference/data-model#mac)
 
 
 :::info
@@ -245,24 +245,24 @@ To perform a purchase the Sale System will need to implement requests, and handl
 
 
 - If a login hasn't already been sent for the session, send a login request as detailed in [login request](#login) 
-  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities) if payment receipts are to be redirected to the Sale System
+  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](/docs/api-reference/data-model#salecapabilities) if payment receipts are to be redirected to the Sale System
 - Await the a login response and
-  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
-  - Record the [POISerialNumber](../data-dictionary#poiserialnumber) to be sent in subsequent login requests
+  - Ensure the [ServiceID](/docs/api-reference/data-model#serviceid) in the result matches the request
+  - Record the [POISerialNumber](/docs/api-reference/data-model#poiserialnumber) to be sent in subsequent login requests
 - Send a payment request, including all required fields, as detailed in [payment request](#payment) 
-  - Set [PaymentData.PaymentType](../data-dictionary#paymenttype) to "Normal"
-  - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](../data-dictionary#requestedamount)
-  - Set [SaleTransactionID](../data-dictionary#saletransactionid) to a unique value for the sale on this Sale System
-  - Populate the [SaleItem](../data-dictionary#saleitem) array with the product basket for the transaction 
-- If configured in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities), handle any [display](#display), [print](#print), and [input](#input) events the POI System sends
+  - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Normal"
+  - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid) to a unique value for the sale on this Sale System
+  - Populate the [SaleItem](/docs/api-reference/data-model#saleitem) array with the product basket for the transaction 
+- If configured in [SaleTerminalData.SaleCapabilities](/docs/api-reference/data-model#salecapabilities), handle any [display](#display), [print](#print), and [input](#input) events the POI System sends
   - The expected user interface handling is outlined in [user interface](#user-interface)
   - The expected payment receipt handling is outlined in [receipt printing](#receipt-printing)
 - Await the payment response 
-  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
-  - Check [Response.Result](../data-dictionary#result) for the transaction result 
-  - If [Response.Result](../data-dictionary#result) is "Success", record the following to enable future matched refunds: [SaleID](../data-dictionary#saleid), [POIID](../data-dictionary#poiid), and [POITransactionID](../data-dictionary#poitransactionid)
+  - Ensure the [ServiceID](/docs/api-reference/data-model#serviceid) in the result matches the request
+  - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+  - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future matched refunds: [SaleID](/docs/api-reference/data-model#saleid), [POIID](/docs/api-reference/data-model#poiid), and [POITransactionID](/docs/api-reference/data-model#poitransactionid)
   - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
-  - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](../data-dictionary#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](../data-dictionary#surchargeamount)
+  - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](/docs/api-reference/data-model#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](/docs/api-reference/data-model#surchargeamount)
   - Print the receipt contained in `PaymentReceipt`
 - Implement error handling outlined in [error handling](#error-handling)
 
@@ -276,25 +276,25 @@ To perform a refund the Sale System will need to implement requests, and handle 
 If refunding a previous purchase, the Sale System should include details of the original purchase. 
 
 - If a login hasn't already been sent for the session, send a login request as detailed in [login request](#login) 
-  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities) if payment receipts are to be redirected to the Sale System
+  - Ensure "PrinterReceipt" is included in [SaleTerminalData.SaleCapabilities](/docs/api-reference/data-model#salecapabilities) if payment receipts are to be redirected to the Sale System
 - Await the a login response and
-  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
-  - Record the [POISerialNumber](../data-dictionary#poiserialnumber) to be sent in subsequent login requests
+  - Ensure the [ServiceID](/docs/api-reference/data-model#serviceid) in the result matches the request
+  - Record the [POISerialNumber](/docs/api-reference/data-model#poiserialnumber) to be sent in subsequent login requests
 - Send a payment request, including all required fields, as detailed in [payment request](#payment) 
-  - Set [PaymentData.PaymentType](../data-dictionary#paymenttype) to "Refund"
-  - Set the refund amount in [PaymentTransaction.AmountsReq.RequestedAmount](../data-dictionary#requestedamount)
-  - Set [SaleTransactionID](../data-dictionary#saletransactionid) to a unique value for the sale on this Sale System
-  - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](../data-dictionary#originalpoitransaction)
-    - Set [SaleID](../data-dictionary#saleid) to the [SaleID](../data-dictionary#saleid) of the original purchase payment request 
-	- Set [POIID](../data-dictionary#poiid) to the [POIID](../data-dictionary#poiid) of the original purchase payment request 
-	- Set [POITransactionID](../data-dictionary#poitransactionid) to the value returned in [POIData.POITransactionID](../data-dictionary#poitransactionid) of the original purchase payment response 
+  - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Refund"
+  - Set the refund amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid) to a unique value for the sale on this Sale System
+  - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+    - Set [SaleID](/docs/api-reference/data-model#saleid) to the [SaleID](/docs/api-reference/data-model#saleid) of the original purchase payment request 
+	- Set [POIID](/docs/api-reference/data-model#poiid) to the [POIID](/docs/api-reference/data-model#poiid) of the original purchase payment request 
+	- Set [POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) of the original purchase payment response 
     - The product basket is not required for refunds
-- If configured in [SaleTerminalData.SaleCapabilities](../data-dictionary#salecapabilities), handle any [display](#display), [print](#print), and [input](#input) events the POI System sends
+- If configured in [SaleTerminalData.SaleCapabilities](/docs/api-reference/data-model#salecapabilities), handle any [display](#display), [print](#print), and [input](#input) events the POI System sends
   - The expected user interface handling is outlined in [user interface](#user-interface)
   - The expected payment receipt handling is outlined in [receipt printing](#receipt-printing)
 - Await the payment response 
-  - Ensure the [ServiceID](../data-dictionary#serviceid) in the result matches the request
-  - Check [Response.Result](../data-dictionary#result) for the transaction result 
+  - Ensure the [ServiceID](/docs/api-reference/data-model#serviceid) in the result matches the request
+  - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
   - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
   - Print the receipt contained in `PaymentReceipt`
 - Implement error handling outlined in [error handling](#error-handling)
@@ -367,32 +367,32 @@ sending another NEXO Login request.
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[ProtocolVersion](../data-dictionary#protocolversion)       | ✔ | String | "3.1-dmg"       
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Login"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Uniquely identifies the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[ProtocolVersion](/docs/api-reference/data-model#protocolversion)       | ✔ | String | "3.1-dmg"       
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Login"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **LoginRequest**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
-[DateTime](../data-dictionary#datetime)                        | ✔ | String | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+[DateTime](/docs/api-reference/data-model#datetime)                        | ✔ | String | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 **SaleSoftware**                            | ✔ | Object | Object containing Sale System identification
- [ProviderIdentification](../data-dictionary#provideridentification)| ✔ | String | The name of the company supplying the Sale System. Provided by DataMesh.
- [ApplicationName](../data-dictionary#applicationname)          | ✔ | String | The name of the Sale System application. Provided by DataMesh.
- [SoftwareVersion](../data-dictionary#softwareversion)          | ✔ | String | The software version of the Sale System. Must be the software version of the current build. 
- [CertificationCode](../data-dictionary#certificationcode)      | ✔ | String | Certification code for this Sale System. Provided by DataMesh.
+ [ProviderIdentification](/docs/api-reference/data-model#provideridentification)| ✔ | String | The name of the company supplying the Sale System. Provided by DataMesh.
+ [ApplicationName](/docs/api-reference/data-model#applicationname)          | ✔ | String | The name of the Sale System application. Provided by DataMesh.
+ [SoftwareVersion](/docs/api-reference/data-model#softwareversion)          | ✔ | String | The software version of the Sale System. Must be the software version of the current build. 
+ [CertificationCode](/docs/api-reference/data-model#certificationcode)      | ✔ | String | Certification code for this Sale System. Provided by DataMesh.
 **SaleTerminalData**                          | ✔ | Object | Object containing Sale System configuration 
- [TerminalEnvironment](../data-dictionary#terminalenvironment)  | ✔ | String | "Attended", "SemiAttended", or "Unattended"
- [SaleCapabilities](../data-dictionary#salecapabilities)        | ✔ | Array | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](../data-dictionary#salecapabilities) 
- [TotalsGroupId](../data-dictionary#totalsgroupid)              |  | String | Groups transactions in a login session
+ [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)  | ✔ | String | "Attended", "SemiAttended", or "Unattended"
+ [SaleCapabilities](/docs/api-reference/data-model#salecapabilities)        | ✔ | Array | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
+ [TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)              |  | String | Groups transactions in a login session
 [OperatorLanguage](#operatorlanguage)         |   | String | Operator language. Set to 'en'
-[OperatorId](../data-dictionary#operatorid)                     |  | String | Groups transactions under this operator id
-[ShiftNumber](../data-dictionary#shiftnumber)                   |  | String | Groups transactions under this shift number
-[POISerialNumber](../data-dictionary#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
+[OperatorId](/docs/api-reference/data-model#operatorid)                     |  | String | Groups transactions under this operator id
+[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | String | Groups transactions under this shift number
+[POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
 
 #### Login response
 
@@ -458,30 +458,30 @@ Attribute     |Requ.| Format | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[ProtocolVersion](../data-dictionary#protocolversion)       | ✔ | String | "3.1-dmg"       
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Login"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from the request
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from the request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from the request
+[ProtocolVersion](/docs/api-reference/data-model#protocolversion)       | ✔ | String | "3.1-dmg"       
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Login"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | Mirrored from the request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from the request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from the request
 
 **LoginResponse**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            | :--------: | ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the login
- [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](../data-dictionary#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
- [AdditionalResponse](../data-dictionary#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+ [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **POISystemData**                            |    | Object | Only present when `Result` is "Success"
- [DateTime](../data-dictionary#datetime)                       | ✔ | String | Time on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+ [DateTime](/docs/api-reference/data-model#datetime)                       | ✔ | String | Time on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
  [TokenRequestStatus](#tokenrequeststatus)   | ✔ | Boolean| True if POI tokenisation of PANs is available and usable
  **POITerminalData**                         | ✔ | Object | Object representing the POI Terminal 
-  [TerminalEnvironment](../data-dictionary#terminalenvironment)| ✔ | String | Mirrored from the request
+  [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)| ✔ | String | Mirrored from the request
   [POICapabilities](#poicapabilities)        | ✔ | Array  | An array of strings which reflect the hardware capabilities of the POI Terminal. "MagStripe", "ICC", and "EMVContactless" 
   [GenericProfile](#genericprofile)          | ✔ | String | Set to "Custom"
-  [POISerialNumber](../data-dictionary#poiserialnumber)        | ✔ | String | If POIID is "POI Server", then a virtual POI Terminal Serial Number. Otherwise the serial number of the POI Terminal
+  [POISerialNumber](/docs/api-reference/data-model#poiserialnumber)        | ✔ | String | If POIID is "POI Server", then a virtual POI Terminal Serial Number. Otherwise the serial number of the POI Terminal
  **POIStatus**                               | ✔ | String | Object representing the current status of the POI Terminal
   [GlobalStatus](#globalstatus)              | ✔ | String | The current status of the POI Terminal. "OK" when the terminal is available. "Maintenance" if unavailable due to maintenance processing. "Unreachable" if unreachable or not responding
   [SecurityOKFlag](#securityokflag)          | ✔ | Boolean| True if the security module is present 
@@ -533,18 +533,18 @@ The Sale System may send multiple Login requests without a Logout request.
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Logout"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Uniquely identifies the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Logout"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **LogoutRequest**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
-[MaintenanceAllowed](../data-dictionary#maintenanceallowed)    |  | Boolean| Indicates if the POI Terminal can enter maintenance mode. Default to true if not present.    
+[MaintenanceAllowed](/docs/api-reference/data-model#maintenanceallowed)    |  | Boolean| Indicates if the POI Terminal can enter maintenance mode. Default to true if not present.    
 
 #### Logout response
 
@@ -578,21 +578,21 @@ Attribute     |Requ.| Format | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Logout"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Uniquely identifies the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Logout"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **LogoutResponse**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object which represents the result of the response
- [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
- [AdditionalResponse](../data-dictionary#additionalresponse)   |  | String | Provides additional error information. Only present when result is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information of possible values. 
+ [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | String | Provides additional error information. Only present when result is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information of possible values. 
 
 
 ### Payment 
@@ -767,30 +767,30 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Payment"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Uniquely identifies the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Payment"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 ##### **PaymentRequest**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
- [OperatorID](../data-dictionary#operatorid)                   |   | String | Only required if different from Login Request
+ [OperatorID](/docs/api-reference/data-model#operatorid)                   |   | String | Only required if different from Login Request
  [OperatorLanguage](#operatorlanguage)       |   | String | Set to "en"
- [ShiftNumber](../data-dictionary#shiftnumber)                 |   | String | Only required if different from Login Request
- [SaleReferenceID](../data-dictionary#salereferenceid)         |  | String | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](../data-dictionary#salereferenceid)
- [TokenRequestedType](../data-dictionary#tokenrequestedtype)   |  | String | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](../data-dictionary#tokenrequestedtype)
+ [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                 |   | String | Only required if different from Login Request
+ [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | String | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)
+ [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)   |  | String | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)
  **SaleTransactionID**                       | ✔ | Object |
-  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](../data-dictionary#transactionid)
-  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](/docs/api-reference/data-model#transactionid)
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
  **SaleTerminalData**                        |  | Object | Define Sale System configuration. Only include if elements within have different values to those in Login Request
-  [TerminalEnvironment](../data-dictionary#terminalenvironment)|  | String | "Attended", "SemiAttended", or "Unattended"
-  [SaleCapabilities](../data-dictionary#salecapabilities)      |  | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](../data-dictionary#salecapabilities) 
-  [TotalsGroupId](../data-dictionary#totalsgroupid)            |  | String | Groups transactions in a login session
+  [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)|  | String | "Attended", "SemiAttended", or "Unattended"
+  [SaleCapabilities](/docs/api-reference/data-model#salecapabilities)      |  | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
+  [TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)            |  | String | Groups transactions in a login session
 **PaymentTransaction**                       | ✔ | Object | 
  **AmountsReq**                               | ✔ | Object | Object which contains the various components which make up the payment amount
   [Currency](#currency)                      | ✔ | String | Three character currency code. Set to "AUD"
@@ -800,39 +800,39 @@ Attribute     |Requ.| Format | Description |
   [PaidAmount](#paidamount)                  |  | Decimal | Sum of the amount of sale items – `RequestedAmount`. Present only if an amount has already been paid in the case of a split payment.
   [MaximumCashBackAmount](#maximumcashbackamount)|  | Decimal | Available if `CashBackAmount` is not present. If present, the POI Terminal prompts for the cash back amount up to a maximum of `MaximumCashBackAmount`
   [MinimumSplitAmount](#minimumsplitamount)  |   | Decimal | Present only if the POI Terminal can process an amount less than the `RequestedAmount` as a split amount. Limits the minimum split amount allowed.
- **[OriginalPOITransaction](../data-dictionary#originalpoitransaction)** |  | Object | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](../data-dictionary#originalpoitransaction)
-  [SaleID](../data-dictionary#saleid)                          | ✔ | String | [SaleID](../data-dictionary#saleid) which performed the original transaction
-  [POIID](../data-dictionary#poiid)                            | ✔ | String | [POIID](../data-dictionary#poiid) which performed the original transaction
+ **[OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)** |  | Object | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+  [SaleID](/docs/api-reference/data-model#saleid)                          | ✔ | String | [SaleID](/docs/api-reference/data-model#saleid) which performed the original transaction
+  [POIID](/docs/api-reference/data-model#poiid)                            | ✔ | String | [POIID](/docs/api-reference/data-model#poiid) which performed the original transaction
   **POITransactionID**                       | ✔ | Object | 
-   [TransactionID](../data-dictionary#transactionid)           | ✔ | String | `TransactionID` from the original transaction
-   [TimeStamp](../data-dictionary#timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
+   [TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | String | `TransactionID` from the original transaction
+   [TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
   [ReuseCardDataFlag](#reusecarddataflag)    |  | Boolean| If 'true' the POI Terminal will retrieve the card data from file based on the `PaymentToken` included in the request. Otherwise the POI Terminal will read the same card again.
   [ApprovalCode](#approvalcode)              |  | String | Present if a referral code is obtained from an Acquirer
   [LastTransactionFlag](#lasttransactionflag)| ✔ | Boolean| Set to true to process the Last Transaction with a referral code
  **TransactionConditions**                   |  | Object | Optional transaction configuration. Present only if any of the JSON elements within are present.
-  [AllowedPaymentBrands](../data-dictionary#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](../data-dictionary#allowedpaymentbrands)
-  [AcquirerID](../data-dictionary#paymenttransaction.transactionconditions.acquirerid) |  | Array  | Used to restrict the payment to specified acquirers. See [AcquirerID](../data-dictionary#paymenttransaction.transactionconditions.acquirerid)
+  [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+  [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid) |  | Array  | Used to restrict the payment to specified acquirers. See [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid)
   [DebitPreferredFlag](#debitpreferredflag)  |  | Boolean| If present, debit processing is preferred to credit processing.
-  [ForceOnlineFlag](../data-dictionary#forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
-  [MerchantCategoryCode](../data-dictionary#merchantcategorycode)|  | String | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
- **[SaleItem](../data-dictionary#saleitem)**                   | ✔ | Array  | Array of [SaleItem](../data-dictionary#s) objects which represent the product basket attached to this transaction. See [SaleItem](../data-dictionary#saleitem) for examples.
-  [ItemID](../data-dictionary#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-  [ProductCode](../data-dictionary#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-  [EanUpc](../data-dictionary#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-  [UnitOfMeasure](../data-dictionary#unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
-  [Quantity](../data-dictionary#quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
-  [UnitPrice](../data-dictionary#unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
-  [ItemAmount](../data-dictionary#itemamount)                  | ✔ | Decimal| Total amount of the sale item
-  [TaxCode](../data-dictionary#taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
-  [SaleChannel](../data-dictionary#salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
-  [ProductLabel](../data-dictionary#productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-  [AdditionalProductInfo](../data-dictionary#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
-  [ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](../data-dictionary#itemid) of the parent `SaleItem`
+  [ForceOnlineFlag](/docs/api-reference/data-model#forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
+  [MerchantCategoryCode](/docs/api-reference/data-model#merchantcategorycode)|  | String | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
+ **[SaleItem](/docs/api-reference/data-model#saleitem)**                   | ✔ | Array  | Array of [SaleItem](/docs/api-reference/data-model#s) objects which represent the product basket attached to this transaction. See [SaleItem](/docs/api-reference/data-model#saleitem) for examples.
+  [ItemID](/docs/api-reference/data-model#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+  [ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+  [EanUpc](/docs/api-reference/data-model#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+  [UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
+  [Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
+  [UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
+  [ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | Decimal| Total amount of the sale item
+  [TaxCode](/docs/api-reference/data-model#taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
+  [SaleChannel](/docs/api-reference/data-model#salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
+  [ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+  [AdditionalProductInfo](/docs/api-reference/data-model#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
+  [ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](/docs/api-reference/data-model#itemid) of the parent `SaleItem`
   [CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
   [Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
-  [Categories](../data-dictionary#categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](../data-dictionary#categories) for more information.
+  [Categories](/docs/api-reference/data-model#categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
   [Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
-  [QuantityInStock](../data-dictionary#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
+  [QuantityInStock](/docs/api-reference/data-model#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
   [Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
   [Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
   [PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
@@ -841,11 +841,11 @@ Attribute     |Requ.| Format | Description |
   [Size](#size)                                              |  | String | Size of the sale item
   [Colour](#colour)                                          |  | String | Colour of the sale item
   [Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
-  [WeightUnitOfMeasure](../data-dictionary#unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
+  [WeightUnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
  **PaymentData**                             | ✔ | Object | Object representing the payment method. Present only if any of the JSON elements within are present.  
-  [PaymentType](../data-dictionary#paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", or "CashAdvance". See [PaymentType](../data-dictionary#paymenttype)  
-  [PaymentInstrumentData](../data-dictionary#paymentinstrumentdata) |   | Object | Object with represents card details for token or manually enter card details. See  for object structure.  
- **[CustomFields](../data-dictionary#customfields)**                             |  | Array | Array of key/type/value objects containing additional payment information
+  [PaymentType](/docs/api-reference/data-model#paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", or "CashAdvance". See [PaymentType](/docs/api-reference/data-model#paymenttype)  
+  [PaymentInstrumentData](/docs/api-reference/data-model#paymentinstrumentdata) |   | Object | Object with represents card details for token or manually enter card details. See  for object structure.  
+ **[CustomFields](/docs/api-reference/data-model#customfields)**                             |  | Array | Array of key/type/value objects containing additional payment information
 
 #### Payment response
 
@@ -947,42 +947,42 @@ Attribute     |Requ.| Format | Description |
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)                | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Payment"
-[MessageType](../data-dictionary#messagetype)                  | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid)                      | ✔ | String | Mirrored from the request
-[SaleID](../data-dictionary#saleid)                            | ✔ | String | Mirrored from the request
-[POIID](../data-dictionary#poiid)                              | ✔ | String | Mirrored from the request
+[MessageClass](/docs/api-reference/data-model#messageclass)                | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment"
+[MessageType](/docs/api-reference/data-model#messagetype)                  | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | String | Mirrored from the request
+[SaleID](/docs/api-reference/data-model#saleid)                            | ✔ | String | Mirrored from the request
+[POIID](/docs/api-reference/data-model#poiid)                              | ✔ | String | Mirrored from the request
 
 **PaymentResponse**
 
 Attribute     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
- [Result](../data-dictionary#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](../data-dictionary#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
- [AdditionalResponse](../data-dictionary#additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+ [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | Object | 
  **SaleTransactionID**                       | ✔ | Object | 
-  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | Mirrored from the request
-  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Mirrored from the request
- [SaleReferenceID](../data-dictionary#salereferenceid)         |  | String | Mirrored from the request
+  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | Mirrored from the request
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Mirrored from the request
+ [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | String | Mirrored from the request
 **POIData**                                  | ✔ | Object | 
  **POITransactionID**                        | ✔ | Object | 
-  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | A unique transaction id from the POI system
-  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- [POIReconciliationID](../data-dictionary#poireconciliationid) |  | String | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](../data-dictionary#poireconciliationid)
+  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | A unique transaction id from the POI system
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+ [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid) |  | String | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
 **PaymentResult**                            |  | Object | Object related to a processed payment
- [PaymentType](../data-dictionary#paymenttype)                 |  | String | Mirrored from the request
+ [PaymentType](/docs/api-reference/data-model#paymenttype)                 |  | String | Mirrored from the request
  **PaymentInstrumentData**                   |  | Object 
-  [PaymentInstrumentType](../data-dictionary#paymentinstrumenttype) |  | String | "Card" or "Mobile"
+  [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype) |  | String | "Card" or "Mobile"
   **CardData**                               |  | Object
-   [EntryMode](../data-dictionary#entrymode)                   | ✔ | String | Indicates how the card was presented. See [EntryMode](../data-dictionary#entrymode)
-   [PaymentBrand](../data-dictionary#paymentbrand)             | ✔ | String | Indicates the card type used. See [PaymentBrand](../data-dictionary#paymentbrand)
-   [MaskedPAN](../data-dictionary#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
-   [Account](../data-dictionary#account)                       |  | String | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](../data-dictionary#account)
+   [EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | String | Indicates how the card was presented. See [EntryMode](/docs/api-reference/data-model#entrymode)
+   [PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | String | Indicates the card type used. See [PaymentBrand](/docs/api-reference/data-model#paymentbrand)
+   [MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
+   [Account](/docs/api-reference/data-model#account)                       |  | String | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
    **PaymentToken**                          |  | Object | Object representing a token. Only present if token was requested
-    [TokenRequestedType](../data-dictionary#tokenrequestedtype)| ✔ | String | Mirrored from the request
+    [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | Mirrored from the request
     [TokenValue](#tokenvalue)                | ✔ | String | The value of the token
     [ExpiryDateTime](#expirydatetime)        | ✔ | String | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
  **AmountsResp**                             |  | Object | Present if `Result` is "Success" or "Partial"
@@ -994,12 +994,12 @@ Attribute     |Requ.| Format | Description |
   [SurchargeAmount](#surchargeamount)        |  | Decimal| The amount of any surcharge added to the transaction
  [OnlineFlag](#onlineflag)                   | ✔ | Boolean| True if the transaction was processed online, false otherwise
  **PaymentAcquirerData**                     |  | Object | Data related to the response from the payment acquirer
-  [AcquirerID](../data-dictionary#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
+  [AcquirerID](/docs/api-reference/data-model#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
   [MerchantID](#merchantid)                  | ✔ | String | The acquirer merchant ID (MID)
   [AcquirerPOIID](#acquirerPOIID)            | ✔ | String | The acquirer terminal ID (TID)
   **AcquirerTransactionID**                  | ✔ | Object | 
-   [TransactionID](../data-dictionary#transactionid)           | ✔ | String | The acquirer transaction ID
-   [TimeStamp](../data-dictionary#timestamp)                   | ✔ | String | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+   [TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | String | The acquirer transaction ID
+   [TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | String | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
   [ApprovalCode](#approvalcode)              | ✔ | String | The Acquirer Approval Code. Also referred to as the Authentication Code
   [ResponseCode](#responsecode)              | ✔ | String | The Acquirer Response Code. Also referred as the PINPad response code
   [STAN](#stan)                              |  | String | The Acquirer STAN if available
@@ -1010,8 +1010,8 @@ Attribute     |Requ.| Format | Description |
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "CustomerReceipt"
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
   **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-   [OutputFormat](../data-dictionary#outputformat)              | ✔ | String | "XHTML"  
-   [OutputXHTML](../data-dictionary#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+   [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
+   [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
 
 
 ### Display 
@@ -1061,22 +1061,22 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Display"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from payment
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from payment
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from payment
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Display"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | Mirrored from payment
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from payment
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from payment
 
 **DisplayRequest**
 
 Attribute                  |Requ.| Format | Description |
 -----------------                                         |:----:| ------ | ----------- |
 **DisplayOutput**                                         | ✔ | Object | Object which represents the display 
- [ResponseRequiredFlag](../data-dictionary#responserequiredflag)|  | Boolean | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
+ [ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag)|  | Boolean | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
  [Device](#device)                                        | ✔ | String | "CashierDisplay"
- [InfoQualify](../data-dictionary#infoqualify)              | ✔ | String | "Status" or "Error". See [InfoQualify](../data-dictionary#infoqualify)
- [OutputFormat](../data-dictionary#outputformat)            | ✔ | String | "Text"
+ [InfoQualify](/docs/api-reference/data-model#infoqualify)              | ✔ | String | "Status" or "Error". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
+ [OutputFormat](/docs/api-reference/data-model#outputformat)            | ✔ | String | "Text"
  [Text](#text)                                            | ✔ | String | Single line of text to display
 
 #### Display response
@@ -1116,19 +1116,19 @@ Attribute                  |Requ.| Format | Description |
 </p>
 </details>
  
-The Sale System is expected to send a `DisplayResponse` if one or more displays in `DisplayOutput` have [ResponseRequiredFlag](../data-dictionary#responserequiredflag) set to true.
+The Sale System is expected to send a `DisplayResponse` if one or more displays in `DisplayOutput` have [ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag) set to true.
 
 
 **MessageHeader**
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Display"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from display request
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from display request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from display request
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Display"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | Mirrored from display request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from display request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from display request
 
 **DisplayResponse**
 
@@ -1136,10 +1136,10 @@ Attribute      |Requ.| Format | Description |
 -----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                | ✔ | Object | Response for Device/InfoQualify pair where corresponding `ResponseRequiredFlag` in the `DisplayRequest` is set to true.
  [Device](#device)                            | ✔ | String | Mirrored from display request
- [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | Mirrored from display request
- [Result](../data-dictionary#result)                            | ✔ | String | "Success", "Partial", or "Failure". See [Result](../data-dictionary#result).
- [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
- [AdditionalResponse](../data-dictionary#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+ [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | Mirrored from display request
+ [Result](/docs/api-reference/data-model#result)                            | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 
 
 
@@ -1212,13 +1212,13 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Input"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from payment request
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Input"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | Mirrored from payment request
 [DeviceID](#deviceid)                     | ✔ | String | Unique message identifier
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from payment request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from payment request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from payment request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from payment request
 
 **InputRequest**
 
@@ -1226,22 +1226,22 @@ Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 **DisplayOutput**                             |  | Object | Information to display and the way to process the display.
  [Device](#device)                            | ✔ | String | "CashierDisplay"
- [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | "POIReplication". See [InfoQualify](../data-dictionary#infoqualify)
+ [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | "POIReplication". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
  **OutputContent**                            | ✔ | Object | 
-  [OutputFormat](../data-dictionary#outputformat)               | ✔ | String | "Text"
+  [OutputFormat](/docs/api-reference/data-model#outputformat)               | ✔ | String | "Text"
   **OutputText**                              | ✔ | Object | Wrapper for text content
    [Text](#text)                              | ✔ | String | Single line of text. e.g. "Signature Ok?", "Merchant Password", "Select Account Type"
- **MenuEntry**                                |  | Array  | Conditional. Array of items to be presented as a menu. Only present if [InputCommand](../data-dictionary#inputcommand) = "GetMenuEntry"
-  [OutputFormat](../data-dictionary#outputformat)               | ✔ | String | "Text"
+ **MenuEntry**                                |  | Array  | Conditional. Array of items to be presented as a menu. Only present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetMenuEntry"
+  [OutputFormat](/docs/api-reference/data-model#outputformat)               | ✔ | String | "Text"
   [Text](#text)                               | ✔ | String | One of the selection String items for the cashier to select from. For example: "Savings", "Cheque" and "Credit" for an account type selection.
 **InputData**                                 | ✔ | Object | Information related to an `Input` request
  [Device](#device)                            | ✔ | String | "CashierInput"
- [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | "Input" or "CustomerAssistance". See [InfoQualify](../data-dictionary#infoqualify)
- [InputCommand](../data-dictionary#inputcommand)                | ✔ | String | "GetConfirmation", "Password", "TextString", "DigitString", "DecimalString", or "GetMenuEntry". See [InputCommand](../data-dictionary#inputcommand)
+ [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | "Input" or "CustomerAssistance". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
+ [InputCommand](/docs/api-reference/data-model#inputcommand)                | ✔ | String | "GetConfirmation", "Password", "TextString", "DigitString", "DecimalString", or "GetMenuEntry". See [InputCommand](/docs/api-reference/data-model#inputcommand)
  [MaxInputTime](#maxinputtime)                |  | Number | The maximum number of seconds allowed for providing input.  Note the Sale Terminal needs to abort the Input process if it receives a DisplayRequest or InputRequest whilst waiting on input from the Cashier.
- [MinLength](#minlength)                      |  | Number | The minimum number of characters allowed for entry. Present if [InputCommand](../data-dictionary#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
- [MaxLength](#maxlength)                      |  | Number | The maximum number of characters allowed for entry. Present if [InputCommand](../data-dictionary#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
- [MaskCharactersFlag](#maskcharactersflag)    |  | Boolean| If true, input should be masked with '*'. Present if [InputCommand](../data-dictionary#inputcommand) = "Password"
+ [MinLength](#minlength)                      |  | Number | The minimum number of characters allowed for entry. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
+ [MaxLength](#maxlength)                      |  | Number | The maximum number of characters allowed for entry. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
+ [MaskCharactersFlag](#maskcharactersflag)    |  | Boolean| If true, input should be masked with '*'. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password"
 
 #### Input response
 
@@ -1297,13 +1297,13 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Input"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid    )               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Input"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid    )               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
 [DeviceID](#deviceid)                     | ✔ | String | Mirrored from input request
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from input request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from input request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from input request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from input request
 
 **InputResponse**
 
@@ -1311,25 +1311,25 @@ Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                |    | Object | Present if `DisplayOutput` is present in the request
  [Device](#device)                            | ✔ | String | Mirrored from input request
- [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | Mirrored from input request
+ [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | Mirrored from input request
  *Response*                                   | ✔ | Object | 
-  [Result](../data-dictionary#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](../data-dictionary#result).
-  [ErrorCondition](../data-dictionary#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
-  [AdditionalResponse](../data-dictionary#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+  [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+  [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 *InputResult*                                 | ✔ | Object | Information related to the result the input 
  [Device](#device)                            | ✔ | String | Mirrored from input request
- [InfoQualify](../data-dictionary#infoqualify)                  | ✔ | String | Mirrored from input request
+ [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | Mirrored from input request
  *Response*                                   | ✔ | Object | 
-  [Result](../data-dictionary#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](../data-dictionary#result).
-  [ErrorCondition](../data-dictionary#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
-  [AdditionalResponse](../data-dictionary#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+  [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+  [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
  *Input*                                      | ✔ | Object | 
-  [InputCommand](../data-dictionary#inputcommand)               |    | String | Mirrored from input request
-  [ConfirmedFlag](#confirmedflag)             |    | Boolean| Result of GetConfirmation input request. Present if [InputCommand](../data-dictionary#inputcommand) = "GetConfirmation"
-  [Password](#password)                       |    | String | Password entered by the Cashier. Mandatory, if [InputCommand](../data-dictionary#inputcommand) is "Password". Not allowed, otherwise
-  [MenuEntryNumber](#menuentrynumber)         |    | Number | A number from 1 to n, when n is total number of objects in `MenuEntry` of `InputRequest`. Mandatory, if [InputCommand](../data-dictionary#inputcommand) is "GetMenuEntry". Not allowed, otherwise
-  [TextInput](#textinput)                     |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](../data-dictionary#inputcommand) is "TextString" or "DecimalString". Not allowed, otherwise
-  [DigitInput](#digitinput)                   |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](../data-dictionary#inputcommand) is "DigitInput". Not allowed, otherwise
+  [InputCommand](/docs/api-reference/data-model#inputcommand)               |    | String | Mirrored from input request
+  [ConfirmedFlag](#confirmedflag)             |    | Boolean| Result of GetConfirmation input request. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetConfirmation"
+  [Password](#password)                       |    | String | Password entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "Password". Not allowed, otherwise
+  [MenuEntryNumber](#menuentrynumber)         |    | Number | A number from 1 to n, when n is total number of objects in `MenuEntry` of `InputRequest`. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "GetMenuEntry". Not allowed, otherwise
+  [TextInput](#textinput)                     |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "TextString" or "DecimalString". Not allowed, otherwise
+  [DigitInput](#digitinput)                   |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "DigitInput". Not allowed, otherwise
 
 
 ### Print
@@ -1380,13 +1380,13 @@ The final payment receipt, which is to be included in the Sale receipt, is retur
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Print"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from payment request
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Print"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | Mirrored from payment request
 [DeviceID](#deviceid)                     | ✔ | String | Unique message identifier
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from payment request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from payment request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from payment request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from payment request
 
 **PrintRequest**
 
@@ -1397,8 +1397,8 @@ Attribute      |Requ.| Format  | Description |
   [IntegratedPrintFlag](#integratedprintflag) |  |Boolean| True if the receipt should be included with the Sale receipt, false if the receipt should be printed now and paper cut (e.g. for a signature receipt)
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
   **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-   [OutputFormat](../data-dictionary#outputformat)              | ✔ | String | "XHTML"  
-   [OutputXHTML](../data-dictionary#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+   [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
+   [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
 
 
 #### Print response
@@ -1437,13 +1437,13 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Device"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Print"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid    )               | ✔ | String | Mirrored from print request 
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Print"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid    )               | ✔ | String | Mirrored from print request 
 [DeviceID](#deviceid)                     | ✔ | String | Mirrored from print request
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from print request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from print request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from print request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from print request
 
 **PrintResponse**
 
@@ -1451,9 +1451,9 @@ Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 [DocumentQualifier](#documentqualifier)       | ✔ | String | Mirrored from print request
  *Response*                                   | ✔ | Object | 
-  [Result](../data-dictionary#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](../data-dictionary#result).
-  [ErrorCondition](../data-dictionary#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
-  [AdditionalResponse](../data-dictionary#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+  [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+  [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 
 
 
@@ -1496,22 +1496,22 @@ A transaction status request can be used to obtain the status of a previous tran
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Uniquely identifies the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "TransactionStatus"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **TransactionStatusRequest**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
- [MessageCategory](../data-dictionary#messagecategory)          |    | String | "Payment"
- [ServiceID](../data-dictionary#serviceid)                      |    | String | The [ServiceID](../data-dictionary#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
- [SaleID](../data-dictionary#saleid)                            |    | String | The [SaleID](../data-dictionary#saleid) of the transaction to retrieve the status of. Only required if different from the [SaleID](../data-dictionary#saleid) provided in the `MessageHeader`
- [POIID](../data-dictionary#poiid)                              |    | String | The [POIID](../data-dictionary#poiid) of the transaction to retrieve the status of. Only required if different from the [POIID](../data-dictionary#poiid) provided in the `MessageHeader`
+ [MessageCategory](/docs/api-reference/data-model#messagecategory)          |    | String | "Payment"
+ [ServiceID](/docs/api-reference/data-model#serviceid)                      |    | String | The [ServiceID](/docs/api-reference/data-model#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
+ [SaleID](/docs/api-reference/data-model#saleid)                            |    | String | The [SaleID](/docs/api-reference/data-model#saleid) of the transaction to retrieve the status of. Only required if different from the [SaleID](/docs/api-reference/data-model#saleid) provided in the `MessageHeader`
+ [POIID](/docs/api-reference/data-model#poiid)                              |    | String | The [POIID](/docs/api-reference/data-model#poiid) of the transaction to retrieve the status of. Only required if different from the [POIID](/docs/api-reference/data-model#poiid) provided in the `MessageHeader`
 
 
 #### Transaction status response
@@ -1560,26 +1560,26 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "TransactionStatus"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | Mirrored from request
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from request
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "TransactionStatus"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | Mirrored from request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from request
 
 **TransactionStatusResponse**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
- [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
- [AdditionalResponse](../data-dictionary#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+ [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 *MessageReference*                            |  | Object | Identification of a previous POI transaction. Present if `Result` is "Success", or `Result` is "Failure" and `ErrorCondition` is "InProgress"
- [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | Mirrored from request
- [ServiceID](../data-dictionary#serviceid)                      | ✔ | String | Mirrored from request, or `ServiceID` of last transaction if not present in request.
- [SaleID](../data-dictionary#saleid)                            |  | String | Mirrored from request, but only if present in the request
- [POIID](../data-dictionary#poiid)                              |  | String | Mirrored from request, but only if present in the request
+ [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | Mirrored from request
+ [ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | String | Mirrored from request, or `ServiceID` of last transaction if not present in request.
+ [SaleID](/docs/api-reference/data-model#saleid)                            |  | String | Mirrored from request, but only if present in the request
+ [POIID](/docs/api-reference/data-model#poiid)                              |  | String | Mirrored from request, but only if present in the request
 *RepeatedMessageResponse*                     |  | Object | Present if `Result` is "Success"
  *MessageHeader*                              | ✔ | Object | `MessageHeader` of the requested payment
  *PaymentResponse*                            | ✔ | Object | `PaymentResponse` of the requested payment
@@ -1633,22 +1633,22 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Abort"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Unique identifier for the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Abort"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Unique identifier for the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **AbortRequest**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            | ✔ | Object | Identification of a POI transaction
- [MessageCategory](../data-dictionary#messagecategory)          | ✔ | String | "Payment" or "CardAcquisition"
- [ServiceID](../data-dictionary#serviceid)                      | ✔ | String | The [ServiceID](../data-dictionary#serviceid) of the transaction to cancel
- [SaleID](../data-dictionary#saleid)                            |  | String | The [SaleID](../data-dictionary#saleid) of the transaction to cancel. Only required if different from the [SaleID](../data-dictionary#saleid) provided in the `MessageHeader`
- [POIID](../data-dictionary#poiid)                              |  | String | The [POIID](../data-dictionary#poiid) of the transaction to cancel. Only required if different from the [POIID](../data-dictionary#poiid) provided in the `MessageHeader`
+ [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment" or "CardAcquisition"
+ [ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | String | The [ServiceID](/docs/api-reference/data-model#serviceid) of the transaction to cancel
+ [SaleID](/docs/api-reference/data-model#saleid)                            |  | String | The [SaleID](/docs/api-reference/data-model#saleid) of the transaction to cancel. Only required if different from the [SaleID](/docs/api-reference/data-model#saleid) provided in the `MessageHeader`
+ [POIID](/docs/api-reference/data-model#poiid)                              |  | String | The [POIID](/docs/api-reference/data-model#poiid) of the transaction to cancel. Only required if different from the [POIID](/docs/api-reference/data-model#poiid) provided in the `MessageHeader`
 [AbortReason](#abortreason)                   | ✔ | String | Any text describing the reason for cancelling the transaction. For example, "User Cancel"
 
 
@@ -1692,20 +1692,20 @@ However, if the abort transaction request message contains an invalid data (e.g.
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Event"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Event"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Notification"
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Event"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Event"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Notification"
 [DeviceID](#deviceid)                     | ✔ | String | Unique message identifier
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from payment request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from payment request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from payment request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from payment request
 
 **EventNotification**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
- [TimeStamp](../data-dictionary#timestamp)                      | ✔ | String | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- [EventToNotify](../data-dictionary#eventtonotify)              | ✔ | String | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
- [EventDetails](../data-dictionary#eventdetails)                | ✔ | String | Extra detail on the reason for the event
+ [TimeStamp](/docs/api-reference/data-model#timestamp)                      | ✔ | String | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+ [EventToNotify](/docs/api-reference/data-model#eventtonotify)              | ✔ | String | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
+ [EventDetails](/docs/api-reference/data-model#eventdetails)                | ✔ | String | Extra detail on the reason for the event
 
 
 ### Reconciliation
@@ -1741,19 +1741,19 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Reconciliation"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Unique identifier for the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Reconciliation"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Unique identifier for the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **ReconciliationRequest**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 [ReconciliationType](#reconciliationtype)     | ✔ | String | "SaleReconciliation" to close the current period, "PreviousReconciliation" to request the result of a previous reconciliation
-[POIReconciliationID](../data-dictionary#poireconciliationid)   |   | String | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](../data-dictionary#poireconciliationid)
+[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |   | String | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
 
 
 #### Reconciliation response
@@ -1811,32 +1811,32 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "Reconciliation"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Reconciliation"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
 [DeviceID](#deviceid)                     | ✔ | String | Unique message identifier
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from payment request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from payment request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from payment request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from payment request
 
 **ReconciliationResponse**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the login
- [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
- [AdditionalResponse](../data-dictionary#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+ [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 [ReconciliationType](#reconciliationtype)     | ✔ | String | Mirrored from request
-[POIReconciliationID](../data-dictionary#poireconciliationid)   |  | String | Present if `Result` is "Success". The `ReconciliationID` of the period requested
+[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |  | String | Present if `Result` is "Success". The `ReconciliationID` of the period requested
 *TransactionTotals*                           |  | Array | Present if `Result` is "Success". An array of totals grouped by card brand, then operator, then shift, then TotalsGroupID, then payment currency.
- [PaymentInstrumentType](../data-dictionary#paymentinstrumenttype)| ✔ | String | "Card" (card payment) or "Mobile" (phone/QR code payments)
- [CardBrand](../data-dictionary#cardbrand)                      |  | String | A card brand used during this reconciliation period 
- [OperatorID](../data-dictionary#operatorid)                    |  | String | An operator id used during this reconciliation period
- [ShiftNumber](../data-dictionary#shiftnumber)                  |  | String | A shift number used during the reconciliation period
- [TotalsGroupID](../data-dictionary#totalsgroupid)              |  | String | A custom grouping of transactions as defined by the Sale System
- [PaymentCurrency](../data-dictionary#paymentcurrency)          |  | String | "AUD"
+ [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)| ✔ | String | "Card" (card payment) or "Mobile" (phone/QR code payments)
+ [CardBrand](/docs/api-reference/data-model#cardbrand)                      |  | String | A card brand used during this reconciliation period 
+ [OperatorID](/docs/api-reference/data-model#operatorid)                    |  | String | An operator id used during this reconciliation period
+ [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | String | A shift number used during the reconciliation period
+ [TotalsGroupID](/docs/api-reference/data-model#totalsgroupid)              |  | String | A custom grouping of transactions as defined by the Sale System
+ [PaymentCurrency](/docs/api-reference/data-model#paymentcurrency)          |  | String | "AUD"
  *PaymentTotals*                              |  | Array | An array [0..10] of totals grouped by transaction payment type. Present if both `TransactionCount` and `TransactionAmount` are not equal to zero
-  [TransactionType](../data-dictionary#transactiontype)         |  | String | Transaction type for this payment. See [TransactionType](../data-dictionary#transactiontype)
+  [TransactionType](/docs/api-reference/data-model#transactiontype)         |  | String | Transaction type for this payment. See [TransactionType](/docs/api-reference/data-model#transactiontype)
   [TransactionCount](#transactioncount)       |  | String | The number of transactions for the transaction type for the current grouping of transactions
   [TransactionAmount](#transactionamount)     |  | Number | The total amount of transactions for the transaction type for the current grouping of transactions
  
@@ -1892,32 +1892,32 @@ The card acquisition request allows the Sale System to tokenise a card which can
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "CardAcquisition"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Request"
-[ServiceID](../data-dictionary#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](../data-dictionary#serviceid).
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Unique identifier for the Sale System
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "CardAcquisition"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Unique identifier for the Sale System
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
 
 **CardAcquisitionRequest**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *SaleData*                                    | ✔ | Object | Object Sale System information attached to this payment
- [OperatorID](../data-dictionary#operatorid)                    |  | String | Only required if different from Login Request
+ [OperatorID](/docs/api-reference/data-model#operatorid)                    |  | String | Only required if different from Login Request
  [OperatorLanguage](#operatorlanguage)        |  | String | Set to "en"
- [ShiftNumber](../data-dictionary#shiftnumber)                  |  | String | Only required if different from Login Request
+ [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | String | Only required if different from Login Request
  [CustomerLanguage](#customerlanguage)        |  | String | Set to "en" for English
- [TokenRequestedType](../data-dictionary#tokenrequestedtype)    | ✔ | String | "Customer"
+ [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)    | ✔ | String | "Customer"
  *SaleTransactionID*                          |  | Object | 
-  [TransactionID](../data-dictionary#transactionid)             | ✔ | String | Unique reference for this sale ticket
-  [TimeStamp](../data-dictionary#timestamp)                     | ✔ | String | Time of initiating the request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+  [TransactionID](/docs/api-reference/data-model#transactionid)             | ✔ | String | Unique reference for this sale ticket
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                     | ✔ | String | Time of initiating the request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
  *SaleTerminalData*                           |  | Object | Define Sale System configuration. Only include if elements within have different values to those in Login Request
-  [TerminalEnvironment](../data-dictionary#terminalenvironment) |  | String | "Attended", "SemiAttended", or "Unattended"
-  [SaleCapabilities](../data-dictionary#salecapabilities)       |  | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](../data-dictionary#salecapabilities) 
+  [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment) |  | String | "Attended", "SemiAttended", or "Unattended"
+  [SaleCapabilities](/docs/api-reference/data-model#salecapabilities)       |  | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
 *CardAcquisitionTransaction*                  |  | Object | Present if any of the JSON elements within are present
-  [AllowedPaymentBrands](../data-dictionary#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](../data-dictionary#allowedpaymentbrands)
-  [ForceEntryMode](../data-dictionary#forceentrymode)           |  | String| If present, restricts card presentment to the specified type. See [ForceEntryMode](../data-dictionary#forceentrymode)
+  [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+  [ForceEntryMode](/docs/api-reference/data-model#forceentrymode)           |  | String| If present, restricts card presentment to the specified type. See [ForceEntryMode](/docs/api-reference/data-model#forceentrymode)
 
 #### Card acquisition response
 
@@ -1977,47 +1977,47 @@ Attribute      |Requ.| Format  | Description |
 
 Attribute  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
-[MessageClass](../data-dictionary#messageclass)             | ✔ | String | "Service"
-[MessageCategory](../data-dictionary#messagecategory)       | ✔ | String | "CardAcquisition"
-[MessageType](../data-dictionary#messagetype)               | ✔ | String | "Response"
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "CardAcquisition"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Response"
 [DeviceID](#deviceid)                     | ✔ | String | Unique message identifier
-[SaleID](../data-dictionary#saleid)                         | ✔ | String | Mirrored from payment request
-[POIID](../data-dictionary#poiid)                           | ✔ | String | Mirrored from payment request
+[SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Mirrored from payment request
+[POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Mirrored from payment request
 
 **CardAcquisitionResponse**
 
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 **Response**                                    | ✔ | Object | Object indicating the result of the login
- [Result](../data-dictionary#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](../data-dictionary#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](../data-dictionary#errorcondition) for more information on possible values.
- [AdditionalResponse](../data-dictionary#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](../data-dictionary#additionalresponse) for more information on possible values. 
+ [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | Object | 
  **SaleTransactionID**                       | ✔ | Object | 
-  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | Mirrored from the request
-  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Mirrored from the request
- [SaleReferenceID](../data-dictionary#salereferenceid)         |  | String | Mirrored from the request
+  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | Mirrored from the request
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Mirrored from the request
+ [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | String | Mirrored from the request
 **POIData**                                  | ✔ | Object | 
  **POITransactionID**                        | ✔ | Object | 
-  [TransactionID](../data-dictionary#transactionid)            | ✔ | String | A unique transaction id from the POI system
-  [TimeStamp](../data-dictionary#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- **[PaymentInstrumentData](../data-dictionary#paymentinstrumentdata)** |  | Object | Object with represents card details for token or manually enter card details. 
-[PaymentInstrumentType](../data-dictionary#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](../data-dictionary#paymentinstrumenttype)
+  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | A unique transaction id from the POI system
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+ **[PaymentInstrumentData](/docs/api-reference/data-model#paymentinstrumentdata)** |  | Object | Object with represents card details for token or manually enter card details. 
+[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)
 **CardData**                               |  | Object | 
- [EntryMode](../data-dictionary#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
- [MaskedPAN](../data-dictionary#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
- **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](../data-dictionary#entrymode) is "File". Object with identifies the payment token. 
-  [TokenRequestedType](../data-dictionary#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
+ [EntryMode](/docs/api-reference/data-model#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
+ [MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
+ **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](/docs/api-reference/data-model#entrymode) is "File". Object with identifies the payment token. 
+  [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
   [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
  
 ## Error handling
 
 When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](#payment_request) it will receive a [payment response](#payment-response).
 
-The Sale System should verify the result of the transaction by checking the [Response.Result](../data-dictionary#result) field in the response.
+The Sale System should verify the result of the transaction by checking the [Response.Result](/docs/api-reference/data-model#result) field in the response.
 
-- If the [Response.Result](../data-dictionary#result) is "Success", the payment transaction was successful.
-- If the [Response.Result](../data-dictionary#result) is "Failure", the payment transaction failed.  The Sale System may check for any errors specified in the [Response.ErrorCondition](../data-dictionary#errorcondition) field in the same response message and handle the error accordingly.
+- If the [Response.Result](/docs/api-reference/data-model#result) is "Success", the payment transaction was successful.
+- If the [Response.Result](/docs/api-reference/data-model#result) is "Failure", the payment transaction failed.  The Sale System may check for any errors specified in the [Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) field in the same response message and handle the error accordingly.
 
 In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it must enter error handling.
 

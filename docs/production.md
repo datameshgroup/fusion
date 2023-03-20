@@ -19,8 +19,8 @@ After testing and accreditation are complete, follow the production readiness ch
   - `ApplicationName`, the name of the Sale System.
   - `CertificationCode`, a GUID which uniquly identifies the Sale System. 
   - `SoftwareVersion`, the internal build version of this Sale System. DataMesh must configure this value on Unify. 
-- Ensure the Sale System is connecting to the [DataMesh production endpoint](./APIs/cloud-api-reference#endpoints).
-  - The production endpoint uses a different [SSL certificate](./APIs/cloud-api-reference#security-requirements).
+- Ensure the Sale System is connecting to the [DataMesh production endpoint](/docs/api-reference/fusion-cloud#endpoints).
+  - The production endpoint uses a different [SSL certificate](/docs/api-reference/fusion-cloud#security-requirements).
 - If the POI Terminal will be utilising Mobile Data, please [inform DataMesh](mailto:integrations@datameshgroup.com) of any specific internet endpoint(s) that need to be available for access in production so it can be whitelisted by the SIM Card provider.
 
 ## Complete PVT
