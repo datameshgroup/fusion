@@ -12,7 +12,7 @@ The steps outlined below will guide you through creating a dev account, scoping 
 1. [Create a test account](#create-a-test-account)
 1. [Determine your integration type](#determine-your-integration-type)
 1. [Design your integration](#design-your-integration)
-1. [Code your POS integration](./category/APIs/)
+1. [Code your POS integration](./category/api-reference/)
 1. [POS accreditation](./testing)
 1. [Production deployment](./production)
 
@@ -727,7 +727,7 @@ Internal application error.
 
  End of Fusion App Sample -->
 
-- **[Fusion Satellite API](/docs/api-reference/satellite-api-reference)**
+- **[Fusion Satellite API](/docs/api-reference/fusion-satellite)**
 
 The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with Android intents.
 
@@ -1284,7 +1284,7 @@ Pre-authorisation holds funds in reserve on a customers card and allows the paym
 
 To perform a pre-authorisation:
 
-- Build a standard [payment request](/docs/api-reference/satellite-api-reference#payment)
+- Build a standard [payment request](/docs/api-reference/fusion-satellite#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "FirstReservation"
 - Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) to the amount to reserve 
 - Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to a unique [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
@@ -1301,7 +1301,7 @@ Completion captures/settles payment of the amount previously reserved through pr
 
 To perform a completion:
 
-- Build a standard [payment request](/docs/api-reference/satellite-api-reference#payment)
+- Build a standard [payment request](/docs/api-reference/fusion-satellite#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Completion"
 - Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to reserved amount
 - Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
