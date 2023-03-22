@@ -737,9 +737,9 @@ To perform a [payment](/docs/api-reference/fusion-cloud#payment) request using a
 Partial payments are only supported in selected payment scenarios and requires the "PartialPayment" feature to be enabled in the terminal configuration. Contact the DataMesh [integrations team](mailto:integrations@datameshgroup.com) before implementing partial payments.
 :::
 
-When the "PartialPayment" feature is enabled, the POI Terminal may approve a purchase for less than the [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) passed in by the Sale System. 
+When the "PartialPayment" feature is enabled, the POI Terminal may approve a purchase for less than the [RequestedAmount](/docs/api-reference/data-model#requestedamount) passed in by the Sale System. 
 
-This feature can be used in conjunction with [split payments](#split-payments) to accept loyalty and stored value card payments where the value available on the card may be less than the total [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount).
+This feature can be used in conjunction with [split payments](#split-payments) to accept loyalty and stored value card payments where the value available on the card may be less than the total [RequestedAmount](/docs/api-reference/data-model#requestedamount).
 
 **Handling a partial payment**
 
@@ -747,9 +747,10 @@ This feature can be used in conjunction with [split payments](#split-payments) t
 - Send a [payment request](/docs/api-reference/fusion-cloud#paymentrequest), including all required fields
   - Set the maximum payable purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
 - Await the payment response and check [Response.Result](/docs/api-reference/data-model#result) for the transaction result.
-- If [Response.Result](/docs/api-reference/data-model#result) is "Partial" the payment has been approved for an amount less than the the [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+- If [Response.Result](/docs/api-reference/data-model#result) is "Partial" the payment has been approved for an amount less than the the [RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - [PaymentResponse.Response.Result](/docs/api-reference/data-model#result) will be "Partial"
   - [PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) will reflect the full authorized amount (including all fees, tips, and surcharges)
-  - [PaymentResult.AmountsResp.PartialAuthorizedAmount](/docs/api-reference/data-model#partialauthorizedamount) will reflect the amount of [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) which has been authorised.
+  - [PaymentResult.AmountsResp.PartialAuthorizedAmount](/docs/api-reference/data-model#partialauthorizedamount) will reflect the amount of [RequestedAmount](/docs/api-reference/data-model#requestedamount) which has been authorised.
 - Reduce the sale amount owing by [PartialAuthorizedAmount](/docs/api-reference/data-model#partialauthorizedamount) and offer the customer a way to provide further payment. 
   - If the remaining amount is to be paid using the POI Terminal, follow the steps outlined in [split payments](#split-payments) 
 
