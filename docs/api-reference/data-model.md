@@ -1343,6 +1343,10 @@ The name of the Sale System application.
 
 DataMesh will provide a `ApplicationName` to be used for the UAT environment. Once the Sale System is certified, DataMesh will provide a `ApplicationName` to be included in the production build of the Sale System. 
 
+### AuthorizedAmount
+
+A value which indicates the total authorized amount, inclusive of all fees and charges. 
+
 ### CardBrand
 
 Available values:

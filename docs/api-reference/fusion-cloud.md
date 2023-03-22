@@ -50,12 +50,13 @@ Over time, Data Mesh may require the Sale System to update the TLS requirements 
 
 ## Endpoints
 
+<!--
 All endpoints are on port 443 and valid for secure websocket connections.
-
+-->
 
 Production environment
 
-`wss://prod1.datameshgroup.io:5000`
+`wss://nexo.datameshgroup.io:5000`
 
 <!--
 `wss://nexo.aus.datameshgroup.io/nexocloudpos`

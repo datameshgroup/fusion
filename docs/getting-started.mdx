@@ -56,17 +56,31 @@ Windows-based POS where it's possible to install the DataMesh middleware<br />on
 POS on Pinpad/POI Terminal |   | ✔ |   |  
 Other POS type including Legacy POS/On-Premises POS/Traditional POS and POS on Mobile (iOS/Android) device |   |   | ✔ |  
 
+
 ### [Fusion App](./api-reference/fusion-app)
 
-The Fusion App is a DataMesh middleware that is installed in the same Winodws PC where the Sale System application is running on.  
+Fusion App is a DataMesh middleware that is installed in the PC as the Sale System.
 
-The Fusion App uses the [Fusion Cloud API](/docs/api-reference/fusion-cloud).  It communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.  
+Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
 
-The Sale System sends a payment request and receives a payment result through the Fusion App's local HTTP end point for payments.  
+To initiate a payment, the Sale System sends a HTTP POST to a local endpoint, and waits for a response.
 
-The Sale System does not need to handle the different scenarios that could occur during the actual payment processing after a payment request has been sent.  This is because the Fusion App already handles the full payment lifecycle (including all the necessary message handling and UI display) which is a mandatory requirement when either Fusion Cloud or Fusion Satellite is used.  If the Sale system doesn't receive a payment response from the Fusion App, the Sale system just needs to call a single error handling API to enter error recovery.
+In case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
 
 ![](/img/POS-fusion-app.png)
+
+#### Fusion App payment lifecycle
+
+1. Merchant launches the Sale System.
+1. Merchant initiates a payment.
+1. Sale system generates a unique `SessionID` as a UUIDv4 and constructs a [payment request](./api-reference/data-model#payment-request) object.
+1. Sale System POSTs the [payment request](./api-reference/data-model#payment-request) for the `SessionID` to Fusion App's local HTTP end point for payments and waits for a response.
+1. Fusion App does all the necessary payment processing.
+1. Sale System receives a payment response.
+1. Merchant closes the Sale System.
+   - If the Sale System doesn't receive a payment response from Fusion App it needs to enter error handling by calling (GET /payments/{*SessionId*})
+
+![](/img/payment-lifecycle-fusion-app.png)
 
 ###  [Fusion Satellite](./api-reference/fusion-satellite)
 
@@ -74,13 +88,46 @@ The Fusion Satellite API allows a Sale System running on the POI terminal to com
 
 ![](/img/POS-fusion-satellite.png)
 
+#### Fusion Satellite payment lifecycle
+
+1. Merchant launches the Sale System on the POI Terminal.
+1. Merchant initiates a payment.
+1. Sale system constructs a [payment request](./api-reference/data-model#payment-request) object.
+1. Sale System calls Satellite via startActivityForResult() and waits for a response.
+1. Satellite does all the necessary payment processing.
+1. Sale System receives a payment response.
+1. Merchant closes the Sale System.
+
+![](/img/payment-lifecycle-fusion-satellite.png)
+
+
 ### [Fusion Cloud](./api-reference/fusion-cloud)
 
 The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch. 
 
-![](/img/POS-fusion-cloud.png)
-
 ![](/img/POS-fusion-cloud-mobile.png)
+
+#### Fusion Cloud payment lifecycle
+
+1. Merchant launches the Sale System.
+1. Sale System opens the websocket connection.
+1. Sale System has the option to [link](#terminal-linking) with a POI Terminal by performing a [login request](/docs/api-reference/fusion-cloud#error-handling) either: 
+  1. When the Sale System launches or
+  1. Before the first payment request is sent
+1. Sale System receives a successful login response.
+1. Merchant initiates a payment.
+1. Sale System sets txn_in_progress flag in local persistent storage. (This is will be used for [error handling](/docs/api-reference/fusion-cloud#error-handling).)
+1. Sale System sends a [payment request](/docs/api-reference/fusion-cloud#payment).
+1. Sale System saves message reference details in local persistent storage.  (This is will be used for [error handling](/docs/api-reference/fusion-cloud#error-handling).)
+1. Sale System handles [display requests](/docs/api-reference/fusion-cloud#display), [print requests](/docs/api-reference/fusion-cloud#print), and [input requests](/docs/api-reference/fusion-cloud#input).
+1. Sale System receives a payment response.
+1. Sale System clears the message reference details in the local persistent storage.
+1. Sale System clears the txn_in_progress flag in the local persistent storage.
+1. Merchant closes the Sale System.
+1. Sale System can optionally send a [logout request](/docs/api-reference/fusion-cloud#logout).
+1. Sale System closes the websocket.
+
+![](/img/payment-lifecycle-fusion-cloud.png)
 
 ### Mandatory Features Checklist
 
@@ -88,22 +135,18 @@ The table below provides an overview of the mandatory integration requirements w
 
 Integration Requirement  | Fusion App   | Fusion Satellite   | Fusion Cloud |
 -----------------                         | :----:  | :------: | :------: |
-Implement the [payment lifecycle](#payment-lifecycle)             | ✔ | ✔ | ✔ |
+Implement the payment lifecycle ([Fusion App](#fusion-app-payment-lifecycle), [Fusion Satellite](#fusion-satellite-payment-lifecycle), [Fusion Cloud](#fusion-cloud-payment-lifecycle))             | ✔ | ✔ | ✔ |
 Support for *purchase* and *refund* [payment types](#payment-types) | ✔ | ✔ | ✔ |
 Include [product data](#product-data) in each payment request| ✔ | ✔ | ✔ |
 Support for TLS and other [security requirements](/docs/api-reference/fusion-cloud#security-requirements) |   | ✔ | ✔ |
-Additional fields will be added to the message specification over time.<br />To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages.<br />This includes valid MAC handling in the SecurityTrailer.|   | ✔ | ✔ |
-Implement [Sale System settings](#sale-system-settings) requirements |   | ✔ | ✔ |
-Implement [Payments user interface](#payment-user-interface) which handles the `Initial UI`, `Final UI`, `Display UI`, and `Cancelling a Sale in Progress` |   | ✔ | ✔ |
+Additional fields will be added to the message specification over time.<br />To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages.<br />This includes valid MAC handling in the SecurityTrailer.|   |   | ✔ |
+Implement [Sale System settings](#sale-system-settings) requirements |   |   | ✔ |
+Implement [Payments user interface](#payment-user-interface) which handles the `Initial UI`, `Final UI`, `Display UI`, and `Cancelling a Sale in Progress` |   |  | ✔ |
 Handle error scenarios as outlined in [error handling](#error-handling) |   | ✔ | ✔ |
 Ensure Sale System provides a unique [payment identification](#payment-identification) | ✔ | ✔ | ✔ |
 Pass the accreditation [test script](./testing) | ✔ | ✔ | ✔ |
 
 ## Design your integration
-
-:::info
-This section will make reference to methods and data structures documented in the <a href="/docs/api-reference/fusion-cloud">Cloud API Reference</a>. 
-:::
 
 Before development commences, you should familiarise yourself with the DataMesh payment platform, including the mandatory and optional features available. 
 
@@ -126,679 +169,10 @@ Depending on your Sale System design, other features may be required.
 - [Dynamic surcharge](#dynamic-surcharge)
 - [Pre-authorisation / completion](#pre-auth-completion)
 
-### APIs
-
-- **Fusion App API**
-
-Fusion App is a DataMesh middleware that is installed in the PC as the Sale System. 
-
-Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
-
-To initiate a payment, the Sale System sends a HTTP POST to a local endpoint, and waits for a response.
-
-See the [Fusion App API Reference](/docs/api-reference/fusion-app) for further details.
-
-<!-- Start of Fusion App Sample 
-
-
-
-!!!!!! TODO: CAN PROBABLY BRING SOME OF THIS INTO THE FUSION APP SECTION !!!!!!
-
-
-
-*Fusion App* Payment Processing
-
-Sends a payment request to the DataMesh Unify payments platform.
-
-<details><summary><b>[POST]</b> /fusion/v1/payments/<i><b>SessionID</b></i></summary>
-<p>
-
-<Tabs>
-  <TabItem value="parameters" label="Request" default>
-
-```jsx title="Parameters"
-
-SessionID - Unique identifier for this request, formatted as a UUIDv4
-
-```
-
-<details><summary>Request Body</summary>
-<p>
-
-```jsx title="Example Value"
-
-{
-  "PaymentRequest": {
-    "SaleData": {
-      "OperatorID": "string",
-      "OperatorLanguage": "string",
-      "ShiftNumber": "string",
-      "CustomerLanguage": "string",
-      "SaleTransactionID": {
-        "TransactionID": "string",
-        "TimeStamp": "2023-02-24T02:43:02.236Z"
-      },
-      "SaleReferenceID": "string",
-      "SaleTerminalData": {
-        "TerminalEnvironment": "Unknown",
-        "SaleCapabilities": [
-          "Unknown"
-        ],
-        "SaleProfile": {
-          "GenericProfile": "Unknown"
-        },
-        "TotalsGroupID": "string"
-      },
-      "TokenRequestedType": "Unknown",
-      "CustomerOrderID": "string",
-      "CustomerOrderReq": [
-        "Unknown"
-      ],
-      "SaleToPOIData": "string",
-      "SaleToAcquirerData": "string"
-    },
-    "PaymentTransaction": {
-      "AmountsReq": {
-        "Currency": "Unknown",
-        "RequestedAmount": 0,
-        "CashBackAmount": 0,
-        "TipAmount": 0,
-        "SurchargeAmount": 0,
-        "PaidAmount": 0,
-        "MinimumAmountDeliver": 0,
-        "MaximumCashBackAmount": 0,
-        "MinimumSplitAmount": 0
-      },
-      "OriginalPOITransaction": {
-        "SaleID": "string",
-        "POIID": "string",
-        "POITransactionID": {
-          "TransactionID": "string",
-          "TimeStamp": "2023-02-24T02:43:02.236Z"
-        },
-        "ReuseCardDataFlag": true,
-        "ApprovalCode": "string",
-        "CustomerLanguage": "string",
-        "AcquirerID": "string",
-        "AmountValue": 0,
-        "HostTransactionID": {
-          "TransactionID": "string",
-          "TimeStamp": "2023-02-24T02:43:02.236Z"
-        },
-        "LastTransactionFlag": true
-      },
-      "TransactionConditions": {
-        "AllowedPaymentBrands": [
-          "Unknown"
-        ],
-        "AcquirerID": [
-          "string"
-        ],
-        "DebitPreferredFlag": true,
-        "LoyaltyHandling": "string",
-        "CustomerLanguage": "string",
-        "ForceOnlineFlag": true,
-        "ForceEntryMode": [
-          "Unknown"
-        ],
-        "MerchantCategoryCode": "string"
-      },
-      "SaleItem": [
-        {
-          "ItemID": 0,
-          "ParentItemID": 0,
-          "ProductCode": "string",
-          "EanUpc": "string",
-          "UnitOfMeasure": "Unknown",
-          "Quantity": 0,
-          "UnitPrice": 0,
-          "ItemAmount": 0,
-          "TaxCode": "string",
-          "SaleChannel": "string",
-          "ProductLabel": "string",
-          "AdditionalProductInfo": "string",
-          "CostBase": 0,
-          "Discount": 0,
-          "DiscountReason": "string",
-          "Categories": [
-            "string"
-          ],
-          "Brand": "string",
-          "QuantityInStock": 0,
-          "Tags": [
-            "string"
-          ],
-          "Restricted": true,
-          "PageURL": "string",
-          "ImageURLs": [
-            "string"
-          ],
-          "Style": "string",
-          "Size": "string",
-          "Colour": "string",
-          "Weight": 0,
-          "WeightUnitOfMeasure": "Unknown",
-          "CustomFields": [
-            {
-              "Name": "string",
-              "Type": "Unknown",
-              "Value": "string"
-            }
-          ]
-        }
-      ]
-    },
-    "PaymentData": {
-      "PaymentType": "Unknown",
-      "CardAcquisitionReference": {
-        "TransactionID": "string",
-        "TimeStamp": "2023-02-24T02:43:02.236Z"
-      },
-      "RequestedValidityDate": "string",
-      "PaymentInstrumentData": {
-        "PaymentInstrumentType": "Unknown",
-        "CardData": {
-          "PaymentBrand": "string",
-          "Account": "Unknown",
-          "MaskedPAN": "string",
-          "EntryMode": "Unknown",
-          "CardCountryCode": "string",
-          "ProtectedCardData": {
-            "ContentType": "string",
-            "EnvelopedData": {
-              "Version": "string",
-              "KEK": {
-                "Version": "string",
-                "KEKIdentifier": {
-                  "KeyIdentifier": "string",
-                  "KeyVersion": "string"
-                },
-                "KeyEncryptionAlgorithm": {
-                  "Algorithm": "string"
-                },
-                "EncryptedKey": "string"
-              },
-              "EncryptedContent": {
-                "ContentType": "string",
-                "ContentEncryptionAlgorithm": {
-                  "Algorithm": "string",
-                  "Parameter": {
-                    "InitialisationVector": "string"
-                  }
-                },
-                "EncryptedData": "string"
-              }
-            }
-          },
-          "PaymentToken": {
-            "TokenRequestedType": "Unknown",
-            "TokenValue": "string",
-            "ExpiryDateTime": "2023-02-24T02:43:02.236Z"
-          }
-        }
-      }
-    }
-  }
-}
-
-```
-
-</p>
-</details>
-
-</TabItem>
-<TabItem value="response" label="Responses">
-
-<details><summary>Status Code: <b>200</b></summary>
-<p>
-
-```jsx
-
-Successful Operation
-
-```
-
-```jsx title="Response body (Example Value)"
-{
-    "PaymentResponse": {
-        "Response": {
-            "Result": "Success"
-        },
-        "SaleData": {
-            "SaleTransactionID": {
-                "TransactionID": "f03ca0a2-044e-4782-b824-f8882b298863",
-                "TimeStamp": "2023-02-24T12:31:20+11:00"
-            }
-        },
-        "POIData": {
-            "POITransactionID": {
-                "TransactionID": "63f81369a138f54ffa8e4030",
-                "TimeStamp": "2023-02-24T12:31:43.777+11:00"
-            },
-            "POIReconciliationID": "624fbb8bd8dd1a41e1c9caf9"
-        },
-        "PaymentResult": {
-            "PaymentType": "Normal",
-            "PaymentInstrumentData": {
-                "PaymentInstrumentType": "Card",
-                "CardData": {
-                    "PaymentBrand": "VISA",
-                    "Account": "Credit",
-                    "MaskedPAN": "419957XXXXXX1234",
-                    "EntryMode": "Tapped"
-                }
-            },
-            "AmountsResp": {
-                "Currency": "AUD",
-                "AuthorizedAmount": 10.16,
-                "TotalFeesAmount": 0,
-                "CashBackAmount": 0,
-                "TipAmount": 0,
-                "SurchargeAmount": 0.16
-            },
-            "OnlineFlag": true,
-            "PaymentAcquirerData": {
-                "AcquirerID": "xxxxxx",
-                "MerchantID": "xxxxxxxxx",
-                "AcquirerPOIID": "xxxxxx",
-                "AcquirerTransactionID": {
-                    "TransactionID": "xxxxxxxxxxxxxxxxxxxxxxxx",
-                    "TimeStamp": "2023-02-24T01:31:44.079Z"
-                },
-                "ApprovalCode": "xxxxxxx",
-                "ResponseCode": "xx",
-                "RRN": "xxx",
-                "HostReconciliationID": "xxx"
-            }
-        },
-        "PaymentReceipt": [
-            {
-                "DocumentQualifier": "SaleReceipt",
-                "IntegratedPrintFlag": true,
-                "RequiredSignatureFlag": false,
-                "OutputContent": {
-                    "OutputFormat": "XHTML",
-                    "OutputXHTML": "xxx",
-                    "ContentAsPlainText": "xxx"
-                }
-            }
-        ]
-    }
-}
-
-```
-
-</p>
-</details>
-
-```jsx title="Status Code: 400"
-	
-Request format is invalid. Check body for failure reason
-
-```
-
-```jsx title="Status Code: 415"
-		
-ACCEPT header is not set to application/json
-
-```
-
-```jsx title="Status Code: 500"
-	
-Internal application error. Enter error recovery.
-
-```
-
-</TabItem>
-</Tabs>
-
-</p>
-</details>
-
-*Fusion App* Error Recovery
-
-Enters error recovery for a previous payment where the POS didn't receive a payment response
-
-<details><summary><b>[GET]</b> /fusion/v1/payments/<i><b>SessionID</b></i></summary>
-<p>
-
-<Tabs>
-  <TabItem value="parameters" label="Request" default>
-
-```jsx title="Parameters"
-
-SessionID - Unique identifier for this request, formatted as a UUIDv4
-
-```
-
-</TabItem>
-<TabItem value="response" label="Responses">
-
-<details><summary>Status Code: <b>200</b></summary>
-<p>
-
-```jsx
-	
-If a payment response could be returned. Check Response.Result for financial payment result.
-
-```
-
-```jsx title="Response body (Example Value)"
-{
-  "PaymentResponse": {
-    "Response": {
-      "Result": "Unknown",
-      "ErrorCondition": "Unknown",
-      "AdditionalResponse": "string"
-    },
-    "SaleData": {
-      "OperatorID": "string",
-      "OperatorLanguage": "string",
-      "ShiftNumber": "string",
-      "CustomerLanguage": "string",
-      "SaleTransactionID": {
-        "TransactionID": "string",
-        "TimeStamp": "2023-02-24T04:00:27.284Z"
-      },
-      "SaleReferenceID": "string",
-      "SaleTerminalData": {
-        "TerminalEnvironment": "Unknown",
-        "SaleCapabilities": [
-          "Unknown"
-        ],
-        "SaleProfile": {
-          "GenericProfile": "Unknown",
-          "ServiceProfiles": [
-            "Unknown"
-          ]
-        },
-        "TotalsGroupID": "string"
-      },
-      "TokenRequestedType": "Unknown",
-      "CustomerOrderID": "string",
-      "CustomerOrderReq": [
-        "Unknown"
-      ],
-      "SaleToPOIData": "string",
-      "SaleToAcquirerData": "string"
-    },
-    "POIData": {
-      "POITransactionID": {
-        "TransactionID": "string",
-        "TimeStamp": "2023-02-24T04:00:27.284Z"
-      },
-      "POIReconciliationID": "string"
-    },
-    "PaymentResult": {
-      "PaymentType": "Unknown",
-      "PaymentInstrumentData": {
-        "PaymentInstrumentType": "Unknown",
-        "CardData": {
-          "PaymentBrand": "string",
-          "Account": "Unknown",
-          "MaskedPAN": "string",
-          "EntryMode": "Unknown",
-          "CardCountryCode": "string",
-          "ProtectedCardData": {
-            "ContentType": "string",
-            "EnvelopedData": {
-              "Version": "string",
-              "KEK": {
-                "Version": "string",
-                "KEKIdentifier": {
-                  "KeyIdentifier": "string",
-                  "KeyVersion": "string"
-                },
-                "KeyEncryptionAlgorithm": {
-                  "Algorithm": "string"
-                },
-                "EncryptedKey": "string"
-              },
-              "EncryptedContent": {
-                "ContentType": "string",
-                "ContentEncryptionAlgorithm": {
-                  "Algorithm": "string",
-                  "Parameter": {
-                    "InitialisationVector": "string"
-                  }
-                },
-                "EncryptedData": "string"
-              }
-            }
-          },
-          "PaymentToken": {
-            "TokenRequestedType": "Unknown",
-            "TokenValue": "string",
-            "ExpiryDateTime": "2023-02-24T04:00:27.284Z"
-          }
-        }
-      },
-      "AmountsResp": {
-        "Currency": "Unknown",
-        "AuthorizedAmount": 0,
-        "TotalRebatesAmount": 0,
-        "TotalFeesAmount": 0,
-        "CashBackAmount": 0,
-        "TipAmount": 0,
-        "SurchargeAmount": 0,
-        "RequestedAmount": 0,
-        "PartialAuthorizedAmount": 0
-      },
-      "CurrencyConversion": {
-        "CustomerApprovedFlag": true,
-        "ConvertedAmount": {
-          "AmountValue": 0,
-          "Currency": "string"
-        },
-        "Rate": "string",
-        "Markup": "string",
-        "Commission": "string",
-        "Declaration": "string"
-      },
-      "CustomerLanguage": "string",
-      "OnlineFlag": true,
-      "AuthenticationMethod": [
-        "Unknown"
-      ],
-      "ValidityDate": "string",
-      "PaymentAcquirerData": {
-        "AcquirerID": "string",
-        "MerchantID": "string",
-        "AcquirerPOIID": "string",
-        "AcquirerTransactionID": {
-          "TransactionID": "string",
-          "TimeStamp": "2023-02-24T04:00:27.284Z"
-        },
-        "ApprovalCode": "string",
-        "ResponseCode": "string",
-        "RRN": "string",
-        "STAN": "string",
-        "HostReconciliationID": "string"
-      }
-    },
-    "LoyaltyResult": [
-      {
-        "LoyaltyAccount": {
-          "LoyaltyAccountID": {
-            "EntryMode": "Unknown",
-            "IdentificationType": "Unknown",
-            "IdentificationSupport": "Unknown",
-            "LoyaltyID": "string"
-          },
-          "LoyaltyBrand": "Unknown"
-        },
-        "CurrentBalance": 0,
-        "LoyaltyAmount": {
-          "LoyaltyUnit": "Unknown",
-          "Currency": "Unknown",
-          "AmountValue": 0
-        },
-        "LoyaltyAcquirerData": {
-          "LoyaltyAcquirerID": "string",
-          "ApprovalCode": "string",
-          "LoyaltyTransactionID": {
-            "TransactionID": "string",
-            "TimeStamp": "2023-02-24T04:00:27.284Z"
-          },
-          "HostReconciliationID": "string"
-        },
-        "Rebates": {
-          "TotalRebate": 0,
-          "RebateLabel": "string",
-          "SaleItemRebate": [
-            {
-              "ItemID": 0,
-              "ProductCode": "string",
-              "EanUpc": "string",
-              "UnitOfMeasure": "Unknown",
-              "Quantity": 0,
-              "ItemAmount": 0,
-              "RebateLabel": "string"
-            }
-          ]
-        }
-      }
-    ],
-    "PaymentReceipt": [
-      {
-        "DocumentQualifier": "Unknown",
-        "IntegratedPrintFlag": true,
-        "RequiredSignatureFlag": true,
-        "OutputContent": {
-          "OutputFormat": "Unknown",
-          "PredefinedContent": {
-            "ReferenceID": "string",
-            "Language": "string"
-          },
-          "OutputXHTML": "string",
-          "OutputText": {
-            "Text": "string"
-          },
-          "ContentAsPlainText": "string"
-        }
-      }
-    ],
-    "CustomerOrder": {
-      "CustomerOrderID": "string",
-      "SaleReferenceId": "string",
-      "OpenOrderState": true,
-      "StartDate": "string",
-      "EndDate": "string",
-      "ForecastedAmount": 0,
-      "CurrentAmount": 0,
-      "Currency": "string",
-      "AccessedBy": "string",
-      "AdditionalInformation": "string"
-    },
-    "AllowedProductCode": [
-      "string"
-    ]
-  }
-}
-
-```
-
-</p>
-</details>
-
-```jsx title="Status Code: 400"
-	
-Request format is invalid. Check body for failure reason
-
-```
-
-```jsx title="Status Code: 415"
-		
-ACCEPT header is not set to application/json
-
-```
-
-```jsx title="Status Code: 500"
-	
-Internal application error.
-
-```
-
-</TabItem>
-</Tabs>
-
-</p>
-</details>
-
- End of Fusion App Sample -->
-
-- **[Fusion Satellite API](/docs/api-reference/fusion-satellite)**
-
-The Fusion Satellite API allows a Sale System running on the POI terminal to communicate with the DataMesh Satellite payment application on the same POI terminal using inter-app communication with Android intents.
-
-| Description | Location | <div style={{width:'180px'}}></div>
------------------                        | ----------- | ----------- |
-Library | on [Maven Central] (https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk) | |
-Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java) | |
-Demo Application utilising the library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) | Tested on PAX (PAX 920) |
-Another POS on Pinpad Demo Application | on [GitHub] (https://github.com/datameshgroup/pos-on-pinpad-demo) | Tested on PAX (PAX 920) and Ingenico (DX8000) |
-
-- ** [Fusion Cloud API](/docs/api-reference/fusion-cloud)**
-
-The Fusion Cloud API allows the Sale System to communicate with a POI terminal via a Websocket connected to the DataMesh Unify switch.
-
-| <div style={{width:'180px'}}>Development Language</div> | Description | Location |
-|:-----------------:     | ----------------- | ----------- |
-| .Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
-| Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
-| Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
-| Java | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java) | 
-| Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
-| Swift (for iOS) | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios)
-| Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios-demo) |
-
-
 :::tip
 For help on scoping your development work, or to discuss integration requirements, please contact the DataMesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>
 :::
 
-
-### Payment lifecycle
-
-The payment lifecycles, including the required API requests, are outlined in the diagrams below. 
-
-- **Fusion App**
-
-1. Merchant launches the Sale System.
-1. Merchant initiates a payment.
-1. Sale system generates a unique SessionID as a UUIDv4.  This is also referred to as the *payment-id*.
-1. Sale system constructs a [payment request](/docs/api-reference/fusion-cloud#paymentrequest) object.
-1. Sale System sends the [payment request](/docs/api-reference/fusion-cloud#paymentrequest) for the *payment-id* to the Fusion App's local HTTP end point for payments and waits for a response.
-1. Fusion App does all the necessary payment processing.
-1. Sale System receives a payment response.
-1. Merchant closes the Sale System.
-
-   - The unique *payment-id* is also used to initiate an abort request.
-   - If the Sale system doesn't receive a payment response from the Fusion App, the Sale system just needs to call a single error handling API, which is (GET /payments/{*payment-id*}), to enter error recovery.
-
-![](/img/payment-lifecycle-fusion-app.png)
-
-- **Fusion Cloud and Fusion Satellite**
-
-1. Merchant launches the Sale System.
-1. Sale System opens the websocket connection.
-1. Sale System has the option to [link](#terminal-linking) with a POI Terminal by performing a [login request](/docs/api-reference/fusion-cloud#error-handling) either: 
-  1. When the Sale System launches or
-  1. Before the first payment request is sent
-1. Sale System receives a successful login response.
-1. Merchant initiates a payment.
-1. Sale System sets txn_in_progress flag in local persistent storage. (This is will be used for [error handling](/docs/api-reference/fusion-cloud#error-handling).)
-1. Sale System sends a [payment request](/docs/api-reference/fusion-cloud#payment).
-1. Sale System saves message reference details in local persistent storage.  (This is will be used for [error handling](/docs/api-reference/fusion-cloud#error-handling).)
-1. Sale System handles [display requests](/docs/api-reference/fusion-cloud#display), [print requests](/docs/api-reference/fusion-cloud#print), and [input requests](/docs/api-reference/fusion-cloud#input).
-1. Sale System receives a payment response.
-1. Sale System clears the message reference details in the local persistent storage.
-1. Sale System clears the txn_in_progress flag in the local persistent storage.
-1. Merchant closes the Sale System.
-1. Sale System can optionally send a [logout request](/docs/api-reference/fusion-cloud#logout).
-1. Sale System closes the websocket.
-
-![](/img/payment-lifecycle-basic.png)
 
 ### Terminal linking
 
@@ -1357,6 +731,45 @@ To perform a [payment](/docs/api-reference/fusion-cloud#payment) request using a
 
 -->
 
+### Partial payments
+
+:::info
+Partial payments are only supported in selected payment scenarios and requires the "PartialPayment" feature to be enabled in the terminal configuration. Contact the DataMesh [integrations team](mailto:integrations@datameshgroup.com) before implementing partial payments.
+:::
+
+When the "PartialPayment" feature is enabled, the POI Terminal may approve a purchase for less than the [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) passed in by the Sale System. 
+
+This feature can be used in conjunction with [split payments](#split-payments) to accept loyalty and stored value card payments where the value available on the card may be less than the total [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount).
+
+**Handling a partial payment**
+
+- Ensure the "PartialPayment" feature has been enabled on the POI Terminal
+- Send a [payment request](/docs/api-reference/fusion-cloud#paymentrequest), including all required fields
+  - Set the maximum payable purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+- Await the payment response and check [Response.Result](/docs/api-reference/data-model#result) for the transaction result.
+- If [Response.Result](/docs/api-reference/data-model#result) is "Partial" the payment has been approved for an amount less than the the [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - [PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) will reflect the full authorized amount (including all fees, tips, and surcharges)
+  - [PaymentResult.AmountsResp.PartialAuthorizedAmount](/docs/api-reference/data-model#partialauthorizedamount) will reflect the amount of [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) which has been authorised.
+- Reduce the sale amount owing by [PartialAuthorizedAmount](/docs/api-reference/data-model#partialauthorizedamount) and offer the customer a way to provide further payment. 
+  - If the remaining amount is to be paid using the POI Terminal, follow the steps outlined in [split payments](#split-payments) 
+
+
+** Example **
+
+- Sale System sends payment request of $100.00 to DataMesh
+  - [PaymentTransaction.AmountsReq.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) = $100.00
+- DataMesh terminal calculates an added surcharge of $1.00 and adds it to the total amount
+- Cardholder presents a stored value card with $42 available
+- DataMesh POI Terminal completes the payment for $42 and returns a response to the POS
+  - [PaymentResponse.Response.Result](/docs/api-reference/data-model#result) is "Partial"
+  - [PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) is $42.00
+  - [PaymentResult.AmountsResp.PartialAuthorizedAmount](/docs/api-reference/data-model#partialauthorizedamount) is $41.00
+  - [PaymentResult.AmountsResp.SurchargeAmount](/docs/api-reference/data-model#surchargeamount) is $1.00
+- Sale System reduces the outstanding amount by $41.00 and offers the cardholder the option to pay the remaining $59.00
+
+
+
+
 ### Split payments
 
 To perform a split payment, the Sale System should send multiple [payment](/docs/api-reference/fusion-cloud#payment) requests, one for each split. 
@@ -1370,7 +783,7 @@ The following data elements should be set by the Sale System for a split payment
   - Just the items involved in that payment, in the case of a split basket.
   - All the items in the sale, in the case the sale is being split by amount. Note when splitting by amount the sum of the item amounts could more than the [RequestedAmount](/docs/api-reference/data-model#requestedamount).
 - [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) set to the amount of the split payment
-- [PaymentData.SplitPaymentFlag] set to true
+- [PaymentData.SplitPaymentFlag](/docs/api-reference/data-model#splitpaymentflag) set to true
 - [PaymentTransaction.AmountsReq.MinimumSplitAmount](/docs/api-reference/data-model#minimumsplitamount) set to the minimum split amount 
 - [PaymentTransaction.AmountsReq.PaidAmount](/docs/api-reference/data-model#paidamount) set to the total amount of previous split payment associated with this sale
 
@@ -1385,6 +798,14 @@ An example, when splitting by amount:
 - The card holder wishes to split the sale equally between two cards
 - The cashier sends the first payment for $50, the basket contains both "Product A" and "Product B"
 - The cashier sends a second payment for $50, the basket contains both "Product A" and "Product B"
+
+An example, when splitting after a partial payment:
+- A sale contains two items, "Product A" ($80) and "Product B" ($20)
+- The card holder wishes to pay with a stored value card
+- The cashier sends the payment request for $100, the basket contains both "Product A" and "Product B"
+- The payment is partially approved for $40
+- The Sale System reduces the outstanding amount by $40
+- The cashier sends a second payment for $60, the basket contains both "Product A" and "Product B"
 
 ![](/img/payment-split.png)
 
