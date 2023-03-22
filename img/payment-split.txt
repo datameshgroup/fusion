@@ -1,33 +1,38 @@
 title Split payment 
 
-lifelinestyle #A0A0A0
-
+// PARTICIPANTS
 actor Merchant
-materialdesignicons fa06 Sale System
-materialdesignicons f11d POI Terminal
+materialdesignicons F0A07 "Sale System" as pos #F0822D
+materialdesignicons F094F "POI Terminal" as terminal #2D84EF
 
-Merchant->Sale System: Create sale ($100.00)
 
-Sale System->Sale System: Open sale //96//
+// LIFELINES
+lifelinestyle #A0A0A0
+lifelinestyle pos #F0822D
+lifelinestyle terminal #2D84EF
 
-Merchant->Sale System: Initiate payment ($20.00)
+Merchant->pos: Create sale ($100.00)
 
-Sale System->POI Terminal: Payment request\n//SaleTransactionID=96\nRequestedAmount=20.00\nSplitPaymentFlag=true\nMinimumSplitAmount=0.00\nPaidAmount=0.00//
-activate POI Terminal
+pos->pos: Open sale\n//[Sale ID: 96]//
 
-POI Terminal->POI Terminal: Process split payment //2042//
+Merchant->pos: Initiate payment ($20.00)
 
-POI Terminal-->Sale System: Payment response\n//POITransactionID=2042//
-deactivate POI Terminal
+pos->terminal: Payment request\n//SaleTransactionID=96\nRequestedAmount=20.00\nSplitPaymentFlag=true\nMinimumSplitAmount=0.00\nPaidAmount=0.00//
+activate terminal
 
-Merchant->Sale System: Initiate payment ($80.00)
+terminal->terminal: Process split payment //2042//
 
-Sale System->POI Terminal: Payment request\n//SaleTransactionID=96\nRequestedAmount=80.00\nSplitPaymentFlag=true\nMinimumSplitAmount=0.00\nPaidAmount=20.00//
-activate POI Terminal
+terminal-->pos: Payment response\n//POITransactionID=2042//
+deactivate terminal
 
-POI Terminal->POI Terminal: Process split payment //2043//
+Merchant->pos: Initiate payment ($80.00)
 
-POI Terminal-->Sale System: Payment response\n//POITransactionID=2043//
-deactivate POI Terminal
+pos->terminal: Payment request\n//SaleTransactionID=96\nRequestedAmount=80.00\nSplitPaymentFlag=true\nMinimumSplitAmount=0.00\nPaidAmount=20.00//
+activate terminal
 
-Sale System->Sale System: Close sale //96//
+terminal->terminal: Process split payment //2043//
+
+terminal-->pos: Payment response\n//POITransactionID=2043//
+deactivate terminal
+
+pos->pos: Close sale //96//

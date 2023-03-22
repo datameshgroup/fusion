@@ -1,0 +1,78 @@
+title Payment lifecycle - Fusion Cloud
+
+// PARTICIPANTS
+actor "Merchant" as merchant
+materialdesignicons F0A07 "Sale System" as pos #F0822D
+materialdesignicons f015f "Unify" as unify #2D84EF
+materialdesignicons f094f "POI Terminal" as terminal #2D84EF
+
+// LIFELINES
+lifelinestyle #A0A0A0
+lifelinestyle unify #2D84EF
+lifelinestyle terminal #2D84EF
+lifelinestyle pos #F0822D
+
+merchant->>pos: Launch sale system
+
+pos->unify: Open websocket
+
+pos->unify: Login request
+activate unify
+
+unify->terminal: Login request
+activate terminal
+
+terminal-->unify: Login response
+deactivate terminal
+
+unify-->pos: Login response
+deactivate unify
+
+group Payment (0...n)
+
+merchant->>pos: Initiate payment
+pos->pos: Set txn_in_progress flag in local persistent storage
+pos->unify: Payment request
+
+activate unify
+unify->terminal: Payment request
+activate terminal
+pos->pos: Set message_reference details\nin local persistent storage
+unify->pos: Display request (0..n)
+activate pos
+pos-->unify: Display response
+deactivate pos
+
+unify->pos: Input request (0..n)
+activate pos
+pos-->unify: Input response
+deactivate pos
+
+unify->pos: Print request (0..n)
+activate pos
+pos-->unify: Print response
+deactivate pos
+
+terminal-->unify: Payment response
+deactivate terminal
+
+unify-->pos: Payment response
+
+deactivate unify
+
+pos->pos: Clear message_reference details
+
+pos->pos: Clear txn_in_progress flag
+
+end 
+
+merchant->>pos: Close sale system
+
+pos->unify: Logout request
+activate unify
+
+unify-->pos: Logout response
+deactivate unify
+
+pos->unify: Close websocket
+

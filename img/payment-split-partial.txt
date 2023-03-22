@@ -1,0 +1,61 @@
+title Split payment with partial payment
+
+// PARTICIPANTS
+actor "Cashier" as cashier
+materialdesignicons F0A07 "Sale System" as pos #F0822D
+materialdesignicons F094F "POI Terminal" as terminal #2D84EF
+actor "Cardholder" as cardholder
+
+
+// LIFELINES
+lifelinestyle #A0A0A0
+lifelinestyle pos #F0822D
+lifelinestyle terminal #2D84EF
+
+cashier->>pos: Creates sale ($100.00)
+
+pos->pos: Open sale\n//[Sale ID: 96]//
+
+cashier->>pos: Initiates payment ($100.00)
+
+pos->terminal: Payment request\n//SaleTransactionID: 96\nRequestedAmount: 100.00//
+activate terminal
+
+abox over terminal: ENTER TIP
+cardholder->>terminal: Selects "No Tip" option
+
+abox over terminal: PRESENT CARD
+cardholder->>terminal: Presents card
+
+abox over terminal: PROCESSING
+terminal->terminal: Process payment //2042//\nPartial approval for $20.00\nSurcharge for $0.20
+
+terminal-->pos: Payment response\n//Result: Partial\nAuthorizedAmount: 20.00\nPartialAuthorizedAmount: 19.80\nSurchargeAmount: 0.20\nPOITransactionID: 2042//
+
+deactivate terminal
+
+note over pos: Amount owing reduced by $19.80
+
+cashier->>pos: Initiates payment ($80.20)
+
+pos->terminal: Payment request\n//SaleTransactionID: 96\nRequestedAmount: 80.20\nSplitPaymentFlag: true\nMinimumSplitAmount: 0.00\nPaidAmount: 19.80//
+activate terminal
+
+
+abox over terminal: ENTER TIP
+cardholder->>terminal: Enters tip amount of $10.00
+
+abox over terminal: PRESENT CARD
+cardholder->>terminal: Presents card
+
+abox over terminal: PROCESSING
+
+terminal->terminal: Process split payment //2043//\nApproval for $91.10\nSurcharge for $0.90\nTip for $10.00
+
+terminal-->pos: Payment response\n//Result: Success\nAuthorizedAmount: 91.10\nSurchargeAmount: 0.90\nTipAmount: 10.00\nPOITransactionID: 2043//
+
+deactivate terminal
+
+abox over pos#lightgreen: PAYMENT APPROVED
+
+pos->pos: Close sale //96//

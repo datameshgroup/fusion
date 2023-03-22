@@ -1,0 +1,29 @@
+title Payment lifecycle - Fusion Satellite
+
+// PARTICIPANTS
+actor "Merchant" as merchant
+
+participantgroup #F9FCFF POI Terminal
+	materialdesignicons F0A07 "Sale System" as pos #F0822D
+	materialdesignicons f094f "Satellite" as satellite #2D84EF
+end
+
+
+// LIFELINES
+lifelinestyle #A0A0A0
+lifelinestyle satellite #2D84EF
+lifelinestyle pos #F0822D
+
+merchant->>pos: Launch Sale System
+
+merchant->>pos: Initiate payment
+
+pos->satellite: Send payment request\nvia startActivityForResult()
+activate satellite
+
+note over satellite: Satellite UI is presented to the user\nand the payment is completed
+
+satellite-->pos: Payment response
+deactivate satellite
+
+merchant->pos: Close pos
