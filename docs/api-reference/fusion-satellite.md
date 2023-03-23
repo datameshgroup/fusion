@@ -11,14 +11,14 @@ DataMesh have published a library to Maven Central which wraps the Satellite API
 
 Description | Location | <div style={{width:'180px'}}></div> |
 -----------------                        | ----------- | ----------- |
-Library | on [Maven Central] (https://search.maven.org/artifact/com.datameshgroup.fusion/fusion-sdk) | |
+Library | on [Maven Central] (https://central.sonatype.com/artifact/com.datameshgroup.fusion/fusion-sdk/1.3.4/versions) | |
 Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java) | |
 Demo Application utilising the library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) | Tested on PAX (PAX 920) |
 Another POS on Pinpad Demo Application | on [GitHub] (https://github.com/datameshgroup/pos-on-pinpad-demo) | Tested on PAX (PAX 920) and Ingenico (DX8000) |
 
 ### How to include the library
 
-`implementation "com.datameshgroup.fusion:fusion-sdk:1.1.0"`
+`implementation "com.datameshgroup.fusion:fusion-sdk:1.3.4"`
 
 If you are using Android you will need to add Java 8 syntax desugaring. In your app's build.gradle
 
