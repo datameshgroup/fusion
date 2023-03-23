@@ -14,24 +14,34 @@ In case of an error (timeout, system crash etc), the Sale System sends a HTTP GE
 
 ## Getting started with Fusion App
 
-### Install Fusion App 
+### Install Fusion App
 
 - Contact the DataMesh Integrations team (integrations@datameshgroup.com) and request the latest Fusion App installer
-- Run the install and follow the install prompts
+- Run the installer and select the _Development_ install type
+
+  ![](/img/fusion-app-install-1.png)
+
+- Wait for the installation to complete and click _Finish_
+
+  ![](/img/fusion-app-install-2.png)
 
 ### Configure Fusion App
 
-Launch Fusion App from the icon in the system tray. 
+- Launch Fusion App from the icon in the system tray. 
 
-![](/img/fusion-app-icon.png)
+  ![](/img/fusion-app-icon.png)
 
-Configure Fusion App with the SaleID, POIID, and KEK provided by DataMesh and click _Apply_.
+- Configure Fusion App with the SaleID, POIID, and KEK provided by DataMesh and click _Apply_.
 
-![](/img/fusion-app-settings.png)
+  ![](/img/fusion-app-settings.png)
 
-Navigate to the _Util_ tab and click _Login_. This will initiate a login and validate the SaleID, POIID, and KEK.
+- Fusion App will complete a login to validate the SaleID, POIID, and KEK.
 
-![](/img/fusion-app-login.png)
+  ![](/img/fusion-app-login.png)
+
+- The _Util_ tab will allow you to access log files and perform a login. DataMesh may ask for log files to diagnose issues during development. 
+
+  ![](/img/fusion-app-util.png)
 
 ### Send your first payment request
 
