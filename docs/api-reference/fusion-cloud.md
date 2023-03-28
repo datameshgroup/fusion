@@ -1008,7 +1008,7 @@ Attribute     |Requ.| Format | Description |
   [HostReconciliationID](#hostreconciliationid)|✔| String | Identifier of a reconciliation period with the acquirer. This normally has a date and time component in it
  [AllowedProductCodes](#allowedproductcodes)  |  | Array | Present if `ErrorCondition` is "PaymentRestriction". Consists of a list of product codes corresponding to products that are purchasable with the given card. Items that exist in the basket but do not belong to this list corresponds to restricted items
  **PaymentReceipt**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "CustomerReceipt"
+  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
   **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
    [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
@@ -1394,7 +1394,7 @@ Attribute  |Requ.| Format | Description |
 Attribute      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
  **PrintOutput**                              | ✔ | Object | 
-  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "CustomerReceipt"
+  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
   [IntegratedPrintFlag](#integratedprintflag) |  |Boolean| True if the receipt should be included with the Sale receipt, false if the receipt should be printed now and paper cut (e.g. for a signature receipt)
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
   **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
