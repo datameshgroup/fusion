@@ -11,12 +11,14 @@ The Fusion Cloud API allows the Sale System to communicate with a POI terminal v
 | <div style={{width:'180px'}}>Development Language</div> | Description | Location |
 :-----------------:                        | -----------------                        | ----------- |
 .Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
- | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
- | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
+| | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
+| | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
 Java | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java) | 
- | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
+| | Library | on [Maven Central] (https://central.sonatype.com/artifact/com.datameshgroup.fusion/fusion-cloud) |
+| | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
+| | Android Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-android-demo) |
 Swift (for iOS) | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios)
-     | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios-demo) |
+| | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios-demo) |
 
 ## Security requirements
 
