@@ -157,6 +157,10 @@ To force a software update:
 
 ### Update firmware
 
+Please refer to the `Build number` field of the `Device status` for the Firmware version.
+
+  ![](/img/pinpad-build-number-270x460.png)
+
 :::danger
 Before updating the terminal firmware, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to confirm that your terminal setting has been configured with the correct firmware version.
 :::
@@ -164,7 +168,7 @@ Before updating the terminal firmware, please contact the DataMesh Integration T
 <details><summary>To initiate a firmware update</summary>
 <p>
 
-- Confirm with DataMesh that the terminal's firmware configuration is correct
+- Confirm with DataMesh if the terminal firmware update is required.  If the update is required, confirm with DataMesh that the terminal's firmware configuration has been set correctly
 - Set Terminal Display `Sleep` settings to `Never`
 - Launch the Satellite payment app
 - Tap the settings icon (⚙) at the top of the screen
@@ -175,6 +179,7 @@ Before updating the terminal firmware, please contact the DataMesh Integration T
 - Once the firmware update is complete, the terminal will reboot and the Satellite application will be launched
 
   ![](/img/pinpad-update-firmware-complete-270x418.png)
+
 
 </p>
 </details>
