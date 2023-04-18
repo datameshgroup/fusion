@@ -155,6 +155,30 @@ To force a software update:
 - Select the `SOFTWARE UPGRADE` option and select `YES` on the confirmation dialog
 - The software will be downloaded, and Satellite will restart
 
+### Update firmware
+
+:::danger
+Before updating the terminal firmware, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to confirm that your terminal setting has been configured with the correct firmware version.
+:::
+
+<details><summary>To initiate a firmware update</summary>
+<p>
+
+- Confirm with DataMesh that the terminal's firmware configuration is correct
+- Set Terminal Display `Sleep` settings to `Never`
+- Launch the Satellite payment app
+- Tap the settings icon (⚙) at the top of the screen
+- Enter `51201202` as the merchant password
+- Select `YES` on the Download/Install Firmware confirmation dialog
+- The firmware will then be downloaded 
+- Please wait for a few minutes for the terminal to install the update and reboot multiple times, as required
+- Once the firmware update is complete, the terminal will reboot and the Satellite application will be launched
+
+  ![](/img/pinpad-update-firmware-complete-270x418.png)
+
+</p>
+</details>
+
 ### Checking Wi-Fi connection
 
 To check Wi-FI connection status at any time:
