@@ -157,10 +157,6 @@ To force a software update:
 
 ### Update firmware
 
-Please refer to the `Build number` field of the `Device status` for the Firmware version.
-
-  ![](/img/pinpad-build-number-270x460.png)
-
 :::danger
 Before updating the terminal firmware, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to confirm that your terminal setting has been configured with the correct firmware version.
 :::
@@ -183,6 +179,12 @@ Before updating the terminal firmware, please contact the DataMesh Integration T
 
 </p>
 </details>
+
+#### PAX - Firmware Version
+
+Please refer to the `Build number` field of the `Device status` for the Firmware version.
+
+  ![](/img/pinpad-build-number-270x460.png)
 
 ### Checking Wi-Fi connection
 
