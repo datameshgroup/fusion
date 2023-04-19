@@ -113,9 +113,9 @@ In a production environment a terminal will typically be locked to the payment a
 
 ### Configure terminal environment
 
-Your development terminal will be conncted to the UAT environment, which is the correct environemnt for testing. 
+Your development terminal will be conncted to the UAT environment, which is the correct environment for testing. 
 
-To confirm or change the environemnt:
+To confirm or change the environment:
 
 - Launch the Satellite payment app
 - Tap the settings icon (⚙)
