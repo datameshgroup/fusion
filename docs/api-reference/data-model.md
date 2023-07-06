@@ -2494,7 +2494,21 @@ Used to ensure the uniqueness of a transaction for Sale System, the POI System o
 
 ### TipAmount
 
-The Tip amount included in the transaction.  In the PaymentRequest, TipAmount to 0 will display the Tip Entry screen in the POI Terminal.  Do not set TipAmount to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
+The Tip amount included in the transaction. POI Terminal behaviour depending on the TipAmount:
+
+TipAmount		| FusionCloud												 | FusionSatellite 
+----------------------- | ------------------------------------------------------------------------------------------------------ | ------------------
+Null			| No Tip Entry screen											 | Will prompt for Tip Entry screen	
+Blank			| Will prompt for Tip Entry screen									 | Value not allowed
+0 or 0.00		| Will prompt for Tip Entry screen									 | No Tip Entry screen
+greater than 0		| Will include TipAmount in sale, will prompt for Tip Entry screen with the requested tipAmount	value	 | Will include TipAmount in sale, will prompt for Tip Entry screen with the requested tipAmount value
+
+:::tip
+For `FusionCloud` TippingMode should be enable on the POI Terminal setting
+For `FusionSatellite` FeatureTipEnabled should be turned on on the POI Terminal setting
+ 
+Please contact the DataMesh integrations team at integrations@datameshgroup.com to set this up for you
+:::
 
 ### TokenRequestedType
 
