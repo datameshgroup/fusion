@@ -89,9 +89,31 @@ HostErrorCode        | [PaymentResult.PaymentAcquirerData.ResponseCode](/docs/ap
 TokenValue           | [PaymentResult.PaymentInstrumentData.PaymentToken.TokenValue](/docs/api-reference/data-model#tokenvalue) |  |
     
 
-
-
 ## Terminal configuration 
+
+### QR POS Pairing
+
+:::info
+To pair your Sale System through QR code, your Sale System must support QR code pairing and the Pair With POS option must be enabled on your Satellite payment app.
+If you are unable to see the  <code>Pair With POS</code> option on your Satellite payment app, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
+:::
+
+- Launch your Sale System and access the option to display the QR Code for pairing
+- In the Satellite payment app, tap the settings icon (⚙)
+
+![](/img/pinpad-merchant-password-270x480.png)
+- Enter `0000` as the merchant password
+- Tap the `Pair With POS` option
+- Scan the pairing QR code displayed by your Sale System 
+- After the pairing QR code has been scanned, follow the instructions in the Satellite payment app
+
+![](/img/pair-with-pos-setting.png)
+
+- The Satellite payment app will display a message whether the pairing was successful or not
+- If pairing was successful, you'll need to continue the pairing process in the Sale System
+
+![](/img/pair-with-pos-successful.png)
+
 
 ### Enable access to the home screen
 

@@ -40,7 +40,8 @@ The Sale System can pair with multiple POI terminals by sending multiple Login r
 		"OperatorLanguage": "en",
 		"OperatorID": "xxx",
 		"ShiftNumber": "xxx",
-		"POISerialNumber": "xxx"
+		"POISerialNumber": "xxx",
+		"Pairing": "true or false"
 	}
 }
 ```
@@ -63,6 +64,7 @@ Attribute |Requ.| Format | Description |
 [OperatorId](/docs/api-reference/data-model#operatorid)                     |  | String | Groups transactions under this operator id
 [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | String | Groups transactions under this shift number
 [POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
+Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code) for the [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)
 
 #### Login response
 

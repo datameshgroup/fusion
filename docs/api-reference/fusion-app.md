@@ -27,19 +27,30 @@ In case of an error (timeout, system crash etc), the Sale System sends a HTTP GE
 
 ### Configure Fusion App
 
-- Launch Fusion App from the icon in the system tray. 
+- Launch Fusion App from the icon in the system tray.
 
   ![](/img/fusion-app-icon.png)
 
-- Configure Fusion App with the SaleID, POIID, and KEK provided by DataMesh and click _Apply_.
+- From version 3.0.0, the _Status_ tab displays the terminal pairing status.
+  - When the Fusion App is not yet paired with a terminal, you can pair it with a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to scan a pairing QR Code using the DataMesh terminal.
 
-  ![](/img/fusion-app-settings.png)
+    ![](/img/fusion-app-settings-not-paired.png)
 
-- Fusion App will complete a login to validate the SaleID, POIID, and KEK.
+  - When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  You can unpair from the terminal by clicking on the _Unpair from terminal_ option.
+
+    ![](/img/fusion-app-settings-paired.png)
+
+- After pairing is successful, Fusion App will complete a login to validate the stored SaleID, POIID, and KEK.
 
   ![](/img/fusion-app-login.png)
 
-- The _Util_ tab will allow you to access log files and perform a login. DataMesh may ask for log files to diagnose issues during development. 
+- The _Util_ tab will allow you to:
+  - update the POS Name (which is used during [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)).     
+    - If the Fusion App has been paired with a terminal _before_ the POS name was updated, you'll need to unpair from the terminal and then, pair with the terminal again to use the updated POS name.
+  - perform a login
+  - access log files 
+
+DataMesh may ask for log files to diagnose issues during development. 
 
   ![](/img/fusion-app-util.png)
 
