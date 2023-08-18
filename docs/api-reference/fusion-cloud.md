@@ -162,6 +162,7 @@ Attribute                             |Requ.| Format | Description |
 [ServiceID](/docs/api-reference/data-model#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
 [SaleID](/docs/api-reference/data-model#saleid)                     | ✔ | String | Uniquely identifies the Sale System. The [SaleID](/docs/api-reference/data-model#saleid) is provided by DataMesh, and must match the SaleID configured in Unify.
 [POIID](/docs/api-reference/data-model#poiid)                       | ✔ | String | Uniquely identifies the POI Terminal. The [POIID](/docs/api-reference/data-model#poiid) is provided by DataMesh, and must match the POIID configured in Unify. For Sale Systems that do not need a POI Terminal, the value must be "POI Server"
+| |  |  | Only in the Login request after a successful [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing), this field will contain the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code)
 
  
 ### Payload
@@ -357,7 +358,8 @@ sending another NEXO Login request.
          "OperatorLanguage":"en",
          "OperatorID":"xxx",
          "ShiftNumber":"xxx",
-         "POISerialNumber":"xxx"
+         "POISerialNumber":"xxx",
+         "Pairing": "true or false"
       },
       "SecurityTrailer":{...}
    }
@@ -377,6 +379,7 @@ Attribute  |Requ.| Format | Description |
 [ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
 [SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
 [POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
+| |  |  | Only in the Login request after a successful [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing), this field will contain the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code)
 
 **LoginRequest**
 
@@ -396,6 +399,7 @@ Attribute     |Requ.| Format | Description |
 [OperatorId](/docs/api-reference/data-model#operatorid)                     |  | String | Groups transactions under this operator id
 [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | String | Groups transactions under this shift number
 [POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
+Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code) for the [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)
 
 #### Login response
 

@@ -212,7 +212,98 @@ Attribute |Requ.| Format | Description |
 [SoftwareVersion](/docs/api-reference/data-model#softwareversion)          | ✔ | String | Must indicate the software version of the current Sale System build. Sent in the login request.
 [CertificationCode](/docs/api-reference/data-model#certificationcode)      | ✔ | String | Certification code for this Sale System. Provided by DataMesh. Sent in the login request.
 
+#### QR POS Pairing
+
+The Sale System must ensure that it can generate a QR code that can be scanned by the terminal to pair with the Sale System.
+
+Depending on your integration type, your Sale System may be required to implement further changes to generate the pairing QR code.
+
+Integration Type  | Changes required |
+-----------------                         | :----:  |
+Fusion App | [Already Supported](/docs/api-reference/fusion-app#configure-fusion-app)|
+Fusion Cloud | ✔ |
+Fusion Satellite | ❌ |
+
+##### Pairing QR Code
+
+The pairing QR code:
+ - will represent the pairing data JSON. 
+ - will be version 8 binary format (max length: 152) with Medium ECC.
+
+The properties listed below are represented as single characters in the pairing data JSON:
+
+Property | QR | Format |
+---------| ------ | ----------- |
+[SaleID](/docs/api-reference/data-model#saleid) | s | String. UUID v4. Uppercase. |
+| | | 8-4-4-4-12 format. | 
+PairingPOIID | p | String. UUID v4. Uppercase. |
+[KEK](/docs/api-reference/data-model#kek) | k | String. |
+| | | 24 random characters from 0-9 and A-F |
+[CertificationCode](/docs/api-reference/data-model#certificationcode) | c |  String. |
+| | | Certification code provided by DataMesh |
+POSName | n |  String. |
+| | | POS display name with at most 30 characters. |
+ Version | v | Numeric. |
+| | | Pairing version code. Set to 1. |
+
+*Sample Pairing QR Code Data*
+```
+{
+	"s": "09c04710-265f-4094-88ee-a981794127f8",
+	"p": "a2381e7c-1303-44de-ac3b-5fe68a0d973d",
+	"k": "86BB447CE6D1C56E33C2717BE03EED579B2EAB7EC9465817",
+	"c": *replace with data provided by DataMesh*,
+	"n": "WorkStation 001",
+	"v": 1
+}
+```
+
+Depending on your development language, there are available options and references that you can use to generate the pairing QR Code.
+
+##### Reference code  
+
+| <div style={{width:'180px'}}>Development Language</div> | Description | Location |
+:-----------------:                        | -----------------                        | ----------- |
+.Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.Pairing.WinForms) |
+| | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-pairing-dotnet-winforms) |
+| | Demo Application implementing the Pairing NuGetPackage | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-testpos) |
+
+
+##### LoginRequest After Pairing
+
+Once pairing the Sale System with the terminal is successful, the Sale System must send an initial LoginRequest:
+
+- Build a standard [login request](/docs/api-reference/data-model#login-request)
+- Set [MessageHeader.SaleID](/docs/api-reference/fusion-cloud#messageheader) to the [pairing QR code](#pairing-qr-code) SaleID value
+- Only for this specific request, set [MessageHeader.POIID](/docs/api-reference/fusion-cloud#messageheader) to the [pairing QR code](#pairing-qr-code) PairingPOIID value
+- Set [LoginRequest.SaleSoftware.CertificationCode](/docs/api-reference/data-model#login-request) to the [pairing QR code](#pairing-qr-code) CertificationCode value
+- Set [LoginRequest.Pairing](/docs/api-reference/data-model#login-request) to true
+
+On successful [login response](/docs/api-reference/data-model#login-response), the Sale System should record: 
+
+- MessageHeader.POIID from the *response* (this will be different from the MessageHeader.POIID in the request)
+- SaleID from the pairing QR Code SaleID value
+- KEK from the pairing QR Code KEK value
+
+:::info
+The stored Sale ID, POI ID (from the Login response), and KEK values will be used in the succeeding request messages (including the actual LoginRequest prior to a PaymentRequest).
+:::
+
+![](/img/pair-with-pos.png)
+
+##### Sample Terminal-to-POS Pairing Dialog  
+
+![](/img/pair-with-pos-qr-code-dialog.png)
+
+##### Sample Screen display when [LoginRequest after pairing](#loginrequest-after-pairing) is successful
+
+![](/img/pair-with-pos-qr-code-dialog-pairing-successful.png)
+
 #### Cashier configurable settings
+
+:::info
+This functionality must still be implemented even if your Sale System supports [QR POS Pairing](#qr-pos-pairing) to cover unwanted scenarios wherein QR POS Pairing is not possible.
+:::
 
 The [SaleID](/docs/api-reference/data-model#saleid), [KEK](/docs/api-reference/data-model#kek), and [POIID](/docs/api-reference/data-model#poiid) are cashier configurable settings which may be different for each lane.
 
@@ -221,10 +312,6 @@ The Sale System must ensure there is a user interface accessible by the cashier 
 The [SaleID](/docs/api-reference/data-model#saleid) and [POIID](/docs/api-reference/data-model#poiid) should be visible to the cashier. The [KEK](/docs/api-reference/data-model#kek) should be masked after entry by the cashier. 
 
 If the Sale System is to support many-to-one configuration (i.e. one Sale System linked to many POI terminals) it should support the entry of [SaleID](/docs/api-reference/data-model#saleid) and [KEK](/docs/api-reference/data-model#kek) to identify the  Sale System lane, and a [POIID](/docs/api-reference/data-model#poiid) for each POI terminal linked.
-
-:::tip
-A "pairing" API request will be available in a future API release which will enable the delivery of <code>SaleID</code>, <code>POIID</code>, and <code>KEK</code> to the Sale System in place of the manual entry of these data fields. 
-:::
 
 *Example setting UI*
 
