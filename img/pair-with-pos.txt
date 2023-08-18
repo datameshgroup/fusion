@@ -1,0 +1,95 @@
+title Basic terminal-to-pos pairing
+
+// Icons
+//materialdesignicons f070 acquirer
+//materialdesignicons F094E cellphone-key
+//materialdesignicons F011C cellphone
+//materialdesignicons F094F cellphone-lock
+//materialdesignicons F0A07 monitor-dashboard
+//materialdesignicons F09A7 tablet-cellphone
+//materialdesignicons F0ECE tablet-dashboard
+//materialdesignicons F00EC calculator
+//materialdesignicons F015F cloud
+//materialdesignicons F0163 cloud-outline
+//materialdesignicons F07B5 cloud-braces
+//materialdesignicons F11F1 cloud-lock
+//materialdesignicons F11F2 cloud-lock-outline
+//materialdesignicons F07B6 cloud-tags
+//materialdesignicons F048B server
+//materialdesignicons F0492 server-security
+//materialdesignicons F01BC database
+//materialdesignicons F1632 database-outline
+//materialdesignicons F0AAA database-lock
+//materialdesignicons F162E database-lock-outline
+
+
+
+// PARTICIPANT GROUPS
+participantgroup #FFF9F9 Store
+    actor "Operator" as cashier
+	materialdesignicons F0A07 "POS" as pos #F0822D
+    materialdesignicons F094F "Terminal" as ped #2D84EF
+end 
+
+participantgroup #F9FCFF DataMesh
+    materialdesignicons F11F1 "Unify" as unify #2D84EF
+end
+
+
+// LIFELINES
+lifelinestyle #A0A0A0
+lifelinestyle unify #2D84EF
+lifelinestyle ped #2D84EF
+lifelinestyle pos  #F0822D
+
+
+//
+// POS PAIRING
+//
+
+cashier-->>pos: Enter terminal pairing menu
+pos->pos:Generate pairingData
+note over pos:""{\n  "s": "<<Random UUID>>",\n  "p": "<<Random UUID>>",\n  "k": "<<Random 24 alphanum>>",\n  "c": "<<data provided by DataMesh>>",\n  "n": "<<Min: 1 Max: 30 alphanum>>",\n  "v": 1\n}""
+pos->pos:Display QR code for pairingData
+   
+abox over pos: <align:center>SCAN CODE WITH\nTERMINAL AND\nPRESS NEXT\n\n▒▒▒▒▒\n▒▒▒▒▒\n▒▒▒▒▒</align>
+
+
+//
+// TERMINAL PAIRING
+//
+cashier-->>ped: Select manager menu
+abox over ped: ENTER MERCHANT PASSWORD
+cashier-->>ped: Enter merchant password
+abox over ped:SETTINGS\n→ CHANGE PASSWORD\n→ SOFTWARE UPGRADE\n→ PAIR WITH POS
+cashier-->>ped:Select "PAIR WITH POS"
+abox over ped: <align:center>SCAN QR CODE\n▛         ▜\n\n\n▙         ▟</align>
+cashier-->>ped: Scan QR code from POS using terminal
+
+
+// CREATE POS RECORD
+ped->unify: Terminal sends ""<background:#F0F0F0>{ pairingData }</background>"" to the host
+activate unify
+
+note over unify: Return error if something wrong with ""<background:#F0F0F0>{ pairingData }</background>""
+     
+
+unify-->ped: OK
+deactivate unify
+
+abox over ped #lightgreen:PAIRING SUCCESSFUL\nCONTINUE ON POS
+
+
+cashier-->>pos: Press NEXT
+
+pos->unify:Login Request (data from ""<background:#F0F0F0>{ pairingData }</background>"")\n""<background:#F0F0F0>"MessageHeader":\n{\n    "SaleID: s,\n    "POIID": p\n}\n"LoginRequest":\n{\n    "Pairing: true\n}</background>""
+activate unify
+
+note over unify: Real POIID is returned to the POS
+
+unify-->pos: Approved - Login Response\n""<background:#F0F0F0>"MessageHeader":\n{\n"POIID": POIID\n}</background>""
+deactivate unify
+
+pos->pos: Record Sale ID, POID ID, KEK
+
+abox over ped #lightgreen:PAIRED TO TERMINAL
