@@ -72,9 +72,38 @@ DataMesh may ask for log files to diagnose issues during development.
 - Implement other required features based on this API specification
 - On the PC you've installed Fusion App, you can also view the locally installed [Swagger docs](http://localhost:4242/swagger)
 
-## Perform a purchase
+## Check the Fusion App Status and Other Details
+To get the Fusion App related status and details, the Sale System needs to use:
 
-To perform a purchase the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments`) endpoint.
+** Endpoint **
+`GET http://localhost:4242/fusion/v1/status`
+
+Sample return value:
+```json
+{
+    "Version": "3.0.0.0", //Formatted version number of the Fusion App
+    "TerminalPaired": false, //True if a terminal has been paired, false otherwise
+    "Status": "Ready" //Status of the Fusion App
+}
+```
+
+## Launch the Fusion App UI
+
+:::info
+This is important when the task bar/system tray is hidden and the operator cannot access the main Fusion App icon, while the Sale System is running.  
+:::
+
+The Sale System must provide an option to launch the Fusion App main UI so the operator can _pair the Fusion App to a terminal_ and _unpair the Fusion App from the terminal_.
+
+To launch the Fusion App main UI, the Sale System needs to use:
+
+** Endpoint **
+`POST http://localhost:4242/fusion/v1/ui`
+
+
+## Perform a purchase 
+
+To perform a purchase, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
 
 - Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
   - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Normal"
