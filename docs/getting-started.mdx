@@ -289,15 +289,31 @@ On successful [login response](/docs/api-reference/data-model#login-response), t
 The stored Sale ID, POI ID (from the Login response), and KEK values will be used in the succeeding request messages (including the actual LoginRequest prior to a PaymentRequest).
 :::
 
+##### Unpairing from Terminal
+Once the Sales System has been paired with a terminal, the Sale System must provide an option to unpair the Sale Sytem from the terminal.  This option will clear the previously stored POI ID value.  
+
+:::info
+The Sale System may use the previously stored Sale ID and KEK values when generating the next pairing QR code.
+:::
+
 ![](/img/pair-with-pos.png)
 
 ##### Sample Terminal-to-POS Pairing Dialog  
 
 ![](/img/pair-with-pos-qr-code-dialog.png)
 
-##### Sample Screen display when [LoginRequest after pairing](#loginrequest-after-pairing) is successful
+##### Sample screen display when [LoginRequest after pairing](#loginrequest-after-pairing) is successful
 
 ![](/img/pair-with-pos-qr-code-dialog-pairing-successful.png)
+
+##### Sample screen display when no terminal is paired with the Sale System
+
+![](/img/pair-with-pos-not-paired.png)
+
+##### Sample screen display when a terminal has been paired successfully with the Sale System
+
+![](/img/pair-with-pos-paired.png)
+
 
 #### Cashier configurable settings
 

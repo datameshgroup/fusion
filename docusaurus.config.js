@@ -82,7 +82,7 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: '2023-08-18',
+            title: '2023-08-24',
           },
           {
             title: 'Useful Links',
