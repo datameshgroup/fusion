@@ -16,7 +16,10 @@ In case of an error (timeout, system crash etc), the Sale System sends a HTTP GE
 
 ### Install Fusion App
 
-- Contact the DataMesh Integrations team (integrations@datameshgroup.com) and request the latest Fusion App installer
+:::info
+The latest Fusion App installer can be downloaded from this [link](https://cloudposintegration.io/fusion/fusionapp/releases/FusionAppSetup_vStable.exe).
+:::
+
 - Run the installer and select the _Development_ install type
 
   ![](/img/fusion-app-install-1.png)
@@ -32,7 +35,7 @@ In case of an error (timeout, system crash etc), the Sale System sends a HTTP GE
   ![](/img/fusion-app-icon.png)
 
 - From version 3.0.0, the _Status_ tab displays the terminal pairing status.
-  - When the Fusion App is not yet paired with a terminal, you can pair it with a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to scan a pairing QR Code using the DataMesh terminal.
+  - When the Fusion App is not yet paired with a terminal, you can pair it with a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/appendix#qr-pos-pairing).
 
     ![](/img/fusion-app-settings-not-paired.png)
 

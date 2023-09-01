@@ -91,30 +91,6 @@ TokenValue           | [PaymentResult.PaymentInstrumentData.PaymentToken.TokenVa
 
 ## Terminal configuration 
 
-### QR POS Pairing
-
-:::info
-To pair your Sale System through QR code, your Sale System must support QR code pairing and the Pair With POS option must be enabled on your Satellite payment app.
-If you are unable to see the  <code>Pair With POS</code> option on your Satellite payment app, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
-:::
-
-- Launch your Sale System and access the option to display the QR Code for pairing
-- In the Satellite payment app, tap the settings icon (⚙)
-
-![](/img/pinpad-merchant-password-270x480.png)
-- Enter `0000` as the merchant password
-- Tap the `Pair With POS` option
-- Scan the pairing QR code displayed by your Sale System 
-- After the pairing QR code has been scanned, follow the instructions in the Satellite payment app
-
-![](/img/pair-with-pos-setting.png)
-
-- The Satellite payment app will display a message whether the pairing was successful or not
-- If pairing was successful, you'll need to continue the pairing process in the Sale System
-
-![](/img/pair-with-pos-successful.png)
-
-
 ### Enable access to the home screen
 
 In a production environment a terminal will typically be locked to the payment application, however in development and test it is useful to enable access to the home screen. 
@@ -161,9 +137,9 @@ To force a settings update:
 - Launch the Satellite payment app
 - Tap the "info" icon (ⓘ) at the top of the screen
 - The terminal will update settings from the host
-- Then current software version, terminal ID, and merchant ID will be displayed on screen
+- Then current software version, terminal ID, merchant ID, and the list of POS paired with the terminal will be displayed on the screen
 
-![](/img/pinpad-info-270x480.png)
+![](/img/pinpad-info.png)
 
 ### Update software
 
@@ -215,6 +191,40 @@ To check Wi-FI connection status at any time:
 - Swipe down from the top of the screen to open the notification shade
 - Swipe down again to expand the notification shade
 - Top left icon will be your Wi-Fi status and connected access point
+
+### QR POS Pairing
+
+:::info
+To pair your Sale System through QR code: 
+- your Sale System must support [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)
+- your Satellite payment app Software Version must be at least 46J.  
+  - The Software Version can be found at the top portion of Satellite's [info screen](#update-settings).
+- the Pair With POS option must be enabled on your Satellite payment app
+
+If you are unable to see the <code>Pair With POS</code> option on your Satellite payment app, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
+:::
+
+- Launch your Sale System and access the option to display the QR Code for pairing
+- In the Satellite payment app, tap the settings icon (⚙)
+
+![](/img/pinpad-merchant-password-270x480.png)
+- Enter `0000` as the merchant password
+- Tap the `Pair With POS` option
+- Scan the pairing QR code displayed by your Sale System 
+- After the pairing QR code has been scanned, follow the instructions on the Satellite payment app
+
+![](/img/pair-with-pos-setting.png)
+
+#### Pairing Result
+- If the pairing was successful, you'll need to continue the pairing process in the Sale System
+
+![](/img/pair-with-pos-successful.png)
+
+- If the pairing was *not* successful and the error displayed on the Satellite payment app starts with:
+  - POS Config Error
+    -   Please contact your Sale System provider and inform them about the error.
+  - Terminal Config Error (and all other errors)
+    -   Please contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
 
 ### PAX
 
