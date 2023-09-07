@@ -20,7 +20,7 @@ In case of an error (timeout, system crash etc), the Sale System sends a HTTP GE
 The latest Fusion App installer can be downloaded from this [link](https://cloudposintegration.io/fusion/fusionapp/releases/FusionAppSetup_vStable.exe).
 :::
 
-- Run the installer and select the _Development_ install type
+- Run the installer and select the _Development_ install type. (For installation in _Production_ environment, select _Production_)
 
   ![](/img/fusion-app-install-1.png)
 
@@ -34,7 +34,7 @@ The latest Fusion App installer can be downloaded from this [link](https://cloud
 
   ![](/img/fusion-app-icon.png)
 
-- From version 3.0.0, the _Status_ tab displays the terminal pairing status.
+- From version 3.0.1, the _Status_ tab displays the terminal pairing status.
   - When the Fusion App is not yet paired with a terminal, you can pair it with a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/appendix#qr-pos-pairing).
 
     ![](/img/fusion-app-settings-not-paired.png)
@@ -55,7 +55,7 @@ The latest Fusion App installer can be downloaded from this [link](https://cloud
 
 DataMesh may ask for log files to diagnose issues during development. 
 
-  ![](/img/fusion-app-util.png)
+  ![](/img/fusion-app-settings.png)
 
 ### Send your first payment request
 
@@ -84,7 +84,7 @@ To get the Fusion App related status and details, the Sale System needs to use:
 Sample return value:
 ```json
 {
-    "Version": "3.0.0.0", //Formatted version number of the Fusion App
+    "Version": "3.0.1.0", //Formatted version number of the Fusion App
     "TerminalPaired": false, //True if a terminal has been paired, false otherwise
     "Status": "Ready" //Status of the Fusion App
 }
