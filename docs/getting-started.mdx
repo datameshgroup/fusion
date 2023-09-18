@@ -234,19 +234,38 @@ The properties listed below are represented as single characters in the pairing 
 
 Property | QR | Format |
 ---------| ------ | ----------- |
-[SaleID](/docs/api-reference/data-model#saleid) | s | String. UUID v4. |
+[SaleID](/docs/api-reference/data-model#saleid) | s | String. Random. UUID v4. |
 | | | 8-4-4-4-12 format. | 
-PairingPOIID | p | String. UUID v4. |
-[KEK](/docs/api-reference/data-model#kek) | k | String. |
-| | | 48-character string populated with characters 0-9, and A-F |
+PairingPOIID | p | String. Random. UUID v4. |
+| | | 8-4-4-4-12 format. | 
+[KEK](/docs/api-reference/data-model#kek) | k | String. Random. |
+| | | 48-character string populated with characters 0-9, and A-F. |
+| | | Please refer to the [sample KEK generation](#sample-kek-generation) |
 [CertificationCode](/docs/api-reference/data-model#certificationcode) | c |  String. |
-| | | Certification code provided by DataMesh |
+| | | Certification code provided by DataMesh. |
 POSName | n |  String. |
 | | | POS display name with at most 30 characters. |
+| | | This can be the Work Station name or any name that you prefer. |
+| | | Name displayed on the report and on the Satellite app (e.g. during a POS payment transaction). |
  Version | v | Numeric. |
 | | | Pairing version code. Set to 1. |
 
-*Sample Pairing QR Code Data*
+###### Sample KEK Generation
+```
+string chars = "0123456789ABCDEF";
+string result = "";
+Random random = new();
+for (int i = 0; i < 48; i++)
+{
+  result += chars[random.Next(chars.Length)];
+}
+Console.WriteLine("KEK = " + result); 
+
+//Sample output 
+KEK = 86BB447CE6D1C56E33C2717BE03EED579B2EAB7EC9465817
+```
+
+###### Sample Pairing QR Code Data
 ```
 {
 	"s": "09c04710-265f-4094-88ee-a981794127f8",
