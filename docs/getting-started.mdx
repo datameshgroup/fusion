@@ -1030,3 +1030,77 @@ When the Sale System sends a request, it will receive a matching response. For e
 However, in unusual scenarios wherein the Sale System sends a request but doesn't receive a corresponding response (for example, due to network error or timeout), the Sale System must enter an error handling loop.
 
 More information about how to handle such scenario can be found in the [Error handling section of the Cloud API](/docs/api-reference/fusion-cloud#error-handling)
+
+
+### Fuel API
+
+The DataMesh Fuel API is an extension to the core API which adds support for current and future fuel payment types accepted by DataMesh. (e.g. BP Card, BP Gift Card, FleetCard, Shell card)
+
+#### Supported transaction types
+* Purchase 
+  * POS must handle dynamic surcharge 
+  * Split-payment by item
+* Refund
+* Cashout is not supported on fuel cards
+
+#### Purchase 
+
+* A purchase request requires a populated the SaleItem[] array (for a full description see [SaleItem](https://datameshgroup.github.io/fusion/docs/api-reference/data-model#saleitem)). 
+  * Fuel SaleItem is outlined below
+* Sum of SaleItem[].ItemAmount must equal RequestedAmount 
+* The purchase response will contain the fuel card used in [PaymentBrand](#paymentbrand)
+
+##### Fuel SaleItem
+
+Attribute   | Requ.  | Format | Description |
+-----------------                          | :------: | ------ | ----------- |
+[ItemID](#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+[ProductCode](#productcode)                | ✔ | String  | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+[UnitOfMeasure](#unitofmeasure)            | ✔ | String  | Unit of measure of the `Quantity`. Set to "Litre"
+[Quantity](#quantity)                      | ✔ | Decimal | Number of litres as read from the pump (decimal, maximum precision 6.8)
+[UnitPrice](#unitprice)                    | ✔ | Decimal | Price per litre from the pump (decimal, maximum precision 6.8)
+[ItemAmount](#itemamount)                  | ✔ | Decimal | The amount of the fuel as presented to the cardholder (decimal 9.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
+[ProductLabel](#productlabel)              | ✔ | String  | A short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+[Categories](#categories)                  |    | Array   | Array of categories. Top level "main" category at categories[0]. See [Categories](#categories) for more information.
+[Tags](#sale-item-tags)                    |    | Array   | String array with descriptive tags for the product
+[CustomFields](#customfields)              |    | Array   | Array of key/type/value objects which define the EFT codes for the item.
+
+** Example **
+
+```json
+{ 
+  "SaleItem": [
+  {
+    "ItemID": 0,
+	"ProductCode": "ABX123",
+	"UnitOfMeasure": "Litre",
+	"Quantity": 42.252,
+	"UnitPrice": 2.15,
+	"ItemAmount": 90.84,
+	"ProductLabel": "Premium ULP",
+	"Categories": ["Fuel"],
+    "CustomFields": [
+      {
+        "Key": "FuelProductCode", 
+	    "Type": "String",
+        "Value": "21"
+      },
+      {
+        "Key": "FuelProductCodeShell",
+	    "Type": "String",
+        "Value": "35"
+      },
+      {
+        "Key": "FuelProductCodeFleetcore",
+	    "Type": "String",
+        "Value": "21"
+      }
+    ]
+  }
+}
+```
+
+#### Refund 
+
+* Must be a matched refund
+* SaleItem[] must include items to refund
