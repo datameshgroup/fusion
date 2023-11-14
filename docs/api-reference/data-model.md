@@ -1338,6 +1338,17 @@ Available values:
 - "CUP Debit"
 - "Discover"
 - "Card"
+- "BPGiftCard"
+- "BP Fuel Card"
+- "Fleet Card"
+- "Shell Card""
+- "Motorpass"
+- "AmpolCard"
+- "Freedom Fuel Card"
+- "Trinity Fuel Card"
+- "Liberty Card"
+- "Caltex StarCard"
+- "United Fuel Card"
 
 ### ApplicationName
 
@@ -1440,6 +1451,7 @@ CustomFields are defined under the *PaymentRequest* (for additional Payment info
 | <div style={{width:'180px'}}>Field Name</div> | Type | Description |
 -----------------  | ------ | ----------- |
 Key                | String | Defines a unique name for the `Value`.              |
+|                   |        | For Fuel, please refer to the [Fuel EFT Codes](#fuel-eft-codes).              |
 Type               | Enum   | The content of `Value` represented as a string. |
                    |        | Available values:                               |
                    |        |    - "integer": `Value` an integral number (represented as a string) |              
@@ -1448,6 +1460,20 @@ Type               | Enum   | The content of `Value` represented as a string. |
                    |        |    - "array": `Value` contains a json array of string  |
                    |        |    - "object": `Value` contains a json object|
 `Value`            | String | The value represented as a string |
+
+#### Fuel EFT Codes
+
+Available values: 
+- "FuelProductCode" //this is the BP Code
+- "FuelProductCodeShellCard"
+- "FuelProductCodeCaltexStarCard"
+- "FuelProductCodeFleetCard"
+- "FuelProductCodeMotorpass"
+- "FuelProductCodeUnitedFuelCard"
+- "FuelProductCodeAmpolCard"
+- "FuelProductCodeTrinityFuelCard"
+- "FuelProductCodeFreedomFuelCard"
+- "FuelProductCodeLibertyCard"
 
 
 ### DateTime
