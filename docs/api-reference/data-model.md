@@ -8,6 +8,126 @@ Definition of request, response messages and properties used by the Fusion API's
 
 ## Request/response messages
 
+### SaleToPOI
+
+The `SaleToPOIRequest` and `SaleToPOIResponse` are used to wrap request and response messages and contain at least two objects: 
+
+1. A [MessageHeader](#messageheader) object.
+1. A `Payload` request or response object of variable types.
+
+#### SaleToPOIRequest
+
+Attribute |Requ.| Format | Description |
+-----------------                            |:----: | ------ | ----------- |
+MessageHeader                        | ✔ | String | Message header
+[PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |Object | If payment request
+[LoginRequest](/docs/api-reference/data-model#login-request)  |  |Object | If login request
+[LogoutRequest](/docs/api-reference/data-model#logout-request)  |  |Object | If logout request
+[DisplayRequest](/docs/api-reference/data-model#display-request)  |  |Object | If display request
+[InputRequest](/docs/api-reference/data-model#input-request)  |  |Object | If input request
+[PrintRequest](/docs/api-reference/data-model#print-request)  |  |Object | If print request
+[TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |Object | If transaction status request
+[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |Object | If abort request
+[ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |Object | If reconciliation request
+[CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |Object | If card acquisition request
+
+<details>
+<summary>SaleToPOIRequest</summary>
+<p>
+
+```json
+{
+  "SaleToPOIRequest": {
+    "MessageHeader":{},
+    "PaymentRequest":{},
+	"LoginRequest":{},
+	"LogoutRequest":{},
+	"DisplayRequest":{},
+	"InputRequest":{},
+	"PrintRequest":{},
+	"TransactionStatusRequest":{},
+	"AbortRequest":{},
+	"ReconciliationRequest":{},
+	"CardAcquisitionRequest":{}
+  }
+}
+
+```
+
+</p>
+</details>
+
+#### SaleToPOIResponse
+
+Attribute |Requ.| Format | Description |
+-----------------                            |:----: | ------ | ----------- |
+MessageHeader                        | ✔ | Object | Message header
+[PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |Object | If payment request
+[LoginRequest](/docs/api-reference/data-model#login-request)  |  |Object | If login request
+[LogoutRequest](/docs/api-reference/data-model#logout-request)  |  |Object | If logout request
+[DisplayRequest](/docs/api-reference/data-model#display-request)  |  |Object | If display request
+[InputRequest](/docs/api-reference/data-model#input-request)  |  |Object | If input request
+[PrintRequest](/docs/api-reference/data-model#print-request)  |  |Object | If print request
+[TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |Object | If transaction status request
+[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |Object | If abort request
+[ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |Object | If reconciliation request
+[CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |Object | If card acquisition request
+
+
+<details>
+<summary>SaleToPOIResponse</summary>
+<p>
+
+```json
+{
+  "SaleToPOIResponse": {
+    "MessageHeader":{},
+    "PaymentResponse":{},
+	"LoginResponse":{},
+	"LogoutResponse":{},
+	"DisplayResponse":{},
+	"InputResponse":{},
+	"PrintResponse":{},
+	"TransactionStatusResponse":{},
+	"AbortResponse":{},
+	"ReconciliationResponse":{},
+	"CardAcquisitionResponse":{}
+  }
+}
+
+```
+
+</p>
+</details>
+
+#### MessageHeader
+
+A `MessageHeader` is included with each request and response. It defines the protocol and message type.
+
+
+<details><summary>MessageHeader</summary>
+<p>
+
+```json
+"MessageHeader":{
+  "MessageClass":"",
+  "MessageCategory":"",
+  "MessageType":"",
+  "ServiceID":""
+}
+```
+</p>
+</details>
+
+Attribute                             |Requ.| Format | Description |
+-----------------                     |:----:| ------ | ----------- |
+[MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
+[MessageType](/docs/api-reference/data-model#messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
+[ServiceID](/docs/api-reference/data-model#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+
+
+
 ### Login 
 
 The Sale System sends a Login request when it is ready to pair with a POI terminal. 

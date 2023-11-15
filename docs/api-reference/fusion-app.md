@@ -4,20 +4,23 @@ sidebar_position: 1
 
 # Fusion App
 
-Fusion App is a DataMesh middleware that is installed in the PC as the Sale System. 
+Fusion App is a DataMesh middleware that is installed in the PC as the Sale System.
 
 Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
 
-To initiate a payment, the Sale System sends a HTTP POST to a local endpoint, and waits for a response. 
+There are two methods for processing a payment using Fusion App: 
 
-In case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
+* Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
+* Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
+
+In both methods, in case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
 
 ## Getting started with Fusion App
 
 ### Install Fusion App
 
 :::info
-The latest Fusion App installer can be downloaded from this [link](https://cloudposintegration.io/fusion/fusionapp/releases/FusionAppSetup_vStable.exe).
+The latest dev release Fusion App installer can be downloaded from this [link](https://cloudposintegration.io/fusion/fusionapp/releases/FusionAppSetup_vDev.exe).
 :::
 
 - Run the installer and select the _Development_ install type. (For installation in _Production_ environment, select _Production_)
@@ -34,18 +37,15 @@ The latest Fusion App installer can be downloaded from this [link](https://cloud
 
   ![](/img/fusion-app-icon.png)
 
-- From version 3.0.1, the _Status_ tab displays the terminal pairing status.
-  - When the Fusion App is not yet paired with a terminal, you can pair it with a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/appendix#qr-pos-pairing).
+- The _Status_ tab displays the terminal pairing status.
+  
+  - You can pair a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/appendix#qr-pos-pairing).
 
     ![](/img/fusion-app-settings-not-paired.png)
 
   - When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  You can unpair from the terminal by clicking on the _Unpair from terminal_ option.
 
     ![](/img/fusion-app-settings-paired.png)
-
-- After pairing is successful, Fusion App will complete a login to validate the stored SaleID, POIID, and KEK.
-
-  ![](/img/fusion-app-login.png)
 
 - The _Util_ tab will allow you to:
   - update the POS Name (which is used during [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)).     
@@ -63,7 +63,7 @@ DataMesh may ask for log files to diagnose issues during development.
 - Import the Fusion App postman script:
   - In Postman, select Menu(☰) → File → Import...
   - Browse to `%PROGRAMFILES(X86)%\DataMeshGroup\FusionApp\FusionApp.postman_collection.json` and import
-- Select Collections → Payment, and click _Send_
+- Select Collections → Payments (blocking) → Payment, and click _Send_
 
 ![](/img/fusion-app-postman.png)
 
@@ -75,36 +75,39 @@ DataMesh may ask for log files to diagnose issues during development.
 - Implement other required features based on this API specification
 - On the PC you've installed Fusion App, you can also view the locally installed [Swagger docs](http://localhost:4242/swagger)
 
-## Check the Fusion App Status and Other Details
-To get the Fusion App related status and details, the Sale System needs to use:
+## Perform a purchase (events mode)
 
-** Endpoint **
-`GET http://localhost:4242/fusion/v1/status`
+To perform a purchase with events mode, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
 
-Sample return value:
-```json
-{
-    "Version": "3.0.1.0", //Formatted version number of the Fusion App
-    "TerminalPaired": false, //True if a terminal has been paired, false otherwise
-    "Status": "Ready" //Status of the Fusion App
-}
-```
+- Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
+  - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Normal"
+  - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+  - Populate the [SaleItem](/docs/api-reference/data-model#saleitem) array with the product basket for the purchase
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the payment and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/payments/{{SessionId}}events=true`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [Payment request](/docs/api-reference/data-model#payment-request) JSON payload
+- Await the POST result (this should take under 5 seconds).
+  - On 4xx the request was invalid and the payment could not be processed
+  - On 5xx an error occured, the Sale System should enter error handling
+  - On 202 ACCEPTED, the Sale System should GET the payment result
+- Call `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events` using the `SessionId` from the POST payment to get the next event in the payment (this could take as long as 5 minutes). Fusion App will return a [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse) containing the [Payment response](/docs/api-reference/data-model#payment-response), or a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) containing the [Print request](/docs/api-reference/data-model#print-request)
+  - On [print request](/docs/api-reference/data-model#print-request), handle the print and call GET again 
+  - On [payment response](/docs/api-reference/data-model#payment-response)
+    - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+    - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future matched refunds: [POITransactionID](/docs/api-reference/data-model#poitransactionid)
+    - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
+    - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](/docs/api-reference/data-model#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](/docs/api-reference/data-model#surchargeamount)
+    - Print the receipt contained in `PaymentReceipt`
+  - On 404, enter error handling
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
-## Launch the Fusion App UI
-
-:::info
-This is important when the task bar/system tray is hidden and the operator cannot access the main Fusion App icon, while the Sale System is running.  
-:::
-
-The Sale System must provide an option to launch the Fusion App main UI so the operator can _pair the Fusion App to a terminal_ and _unpair the Fusion App from the terminal_.
-
-To launch the Fusion App main UI, the Sale System needs to use:
-
-** Endpoint **
-`POST http://localhost:4242/fusion/v1/ui`
-
-
-## Perform a purchase 
+## Perform a purchase (blocking mode)
 
 To perform a purchase, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
 
@@ -129,7 +132,51 @@ To perform a purchase, the Sale System will need to POST a [Payment request](/do
   - Print the receipt contained in `PaymentReceipt`
 - If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
-## Perform a refund
+
+## Perform a refund (events mode)
+
+<!-- TODO need to add support here for matched refunds -->
+
+To perform a refund with events mode, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
+
+:::tip
+If refunding a previous purchase, the Sale System should include details of the original purchase. 
+:::
+
+- Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
+  - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Refund"
+  - Set the refund amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+  - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+	- Set [POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) of the original purchase payment response 
+  - Follow the refund rules outlined in the [Sale Item](/docs/api-reference/data-model#refunds) documentation to populate the Sale Item array
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the payment and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [Payment request](/docs/api-reference/data-model#payment-request) JSON payload
+- Await the POST result (this should take under 5 seconds).
+  - On 4xx the request was invalid and the payment could not be processed
+  - On 5xx an error occured, the Sale System should enter error handling
+  - On 202 ACCEPTED, the Sale System should GET the payment result
+- Call `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events` using the `SessionId` from the POST payment to get the next event in the payment (this could take as long as 5 minutes). Fusion App will return a [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse) containing the [Payment response](/docs/api-reference/data-model#payment-response), or a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) containing the [Print request](/docs/api-reference/data-model#print-request)
+  - On [print request](/docs/api-reference/data-model#print-request), handle the print and call GET again 
+  - On [payment response](/docs/api-reference/data-model#payment-response)
+    - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+    - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future matched refunds: [POITransactionID](/docs/api-reference/data-model#poitransactionid)
+    - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
+    - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](/docs/api-reference/data-model#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](/docs/api-reference/data-model#surchargeamount)
+    - Print the receipt contained in `PaymentReceipt`
+  - On 404, enter error handling
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
+
+
+
+
+## Perform a refund (blocking mode)
 
 <!-- TODO need to add support here for matched refunds -->
 
@@ -162,6 +209,74 @@ If refunding a previous purchase, the Sale System should include details of the 
 
 
 ## Methods
+
+### Status
+
+The `status` endpoint returns the current Fusion App status. 
+
+** Endpoint **
+`GET http://localhost:4242/fusion/v1/status`
+
+** Headers **
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+** Request Body **
+
+Empty.
+
+** Response Body **
+
+A JSON payload representing the Fusion App status.
+
+
+```json
+{
+    "Version": "3.0.1.0", //Formatted version number of the Fusion App
+    "TerminalPaired": false, //True if a terminal has been paired, false otherwise
+    "Status": "Ready" //Status of the Fusion App
+}
+```
+
+### UI
+
+The `ui` endpoint enables the Sale System to launch the Fusion App main UI so the operator can _pair the Fusion App to a terminal_ and _unpair the Fusion App from the terminal_.
+
+:::tip
+This is important when the task bar/system tray is hidden and the operator cannot access the main Fusion App icon, while the Sale System is running.  
+:::
+
+** Endpoint **
+`POST http://localhost:4242/fusion/v1/ui?launchCommand=`
+
+** Query Parameters **
+
+Parameter          | Value                                                  | 
+------------------ | ------------------------------------------------------ |
+LaunchCommand      | Set to "pairing" to launch directly to the pairing UI  |
+
+
+** Headers **
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+** Request Body **
+
+Empty.
+
+** Response Body **
+
+Empty.
 
 ### Login 
 
@@ -262,6 +377,7 @@ The `Payments` endpoint is used to perform purchase, purchase + cash out, cash o
 Parameter          | Value                                                  | 
 ------------------ | ------------------------------------------------------ |
 SessionId          | A globally unique UUIDv4 which identifies this request |
+Events             | Set to true to enable events mode, false otherwise     | 
 
 ** Headers **
 
@@ -407,8 +523,181 @@ A JSON payload based on [Payment response](/docs/api-reference/data-model#paymen
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |
 200  | OK          | Fusion App processed the request. Check `PaymentResponse.Response.Result` for the result of the payment request |
+202  | Accepted    | Fusion App processed the request in events mode. Call the [payment events](#payment-events) endpoint for the payment result |
 4xx  | Bad Request | Fusion App was unable to process the request. Check the required headers and request body and try again.
 5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
+
+
+### Payment events
+
+The `Payment events` endpoint is used to request the events associated with an ongoing payment session. 
+
+:::tip 
+
+Use the `SessionId` used in the POST to initiate the payment. 
+
+The `SessionId` is only valid during the lifetime of the payment (i.e. when a payment is initiated until PaymentResponse is returned to the Sale System). If 404 is returned, the Sale System should enter [error handling](error-handling).
+
+:::
+
+** Endpoint **
+`GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events`
+
+** Query Parameters **
+
+Parameter          | Value                                                  | 
+------------------ | ------------------------------------------------------ |
+SessionId          | A globally unique UUIDv4 which identifies this request |
+
+** Headers **
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+** Request Body **
+
+Empty.
+
+** Response Body **
+
+A JSON payload containing either a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) or [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse). 
+
+
+
+<details><summary>Print request</summary>
+<p>
+
+```json
+{
+	"SaleToPOIRequest": {
+		"MessageHeader": {
+			"MessageClass": "Device",
+			"MessageCategory": "Print",
+			"MessageType": "Request",
+			"ServiceID": "xxxx"
+		},
+		"PrintRequest": {
+			"PrintOutput": {
+				"DocumentQualifier": "Cashier | Customer",
+				"IntegratedPrintFlag": "true|false",
+				"RequiredSignatureFlag": "true|false",
+				"OutputContent": {
+					"OutputFormat": "XHTML",
+					"OutputXHTML": "xxx"
+				}
+			}
+		}
+	}
+}
+```
+
+</p>
+</details>
+
+<details><summary>Payment response</summary>
+<p>
+
+```json
+{
+	"SaleToPOIResponse": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Response",
+			"ServiceID": "xxxx"
+		},
+		"PaymentResponse": {
+			"Response": {
+				"Result": "Success| Partial | Failure",
+				"ErrorCondition": "xxx",
+				"AdditionalResponse": "xxx"
+			},
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"SaleReferenceID": "xxxx"
+			},
+			"POIData": {
+				"POITransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"POIReconciliationID": "xxx"
+			},
+			"PaymentResult": {
+				"PaymentType": "xxx",
+				"PaymentInstrumentData": {
+					"PaymentInstrumentType": "xxx",
+					"CardData": {
+						"EntryMode": "xxx",
+						"PaymentBrand": "xxx",
+						"Account": "xxx",
+						"MaskedPAN": "xxxxxx…xxxx",
+						"PaymentToken": {
+							"TokenRequestedType": "xxx",
+							"TokenValue": "xxx",
+							"ExpiryDateTime": "xxx"
+						}
+					}
+				},
+				"AmountsResp": {
+					"Currency": "AUD",
+					"AuthorizedAmount": "x.xx",
+					"TotalFeesAmount": "x.xx",
+					"CashBackAmount": "x.xx",
+					"TipAmount": "x.xx",
+					"SurchargeAmount": "x.xx"
+				},
+				"OnlineFlag": true,
+				"PaymentAcquirerData": {
+					"AcquirerID": "xxx",
+					"MerchantID": "xxx",
+					"AcquirerPOIID": "xxx",
+					"AcquirerTransactionID": {
+						"TransactionID": "xxx",
+						"TimeStamp": "xxx"
+					},
+					"ApprovalCode": "xxx",
+					"ResponseCode": "xxx",
+					"HostReconciliationID": "xxx"
+				}
+			},
+			"AllowedProductCodes": [
+				"1",
+				"2",
+				"3"
+			],
+			"PaymentReceipt": [
+				{
+					"DocumentQualifier": "xxx",
+					"RequiredSignatureFlag": true,
+					"OutputContent": {
+						"OutputFormat": "XHTML",
+						"OutputXHTML": "xxx"
+					}
+				}
+			]
+		}
+	}
+}
+```
+</p>
+</details>
+
+** Response HTTP Status Codes **
+
+Code | Description | Required action  | 
+---- | ----------- | ----------------- |
+200  | OK          | Fusion App processed the request. If a print request, check `SaleToPOIRequest.PrintRequest` and process the print. If a payment response, check `SaleToPOIResponse.PaymentResponse.Response.Result` for the result of the payment request 
+404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
+
 
  
 ## Error handling

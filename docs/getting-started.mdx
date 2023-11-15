@@ -7,6 +7,12 @@ import TabItem from '@theme/TabItem';
 
 # Getting started
 
+:::info
+ - *Sale System* - point of sale application
+ - *POI Terminal* - the DataMesh payments terminal (PINpad)
+:::
+
+
 The steps outlined below will guide you through creating a dev account, scoping your Sale System requirements based on the DataMesh functionality, coding and testing your integration, getting accredited with DataMesh, and finally deploying your solution into production.
 
 1. [Create a test account](#create-a-test-account)
@@ -18,33 +24,15 @@ The steps outlined below will guide you through creating a dev account, scoping 
 
 ## Create a test account
 
-Integration into the DataMesh payment platform requires a DataMesh Satellite terminal, and a DataMesh Unify development account. 
+All DataMesh integrations require a physical DataMesh terminal. Depending on the [integration type](#determine-your-integration-type) DataMesh may also need to allocate Sale System credentials.
 
-After creating your development account, you will be provided the following settings which are associated with a Sale System version. These settings must be included in each login request.
+When requesting a development terminal and account, let us know:
+ - Which integration type(s) you plan on working with
+ - If you plan of supporting multiple Sale Systems connected to the same terminal, or multiple terminals connected to one Sale System.
 
-Setting  | Description |
-    -----------------                        | ----------------- |
-`ProviderIdentification` | The name of the busniess which creates the Sale System. |
-`ApplicationName` | The name of the Sale System. |
-`CertificationCode` | A GUID which uniquly identifies the Sale System. |
-`SoftwareVersion` | The internal build version of this Sale System. DataMesh must configure this value on Unify. |
-	
-When the Sale System accreditation is complete and the Sale System is ready for production deployment, DataMesh will provide production settings to be included with the production Sale System build.
-
-Each Sale System lane is authenticated and authorised with a unique [SaleID](/docs/api-reference/data-model#saleid) + [KEK](/docs/api-reference/data-model#kek) combination.
-
-Each POI Terminal is identified by a unique [POIID](/docs/api-reference/data-model#poiid). 
-
-DataMesh associates [SaleID](/docs/api-reference/data-model#saleid) and [POIID](/docs/api-reference/data-model#poiid) values on Unify to enforce access restrictions between specific Sale System lanes and terminals.
-
-When requesting a development account, let us know if you plan on working with:
-
- - Multiple Sale System instances connected to the same terminal, or 
- - Multiple terminals connected to one Sale System. 
- 
-DataMesh will provide the correct number of [SaleID](/docs/api-reference/data-model#saleid), [KEK](/docs/api-reference/data-model#kek), and [POIID](/docs/api-reference/data-model#poiid) values and terminals, and ensure the correct associations are implemented on Unify. 
-
-*You can request a terminal and a development account via [integrations@datameshgroup.com](mailto:integrations@datameshgroup.com)*
+:::info
+You can request a terminal and a development account via [integrations@datameshgroup.com](mailto:integrations@datameshgroup.com)
+:::
 
 ## Determine your integration type
 
@@ -61,15 +49,36 @@ Other POS type including Legacy POS/On-Premises POS/Traditional POS and POS on M
 
 Fusion App is a DataMesh middleware that is installed in the PC as the Sale System.
 
-Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
-
-To initiate a payment, the Sale System sends a HTTP POST to a local endpoint, and waits for a response.
-
-In case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
-
 ![](/img/POS-fusion-app.png)
 
-#### Fusion App payment lifecycle
+Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
+
+There are two methods for processing a payment using Fusion App: 
+
+* Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
+* Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
+
+In both methods, in case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
+
+:::tip 
+Where possible, DataMesh recommends implementing events mode.
+::: 
+
+#### Fusion App payment lifecycle (events mode)
+
+1. Merchant launches the Sale System.
+1. Merchant initiates a payment.
+1. Sale system generates a unique `SessionID` as a UUIDv4 and constructs a [payment request](./api-reference/data-model#payment-request) object.
+1. Sale System POSTs the [payment request](./api-reference/data-model#payment-request) for the `SessionID` to Fusion App's local HTTP end point for payments and waits for a response.
+1. If the request is valid, Fusion App will respond with 202 ACCEPTED and start processing the payment.
+1. Sale System GETs and processes each event until a PaymentResponse is received
+1. Merchant closes the Sale System.
+   - If the Sale System doesn't receive a payment response (timeout, system crash etc) from Fusion App it needs to enter error handling by calling (GET /payments/{*SessionId*})
+
+![](/img/payment-lifecycle-fusion-app-events.png)
+
+
+#### Fusion App payment lifecycle (blocking mode)
 
 1. Merchant launches the Sale System.
 1. Merchant initiates a payment.
@@ -78,7 +87,7 @@ In case of an error (timeout, system crash etc), the Sale System sends a HTTP GE
 1. Fusion App does all the necessary payment processing.
 1. Sale System receives a payment response.
 1. Merchant closes the Sale System.
-   - If the Sale System doesn't receive a payment response from Fusion App it needs to enter error handling by calling (GET /payments/{*SessionId*})
+   - If the Sale System doesn't receive a payment response (timeout, system crash etc) from Fusion App it needs to enter error handling by calling (GET /payments/{*SessionId*})
 
 ![](/img/payment-lifecycle-fusion-app.png)
 
@@ -173,7 +182,7 @@ Depending on your Sale System design, other features may be required.
 For help on scoping your development work, or to discuss integration requirements, please contact the DataMesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>
 :::
 
-
+<!--
 ### Terminal linking
 
 The POS (Sale System) communicates with a POI terminal using both a [SaleID](/docs/api-reference/data-model#saleid) and [KEK](/docs/api-reference/data-model#kek) (which identifies the Sale System) and [POIID](/docs/api-reference/data-model#poiid) (which identifies the terminal).
@@ -186,9 +195,15 @@ instance the Sale System should record multiple [POIID](/docs/api-reference/data
 :::tip
 The Sale System must store the <code>KEK</code> in a secure location. 
 :::
-
+-->
 
 ### Sale System settings
+
+:::tip
+
+Sale System settings is only required for the [Fusion Cloud](#fusion-cloud) integration type
+
+:::
 
 The Sale System must support configuration of both static Sale System settings, and cashier configurable settings.
 
