@@ -1,0 +1,72 @@
+title Payment lifecycle - Fusion App (events mode)
+
+// PARTICIPANTS
+actor "Merchant" as merchant
+materialdesignicons F0A07 "Sale System" as pos #F0822D
+materialdesignicons f0675 "Fusion App" as fusionapp #2D84EF
+materialdesignicons f015f "Unify" as unify #2D84EF
+materialdesignicons f094f "POI Terminal" as terminal #2D84EF
+
+// LIFELINES
+lifelinestyle #A0A0A0
+lifelinestyle unify #2D84EF
+lifelinestyle fusionapp #2D84EF
+lifelinestyle terminal #2D84EF
+lifelinestyle pos #F0822D
+
+
+merchant->>pos: Launch Sale System
+
+group Payment (0...n)
+
+merchant->>pos: Initiate payment
+
+pos->fusionapp: POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true
+activate fusionapp
+
+fusionapp->pos: 202 ACCEPTED
+deactivate fusionapp
+
+loop until PaymentResponse recevied
+pos->fusionapp: GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events
+activate fusionapp
+
+fusionapp->unify: Payment request
+activate unify
+unify->terminal: Payment request
+activate terminal
+unify->fusionapp: Display request (0..n)
+activate fusionapp
+abox left of fusionapp: CASHIER DISPLAY 
+fusionapp-->unify: Display response
+deactivate fusionapp
+
+unify->fusionapp: Input request (0..n)
+activate fusionapp
+abox left of fusionapp: CASHIER INPUT 
+fusionapp-->unify: Input response
+deactivate fusionapp
+
+unify->fusionapp: Print request (0..n)
+activate fusionapp
+note left of fusionapp: PrintRequest is returned to Sale System
+fusionapp-->unify: Print response
+deactivate fusionapp
+
+
+terminal-->unify: Payment response
+deactivate terminal
+
+unify-->fusionapp: Payment response
+deactivate unify
+
+note left of fusionapp: PaymentResponse is returned to Sale System
+
+fusionapp-->pos: 200 OK\n//[PaymentResponse OR PrintRequest]//
+deactivate fusionapp
+
+note right of pos: Loop until PaymentResponse is recevied
+
+end 
+end
+merchant->pos: Close pos
