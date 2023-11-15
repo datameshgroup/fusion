@@ -369,8 +369,13 @@ Code | Description | Required action  |
 
 The `Payments` endpoint is used to perform purchase, purchase + cash out, cash out only, and refund requests. 
 
-** Endpoint **
+** Endpoint (blocking mode) **
+
 `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}`
+
+** Endpoint (events mode) **
+
+`POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true`
 
 ** Query Parameters **
 
@@ -431,6 +436,12 @@ A JSON payload based on [Payment request](/docs/api-reference/data-model#payment
 </details>
 
 ** Response Body **
+
+:::info
+
+A response body is only returned when using blocking mode.
+
+:::
 
 A JSON payload based on [Payment response](/docs/api-reference/data-model#payment-response)
 
@@ -536,7 +547,7 @@ The `Payment events` endpoint is used to request the events associated with an o
 
 Use the `SessionId` used in the POST to initiate the payment. 
 
-The `SessionId` is only valid during the lifetime of the payment (i.e. when a payment is initiated until PaymentResponse is returned to the Sale System). If 404 is returned, the Sale System should enter [error handling](error-handling).
+The `SessionId` is only valid during the lifetime of the payment (i.e. when a payment is initiated until PaymentResponse is returned to the Sale System). If 404 is returned, the Sale System should enter [error handling](#error-handling).
 
 :::
 
