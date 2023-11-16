@@ -1900,6 +1900,17 @@ Available values:
 - "AliPay"
 - "WeChat Pay"
 - "Card"
+- "BPGiftCard"
+- "BP Fuel Card"
+- "Fleet Card"
+- "Shell Card""
+- "Motorpass"
+- "AmpolCard"
+- "Freedom Fuel Card"
+- "Trinity Fuel Card"
+- "Liberty Card"
+- "Caltex StarCard"
+- "United Fuel Card"
 
 ### PaymentCurrency
 
