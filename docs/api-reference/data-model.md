@@ -773,7 +773,7 @@ The Sale System is expected to send a `DisplayResponse` if one or more displays 
 
 ### Input
 
-:::caution
+:::warning
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
 :::
 
@@ -2162,7 +2162,7 @@ Object with represents card details for token or manually enter card details.
   [TokenRequestedType](#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
   [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
 
-:::caution
+:::warning
 Never send the SensitiveCardData object in the clear. This represents the content to be encrypted and sent within the `ProtectedCardData` element
 :::
 
@@ -2743,7 +2743,7 @@ The `TokenRequestedType` is an optional field per transaction. Indicates if a to
 * If set to "Transaction" a token is created which is only valid for the transaction. For example to process a subsequent Refund or Void/Reversal.
 * If set to "Customer" a token is created which represents the PAN, and can be used to represent the card holder for a longer period.
 
-:::caution
+:::warning
 If a `Payment` is requested using a PaymentToken of the same TokenRequestedType and this JSON element is present, the existing Token is replaced. This can affect other Sale Terminals, so use with caution.
 :::
 

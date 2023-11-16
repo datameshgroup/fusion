@@ -1213,7 +1213,7 @@ The Sale System is expected to send a `DisplayResponse` if one or more displays 
 
 ### Input
 
-:::caution
+:::warning
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
 :::
 

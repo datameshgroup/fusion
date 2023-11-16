@@ -471,7 +471,7 @@ ARQC: XXXXXXXXXXXXXXXX           <br />
 
 ### Payment user interface
 
-:::caution
+:::warning
 The Sale System should implement <code>Initial UI</code>, <code>Final UI</code>, <code>Display UI</code> and the ability to <code>cancel a sale in progress</code>. 
 
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
@@ -560,7 +560,7 @@ The POI system will send zero or more [display request](/docs/api-reference/fusi
 
 #### Input UI
 
-:::caution
+:::warning
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
 :::
 
@@ -734,7 +734,7 @@ More details about the [refund implementation](/docs/api-reference/data-model#sa
 - When [dynamic surcharge](./getting-started#dynamic-surcharge) is enabled:
  - The total amount must be equal to the purchase amount to be refunded + portion of the surcharge amount, which corresponds to the purchase amount to be refunded.
 
- :::caution
+ :::warning
 Currently, both Matched and Unmatched refunds involve POI Terminal and card interaction.
 :::
 
@@ -786,7 +786,7 @@ A cash out sale can be cash out only, or cash out + purchase.
 
 The Sale System can optionally support pre-authorisation and completion payments on the POI Terminal.
 
-:::caution
+:::warning
 The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
 :::
 
@@ -969,7 +969,7 @@ For example:
 1. POI Terminal processes a payment of $110 and includes tip amount on the payment receipt
 1. POI Terminal approves payment and returns the result to the Sale System
 
-:::caution
+:::warning
 If the <a href="/docs/api-reference/data-model#tipamount">PaymentTransaction.AmountsReq.TipAmount</a> is set to 0 in the payment request, the Tip Entry screen will be displayed in the POI terminal.<br />Do not set <a href="/docs/api-reference/data-model#tipamount">PaymentTransaction.AmountsReq.TipAmount</a> to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
 :::
 
@@ -1031,7 +1031,7 @@ The amount returned in <a href="#authorizedamount">AuthorizedAmount</a> in the p
 
 <!-- 
 ### Pay at Table 
-:::caution
+:::warning
 TODO
 :::
 -->

@@ -854,7 +854,7 @@ Transaction status response
 
 A successful payment transaction can be voided/reversed by sending a reversal request message. 
 
-:::caution
+:::warning
 There are only specific cases wherein the reversal request message must be sent.  In most cases, refund request message should be sent instead.  
 
 Please discuss first with the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you plan to implement any void/reversal processing.
