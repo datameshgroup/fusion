@@ -17,7 +17,7 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` are used to wrap request and resp
 
 #### SaleToPOIRequest
 
-Attribute |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
 MessageHeader                        | ✔ | String | Message header
 [PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |Object | If payment request
@@ -32,7 +32,9 @@ MessageHeader                        | ✔ | String | Message header
 [CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |Object | If card acquisition request
 
 <details>
-<summary>SaleToPOIRequest</summary>
+<summary>
+SaleToPOIRequest
+</summary>
 <p>
 
 ```json
@@ -59,7 +61,7 @@ MessageHeader                        | ✔ | String | Message header
 
 #### SaleToPOIResponse
 
-Attribute |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
 MessageHeader                        | ✔ | Object | Message header
 [PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |Object | If payment request
@@ -75,7 +77,9 @@ MessageHeader                        | ✔ | Object | Message header
 
 
 <details>
-<summary>SaleToPOIResponse</summary>
+<summary>
+SaleToPOIResponse
+</summary>
 <p>
 
 ```json
@@ -105,7 +109,10 @@ MessageHeader                        | ✔ | Object | Message header
 A `MessageHeader` is included with each request and response. It defines the protocol and message type.
 
 
-<details><summary>MessageHeader</summary>
+<details>
+<summary>
+MessageHeader
+</summary>
 <p>
 
 ```json
@@ -119,7 +126,7 @@ A `MessageHeader` is included with each request and response. It defines the pro
 </p>
 </details>
 
-Attribute                             |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>                             |Requ.| Format | Description |
 -----------------                     |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
@@ -135,7 +142,10 @@ The Sale System can pair with multiple POI terminals by sending multiple Login r
 
 #### Login request
 
-<details><summary>Login request</summary>
+<details>
+<summary>
+Login request
+</summary>
 <p>
 
 ```json
@@ -168,7 +178,7 @@ The Sale System can pair with multiple POI terminals by sending multiple Login r
 </p>
 </details>
 
-Attribute |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
 [DateTime](/docs/api-reference/data-model#datetime)                        | ✔ | String | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 **SaleSoftware**                            | ✔ | Object | Object containing Sale System identification
@@ -184,11 +194,14 @@ Attribute |Requ.| Format | Description |
 [OperatorId](/docs/api-reference/data-model#operatorid)                     |  | String | Groups transactions under this operator id
 [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | String | Groups transactions under this shift number
 [POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
-Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code) for the [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)
+Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#qr-pos-pairing) for the [QR POS Pairing](/docs/getting-started#qr-pos-pairing)
 
 #### Login response
 
-<details><summary>Login response</summary>
+<details>
+<summary>
+Login response
+</summary>
 <p>
 
 ```json
@@ -234,7 +247,7 @@ Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the P
 </p>
 </details>
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            | :--------: | ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the login
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -269,7 +282,10 @@ The Sale System may send multiple Login requests without a Logout request.
 
 #### Logout request
 
-<details><summary>Logout request</summary>
+<details>
+<summary>
+Logout request
+</summary>
 <p>
 
 ```json
@@ -282,13 +298,16 @@ The Sale System may send multiple Login requests without a Logout request.
 </p>
 </details>
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
 [MaintenanceAllowed](/docs/api-reference/data-model#maintenanceallowed)    |  | Boolean| Indicates if the POI Terminal can enter maintenance mode. Default to true if not present.    
 
 #### Logout response
 
-<details><summary>Logout response</summary>
+<details>
+<summary>
+Logout response
+</summary>
 <p>
 
 ```json
@@ -303,7 +322,7 @@ Attribute     |Requ.| Format | Description |
 </p>
 </details>
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object which represents the result of the response
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -317,7 +336,10 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 #### Payment request
 
-<details><summary>Payment request</summary>
+<details>
+<summary>
+Payment request
+</summary>
 <p>
 
 ```json
@@ -443,7 +465,7 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 </p>
 </details>
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
  [OperatorID](/docs/api-reference/data-model#operatorid)                   |   | String | Only required if different from Login Request
@@ -516,7 +538,10 @@ Attribute     |Requ.| Format | Description |
 
 #### Payment response
 
-<details><summary>Payment response</summary>
+<details>
+<summary>
+Payment response
+</summary>
 <p>
 
 ```json
@@ -601,7 +626,7 @@ Attribute     |Requ.| Format | Description |
 </details>
 
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -667,7 +692,10 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 #### Display request
 
-<details><summary>Display request</summary>
+<details>
+<summary>
+Display request
+</summary>
 <p>
 
 ```json
@@ -690,7 +718,7 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 </p>
 </details>
 
-Attribute                  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>                  |Requ.| Format | Description |
 -----------------                                         |:----:| ------ | ----------- |
 **DisplayOutput**                                         | ✔ | Object | Object which represents the display 
  [ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag)|  | Boolean | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
@@ -701,7 +729,10 @@ Attribute                  |Requ.| Format | Description |
 
 #### Display response
 
-<details><summary>Display response</summary>
+<details>
+<summary>
+Display response
+</summary>
 <p>
 
 ```json
@@ -728,7 +759,7 @@ Attribute                  |Requ.| Format | Description |
 The Sale System is expected to send a `DisplayResponse` if one or more displays in `DisplayOutput` have [ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag) set to true.
 :::
 
-Attribute      |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format | Description |
 -----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                | ✔ | Object | Response for Device/InfoQualify pair where corresponding `ResponseRequiredFlag` in the `DisplayRequest` is set to true.
  [Device](#device)                            | ✔ | String | Mirrored from display request
@@ -753,7 +784,10 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
  
 #### Input request
 
-<details><summary>Input request</summary>
+<details>
+<summary>
+Input request
+</summary>
 <p>
 
 ```json
@@ -792,7 +826,7 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 **DisplayOutput**                             |  | Object | Information to display and the way to process the display.
  [Device](#device)                            | ✔ | String | "CashierDisplay"
@@ -815,7 +849,10 @@ Attribute      |Requ.| Format  | Description |
 
 #### Input response
 
-<details><summary>Input response</summary>
+<details>
+<summary>
+Input response
+</summary>
 <p>
 
 ```json
@@ -863,7 +900,7 @@ Attribute      |Requ.| Format  | Description |
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                |    | Object | Present if `DisplayOutput` is present in the request
  [Device](#device)                            | ✔ | String | Mirrored from input request
@@ -882,10 +919,9 @@ Attribute      |Requ.| Format  | Description |
  *Input*                                      | ✔ | Object | 
   [InputCommand](/docs/api-reference/data-model#inputcommand)               |    | String | Mirrored from input request
   [ConfirmedFlag](#confirmedflag)             |    | Boolean| Result of GetConfirmation input request. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetConfirmation"
-  [Password](#password)                       |    | String | Password entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "Password". Not allowed, otherwise
   [MenuEntryNumber](#menuentrynumber)         |    | Number | A number from 1 to n, when n is total number of objects in `MenuEntry` of `InputRequest`. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "GetMenuEntry". Not allowed, otherwise
   [TextInput](#textinput)                     |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "TextString" or "DecimalString". Not allowed, otherwise
-  [DigitInput](#digitinput)                   |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "DigitInput". Not allowed, otherwise
+  [DigitInput](#digitinput)                   |    | Number | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "DigitString". Not allowed, otherwise
 
 
 ### Print
@@ -902,7 +938,10 @@ The Sale System does not need to implement the Print request as signature receip
  
 #### Print request
 
-<details><summary>Print request</summary>
+<details>
+<summary>
+Print request
+</summary>
 <p>
 
 ```json
@@ -923,7 +962,7 @@ The Sale System does not need to implement the Print request as signature receip
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
  **PrintOutput**                              | ✔ | Object | 
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
@@ -936,7 +975,10 @@ Attribute      |Requ.| Format  | Description |
 
 #### Print response
 
-<details><summary>Print response</summary>
+<details>
+<summary>
+Print response
+</summary>
 <p>
 
 ```json
@@ -954,7 +996,7 @@ Attribute      |Requ.| Format  | Description |
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 [DocumentQualifier](#documentqualifier)       | ✔ | String | Mirrored from print request
  *Response*                                   | ✔ | Object | 
@@ -970,7 +1012,10 @@ A transaction status request can be used to obtain the status of a previous tran
 
 #### Transaction status request
 
-<details><summary>Transaction status request</summary>
+<details>
+<summary>
+Transaction status request
+</summary>
 <p>
 
 ```json
@@ -988,7 +1033,7 @@ A transaction status request can be used to obtain the status of a previous tran
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
  [MessageCategory](/docs/api-reference/data-model#messagecategory)          |    | String | "Payment"
@@ -999,7 +1044,10 @@ Attribute      |Requ.| Format  | Description |
 
 #### Transaction status response
 
-<details><summary>Transaction status response</summary>
+<details>
+<summary>
+Transaction status response
+</summary>
 <p>
 
 ```json
@@ -1029,7 +1077,7 @@ Attribute      |Requ.| Format  | Description |
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -1057,7 +1105,10 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 
 #### Abort transaction request
 
-<details><summary>Abort transaction request</summary>
+<details>
+<summary>
+Abort transaction request
+</summary>
 <p>
 
 ```json
@@ -1076,7 +1127,7 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            | ✔ | Object | Identification of a POI transaction
  [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment" or "CardAcquisition"
@@ -1096,7 +1147,10 @@ If the transaction cannot be aborted, a normal payment response (`Result` = "Suc
 
 However, if the abort transaction request message contains an invalid data (e.g. message format error) or if the referenced transaction cannot be not found (e.g. due to an incorrect ServiceID value), an Event Notification will be returned. 
 
-<details><summary>Abort transaction response </summary>
+<details>
+<summary>
+Abort transaction response
+</summary>
 <p>
 
 ```json
@@ -1111,7 +1165,7 @@ However, if the abort transaction request message contains an invalid data (e.g.
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
  [TimeStamp](/docs/api-reference/data-model#timestamp)                      | ✔ | String | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
  [EventToNotify](/docs/api-reference/data-model#eventtonotify)              | ✔ | String | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
@@ -1122,7 +1176,10 @@ Attribute      |Requ.| Format  | Description |
 
 #### Reconciliation request
 
-<details><summary>Reconciliation request</summary>
+<details>
+<summary>
+Reconciliation request
+</summary>
 <p>
 
 ```json
@@ -1136,7 +1193,7 @@ Attribute      |Requ.| Format  | Description |
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 [ReconciliationType](#reconciliationtype)     | ✔ | String | "SaleReconciliation" to close the current period, "PreviousReconciliation" to request the result of a previous reconciliation
 [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |   | String | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
@@ -1144,7 +1201,10 @@ Attribute      |Requ.| Format  | Description |
 
 #### Reconciliation response
 
-<details><summary>Reconciliation response</summary>
+<details>
+<summary>
+Reconciliation response
+</summary>
 <p>
 
 ```json
@@ -1182,7 +1242,7 @@ Attribute      |Requ.| Format  | Description |
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the login
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -1209,7 +1269,10 @@ The card acquisition request allows the Sale System to tokenise a card which can
 
 #### Card acquisition request
 
-<details><summary>Card acquisition request</summary>
+<details>
+<summary>
+Card acquisition request
+</summary>
 <p>
 
 ```json
@@ -1248,7 +1311,7 @@ The card acquisition request allows the Sale System to tokenise a card which can
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *SaleData*                                    | ✔ | Object | Object Sale System information attached to this payment
  [OperatorID](/docs/api-reference/data-model#operatorid)                    |  | String | Only required if different from Login Request
@@ -1268,7 +1331,10 @@ Attribute      |Requ.| Format  | Description |
 
 #### Card acquisition response
 
-<details><summary>Card acquisition response</summary>
+<details>
+<summary>
+Card acquisition response
+</summary>
 <p>
 
 ```json
@@ -1309,7 +1375,7 @@ Attribute      |Requ.| Format  | Description |
 </p>
 </details>
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 **Response**                                    | ✔ | Object | Object indicating the result of the login
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -1363,70 +1429,70 @@ The possible `AdditionalResponse` values are based on the value of [ErrorConditi
 
 When `ErrorCondition` is "MessageFormat"
 
-- "Mandatory Data Element or Structure Absent: <Absolute Data Name\>"
-- "Unexpected Data Element Value: <Absolute Data Name\> - <Expected Value(s) or Reason\>"
-- "<Absolute Data Name\> Invalid Value <Value\> for the Type <Type\> [and Format <Format\>]"
-- "<Absolute Data Name\> Value is not part of the Enumerated or Cluster Type <Type\>" 
-- "Repeated Message: <ID Name\> - <Value\>"
-- "Empty Cluster: <Absolute Data Name\>"
-- "Unacceptable Value Combination: [ <Absolute Data Name\> : <Value\> ]*"
+- "Mandatory Data Element or Structure Absent: \{\{Absolute Data Name\}\}"
+- "Unexpected Data Element Value: \{\{Absolute Data Name\}\} - \{\{Expected Value(s) or Reason\}\}"
+- "\{\{Absolute Data Name\}\} Invalid Value \{\{Value\}\} for the Type \{\{Type\}\} [and Format \{\{Format\}\}]"
+- "\{\{Absolute Data Name\}\} Value is not part of the Enumerated or Cluster Type \{\{Type\}\}" 
+- "Repeated Message: \{\{ID Name\}\} - \{\{Value\}\}"
+- "Empty Cluster: \{\{Absolute Data Name\}\}"
+- "Unacceptable Value Combination: \[ \{\{Absolute Data Name\}\} : \{\{Value\}\} \]*"
 
 When `ErrorCondition` is "DeviceOut"
 
-- "POI is Temporary Unavailable: <Reason\>"
-- "POI is Permanently Unavailable: <Reason\>"
-- "Security Alarm: <Alarm\>"
+- "POI is Temporary Unavailable: \{\{Reason\}\}"
+- "POI is Permanently Unavailable: \{\{Reason\}\}"
+- "Security Alarm: \{\{Alarm\}\}"
   - Alarm = The type of alarm. e.g. "crypto key unknown"
 
 
 When `ErrorCondition` is "LoggedOut"
 
-- "<SaleID\> Never Login Since Last <Event\> at <Time\>"
+- "\{\{SaleID\}\} Never Login Since Last \{\{Event\}\} at \{\{Time\}\}"
 
 When `ErrorCondition` is "Busy"
 
-- "POI <Component\> Temporary Unavailable: <Reason\>"
+- "POI \{\{Component\}\} Temporary Unavailable: \{\{Reason\}\}"
   - Component = "System" or "Terminal"
   - Reason = "Installation in progress", "Maintenance in progress", "Device busy"
 
-- "POI Terminal Busy to Process another Request: <Request\>"
+- "POI Terminal Busy to Process another Request: \{\{Request\}\}"
   - Request = 'PaymentRequest', 'LoginRequest'
 
 When `ErrorCondition` is "UnavailableService"
 
-- "Sale Protocol Version <Version\> Too Old. Version Implemented: <Version\>"
+- "Sale Protocol Version \{\{Version\}\} Too Old. Version Implemented: \{\{Version\}\}"
 
 When `ErrorCondition` is "Cancel"
 
-- "User Cancellation during <Status\>"
-- "System Cancellation during <Status\>"
+- "User Cancellation during \{\{Status\}\}"
+- "System Cancellation during \{\{Status\}\}"
 
 When `ErrorCondition` is "Abort"
 
-- "Service Aborted during <Status\> - Reason: <AbortReason\> - from: <SaleID\> - MessageID: <ServiceID\>"
+- "Service Aborted during \{\{Status\}\} - Reason: \{\{AbortReason\}\} - from: \{\{SaleID\}\} - MessageID: \{\{ServiceID\}\}"
 
 When `ErrorCondition` is "InvalidCard"
 
-- "No Card Entered after <Time\> Seconds".
-- "Invalid Card <Reason\>"
+- "No Card Entered after \{\{Time\}\} Seconds".
+- "Invalid Card \{\{Reason\}\}"
   - Reason = "Card Expired", "Card not allowed", "Suspicion of fraud", etc.
-- "Unknown Card <BIN:val or AID:val\>
+- "Unknown Card \{\{BIN:val or AID:val\}\}
 
 
 When `ErrorCondition` is "WrongPIN"
 
-- "Wrong PIN <RetryNumber\> Retries - Remaining <RemainingRetries\>
+- "Wrong PIN \{\{RetryNumber\}\} Retries - Remaining \{\{RemainingRetries\}\}
   - Retries and RemainingRetries only if available.
 
 When `ErrorCondition` is "UnreachableHost"
 
-- "Host Unreachable: <Reason\>"
-- "No Host Answer: <Reason\>"
+- "Host Unreachable: \{\{Reason\}\}"
+- "No Host Answer: \{\{Reason\}\}"
 
 When `ErrorCondition` is "Refusal"
 
-- "Payment Refused by Acquirer: <Acquirer\> Reason: <Reason\> Code: <Code\>"
-- "Payment Refused Locally - Reason: <Reason\>"
+- "Payment Refused by Acquirer: \{\{Acquirer\}\} Reason: \{\{Reason\}\} Code: \{\{Code\}\}"
+- "Payment Refused Locally - Reason: \{\{Reason\}\}"
 
 When `ErrorCondition` is "PaymentRestriction"
 
@@ -1608,7 +1674,7 @@ a standard unique identifier for the product. Either the UPC, EAN, or ISBN. Requ
 
 ### EncryptedData
 
-Encryption of content = "SensitiveCardData":{…} in canonical form (i.e. without white space). 
+Encryption of content = "SensitiveCardData":\{…\} in canonical form (i.e. without white space). 
 
 Prior to encryption, pad the content with 80h then as many 00h bytes so that the result is a multiple of 8 bytes. 
 
@@ -1677,16 +1743,16 @@ Label                | Description
 
 When `EventToNotify` is "Reject"
 
-- "Message not Found, last <MessageCategory\> has ID <ServiceID\>"
-- "Mandatory Data Element or Structure Absent: <Absolute Data Name\>"
-- "General Parsing Error: <Absolute Data Name\>"
-- "Unexpected Data Element or Structure: <Absolute Data Element\>"
-- "Unexpected Data Element Value: <Absolute Data Element\> - <Expected value(s) or reason\>"
-- "Repeated Message: ServiceID - <Value\>"
+- "Message not Found, last \{\{MessageCategory\}\} has ID \{\{ServiceID\}\}"
+- "Mandatory Data Element or Structure Absent: \{\{Absolute Data Name\}\}"
+- "General Parsing Error: \{\{Absolute Data Name\}\}"
+- "Unexpected Data Element or Structure: \{\{Absolute Data Element\}\}"
+- "Unexpected Data Element Value: \{\{Absolute Data Element\}\} - \{\{Expected value(s) or reason\}\}"
+- "Repeated Message: ServiceID - \{\{Value\}\}"
 
 When `EventToNotify` is "CompletedMessage"
 
-- "Service Not Aborted - Reason: Completed – from: <SaleID\> - MessageID: <ServiceID\>"
+- "Service Not Aborted - Reason: Completed – from: \{\{SaleID\}\} - MessageID: \{\{ServiceID\}\}"
 
 
 ### ForceEntryMode
@@ -1849,7 +1915,7 @@ Note that different cashiers may still transact during the same login session by
 
 An object which identifies a previous POI transaction. 
 
-For a purchase, it instructs the POI System to use the payment card details from the original transaction if available. Note that the `RequestedAmount` must be <= the original transaction `RequestedAmount`.
+For a purchase, it instructs the POI System to use the payment card details from the original transaction if available. Note that the `RequestedAmount` must be less than or equal to the original transaction `RequestedAmount`.
 
 For a refund or completion, indicates which original transaction this should be matched to. A refund or completion may occur on a different Sale System and POI Terminal to the original transaction.
 
@@ -1980,7 +2046,7 @@ Unique identification of a POI transaction for a [POIID](#poiid).
 
 Contains the following fields: 
 
-Attribute |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                        |:----:| ------ | ----------- |
 [TransactionID](#transactionid)          | ✔ | String | A unique transaction id from the POI system
 [TimeStamp](#timestamp)                  | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
@@ -2067,7 +2133,7 @@ Object with represents card details for token or manually enter card details.
 
 **PaymentInstrumentData**
 
-Attribute   | Requ.  | Format | Description |
+<div style={{width:'240px'}}>Attributes</div>   | Requ.  | Format | Description |
 -----------------                          | :------: | ------ | ----------- |
 [PaymentInstrumentType](#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](#paymentinstrumenttype)
 **CardData**                               |  | Object | 
@@ -2102,7 +2168,7 @@ Never send the SensitiveCardData object in the clear. This represents the conten
 
 **SensitiveCardData**
 
-Attribute | Requ.  | Format | Description |
+<div style={{width:'240px'}}>Attributes</div> | Requ.  | Format | Description |
 -----------------                        | :------: | ------ | ----------- |
 [PAN](#pan)                              | ✔ | String | The full credit card number
 [ExpiryDate](#expirydate)                | ✔ | String | The expiry date in "MMYY" format
@@ -2123,7 +2189,7 @@ Indicates the card source for the payment. If not present in the payment default
 
 An object representing a payment token. Consists of three fields: 
 
-Attribute | Requ.  | Format | Description |
+<div style={{width:'240px'}}>Attributes</div> | Requ.  | Format | Description |
 -----------------                        | :------: | ------ | ----------- |
 [TokenRequestedType](#tokenrequestedtype)| ✔ | String | Mirrored from the request
 [TokenValue](#tokenvalue)                | ✔ | String | The value of the token
@@ -2334,7 +2400,7 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
 
 
 
-Attribute   | Requ.  | Format | Description |
+<div style={{width:'240px'}}>Attributes</div>   | Requ.  | Format | Description |
 -----------------                          | :------: | ------ | ----------- |
 [ItemID](#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
 [ProductCode](#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
@@ -2558,7 +2624,7 @@ Identification of a transaction for a given [SaleId](#saleid).
 
 Contains the following fields: 
 
-Attribute |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                        |:----:| ------ | ----------- |
 [TransactionID](#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#transactionid)
 [TimeStamp](#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   

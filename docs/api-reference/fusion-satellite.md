@@ -11,10 +11,10 @@ DataMesh have published a library to Maven Central which wraps the Satellite API
 
 Description | Location | <div style={{width:'180px'}}></div> |
 -----------------                        | ----------- | ----------- |
-Library | on [Maven Central] (https://central.sonatype.com/artifact/com.datameshgroup.fusion/fusion-sdk/1.3.4/versions) | |
-Library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-java) | |
-Demo Application utilising the library | on [GitHub] (https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) | Tested on PAX (PAX 920) |
-Another POS on Pinpad Demo Application | on [GitHub] (https://github.com/datameshgroup/pos-on-pinpad-demo) | Tested on PAX (PAX 920) and Ingenico (DX8000) |
+Library | on [Maven Central](https://central.sonatype.com/artifact/com.datameshgroup.fusion/fusion-sdk/1.3.4/versions) | |
+Library | on [GitHub](https://github.com/datameshgroup/fusionsatellite-sdk-java) | |
+Demo Application utilising the library | on [GitHub](https://github.com/datameshgroup/fusionsatellite-sdk-android-demo) | Tested on PAX (PAX 920) |
+Another POS on Pinpad Demo Application | on [GitHub](https://github.com/datameshgroup/pos-on-pinpad-demo) | Tested on PAX (PAX 920) and Ingenico (DX8000) |
 
 ### How to include the library
 
@@ -143,7 +143,12 @@ void handleResponseIntent(Intent intent){
 
 ### Request/response object
 
-<details><summary>SaleToPOIRequest</summary>
+<details>
+
+<summary>
+SaleToPOIRequest
+</summary>
+
 <p>
 
 ```json
@@ -157,7 +162,12 @@ void handleResponseIntent(Intent intent){
 </p>
 </details>
 
-<details><summary>SaleToPOIResponse</summary>
+<details>
+
+<summary>
+SaleToPOIResponse
+</summary>
+
 <p>
 
 ```json
@@ -195,7 +205,12 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain two objects:
 
 ### MessageHeader
 
-<details><summary>MessageHeader</summary>
+<details>
+
+<summary>
+MessageHeader
+</summary>
+
 <p>
 
 ```json
@@ -211,7 +226,7 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain two objects:
 
 A `MessageHeader` is included with each request and response. It defines the protocol and message type.
 
-Attribute                             |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>                             |Requ.| Format | Description |
 -----------------                     |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
@@ -301,7 +316,12 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 #### Payment request
 
-<details><summary>Payment request</summary>
+<details>
+
+<summary>
+Payment request
+</summary>
+
 <p>
 
 ```json
@@ -463,7 +483,7 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Payment"
@@ -472,7 +492,7 @@ Attribute  |Requ.| Format | Description |
 
 **PaymentRequest**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
  [OperatorID](/docs/api-reference/data-model#operatorid)                   |   | String | Only required if different from Login Request
@@ -545,7 +565,12 @@ Attribute     |Requ.| Format | Description |
 
 #### Payment response
 
-<details><summary>Payment response</summary>
+<details>
+
+<summary>
+Payment response
+</summary>
+
 <p>
 
 ```json
@@ -638,7 +663,7 @@ Attribute     |Requ.| Format | Description |
 
 **MessageHeader**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)                | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment"
@@ -647,7 +672,7 @@ Attribute     |Requ.| Format | Description |
 
 **PaymentResponse**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -710,7 +735,12 @@ A transaction status request can be used to obtain the status of a previous tran
 
 #### Transaction status request
 
-<details><summary>Transaction status request</summary>
+<details>
+
+<summary>
+Transaction status request
+</summary>
+
 <p>
 
 ```json
@@ -736,7 +766,7 @@ A transaction status request can be used to obtain the status of a previous tran
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "TransactionStatus"
@@ -745,7 +775,7 @@ Attribute  |Requ.| Format | Description |
 
 **TransactionStatusRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
  [MessageCategory](/docs/api-reference/data-model#messagecategory)          |    | String | "Payment"
@@ -754,7 +784,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Transaction status response
 
-<details><summary>Transaction status response</summary>
+<details>
+
+<summary>
+Transaction status response
+</summary>
+
 <p>
 
 ```json
@@ -792,7 +827,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "TransactionStatus"
@@ -801,7 +836,7 @@ Attribute  |Requ.| Format | Description |
 
 **TransactionStatusResponse**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -831,7 +866,12 @@ When the Sale System receives the successful payment response, the Sale System n
 
 The reversal message is used to perform void/reversal request. 
 
-<details><summary>Reversal request</summary>
+<details>
+
+<summary>
+Reversal request
+</summary>
+
 <p>
 
 ```json
@@ -865,7 +905,7 @@ The reversal message is used to perform void/reversal request.
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Reversal"
@@ -875,7 +915,7 @@ Attribute  |Requ.| Format | Description |
 
 **ReversalRequest**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
  **[OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)** | ✔ | Object | Identifies a previous POI transaction. See [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
   [SaleID](/docs/api-reference/data-model#saleid)                          | ✔ | String | [SaleID](/docs/api-reference/data-model#saleid) which performed the original transaction
@@ -888,7 +928,12 @@ Attribute     |Requ.| Format | Description |
 
 #### Reversal response
 
-<details><summary>Reversal response</summary>
+<details>
+
+<summary>
+Reversal response
+</summary>
+
 <p>
 
 ```json
@@ -939,7 +984,7 @@ Attribute     |Requ.| Format | Description |
 
 **MessageHeader**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)                | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Reversal"
@@ -949,7 +994,7 @@ Attribute     |Requ.| Format | Description |
 
 **ReversalResponse**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"

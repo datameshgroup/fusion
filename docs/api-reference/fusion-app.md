@@ -48,7 +48,7 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
     ![](/img/fusion-app-settings-paired.png)
 
 - The _Util_ tab will allow you to:
-  - update the POS Name (which is used during [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)).     
+  - update the POS Name (which is used during [QR POS Pairing](/docs/getting-started#qr-pos-pairing)).     
     - If the Fusion App has been paired with a terminal _before_ the POS name was updated, you'll need to unpair from the terminal and then, pair with the terminal again to use the updated POS name.
   - perform a login
   - access log files 
@@ -214,10 +214,11 @@ If refunding a previous purchase, the Sale System should include details of the 
 
 The `status` endpoint returns the current Fusion App status. 
 
-** Endpoint **
+**Endpoint**
+
 `GET http://localhost:4242/fusion/v1/status`
 
-** Headers **
+**Headers**
 
 Parameter          | Value                                    | 
 ------------------ | ---------------------------------------- |
@@ -226,11 +227,11 @@ Accept             | application/json                         |
 X-Application-Name | The name of your Sale System             |
 X-Software-Version | The software version of your Sale System |
 
-** Request Body **
+**Request Body**
 
 Empty.
 
-** Response Body **
+**Response Body**
 
 A JSON payload representing the Fusion App status.
 
@@ -251,17 +252,17 @@ The `ui` endpoint enables the Sale System to launch the Fusion App main UI so th
 This is important when the task bar/system tray is hidden and the operator cannot access the main Fusion App icon, while the Sale System is running.  
 :::
 
-** Endpoint **
+**Endpoint**
 `POST http://localhost:4242/fusion/v1/ui?launchCommand=`
 
-** Query Parameters **
+**Query Parameters**
 
 Parameter          | Value                                                  | 
 ------------------ | ------------------------------------------------------ |
 LaunchCommand      | Set to "pairing" to launch directly to the pairing UI  |
 
 
-** Headers **
+**Headers**
 
 Parameter          | Value                                    | 
 ------------------ | ---------------------------------------- |
@@ -270,11 +271,11 @@ Accept             | application/json                         |
 X-Application-Name | The name of your Sale System             |
 X-Software-Version | The software version of your Sale System |
 
-** Request Body **
+**Request Body**
 
 Empty.
 
-** Response Body **
+**Response Body**
 
 Empty.
 
@@ -282,17 +283,17 @@ Empty.
 
 The `Login` endpoint is a useful method for validating connectivity with DataMesh without sending a financial request. The Sale System is not required to implement this functionality. 
 
-** Endpoint **
+**Endpoint**
 `POST http://localhost:4242/fusion/v1/login/{{SessionId}}`
 
-** Query Parameters **
+**Query Parameters**
 
 Parameter          | Value                                                  | 
 ------------------ | ------------------------------------------------------ |
 SessionId          | A globally unique UUIDv4 which identifies this request |
 
 
-** Headers **
+**Headers**
 
 Parameter          | Value                                    | 
 ------------------ | ---------------------------------------- |
@@ -301,15 +302,20 @@ Accept             | application/json                         |
 X-Application-Name | The name of your Sale System             |
 X-Software-Version | The software version of your Sale System |
 
-** Request Body **
+**Request Body**
 
 Empty.
 
-** Response Body **
+**Response Body**
 
 A JSON payload based on [Login response](/docs/api-reference/data-model#login-response)
 
-<details><summary>Login response</summary>
+<details>
+
+<summary>
+Login response
+</summary>
+
 <p>
 
 ```json
@@ -353,9 +359,10 @@ A JSON payload based on [Login response](/docs/api-reference/data-model#login-re
 }
 ```
 </p>
+
 </details>
 
-** Response HTTP Status Codes **
+**Response HTTP Status Codes**
 
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |
@@ -369,22 +376,22 @@ Code | Description | Required action  |
 
 The `Payments` endpoint is used to perform purchase, purchase + cash out, cash out only, and refund requests. 
 
-** Endpoint (blocking mode) **
+**Endpoint (blocking mode)**
 
 `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}`
 
-** Endpoint (events mode) **
+**Endpoint (events mode)**
 
 `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true`
 
-** Query Parameters **
+**Query Parameters**
 
 Parameter          | Value                                                  | 
 ------------------ | ------------------------------------------------------ |
 SessionId          | A globally unique UUIDv4 which identifies this request |
 Events             | Set to true to enable events mode, false otherwise     | 
 
-** Headers **
+**Headers**
 
 Parameter          | Value                                    | 
 ------------------ | ---------------------------------------- |
@@ -393,11 +400,16 @@ Accept             | application/json                         |
 X-Application-Name | The name of your Sale System             |
 X-Software-Version | The software version of your Sale System |
 
-** Request Body **
+**Request Body**
 
 A JSON payload based on [Payment request](/docs/api-reference/data-model#payment-request)
 
-<details><summary>Payment request</summary>
+<details>
+
+<summary>
+Payment request
+</summary>
+
 <p>
 
 ```json
@@ -435,7 +447,7 @@ A JSON payload based on [Payment request](/docs/api-reference/data-model#payment
 </p>
 </details>
 
-** Response Body **
+**Response Body**
 
 :::info
 
@@ -445,7 +457,12 @@ A response body is only returned when using blocking mode.
 
 A JSON payload based on [Payment response](/docs/api-reference/data-model#payment-response)
 
-<details><summary>Payment response</summary>
+<details>
+
+<summary>
+Payment response
+</summary>
+
 <p>
 
 ```json
@@ -529,7 +546,7 @@ A JSON payload based on [Payment response](/docs/api-reference/data-model#paymen
 </p>
 </details>
 
-** Response HTTP Status Codes **
+**Response HTTP Status Codes**
 
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |
@@ -551,16 +568,16 @@ The `SessionId` is only valid during the lifetime of the payment (i.e. when a pa
 
 :::
 
-** Endpoint **
+**Endpoint**
 `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events`
 
-** Query Parameters **
+**Query Parameters**
 
 Parameter          | Value                                                  | 
 ------------------ | ------------------------------------------------------ |
 SessionId          | A globally unique UUIDv4 which identifies this request |
 
-** Headers **
+**Headers**
 
 Parameter          | Value                                    | 
 ------------------ | ---------------------------------------- |
@@ -569,17 +586,22 @@ Accept             | application/json                         |
 X-Application-Name | The name of your Sale System             |
 X-Software-Version | The software version of your Sale System |
 
-** Request Body **
+**Request Body**
 
 Empty.
 
-** Response Body **
+**Response Body**
 
 A JSON payload containing either a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) or [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse). 
 
 
 
-<details><summary>Print request</summary>
+<details>
+
+<summary>
+Print request
+</summary>
+
 <p>
 
 ```json
@@ -609,7 +631,12 @@ A JSON payload containing either a [SaleToPOIRequest](/docs/api-reference/data-m
 </p>
 </details>
 
-<details><summary>Payment response</summary>
+<details>
+
+<summary>
+Payment response
+</summary>
+
 <p>
 
 ```json
@@ -701,7 +728,7 @@ A JSON payload containing either a [SaleToPOIRequest](/docs/api-reference/data-m
 </p>
 </details>
 
-** Response HTTP Status Codes **
+**Response HTTP Status Codes**
 
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |

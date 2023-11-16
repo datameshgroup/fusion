@@ -13,6 +13,12 @@ After testing and accreditation are complete, follow the production readiness ch
 
 ## Create a production Sale System build 
 
+### Fusion App
+
+- The dev/production connection is configured within Fusion App. No Sale System changes are required. 
+
+### Fusion Cloud
+
 - If the Sale System is using a DataMesh library, ensure it is updated to the latest version
 - Update the Sale System "static" settings to the production values provided by DataMesh. Settings to be updated are listed below. See [Sale System settings](./getting-started#design-your-integration) for more information.
   - `ProviderIdentification`, the name of the busniess which creates the Sale System.
@@ -21,7 +27,11 @@ After testing and accreditation are complete, follow the production readiness ch
   - `SoftwareVersion`, the internal build version of this Sale System. DataMesh must configure this value on Unify. 
 - Ensure the Sale System is connecting to the [DataMesh production endpoint](/docs/api-reference/fusion-cloud#endpoints).
   - The production endpoint uses a different [SSL certificate](/docs/api-reference/fusion-cloud#security-requirements).
+
+### Fusion Satellite
+
 - If the POI Terminal will be utilising Mobile Data, please [inform DataMesh](mailto:integrations@datameshgroup.com) of any specific internet endpoint(s) that need to be available for access in production so it can be whitelisted by the SIM Card provider.
+
 
 ## Complete PVT
 

@@ -10,15 +10,15 @@ The Fusion Cloud API allows the Sale System to communicate with a POI terminal v
 
 | <div style={{width:'180px'}}>Development Language</div> | Description | Location |
 :-----------------:                        | -----------------                        | ----------- |
-.Net | .Net NuGet package | on [Nuget] (https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
-| | Source Code | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet) |
-| | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
-Java | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java) | 
-| | Library | on [Maven Central] (https://central.sonatype.com/artifact/com.datameshgroup.fusion/fusion-cloud) |
-| | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
-| | Android Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-android-demo) |
-Swift (for iOS) | Source Code | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios)
-| | Demo Application implementing the sdk | on [GitHub] (https://github.com/datameshgroup/fusioncloud-sdk-ios-demo) |
+.Net | .Net NuGet package | on [Nuget](https://www.nuget.org/packages/DataMeshGroup.Fusion.FusionClient/) |
+| | Source Code | on [GitHub](https://github.com/datameshgroup/sdk-dotnet) |
+| | Demo Application implementing the sdk | on [GitHub](https://github.com/datameshgroup/sdk-dotnet-purchasedemo) |
+Java | Source Code | on [GitHub](https://github.com/datameshgroup/fusioncloud-sdk-java) | 
+| | Library | on [Maven Central](https://central.sonatype.com/artifact/com.datameshgroup.fusion/fusion-cloud) |
+| | Demo Application implementing the sdk | on [GitHub](https://github.com/datameshgroup/fusioncloud-sdk-java-demo) |
+| | Android Demo Application implementing the sdk | on [GitHub](https://github.com/datameshgroup/fusioncloud-sdk-android-demo) |
+Swift (for iOS) | Source Code | on [GitHub](https://github.com/datameshgroup/fusioncloud-sdk-ios)
+| | Demo Application implementing the sdk | on [GitHub](https://github.com/datameshgroup/fusioncloud-sdk-ios-demo) |
 
 ## Security requirements
 
@@ -78,7 +78,12 @@ Test environment
 
 ## Message format
 
-<details><summary>SaleToPOIRequest</summary>
+<details>
+
+<summary>
+SaleToPOIRequest
+</summary>
+
 <p>
 
 ```json
@@ -93,7 +98,12 @@ Test environment
 </p>
 </details>
 
-<details><summary>SaleToPOIResponse</summary>
+<details>
+
+<summary>
+SaleToPOIResponse
+</summary>
+
 <p>
 
 ```json
@@ -133,7 +143,12 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain three objects:
 
 ### MessageHeader
 
-<details><summary>MessageHeader</summary>
+<details>
+
+<summary>
+MessageHeader
+</summary>
+
 <p>
 
 ```json
@@ -153,7 +168,7 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` contain three objects:
 A `MessageHeader` is included with each request and response. It defines the protocol, message type, sale and POI id.
 
 
-Attribute                             |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>                             |Requ.| Format | Description |
 -----------------                     |:----:| ------ | ----------- |
 [ProtocolVersion](/docs/api-reference/data-model#protocolversion)   | ✔ | String | Version of the Sale to POI protocol specifications. Set to "3.1-dmg". Present when `MessageCategory` is "Login" otherwise absent.
 [MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
@@ -162,7 +177,7 @@ Attribute                             |Requ.| Format | Description |
 [ServiceID](/docs/api-reference/data-model#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
 [SaleID](/docs/api-reference/data-model#saleid)                     | ✔ | String | Uniquely identifies the Sale System. The [SaleID](/docs/api-reference/data-model#saleid) is provided by DataMesh, and must match the SaleID configured in Unify.
 [POIID](/docs/api-reference/data-model#poiid)                       | ✔ | String | Uniquely identifies the POI Terminal. The [POIID](/docs/api-reference/data-model#poiid) is provided by DataMesh, and must match the POIID configured in Unify. For Sale Systems that do not need a POI Terminal, the value must be "POI Server"
-| |  |  | Only in the Login request after a successful [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing), this field will contain the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code)
+| |  |  | Only in the Login request after a successful [QR POS Pairing](/docs/getting-started#qr-pos-pairing), this field will contain the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code)
 
  
 ### Payload
@@ -175,7 +190,12 @@ The *Cloud API Reference* outlines the expected payload for each supported reque
 
 ### SecurityTrailer
 
-<details><summary>SecurityTrailer</summary>
+<details>
+
+<summary>
+SecurityTrailer
+</summary>
+
 <p>
 
 ```json
@@ -323,7 +343,12 @@ sending another NEXO Login request.
 
 #### Login request
 
-<details><summary>Login request</summary>
+<details>
+
+<summary>
+Login request
+</summary>
+
 <p>
 
 ```json
@@ -370,7 +395,7 @@ sending another NEXO Login request.
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [ProtocolVersion](/docs/api-reference/data-model#protocolversion)       | ✔ | String | "3.1-dmg"       
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
@@ -379,11 +404,11 @@ Attribute  |Requ.| Format | Description |
 [ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
 [SaleID](/docs/api-reference/data-model#saleid)                         | ✔ | String | Uniquely identifies the Sale System
 [POIID](/docs/api-reference/data-model#poiid)                           | ✔ | String | Uniquely identifies the POI Terminal
-| |  |  | Only in the Login request after a successful [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing), this field will contain the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code)
+| |  |  | Only in the Login request after a successful [QR POS Pairing](/docs/getting-started#qr-pos-pairing), this field will contain the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code)
 
 **LoginRequest**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
 [DateTime](/docs/api-reference/data-model#datetime)                        | ✔ | String | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 **SaleSoftware**                            | ✔ | Object | Object containing Sale System identification
@@ -399,11 +424,16 @@ Attribute     |Requ.| Format | Description |
 [OperatorId](/docs/api-reference/data-model#operatorid)                     |  | String | Groups transactions under this operator id
 [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | String | Groups transactions under this shift number
 [POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
-Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code) for the [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)
+Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#pairing-qr-code) for the [QR POS Pairing](/docs/getting-started#qr-pos-pairing)
 
 #### Login response
 
-<details><summary>Login response</summary>
+<details>
+
+<summary>
+Login response
+</summary>
+
 <p>
 
 ```json
@@ -463,7 +493,7 @@ Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the P
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [ProtocolVersion](/docs/api-reference/data-model#protocolversion)       | ✔ | String | "3.1-dmg"       
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
@@ -475,7 +505,7 @@ Attribute  |Requ.| Format | Description |
 
 **LoginResponse**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            | :--------: | ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the login
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -512,7 +542,12 @@ The Sale System may send multiple Login requests without a Logout request.
 
 #### Logout request
 
-<details><summary>Logout request</summary>
+<details>
+
+<summary>
+Logout request
+</summary>
+
 <p>
 
 ```json
@@ -538,7 +573,7 @@ The Sale System may send multiple Login requests without a Logout request.
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Logout"
@@ -549,13 +584,18 @@ Attribute  |Requ.| Format | Description |
 
 **LogoutRequest**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
 [MaintenanceAllowed](/docs/api-reference/data-model#maintenanceallowed)    |  | Boolean| Indicates if the POI Terminal can enter maintenance mode. Default to true if not present.    
 
 #### Logout response
 
-<details><summary>Logout response</summary>
+<details>
+
+<summary>
+Logout response
+</summary>
+
 <p>
 
 ```json
@@ -583,7 +623,7 @@ Attribute     |Requ.| Format | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Logout"
@@ -594,7 +634,7 @@ Attribute  |Requ.| Format | Description |
 
 **LogoutResponse**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object which represents the result of the response
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -609,7 +649,12 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 #### Payment request
 
-<details><summary>Payment request</summary>
+<details>
+
+<summary>
+Payment request
+</summary>
+
 <p>
 
 ```json
@@ -772,7 +817,7 @@ The payment message is used to perform purchase, purchase + cash out, cash out o
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Payment"
@@ -783,7 +828,7 @@ Attribute  |Requ.| Format | Description |
 
 ##### **PaymentRequest**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **SaleData**                                 | ✔ | Object | Sale System information attached to this payment
  [OperatorID](/docs/api-reference/data-model#operatorid)                   |   | String | Only required if different from Login Request
@@ -856,7 +901,12 @@ Attribute     |Requ.| Format | Description |
 
 #### Payment response
 
-<details><summary>Payment response</summary>
+<details>
+
+<summary>
+Payment response
+</summary>
+
 <p>
 
 ```json
@@ -952,7 +1002,7 @@ Attribute     |Requ.| Format | Description |
 
 **MessageHeader**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)                | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment"
@@ -963,7 +1013,7 @@ Attribute     |Requ.| Format | Description |
 
 **PaymentResponse**
 
-Attribute     |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -1029,7 +1079,12 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 #### Display request
 
-<details><summary>Display request</summary>
+<details>
+
+<summary>
+Display request
+</summary>
+
 <p>
 
 ```json
@@ -1066,7 +1121,7 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Display"
@@ -1077,7 +1132,7 @@ Attribute  |Requ.| Format | Description |
 
 **DisplayRequest**
 
-Attribute                  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>                  |Requ.| Format | Description |
 -----------------                                         |:----:| ------ | ----------- |
 **DisplayOutput**                                         | ✔ | Object | Object which represents the display 
  [ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag)|  | Boolean | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
@@ -1088,7 +1143,12 @@ Attribute                  |Requ.| Format | Description |
 
 #### Display response
 
-<details><summary>Display response</summary>
+<details>
+
+<summary>
+Display response
+</summary>
+
 <p>
 
 ```json
@@ -1128,7 +1188,7 @@ The Sale System is expected to send a `DisplayResponse` if one or more displays 
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Display"
@@ -1139,7 +1199,7 @@ Attribute  |Requ.| Format | Description |
 
 **DisplayResponse**
 
-Attribute      |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format | Description |
 -----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                | ✔ | Object | Response for Device/InfoQualify pair where corresponding `ResponseRequiredFlag` in the `DisplayRequest` is set to true.
  [Device](#device)                            | ✔ | String | Mirrored from display request
@@ -1164,7 +1224,12 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
  
 #### Input request
 
-<details><summary>Input request</summary>
+<details>
+
+<summary>
+Input request
+</summary>
+
 <p>
 
 ```json
@@ -1217,7 +1282,7 @@ Follow the [user interface](#user-interface) guide for details on how to impleme
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Input"
@@ -1229,7 +1294,7 @@ Attribute  |Requ.| Format | Description |
 
 **InputRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 **DisplayOutput**                             |  | Object | Information to display and the way to process the display.
  [Device](#device)                            | ✔ | String | "CashierDisplay"
@@ -1252,7 +1317,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Input response
 
-<details><summary>Input response</summary>
+<details>
+
+<summary>
+Input response
+</summary>
+
 <p>
 
 ```json
@@ -1302,7 +1372,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Input"
@@ -1314,7 +1384,7 @@ Attribute  |Requ.| Format | Description |
 
 **InputResponse**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *OutputResult*                                |    | Object | Present if `DisplayOutput` is present in the request
  [Device](#device)                            | ✔ | String | Mirrored from input request
@@ -1350,7 +1420,12 @@ The final payment receipt, which is to be included in the Sale receipt, is retur
  
 #### Print request
 
-<details><summary>Print request</summary>
+<details>
+
+<summary>
+Print request
+</summary>
+
 <p>
 
 ```json
@@ -1385,7 +1460,7 @@ The final payment receipt, which is to be included in the Sale receipt, is retur
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Print"
@@ -1397,7 +1472,7 @@ Attribute  |Requ.| Format | Description |
 
 **PrintRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
  **PrintOutput**                              | ✔ | Object | 
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
@@ -1410,7 +1485,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Print response
 
-<details><summary>Print response</summary>
+<details>
+
+<summary>
+Print response
+</summary>
+
 <p>
 
 ```json
@@ -1442,7 +1522,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Device"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Print"
@@ -1454,7 +1534,7 @@ Attribute  |Requ.| Format | Description |
 
 **PrintResponse**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 [DocumentQualifier](#documentqualifier)       | ✔ | String | Mirrored from print request
  *Response*                                   | ✔ | Object | 
@@ -1470,7 +1550,12 @@ A transaction status request can be used to obtain the status of a previous tran
 
 #### Transaction status request
 
-<details><summary>Transaction status request</summary>
+<details>
+
+<summary>
+Transaction status request
+</summary>
+
 <p>
 
 ```json
@@ -1501,7 +1586,7 @@ A transaction status request can be used to obtain the status of a previous tran
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "TransactionStatus"
@@ -1512,7 +1597,7 @@ Attribute  |Requ.| Format | Description |
 
 **TransactionStatusRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
  [MessageCategory](/docs/api-reference/data-model#messagecategory)          |    | String | "Payment"
@@ -1523,7 +1608,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Transaction status response
 
-<details><summary>Transaction status response</summary>
+<details>
+
+<summary>
+Transaction status response
+</summary>
+
 <p>
 
 ```json
@@ -1565,7 +1655,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "TransactionStatus"
@@ -1576,7 +1666,7 @@ Attribute  |Requ.| Format | Description |
 
 **TransactionStatusResponse**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the payment
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -1606,7 +1696,12 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 
 #### Abort transaction request
 
-<details><summary>Abort transaction request</summary>
+<details>
+
+<summary>
+Abort transaction request
+</summary>
+
 <p>
 
 ```json
@@ -1638,7 +1733,7 @@ After sending a cancel transaction request, the Sale System should <b>always</b>
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Abort"
@@ -1649,7 +1744,7 @@ Attribute  |Requ.| Format | Description |
 
 **AbortRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *MessageReference*                            | ✔ | Object | Identification of a POI transaction
  [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment" or "CardAcquisition"
@@ -1669,7 +1764,12 @@ If the transaction cannot be aborted, a normal payment response (`Result` = "Suc
 
 However, if the abort transaction request message contains an invalid data (e.g. message format error) or if the referenced transaction cannot be not found (e.g. due to an incorrect ServiceID value), an Event Notification will be returned. 
 
-<details><summary>Abort transaction response </summary>
+<details>
+
+<summary>
+Abort transaction response
+</summary>
+
 <p>
 
 ```json
@@ -1697,7 +1797,7 @@ However, if the abort transaction request message contains an invalid data (e.g.
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Event"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Event"
@@ -1708,7 +1808,7 @@ Attribute  |Requ.| Format | Description |
 
 **EventNotification**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
  [TimeStamp](/docs/api-reference/data-model#timestamp)                      | ✔ | String | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
  [EventToNotify](/docs/api-reference/data-model#eventtonotify)              | ✔ | String | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
@@ -1719,7 +1819,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Reconciliation request
 
-<details><summary>Reconciliation request</summary>
+<details>
+
+<summary>
+Reconciliation request
+</summary>
+
 <p>
 
 ```json
@@ -1746,7 +1851,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Reconciliation"
@@ -1757,7 +1862,7 @@ Attribute  |Requ.| Format | Description |
 
 **ReconciliationRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 [ReconciliationType](#reconciliationtype)     | ✔ | String | "SaleReconciliation" to close the current period, "PreviousReconciliation" to request the result of a previous reconciliation
 [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |   | String | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
@@ -1765,7 +1870,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Reconciliation response
 
-<details><summary>Reconciliation response</summary>
+<details>
+
+<summary>
+Reconciliation response
+</summary>
+
 <p>
 
 ```json
@@ -1816,7 +1926,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Reconciliation"
@@ -1827,7 +1937,7 @@ Attribute  |Requ.| Format | Description |
 
 **ReconciliationResponse**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | Object | Object indicating the result of the login
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
@@ -1854,7 +1964,12 @@ The card acquisition request allows the Sale System to tokenise a card which can
 
 #### Card acquisition request
 
-<details><summary>Card acquisition request</summary>
+<details>
+
+<summary>
+Card acquisition request
+</summary>
+
 <p>
 
 ```json
@@ -1897,7 +2012,7 @@ The card acquisition request allows the Sale System to tokenise a card which can
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "CardAcquisition"
@@ -1908,7 +2023,7 @@ Attribute  |Requ.| Format | Description |
 
 **CardAcquisitionRequest**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 *SaleData*                                    | ✔ | Object | Object Sale System information attached to this payment
  [OperatorID](/docs/api-reference/data-model#operatorid)                    |  | String | Only required if different from Login Request
@@ -1928,7 +2043,12 @@ Attribute      |Requ.| Format  | Description |
 
 #### Card acquisition response
 
-<details><summary>Card acquisition response</summary>
+<details>
+
+<summary>
+Card acquisition response
+</summary>
+
 <p>
 
 ```json
@@ -1982,7 +2102,7 @@ Attribute      |Requ.| Format  | Description |
 
 **MessageHeader**
 
-Attribute  |Requ.| Format | Description |
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
 -----------------                         |:----:| ------ | ----------- |
 [MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
 [MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "CardAcquisition"
@@ -1993,7 +2113,7 @@ Attribute  |Requ.| Format | Description |
 
 **CardAcquisitionResponse**
 
-Attribute      |Requ.| Format  | Description |
+<div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
 **Response**                                    | ✔ | Object | Object indicating the result of the login
  [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"

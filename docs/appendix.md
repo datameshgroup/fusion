@@ -159,7 +159,12 @@ To force a software update:
 Before updating the terminal firmware, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to confirm that your terminal setting has been configured with the correct firmware version.
 :::
 
-<details><summary>To initiate a firmware update</summary>
+<details>
+
+<summary>
+To initiate a firmware update
+</summary>
+
 <p>
 
 - Confirm with DataMesh if the terminal firmware update is required.  If the update is required, confirm with DataMesh that the terminal's firmware configuration has been set correctly
@@ -196,7 +201,7 @@ To check Wi-FI connection status at any time:
 
 :::info
 To pair your Sale System through QR code: 
-- your Sale System must support [QR POS Pairing](/docs/getting-started.mdx/#qr-pos-pairing)
+- your Sale System must support [QR POS Pairing](/docs/getting-started#qr-pos-pairing)
 - your Satellite payment app Software Version must be at least 46J.  
   - The Software Version can be found at the top portion of Satellite's [info screen](#update-settings).
 - the Pair With POS option must be enabled on your Satellite payment app
@@ -248,7 +253,12 @@ For Fusion Satellite integrations, the DataMesh debug development POI terminals 
 
 There are two methods for completing this process: 
 
-<details><summary>Connect the terminal to Android Development Studio</summary>
+<details>
+
+<summary>
+Connect the terminal to Android Development Studio
+</summary>
+
 <p>
 
   - Connect the USB port on the side of the POI Terminal to your PC
@@ -258,7 +268,12 @@ There are two methods for completing this process:
 </p>
 </details>
 
-<details><summary>Copy the APK to the terminal</summary>
+<details>
+
+<summary>
+Copy the APK to the terminal
+</summary>
+
 <p>
 
   - Connect the USB port on the side of the POI Terminal to your PC
@@ -293,7 +308,12 @@ For Fusion Satellite integrations, the DataMesh debug development POI terminals 
 
 There are two methods for completing this process: 
 
-<details><summary>Connect the terminal to Android Development Studio</summary>
+<details>
+
+<summary>
+Connect the terminal to Android Development Studio
+</summary>
+
 <p>
 
   - Connect the USB port on the side of the POI Terminal to your PC
@@ -303,7 +323,12 @@ There are two methods for completing this process:
 </p>
 </details>
 
-<details><summary>Install through AxToolkit</summary>
+<details>
+
+<summary>
+Install through AxToolkit
+</summary>
+
 <p>
 
   - Connect the USB port on the side of the POI Terminal to your PC
