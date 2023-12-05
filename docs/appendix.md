@@ -197,11 +197,11 @@ To check Wi-FI connection status at any time:
 - Swipe down again to expand the notification shade
 - Top left icon will be your Wi-Fi status and connected access point
 
-### QR POS Pairing
+### QR code pairing
 
 :::info
 To pair your Sale System through QR code: 
-- your Sale System must support [QR POS Pairing](/docs/getting-started#qr-pos-pairing)
+- your Sale System must support [QR code pairing](/docs/getting-started#qr-code-pairing)
 - your Satellite payment app Software Version must be at least 46J.  
   - The Software Version can be found at the top portion of Satellite's [info screen](#update-settings).
 - the Pair With POS option must be enabled on your Satellite payment app
@@ -209,7 +209,7 @@ To pair your Sale System through QR code:
 If you are unable to see the <code>Pair With POS</code> option on your Satellite payment app, please contact the DataMesh Integration Team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
 :::
 
-- Launch your Sale System and access the option to display the QR Code for pairing
+- Launch your Sale System and access the option to display the QR code for pairing
 - In the Satellite payment app, tap the settings icon (⚙)
 
 ![](/img/pinpad-merchant-password-270x480.png)
