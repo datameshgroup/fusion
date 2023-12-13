@@ -6,6 +6,25 @@ sidebar_position: 3
 
 Definition of request, response messages and properties used by the Fusion API's.
 
+## Data format
+
+- Mandatory fields have a check (✔) mark in the "Requ" column.
+  - A mandatory field must be present (not null, not whitespace) and if a string, have a length > 0.
+- Each field is marked with a data format. Available data formats are outlined below
+
+Type                          | Format                |
+----------------------------- | --------------------- |
+Integer (MIN, MAX)            | A whole number.<ul><li>MIN: the minimum integer value.</li> <li>MAX: the maximum integer value</li></ul>
+Decimal (MIN, MAX, PRECISION) | A decimal number. <ul><li>MIN: the minimum decimal value</li><li>MAX: the maximum decimal value</li><li>PRECISION: the maximum number of decimal places</li></ul>
+Currency (MIN, MAX)           | Decimal formatted as $$$$$$$.CC.<ul><li>MIN: the minimum currency value</li><li>MAX: the maximum currency value</li></ul>
+String (MIN, MAX)             | String representing printable ASCII characters (character code 32-127). <ul><li>MIN: the minimum string length</li><li>MAX: the maximum string length</li></ul>
+UUID                          | 128-bit text string formatted as:<br/>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ISO8601                       | iso8601 formatted date and time. See [ISO 8601 - Wikipedia](https://en.wikipedia.org/wiki/ISO_8601)
+Boolean                       | true or false.
+Object                        | An object containing other properties.
+Enum                          | One of an enumeration of values.
+Array (X)                     | An array of specified data type.
+
 ## Request/response messages
 
 ### SaleToPOI
@@ -19,17 +38,17 @@ The `SaleToPOIRequest` and `SaleToPOIResponse` are used to wrap request and resp
 
 <div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
-MessageHeader                        | ✔ | String | Message header
-[PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |Object | If payment request
-[LoginRequest](/docs/api-reference/data-model#login-request)  |  |Object | If login request
-[LogoutRequest](/docs/api-reference/data-model#logout-request)  |  |Object | If logout request
-[DisplayRequest](/docs/api-reference/data-model#display-request)  |  |Object | If display request
-[InputRequest](/docs/api-reference/data-model#input-request)  |  |Object | If input request
-[PrintRequest](/docs/api-reference/data-model#print-request)  |  |Object | If print request
-[TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |Object | If transaction status request
-[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |Object | If abort request
-[ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |Object | If reconciliation request
-[CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |Object | If card acquisition request
+MessageHeader                        | ✔ | [Object](#data-format) | Message header
+[PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |[Object](#data-format) | If payment request
+[LoginRequest](/docs/api-reference/data-model#login-request)  |  |[Object](#data-format) | If login request
+[LogoutRequest](/docs/api-reference/data-model#logout-request)  |  |[Object](#data-format) | If logout request
+[DisplayRequest](/docs/api-reference/data-model#display-request)  |  |[Object](#data-format) | If display request
+[InputRequest](/docs/api-reference/data-model#input-request)  |  |[Object](#data-format) | If input request
+[PrintRequest](/docs/api-reference/data-model#print-request)  |  |[Object](#data-format) | If print request
+[TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |[Object](#data-format) | If transaction status request
+[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |[Object](#data-format) | If abort request
+[ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |[Object](#data-format) | If reconciliation request
+[CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |[Object](#data-format) | If card acquisition request
 
 <details>
 <summary>
@@ -63,17 +82,17 @@ SaleToPOIRequest
 
 <div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
-MessageHeader                        | ✔ | Object | Message header
-[PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |Object | If payment request
-[LoginRequest](/docs/api-reference/data-model#login-request)  |  |Object | If login request
-[LogoutRequest](/docs/api-reference/data-model#logout-request)  |  |Object | If logout request
-[DisplayRequest](/docs/api-reference/data-model#display-request)  |  |Object | If display request
-[InputRequest](/docs/api-reference/data-model#input-request)  |  |Object | If input request
-[PrintRequest](/docs/api-reference/data-model#print-request)  |  |Object | If print request
-[TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |Object | If transaction status request
-[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |Object | If abort request
-[ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |Object | If reconciliation request
-[CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |Object | If card acquisition request
+MessageHeader                        | ✔ | [Object](#data-format) | Message header
+[PaymentRequest](/docs/api-reference/data-model#payment-request)  |  |[Object](#data-format) | If payment request
+[LoginRequest](/docs/api-reference/data-model#login-request)  |  |[Object](#data-format) | If login request
+[LogoutRequest](/docs/api-reference/data-model#logout-request)  |  |[Object](#data-format) | If logout request
+[DisplayRequest](/docs/api-reference/data-model#display-request)  |  |[Object](#data-format) | If display request
+[InputRequest](/docs/api-reference/data-model#input-request)  |  |[Object](#data-format) | If input request
+[PrintRequest](/docs/api-reference/data-model#print-request)  |  |[Object](#data-format) | If print request
+[TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |[Object](#data-format) | If transaction status request
+[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |[Object](#data-format) | If abort request
+[ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |[Object](#data-format) | If reconciliation request
+[CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |[Object](#data-format) | If card acquisition request
 
 
 <details>
@@ -128,10 +147,10 @@ MessageHeader
 
 <div style={{width:'240px'}}>Attributes</div>                             |Requ.| Format | Description |
 -----------------                     |:----:| ------ | ----------- |
-[MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | String | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
-[MessageCategory](/docs/api-reference/data-model#messagecategory)   | ✔ | String | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
-[MessageType](/docs/api-reference/data-model#messagetype)           | ✔ | String | Type of message. Possible values are "Request", "Response", or "Notification"
-[ServiceID](/docs/api-reference/data-model#serviceid)               | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+[MessageClass](/docs/api-reference/data-model#messageclass)         | ✔ | [Enum](#data-format) | Informs the receiver of the class of message. Possible values are "Service", "Device", or "Event"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)   | ✔ | [Enum](#data-format) | Indicates the category of message. Possible values are "CardAcquisition", "Display", "Login", "Logout", "Payment" 
+[MessageType](/docs/api-reference/data-model#messagetype)           | ✔ | [Enum](#data-format) | Type of message. Possible values are "Request", "Response", or "Notification"
+[ServiceID](/docs/api-reference/data-model#serviceid)               | ✔ | [UUID](#data-format) | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
 
 
 
@@ -180,21 +199,21 @@ Login request
 
 <div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                            |:----: | ------ | ----------- |
-[DateTime](/docs/api-reference/data-model#datetime)                        | ✔ | String | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
-**SaleSoftware**                            | ✔ | Object | Object containing Sale System identification
- [ProviderIdentification](/docs/api-reference/data-model#provideridentification)| ✔ | String | The name of the company supplying the Sale System. Provided by DataMesh.
- [ApplicationName](/docs/api-reference/data-model#applicationname)          | ✔ | String | The name of the Sale System application. Provided by DataMesh.
- [SoftwareVersion](/docs/api-reference/data-model#softwareversion)          | ✔ | String | The software version of the Sale System. Must be the software version of the current build. 
- [CertificationCode](/docs/api-reference/data-model#certificationcode)      | ✔ | String | Certification code for this Sale System. Provided by DataMesh.
-**SaleTerminalData**                          | ✔ | Object | Object containing Sale System configuration 
- [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)  | ✔ | String | "Attended", "SemiAttended", or "Unattended"
- [SaleCapabilities](/docs/api-reference/data-model#salecapabilities)        | ✔ | Array | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
- [TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)              |  | String | Groups transactions in a login session
-[OperatorLanguage](#operatorlanguage)         |   | String | Operator language. Set to 'en'
-[OperatorId](/docs/api-reference/data-model#operatorid)                     |  | String | Groups transactions under this operator id
-[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | String | Groups transactions under this shift number
-[POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | String | The POISerialNumber from the last login response, or absent if this is the first login 
-Pairing           |  | Boolean| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#qr-pos-pairing) for the [QR POS Pairing](/docs/getting-started#qr-pos-pairing)
+[DateTime](/docs/api-reference/data-model#datetime)                        | ✔ | [ISO8601](#data-format) | Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+**SaleSoftware**                            | ✔ | [Object](#data-format) | Object containing Sale System identification
+&emsp;[ProviderIdentification](/docs/api-reference/data-model#provideridentification)| ✔ | [String(1,256)](#data-format) | The name of the company supplying the Sale System. Provided by DataMesh.
+&emsp;[ApplicationName](/docs/api-reference/data-model#applicationname)          | ✔ | [String(1,256)](#data-format) | The name of the Sale System application. Provided by DataMesh.
+&emsp;[SoftwareVersion](/docs/api-reference/data-model#softwareversion)          | ✔ | [String(1,256)](#data-format) | The software version of the Sale System. Must be the software version of the current build. 
+&emsp;[CertificationCode](/docs/api-reference/data-model#certificationcode)      | ✔ | [GUID](#data-format) | Certification code for this Sale System. Provided by DataMesh.
+**SaleTerminalData**                          | ✔ | [Object](#data-format) | Object containing Sale System configuration 
+&emsp;[TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)  | ✔ | [Enum](#data-format) | "Attended", "SemiAttended", or "Unattended"
+&emsp;[SaleCapabilities](/docs/api-reference/data-model#salecapabilities)        | ✔ | [Array](#data-format) | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
+&emsp;[TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)              |  | [String(1,256)](#data-format) | Groups transactions in a login session
+[OperatorLanguage](#operatorlanguage)         |   | [String(2,8)](#data-format) | Operator language. Set to 'en'
+[OperatorId](/docs/api-reference/data-model#operatorid)                     |  | [String(1,128)](#data-format) | Groups transactions under this operator id
+[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                   |  | [String(1,128)](#data-format) | Groups transactions under this shift number
+[POISerialNumber](/docs/api-reference/data-model#poiserialnumber)           |  | [String(1,128)](#data-format) | The POISerialNumber from the last login response, or absent if this is the first login 
+Pairing           |  | [Boolean](#data-format)| True if the POI ID in the MessageHeader is the PairingPOIID value from the [pairing QR code data](/docs/getting-started#qr-pos-pairing) for the [QR POS Pairing](/docs/getting-started#qr-pos-pairing)
 
 #### Login response
 
@@ -249,26 +268,26 @@ Login response
 
 <div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            | :--------: | ------ | ----------- |
-**Response**                                 | ✔ | Object | Object indicating the result of the login
- [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
-**POISystemData**                            |    | Object | Only present when `Result` is "Success"
- [DateTime](/docs/api-reference/data-model#datetime)                       | ✔ | String | Time on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
- [TokenRequestStatus](#tokenrequeststatus)   | ✔ | Boolean| True if POI tokenisation of PANs is available and usable
- **POITerminalData**                         | ✔ | Object | Object representing the POI Terminal 
-  [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)| ✔ | String | Mirrored from the request
-  [POICapabilities](#poicapabilities)        | ✔ | Array  | An array of strings which reflect the hardware capabilities of the POI Terminal. "MagStripe", "ICC", and "EMVContactless" 
-  [GenericProfile](#genericprofile)          | ✔ | String | Set to "Custom"
-  [POISerialNumber](/docs/api-reference/data-model#poiserialnumber)        | ✔ | String | If POIID is "POI Server", then a virtual POI Terminal Serial Number. Otherwise the serial number of the POI Terminal
- **POIStatus**                               | ✔ | String | Object representing the current status of the POI Terminal
-  [GlobalStatus](#globalstatus)              | ✔ | String | The current status of the POI Terminal. "OK" when the terminal is available. "Maintenance" if unavailable due to maintenance processing. "Unreachable" if unreachable or not responding
-  [SecurityOKFlag](#securityokflag)          | ✔ | Boolean| True if the security module is present 
-  [PEDOKFlag](#pedokflag)                    | ✔ | Boolean| True if PED is available and usable for PIN entry
-  [CardReaderOKFlag](#cardreaderokflag)      | ✔ | Boolean| True if card reader is available and usable
-  [PrinterStatus](#printerstatus)            | ✔ | String | Indicates terminal printer status. Possible values are "OK", "PaperLow", "NoPaper", "PaperJam", "OutOfOrder" 
-  [CommunicationOKFlag](#communicationokflag)| ✔ | Boolean| True if terminal's communication is available and usable
-  [FraudPreventionFlag](#fraudpreventionflag)| ✔ | Boolean| True if the POI detects possible fraud
+**Response**                                 | ✔ | [Object](#data-format) | Object indicating the result of the login
+&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+**POISystemData**                            |    | [Object](#data-format) | Only present when `Result` is "Success"
+&emsp;[DateTime](/docs/api-reference/data-model#datetime)                       | ✔ | [ISO8601](#data-format) | Time on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+&emsp;[TokenRequestStatus](#tokenrequeststatus)   | ✔ | [Boolean](#data-format)| True if POI tokenisation of PANs is available and usable
+&emsp;**POITerminalData**                         | ✔ | [Object](#data-format) | Object representing the POI Terminal 
+&emsp;&emsp;[TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)| ✔ | [Enum](#data-format) | Mirrored from the request
+&emsp;&emsp;[POICapabilities](#poicapabilities)        | ✔ | [Array(Enum)](#data-format)  | An array of strings which reflect the hardware capabilities of the POI Terminal. "MagStripe", "ICC", and "EMVContactless" 
+&emsp;&emsp;[GenericProfile](#genericprofile)          | ✔ | [Enum](#data-format) | Set to "Custom"
+&emsp;&emsp;[POISerialNumber](/docs/api-reference/data-model#poiserialnumber)        | ✔ | [String(1,256)](#data-format) | If POIID is "POI Server", then a virtual POI Terminal Serial Number. Otherwise the serial number of the POI Terminal
+&emsp;**POIStatus**                               | ✔ | [Object](#data-format) | Object representing the current status of the POI Terminal
+&emsp;&emsp;[GlobalStatus](#globalstatus)              | ✔ | [String(1,256)](#data-format) | The current status of the POI Terminal. "OK" when the terminal is available. "Maintenance" if unavailable due to maintenance processing. "Unreachable" if unreachable or not responding
+&emsp;&emsp;[SecurityOKFlag](#securityokflag)          | ✔ | [Boolean](#data-format)| True if the security module is present 
+&emsp;&emsp;[PEDOKFlag](#pedokflag)                    | ✔ | [Boolean](#data-format)| True if PED is available and usable for PIN entry
+&emsp;&emsp;[CardReaderOKFlag](#cardreaderokflag)      | ✔ | [Boolean](#data-format)| True if card reader is available and usable
+&emsp;&emsp;[PrinterStatus](#printerstatus)            | ✔ | [Enum](#data-format) | Indicates terminal printer status. Possible values are "OK", "PaperLow", "NoPaper", "PaperJam", "OutOfOrder" 
+&emsp;&emsp;[CommunicationOKFlag](#communicationokflag)| ✔ | [Boolean](#data-format)| True if terminal's communication is available and usable
+&emsp;&emsp;[FraudPreventionFlag](#fraudpreventionflag)| ✔ | [Boolean](#data-format)| True if the POI detects possible fraud
 
 ### Logout 
 
@@ -300,7 +319,7 @@ Logout request
 
 <div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |----| ------ | ----------- |
-[MaintenanceAllowed](/docs/api-reference/data-model#maintenanceallowed)    |  | Boolean| Indicates if the POI Terminal can enter maintenance mode. Default to true if not present.    
+[MaintenanceAllowed](/docs/api-reference/data-model#maintenanceallowed)    |  | [Boolean](#data-format)| Indicates if the POI Terminal can enter maintenance mode. Default to true if not present.    
 
 #### Logout response
 
@@ -324,10 +343,10 @@ Logout response
 
 <div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
-**Response**                                 | ✔ | Object | Object which represents the result of the response
- [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | String | Provides additional error information. Only present when result is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information of possible values. 
+**Response**                                 | ✔ | [Object](#data-format) | Object which represents the result of the response
+&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when result is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information of possible values. 
 
 
 ### Payment 
@@ -467,74 +486,74 @@ Payment request
 
 <div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
-**SaleData**                                 | ✔ | Object | Sale System information attached to this payment
- [OperatorID](/docs/api-reference/data-model#operatorid)                   |   | String | Only required if different from Login Request
- [OperatorLanguage](#operatorlanguage)       |   | String | Set to "en"
- [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                 |   | String | Only required if different from Login Request
- [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | String | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)
- [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)   |  | String | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)
- **SaleTransactionID**                       | ✔ | Object |
-  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](/docs/api-reference/data-model#transactionid)
-  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
- **SaleTerminalData**                        |  | Object | Define Sale System configuration. Only include if elements within have different values to those in Login Request
-  [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)|  | String | "Attended", "SemiAttended", or "Unattended"
-  [SaleCapabilities](/docs/api-reference/data-model#salecapabilities)      |  | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
-  [TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)            |  | String | Groups transactions in a login session
-**PaymentTransaction**                       | ✔ | Object | 
- **AmountsReq**                               | ✔ | Object | Object which contains the various components which make up the payment amount
-  [Currency](#currency)                      | ✔ | String | Three character currency code. Set to "AUD"
-  [RequestedAmount](#requestedamount)        | ✔ | Decimal| The requested amount for the transaction sale items, including cash back and tip requested
-  [CashBackAmount](#cashbackamount)          |  | Decimal | The Cash back amount. Only if cash back is included in the transaction by the Sale System
-  [TipAmount](#tipamount)                    |  | Decimal | The Tip amount. Only if tip is included in the transaction.  Setting TipAmount to 0 will display the Tip Entry screen in the POI Terminal.  Do not set TipAmount to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
-  [PaidAmount](#paidamount)                  |  | Decimal | Sum of the amount of sale items – `RequestedAmount`. Present only if an amount has already been paid in the case of a split payment.
-  [MaximumCashBackAmount](#maximumcashbackamount)|  | Decimal | Available if `CashBackAmount` is not present. If present, the POI Terminal prompts for the cash back amount up to a maximum of `MaximumCashBackAmount`
-  [MinimumSplitAmount](#minimumsplitamount)  |   | Decimal | Present only if the POI Terminal can process an amount less than the `RequestedAmount` as a split amount. Limits the minimum split amount allowed.
- **[OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)** |  | Object | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
-  [SaleID](/docs/api-reference/data-model#saleid)                          | ✔ | String | [SaleID](/docs/api-reference/data-model#saleid) which performed the original transaction
-  [POIID](/docs/api-reference/data-model#poiid)                            | ✔ | String | [POIID](/docs/api-reference/data-model#poiid) which performed the original transaction
-  **POITransactionID**                       | ✔ | Object | 
-   [TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | String | `TransactionID` from the original transaction
-   [TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
-  [ReuseCardDataFlag](#reusecarddataflag)    |  | Boolean| If 'true' the POI Terminal will retrieve the card data from file based on the `PaymentToken` included in the request. Otherwise the POI Terminal will read the same card again.
-  [ApprovalCode](#approvalcode)              |  | String | Present if a referral code is obtained from an Acquirer
-  [LastTransactionFlag](#lasttransactionflag)| ✔ | Boolean| Set to true to process the Last Transaction with a referral code
- **TransactionConditions**                   |  | Object | Optional transaction configuration. Present only if any of the JSON elements within are present.
-  [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
-  [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid) |  | Array  | Used to restrict the payment to specified acquirers. See [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid)
-  [DebitPreferredFlag](#debitpreferredflag)  |  | Boolean| If present, debit processing is preferred to credit processing.
-  [ForceOnlineFlag](/docs/api-reference/data-model#forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
-  [MerchantCategoryCode](/docs/api-reference/data-model#merchantcategorycode)|  | String | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
- **[SaleItem](/docs/api-reference/data-model#saleitem)**                   | ✔ | Array  | Array of [SaleItem](/docs/api-reference/data-model#s) objects which represent the product basket attached to this transaction. See [SaleItem](/docs/api-reference/data-model#saleitem) for examples.
-  [ItemID](/docs/api-reference/data-model#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-  [ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-  [EanUpc](/docs/api-reference/data-model#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-  [UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
-  [Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
-  [UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
-  [ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | Decimal| Total amount of the sale item
-  [TaxCode](/docs/api-reference/data-model#taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
-  [SaleChannel](/docs/api-reference/data-model#salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
-  [ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-  [AdditionalProductInfo](/docs/api-reference/data-model#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
-  [ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](/docs/api-reference/data-model#itemid) of the parent `SaleItem`
-  [CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
-  [Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
-  [Categories](/docs/api-reference/data-model#categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
-  [Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
-  [QuantityInStock](/docs/api-reference/data-model#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
-  [Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
-  [Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
-  [PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
-  [ImageURLs](#productimageurls)                             |  | Array | String array of images URLs for this sale item
-  [Style](#style)                                            |  | String | Style of the sale item
-  [Size](#size)                                              |  | String | Size of the sale item
-  [Colour](#colour)                                          |  | String | Colour of the sale item
-  [Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
-  [WeightUnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
- **PaymentData**                             | ✔ | Object | Object representing the payment method. Present only if any of the JSON elements within are present.  
-  [PaymentType](/docs/api-reference/data-model#paymenttype)                | ✔ | String | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", or "CashAdvance". See [PaymentType](/docs/api-reference/data-model#paymenttype)  
-  [PaymentInstrumentData](/docs/api-reference/data-model#paymentinstrumentdata) |   | Object | Object with represents card details for token or manually enter card details. See  for object structure.  
- **[CustomFields](/docs/api-reference/data-model#customfields)**                             |  | Array | Array of key/type/value objects containing additional payment information
+**SaleData**                                 | ✔ | [Object](/docs/api-reference/data-model#data-format) | Sale System information attached to this payment
+&emsp;[OperatorID](/docs/api-reference/data-model#operatorid)                   |   | [String(1,128)](#data-format) | Only required if different from Login Request
+&emsp;[OperatorLanguage](#operatorlanguage)       |   | [String(2,8)](#data-format) | Set to "en"
+&emsp;[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                 |   | [String(1,128)](#data-format) | Only required if different from Login Request
+&emsp;[SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | [String(1,128)](#data-format) | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)
+&emsp;[TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)   |  | [Enum](#data-format) | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)
+&emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) |
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](/docs/api-reference/data-model#transactionid)
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+&emsp;**SaleTerminalData**                        |  | [Object](#data-format) | Define Sale System configuration. Only include if elements within have different values to those in Login Request
+&emsp;&emsp;[TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)|  | [Enum](#data-format) | "Attended", "SemiAttended", or "Unattended"
+&emsp;&emsp;[SaleCapabilities](/docs/api-reference/data-model#salecapabilities)      |  | [Array(Enum)](#data-format)  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
+&emsp;&emsp;[TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)            |  | [String(1,256)](#data-format) | Groups transactions in a login session
+**PaymentTransaction**                       | ✔ | [Object](#data-format) | 
+&emsp;**AmountsReq**                               | ✔ | [Object](#data-format) | Object which contains the various components which make up the payment amount
+&emsp;&emsp;[Currency](#currency)                      | ✔ | [String(2,8)](#data-format) | Three character currency code. Set to "AUD"
+&emsp;&emsp;[RequestedAmount](#requestedamount)        | ✔ | [Currency(0.01,999999.99)](#data-format)| The requested amount for the transaction sale items, including cash back and tip requested
+&emsp;&emsp;[CashBackAmount](#cashbackamount)          |  | [Currency(0.01,999999.99)](#data-format) | The Cash back amount. Only if cash back is included in the transaction by the Sale System
+&emsp;&emsp;[TipAmount](#tipamount)                    |  | [Currency(0.01,999999.99)](#data-format) | The Tip amount. Only if tip is included in the transaction.  Setting TipAmount to 0 will display the Tip Entry screen in the POI Terminal.  Do not set TipAmount to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
+&emsp;&emsp;[PaidAmount](#paidamount)                  |  | [Currency(0.01,999999.99)](#data-format) | Sum of the amount of sale items – `RequestedAmount`. Present only if an amount has already been paid in the case of a split payment.
+&emsp;&emsp;[MaximumCashBackAmount](#maximumcashbackamount)|  | [Currency(0.01,999999.99)](#data-format) | Available if `CashBackAmount` is not present. If present, the POI Terminal prompts for the cash back amount up to a maximum of `MaximumCashBackAmount`
+&emsp;&emsp;[MinimumSplitAmount](#minimumsplitamount)  |   | [Currency(0.01,999999.99)](#data-format) | Present only if the POI Terminal can process an amount less than the `RequestedAmount` as a split amount. Limits the minimum split amount allowed.
+&emsp;**[OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)** |  | [Object](#data-format) | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+&emsp;&emsp;[SaleID](/docs/api-reference/data-model#saleid)                          | ✔ | [String(1,128)](#data-format) | [SaleID](/docs/api-reference/data-model#saleid) which performed the original transaction
+&emsp;&emsp;[POIID](/docs/api-reference/data-model#poiid)                            | ✔ | [String(1,128)](#data-format) | [POIID](/docs/api-reference/data-model#poiid) which performed the original transaction
+&emsp;&emsp;**POITransactionID**                       | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | [String(1,128)](#data-format) | `TransactionID` from the original transaction
+&emsp;&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | [ISO8601](#data-format) | `TimeStamp` from the original transaction
+&emsp;&emsp;[ReuseCardDataFlag](#reusecarddataflag)    |  | [Boolean](#data-format)| If 'true' the POI Terminal will retrieve the card data from file based on the `PaymentToken` included in the request. Otherwise the POI Terminal will read the same card again.
+&emsp;&emsp;[ApprovalCode](#approvalcode)              |  | [String(1,128)](#data-format) | Present if a referral code is obtained from an Acquirer
+&emsp;&emsp;[LastTransactionFlag](#lasttransactionflag)| ✔ | [Boolean](#data-format)| Set to true to process the Last Transaction with a referral code
+&emsp;**TransactionConditions**                   |  | [Object](#data-format) | Optional transaction configuration. Present only if any of the JSON elements within are present.
+&emsp;&emsp;[AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | [Array(String)](#data-format)  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+&emsp;&emsp;[AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid) |  | [String(1,128)](#data-format)  | Used to restrict the payment to specified acquirers. See [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid)
+&emsp;&emsp;[DebitPreferredFlag](#debitpreferredflag)  |  | [Boolean](#data-format)| If present, debit processing is preferred to credit processing.
+&emsp;&emsp;[ForceOnlineFlag](/docs/api-reference/data-model#forceonlineflag)        |  | [Boolean](#data-format)| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
+&emsp;&emsp;[MerchantCategoryCode](/docs/api-reference/data-model#merchantcategorycode)|  | [String(1,64)](#data-format) | If present, overrides the MCC used for processing the transaction if allowed. Refer to ISO 18245 for available codes.
+&emsp;**[SaleItem](/docs/api-reference/data-model#saleitem)**                   | ✔ | [Array(Object)](#data-format)  | Array of [SaleItem](/docs/api-reference/data-model#s) objects which represent the product basket attached to this transaction. See [SaleItem](/docs/api-reference/data-model#saleitem) for examples.
+&emsp;&emsp;[ItemID](/docs/api-reference/data-model#itemid)                          | ✔ | [Integer(0,9999)](#data-format) | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+&emsp;&emsp;[ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | [String(1,128)](#data-format) | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+&emsp;&emsp;[EanUpc](/docs/api-reference/data-model#eanupc)                          |  | [String(1,128)](#data-format) | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+&emsp;&emsp;[UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | [Enum](#data-format) | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
+&emsp;&emsp;[Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | [Decimal(0,999999,8)](#data-format)| Sale item quantity based on `UnitOfMeasure`.
+&emsp;&emsp;[UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | [Decimal(0,999999,8)](#data-format)| Price per sale item unit. Present if `Quantity` is included.
+&emsp;&emsp;[ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | [Currency(0.01,999999.99)](#data-format)| Total amount of the sale item
+&emsp;&emsp;[TaxCode](/docs/api-reference/data-model#taxcode)                        |  | [String(1,32)](#data-format) | Type of tax associated with the sale item. Default = "GST"
+&emsp;&emsp;[SaleChannel](/docs/api-reference/data-model#salechannel)                |  | [String(1,128)](#data-format) | Commercial or distribution channel of the sale item. Default = "Unknown"
+&emsp;&emsp;[ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | [String(1,256)](#data-format) | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+&emsp;&emsp;[AdditionalProductInfo](/docs/api-reference/data-model#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
+&emsp;&emsp;[ParentItemID](#parentitemid)                              |  | [Integer(0,9999)](#data-format) | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](/docs/api-reference/data-model#itemid) of the parent `SaleItem`
+&emsp;&emsp;[CostBase](#costbase)                                      |  | [Currency(0.01,999999.99)]| Cost of the product to the merchant per unit
+&emsp;&emsp;[Discount](#discount)                                      |  | [Currency(0.01,999999.99)]| If applied, the amount this sale item was discounted by
+&emsp;&emsp;[Categories](/docs/api-reference/data-model#categories)                  |  | [Array(String)](#data-format)  | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
+&emsp;&emsp;[Brand](#brand)                                            |  | [String(1,256)](#data-format) | Brand name - typically visible on the product packaging or label
+&emsp;&emsp;[QuantityInStock](/docs/api-reference/data-model#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
+&emsp;&emsp;[Tags](#sale-item-tags)                                    |  | [Array(String)](#data-format)  | String array with descriptive tags for the product
+&emsp;&emsp;[Restricted](#restricted)                                  |  | [Boolean](#data-format)| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
+&emsp;&emsp;[PageURL](#productpageurl)                                 |  | [String(1,512)](#data-format) | URL link to the sale items product page
+&emsp;&emsp;[ImageURLs](#productimageurls)                             |  | [Array(String)](#data-format) | String array of images URLs for this sale item
+&emsp;&emsp;[Style](#style)                                            |  | [String(1,256)](#data-format) | Style of the sale item
+&emsp;&emsp;[Size](#size)                                              |  | [String(1,64)](#data-format) | Size of the sale item
+&emsp;&emsp;[Colour](#colour)                                          |  | [String(1,64)](#data-format) | Colour of the sale item
+&emsp;&emsp;[Weight](#weight)                                          |  | [Decimal(0,999999,8)](#data-format) | Sale item weight, based on `WeightUnitOfMeasure`
+&emsp;&emsp;[WeightUnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)      |  | [Enum](#data-format) | Unit of measure of the `Weight`. 
+&emsp;**PaymentData**                             | ✔ | [Object](#data-format) | Object representing the payment method. Present only if any of the JSON elements within are present.&emsp;&emsp;
+&emsp;&emsp;[PaymentType](/docs/api-reference/data-model#paymenttype)                | ✔ | [Enum](#data-format) | Defaults to "Normal". Indicates the type of payment to process. "Normal", "Refund", or "CashAdvance". See [PaymentType](/docs/api-reference/data-model#paymenttype)&emsp;&emsp;
+&emsp;&emsp;[PaymentInstrumentData](/docs/api-reference/data-model#paymentinstrumentdata) |   | [Object](#data-format) | Object with represents card details for token or manually enter card details. See  for object structure.&emsp;&emsp;
+&emsp;**[CustomFields](/docs/api-reference/data-model#customfields)**                             |  | [Array(Object)](#data-format) | Array of key/type/value objects containing additional payment information
 
 #### Payment response
 
@@ -628,60 +647,60 @@ Payment response
 
 <div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
 -----------------                            |:----:| ------ | ----------- |
-**Response**                                 | ✔ | Object | Object indicating the result of the payment
- [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
-**SaleData**                                 | ✔ | Object | 
- **SaleTransactionID**                       | ✔ | Object | 
-  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | Mirrored from the request
-  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Mirrored from the request
- [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | String | Mirrored from the request
-**POIData**                                  | ✔ | Object | 
- **POITransactionID**                        | ✔ | Object | 
-  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | A unique transaction id from the POI system
-  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid) |  | String | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
-**PaymentResult**                            |  | Object | Object related to a processed payment
- [PaymentType](/docs/api-reference/data-model#paymenttype)                 |  | String | Mirrored from the request
- **PaymentInstrumentData**                   |  | Object 
-  [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype) |  | String | "Card" or "Mobile"
-  **CardData**                               |  | Object
-   [EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | String | Indicates how the card was presented. See [EntryMode](/docs/api-reference/data-model#entrymode)
-   [PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | String | Indicates the card type used. See [PaymentBrand](/docs/api-reference/data-model#paymentbrand)
-   [MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
-   [Account](/docs/api-reference/data-model#account)                       |  | String | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
-   **PaymentToken**                          |  | Object | Object representing a token. Only present if token was requested
-    [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | Mirrored from the request
-    [TokenValue](#tokenvalue)                | ✔ | String | The value of the token
-    [ExpiryDateTime](#expirydatetime)        | ✔ | String | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- **AmountsResp**                             |  | Object | Present if `Result` is "Success" or "Partial"
-  [Currency](#currency)                      |  | String | "AUD"
-  [AuthorizedAmount](#authorizedamount)      | ✔ | Decimal| Authorised amount which could be more, or less than the requested amount
-  [TotalFeesAmount](#totalfeesamount)        |  | Decimal| Total of financial fees associated with the payment transaction if known at time of transaction
-  [CashBackAmount](#cashbackamount)          |  | Decimal| Cash back paid amount
-  [TipAmount](#tipamount)                    |  | Decimal| The amount of any tip added to the transaction
-  [SurchargeAmount](#surchargeamount)        |  | Decimal| The amount of any surcharge added to the transaction
- [OnlineFlag](#onlineflag)                   | ✔ | Boolean| True if the transaction was processed online, false otherwise
- **PaymentAcquirerData**                     |  | Object | Data related to the response from the payment acquirer
-  [AcquirerID](/docs/api-reference/data-model#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
-  [MerchantID](#merchantid)                  | ✔ | String | The acquirer merchant ID (MID)
-  [AcquirerPOIID](#acquirerPOIID)            | ✔ | String | The acquirer terminal ID (TID)
-  **AcquirerTransactionID**                  | ✔ | Object | 
-   [TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | String | The acquirer transaction ID
-   [TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | String | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
-  [ApprovalCode](#approvalcode)              | ✔ | String | The Acquirer Approval Code. Also referred to as the Authentication Code
-  [ResponseCode](#responsecode)              | ✔ | String | The Acquirer Response Code. Also referred as the PINPad response code
-  [STAN](#stan)                              |  | String | The Acquirer STAN if available
-  [RRN](#rrn)                                |  | String | The Acquirer RRN if available
-  [HostReconciliationID](#hostreconciliationid)|✔| String | Identifier of a reconciliation period with the acquirer. This normally has a date and time component in it
- [AllowedProductCodes](#allowedproductcodes)  |  | Array | Present if `ErrorCondition` is "PaymentRestriction". Consists of a list of product codes corresponding to products that are purchasable with the given card. Items that exist in the basket but do not belong to this list corresponds to restricted items
- **PaymentReceipt**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
-  [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
-  **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-   [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
-   [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+**Response**                                 | ✔ | [Object](#data-format) | Object indicating the result of the payment
+&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+**SaleData**                                 | ✔ | [Object](#data-format) | 
+&emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Mirrored from the request
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Mirrored from the request
+&emsp;[SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | [String(1,128)](#data-format) | Mirrored from the request
+**POIData**                                  | ✔ | [Object](#data-format) | 
+&emsp;**POITransactionID**                        | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | A unique transaction id from the POI system
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid) |  | [String(1,128)](#data-format) | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
+**PaymentResult**                            |  | [Object](#data-format) | Object related to a processed payment
+&emsp;[PaymentType](/docs/api-reference/data-model#paymenttype)                 |  | [Enum](#data-format) | Mirrored from the request
+&emsp;**PaymentInstrumentData**                   |  | [Object](#data-format) 
+&emsp;&emsp;[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype) |  | [String(1,128)](#data-format) | "Card" or "Mobile"
+&emsp;&emsp;**CardData**                               |  | [Object](#data-format)
+&emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | [String(1,128)](#data-format) | Indicates how the card was presented. See [EntryMode](/docs/api-reference/data-model#entrymode)
+&emsp;&emsp;&emsp;[PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | [String(1,128)](#data-format) | Indicates the card type used. See [PaymentBrand](/docs/api-reference/data-model#paymentbrand)
+&emsp;&emsp;&emsp;[MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | [String(1,64)](#data-format) | PAN masked with dots, first 6 and last 4 digits visible
+&emsp;&emsp;&emsp;[Account](/docs/api-reference/data-model#account)                       |  | [String(1,64)](#data-format) | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
+&emsp;&emsp;&emsp;**PaymentToken**                          |  | [Object](#data-format) | Object representing a token. Only present if token was requested
+&emsp;&emsp;&emsp;&emsp;[TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | [String(1,64)](#data-format) | Mirrored from the request
+&emsp;&emsp;&emsp;&emsp;[TokenValue](#tokenvalue)                | ✔ | [String(1,128)](#data-format) | The value of the token
+&emsp;&emsp;&emsp;&emsp;[ExpiryDateTime](#expirydatetime)        | ✔ | [ISO8601](#data-format) | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;**AmountsResp**                             |  | [Object](#data-format) | Present if `Result` is "Success" or "Partial"
+&emsp;&emsp;[Currency](#currency)                      |  | [String(3,3)](#data-format) | "AUD"
+&emsp;&emsp;[AuthorizedAmount](#authorizedamount)      | ✔ | Decimal| Authorised amount which could be more, or less than the requested amount
+&emsp;&emsp;[TotalFeesAmount](#totalfeesamount)        |  | Decimal| Total of financial fees associated with the payment transaction if known at time of transaction
+&emsp;&emsp;[CashBackAmount](#cashbackamount)          |  | Decimal| Cash back paid amount
+&emsp;&emsp;[TipAmount](#tipamount)                    |  | Decimal| The amount of any tip added to the transaction
+&emsp;&emsp;[SurchargeAmount](#surchargeamount)        |  | Decimal| The amount of any surcharge added to the transaction
+&emsp;[OnlineFlag](#onlineflag)                   | ✔ | [Boolean](#data-format)| True if the transaction was processed online, false otherwise
+&emsp;**PaymentAcquirerData**                     |  | [Object](#data-format) | Data related to the response from the payment acquirer
+&emsp;&emsp;[AcquirerID](/docs/api-reference/data-model#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
+&emsp;&emsp;[MerchantID](#merchantid)                  | ✔ | [String(1,32)](#data-format) | The acquirer merchant ID (MID)
+&emsp;&emsp;[AcquirerPOIID](#acquirerPOIID)            | ✔ | [String(1,16)](#data-format) | The acquirer terminal ID (TID)
+&emsp;&emsp;**AcquirerTransactionID**                  | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | [String(1,128)](#data-format) | The acquirer transaction ID
+&emsp;&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | [ISO8601](#data-format) | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;&emsp;[ApprovalCode](#approvalcode)              | ✔ | [String(0,64)](#data-format) | The Acquirer Approval Code. Also referred to as the Authentication Code
+&emsp;&emsp;[ResponseCode](#responsecode)              | ✔ | [String(0,8)](#data-format) | The Acquirer Response Code. Also referred as the PINPad response code
+&emsp;&emsp;[STAN](#stan)                              |  | [String(1,32)](#data-format) | The Acquirer STAN if available
+&emsp;&emsp;[RRN](#rrn)                                |  | [String(1,32)](#data-format) | The Acquirer RRN if available
+&emsp;&emsp;[HostReconciliationID](#hostreconciliationid)|✔| [String(1,32)](#data-format) | Identifier of a reconciliation period with the acquirer. This normally has a date and time component in it
+&emsp;[AllowedProductCodes](#allowedproductcodes)  |  | [Array(String)](#data-format) | Present if `ErrorCondition` is "PaymentRestriction". Consists of a list of product codes corresponding to products that are purchasable with the given card. Items that exist in the basket but do not belong to this list corresponds to restricted items
+&emsp;**PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
+&emsp;&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
+&emsp;&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
+&emsp;&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 
 
 ### Display request
@@ -720,12 +739,12 @@ Display request
 
 <div style={{width:'240px'}}>Attributes</div>                  |Requ.| Format | Description |
 -----------------                                         |:----:| ------ | ----------- |
-**DisplayOutput**                                         | ✔ | Object | Object which represents the display 
- [ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag)|  | Boolean | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
- [Device](#device)                                        | ✔ | String | "CashierDisplay"
- [InfoQualify](/docs/api-reference/data-model#infoqualify)              | ✔ | String | "Status" or "Error". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
- [OutputFormat](/docs/api-reference/data-model#outputformat)            | ✔ | String | "Text"
- [Text](#text)                                            | ✔ | String | Single line of text to display
+**DisplayOutput**                                         | ✔ | [Object](#data-format) | Object which represents the display 
+&emsp;[ResponseRequiredFlag](/docs/api-reference/data-model#responserequiredflag)|  | [Boolean](#data-format) | Indicates if the POI System requires a `DisplayResponse` to be sent for this `DisplayRequest`
+&emsp;[Device](#device)                                        | ✔ | [Enum](#data-format) | "CashierDisplay"
+&emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)              | ✔ | [Enum](#data-format) | "Status" or "Error". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
+&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)            | ✔ | [String(0,32)](#data-format) | "Text"
+&emsp;[Text](#text)                                            | ✔ | [String(1,256)](#data-format) | Single line of text to display
 
 #### Display response
 
@@ -761,12 +780,12 @@ The Sale System is expected to send a `DisplayResponse` if one or more displays 
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format | Description |
 -----------------                             |:----:| ------ | ----------- |
-*OutputResult*                                | ✔ | Object | Response for Device/InfoQualify pair where corresponding `ResponseRequiredFlag` in the `DisplayRequest` is set to true.
- [Device](#device)                            | ✔ | String | Mirrored from display request
- [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | Mirrored from display request
- [Result](/docs/api-reference/data-model#result)                            | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+*OutputResult*                                | ✔ | [Object](#data-format) | Response for Device/InfoQualify pair where corresponding `ResponseRequiredFlag` in the `DisplayRequest` is set to true.
+&emsp;[Device](#device)                            | ✔ | [String(1,128)](#data-format) | Mirrored from display request
+&emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [Enum](#data-format) | Mirrored from display request
+&emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 
 
 
@@ -828,24 +847,24 @@ Input request
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-**DisplayOutput**                             |  | Object | Information to display and the way to process the display.
- [Device](#device)                            | ✔ | String | "CashierDisplay"
- [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | "POIReplication". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
- **OutputContent**                            | ✔ | Object | 
-  [OutputFormat](/docs/api-reference/data-model#outputformat)               | ✔ | String | "Text"
-  **OutputText**                              | ✔ | Object | Wrapper for text content
-   [Text](#text)                              | ✔ | String | Single line of text. e.g. "Signature Ok?", "Merchant Password", "Select Account Type"
- **MenuEntry**                                |  | Array  | Conditional. Array of items to be presented as a menu. Only present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetMenuEntry"
-  [OutputFormat](/docs/api-reference/data-model#outputformat)               | ✔ | String | "Text"
-  [Text](#text)                               | ✔ | String | One of the selection String items for the cashier to select from. For example: "Savings", "Cheque" and "Credit" for an account type selection.
-**InputData**                                 | ✔ | Object | Information related to an `Input` request
- [Device](#device)                            | ✔ | String | "CashierInput"
- [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | "Input" or "CustomerAssistance". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
- [InputCommand](/docs/api-reference/data-model#inputcommand)                | ✔ | String | "GetConfirmation", "Password", "TextString", "DigitString", "DecimalString", or "GetMenuEntry". See [InputCommand](/docs/api-reference/data-model#inputcommand)
- [MaxInputTime](#maxinputtime)                |  | Number | The maximum number of seconds allowed for providing input.  Note the Sale Terminal needs to abort the Input process if it receives a DisplayRequest or InputRequest whilst waiting on input from the Cashier.
- [MinLength](#minlength)                      |  | Number | The minimum number of characters allowed for entry. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
- [MaxLength](#maxlength)                      |  | Number | The maximum number of characters allowed for entry. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
- [MaskCharactersFlag](#maskcharactersflag)    |  | Boolean| If true, input should be masked with '*'. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password"
+**DisplayOutput**                             |  | [Object](#data-format) | Information to display and the way to process the display.
+&emsp;[Device](#device)                            | ✔ | [Enum](#data-format) | "CashierDisplay"
+&emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [Enum](#data-format) | "POIReplication". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
+&emsp;**OutputContent**                            | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)               | ✔ | [String(0,32)](#data-format) | "Text"
+&emsp;&emsp;**OutputText**                              | ✔ | [Object](#data-format) | Wrapper for text content
+&emsp;&emsp;&emsp;[Text](#text)                              | ✔ | [String(1,256)](#data-format) | Single line of text. e.g. "Signature Ok?", "Merchant Password", "Select Account Type"
+&emsp;**MenuEntry**                                |  | [Array(Object)](#data-format)  | Conditional. Array of items to be presented as a menu. Only present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetMenuEntry"
+&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)               | ✔ | [String(0,32)](#data-format) | "Text"
+&emsp;&emsp;[Text](#text)                               | ✔ | [String(1,256)](#data-format) | One of the selection String items for the cashier to select from. For example: "Savings", "Cheque" and "Credit" for an account type selection.
+**InputData**                                 | ✔ | [Object](#data-format) | Information related to an `Input` request
+&emsp;[Device](#device)                            | ✔ | [Enum](#data-format) | "CashierInput"
+&emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [Enum](#data-format) | "Input" or "CustomerAssistance". See [InfoQualify](/docs/api-reference/data-model#infoqualify)
+&emsp;[InputCommand](/docs/api-reference/data-model#inputcommand)                | ✔ | [Enum](#data-format) | "GetConfirmation", "Password", "TextString", "DigitString", "DecimalString", or "GetMenuEntry". See [InputCommand](/docs/api-reference/data-model#inputcommand)
+&emsp;[MaxInputTime](#maxinputtime)                |  | [Integer(1,999)](#data-format) | The maximum number of seconds allowed for providing input.  Note the Sale Terminal needs to abort the Input process if it receives a DisplayRequest or InputRequest whilst waiting on input from the Cashier.
+&emsp;[MinLength](#minlength)                      |  | [Integer(1,999)](#data-format) | The minimum number of characters allowed for entry. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
+&emsp;[MaxLength](#maxlength)                      |  | [Integer(1,999)](#data-format) | The maximum number of characters allowed for entry. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password", "TextString", "DigitString", or "DecimalString"
+&emsp;[MaskCharactersFlag](#maskcharactersflag)    |  | [Boolean](#data-format)| If true, input should be masked with '*'. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "Password"
 
 #### Input response
 
@@ -902,26 +921,26 @@ Input response
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-*OutputResult*                                |    | Object | Present if `DisplayOutput` is present in the request
- [Device](#device)                            | ✔ | String | Mirrored from input request
- [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | Mirrored from input request
- *Response*                                   | ✔ | Object | 
-  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-  [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-  [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
-*InputResult*                                 | ✔ | Object | Information related to the result the input 
- [Device](#device)                            | ✔ | String | Mirrored from input request
- [InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | String | Mirrored from input request
- *Response*                                   | ✔ | Object | 
-  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-  [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-  [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
- *Input*                                      | ✔ | Object | 
-  [InputCommand](/docs/api-reference/data-model#inputcommand)               |    | String | Mirrored from input request
-  [ConfirmedFlag](#confirmedflag)             |    | Boolean| Result of GetConfirmation input request. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetConfirmation"
-  [MenuEntryNumber](#menuentrynumber)         |    | Number | A number from 1 to n, when n is total number of objects in `MenuEntry` of `InputRequest`. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "GetMenuEntry". Not allowed, otherwise
-  [TextInput](#textinput)                     |    | String | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "TextString" or "DecimalString". Not allowed, otherwise
-  [DigitInput](#digitinput)                   |    | Number | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "DigitString". Not allowed, otherwise
+*OutputResult*                                |    | [Object](#data-format) | Present if `DisplayOutput` is present in the request
+&emsp;[Device](#device)                            | ✔ | [Enum](#data-format) | Mirrored from input request
+&emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [String(1,128)](#data-format) | Mirrored from input request
+&emsp;*Response*                                   | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+*InputResult*                                 | ✔ | [Object](#data-format) | Information related to the result the input 
+&emsp;[Device](#device)                            | ✔ | [String(1,128)](#data-format) | Mirrored from input request
+&emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [Enum](#data-format) | Mirrored from input request
+&emsp;*Response*                                   | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;*Input*                                      | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[InputCommand](/docs/api-reference/data-model#inputcommand)               |    | String | Mirrored from input request
+&emsp;&emsp;[ConfirmedFlag](#confirmedflag)             |    | [Boolean](#data-format)| Result of GetConfirmation input request. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetConfirmation"
+&emsp;&emsp;[MenuEntryNumber](#menuentrynumber)         |    | [Integer(1,999)](#data-format) | A number from 1 to n, when n is total number of objects in `MenuEntry` of `InputRequest`. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "GetMenuEntry". Not allowed, otherwise
+&emsp;&emsp;[TextInput](#textinput)                     |    | [String(1,1024)](#data-format) | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "TextString" or "DecimalString". Not allowed, otherwise
+&emsp;&emsp;[DigitInput](#digitinput)                   |    | [Decimal(0,999999.99)](#data-format) | Value entered by the Cashier. Mandatory, if [InputCommand](/docs/api-reference/data-model#inputcommand) is "DigitString". Not allowed, otherwise
 
 
 ### Print
@@ -964,13 +983,13 @@ Print request
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
- **PrintOutput**                              | ✔ | Object | 
-  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
-  [IntegratedPrintFlag](#integratedprintflag) |  |Boolean| True if the receipt should be included with the Sale receipt, false if the receipt should be printed now and paper cut (e.g. for a signature receipt)
-  [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
-  **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
-   [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
-   [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+&emsp;**PrintOutput**                              | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
+&emsp;&emsp;[IntegratedPrintFlag](#integratedprintflag) |  |[Boolean](#data-format)| True if the receipt should be included with the Sale receipt, false if the receipt should be printed now and paper cut (e.g. for a signature receipt)
+&emsp;&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
+&emsp;&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
+&emsp;&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 
 
 #### Print response
@@ -998,11 +1017,11 @@ Print response
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-[DocumentQualifier](#documentqualifier)       | ✔ | String | Mirrored from print request
- *Response*                                   | ✔ | Object | 
-  [Result](/docs/api-reference/data-model#result)                           | ✔ | String | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-  [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-  [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+[DocumentQualifier](#documentqualifier)       | ✔ | [Enum](#data-format) | Mirrored from print request
+&emsp;*Response*                                   | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
+&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 
 
 
@@ -1035,11 +1054,11 @@ Transaction status request
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-*MessageReference*                            |    | Object | Identification of a previous POI transaction. Present if it contains any data. 
- [MessageCategory](/docs/api-reference/data-model#messagecategory)          |    | String | "Payment"
- [ServiceID](/docs/api-reference/data-model#serviceid)                      |    | String | The [ServiceID](/docs/api-reference/data-model#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
- [SaleID](/docs/api-reference/data-model#saleid)                            |    | String | The [SaleID](/docs/api-reference/data-model#saleid) of the transaction to retrieve the status of. Only required if different from the [SaleID](/docs/api-reference/data-model#saleid) provided in the `MessageHeader`
- [POIID](/docs/api-reference/data-model#poiid)                              |    | String | The [POIID](/docs/api-reference/data-model#poiid) of the transaction to retrieve the status of. Only required if different from the [POIID](/docs/api-reference/data-model#poiid) provided in the `MessageHeader`
+*MessageReference*                            |    | [Object](#data-format) | Identification of a previous POI transaction. Present if it contains any data. 
+&emsp;[MessageCategory](/docs/api-reference/data-model#messagecategory)          |    | [Enum](#data-format) | "Payment"
+&emsp;[ServiceID](/docs/api-reference/data-model#serviceid)                      |    | [UUID](#data-format) | The [ServiceID](/docs/api-reference/data-model#serviceid) of the transaction to retrieve the status of. If not included the last payment status is returned.
+&emsp;[SaleID](/docs/api-reference/data-model#saleid)                            |    | [String(1,128)](#data-format) | The [SaleID](/docs/api-reference/data-model#saleid) of the transaction to retrieve the status of. Only required if different from the [SaleID](/docs/api-reference/data-model#saleid) provided in the `MessageHeader`
+&emsp;[POIID](/docs/api-reference/data-model#poiid)                              |    | [String(1,128)](#data-format) | The [POIID](/docs/api-reference/data-model#poiid) of the transaction to retrieve the status of. Only required if different from the [POIID](/docs/api-reference/data-model#poiid) provided in the `MessageHeader`
 
 
 #### Transaction status response
@@ -1079,18 +1098,18 @@ Transaction status response
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-*Response*                                    | ✔ | Object | Object indicating the result of the payment
- [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
-*MessageReference*                            |  | Object | Identification of a previous POI transaction. Present if `Result` is "Success", or `Result` is "Failure" and `ErrorCondition` is "InProgress"
- [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | Mirrored from request
- [ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | String | Mirrored from request, or `ServiceID` of last transaction if not present in request.
- [SaleID](/docs/api-reference/data-model#saleid)                            |  | String | Mirrored from request, but only if present in the request
- [POIID](/docs/api-reference/data-model#poiid)                              |  | String | Mirrored from request, but only if present in the request
-*RepeatedMessageResponse*                     |  | Object | Present if `Result` is "Success"
- *MessageHeader*                              | ✔ | Object | `MessageHeader` of the requested payment
- *PaymentResponse*                            | ✔ | Object | `PaymentResponse` of the requested payment
+*Response*                                    | ✔ | [Object](#data-format) | Object indicating the result of the payment
+&emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+*MessageReference*                            |  | [Object](#data-format) | Identification of a previous POI transaction. Present if `Result` is "Success", or `Result` is "Failure" and `ErrorCondition` is "InProgress"
+&emsp;[MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | [Enum](#data-format) | Mirrored from request
+&emsp;[ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | [UUID](#data-format) | Mirrored from request, or `ServiceID` of last transaction if not present in request.
+&emsp;[SaleID](/docs/api-reference/data-model#saleid)                            |  | [String(1,128)](#data-format) | Mirrored from request, but only if present in the request
+&emsp;[POIID](/docs/api-reference/data-model#poiid)                              |  | [String(1,128)](#data-format) | Mirrored from request, but only if present in the request
+*RepeatedMessageResponse*                     |  | [Object](#data-format) | Present if `Result` is "Success"
+&emsp;*MessageHeader*                              | ✔ | [Object](#data-format) | `MessageHeader` of the requested payment
+&emsp;*PaymentResponse*                            | ✔ | [Object](#data-format) | `PaymentResponse` of the requested payment
 
 
 ### Abort transaction
@@ -1129,12 +1148,12 @@ Abort transaction request
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-*MessageReference*                            | ✔ | Object | Identification of a POI transaction
- [MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Payment" or "CardAcquisition"
- [ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | String | The [ServiceID](/docs/api-reference/data-model#serviceid) of the transaction to cancel
- [SaleID](/docs/api-reference/data-model#saleid)                            |  | String | The [SaleID](/docs/api-reference/data-model#saleid) of the transaction to cancel. Only required if different from the [SaleID](/docs/api-reference/data-model#saleid) provided in the `MessageHeader`
- [POIID](/docs/api-reference/data-model#poiid)                              |  | String | The [POIID](/docs/api-reference/data-model#poiid) of the transaction to cancel. Only required if different from the [POIID](/docs/api-reference/data-model#poiid) provided in the `MessageHeader`
-[AbortReason](#abortreason)                   | ✔ | String | Any text describing the reason for cancelling the transaction. For example, "User Cancel"
+*MessageReference*                            | ✔ | [Object](#data-format) | Identification of a POI transaction
+&emsp;[MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | [Enum](#data-format) | "Payment" or "CardAcquisition"
+&emsp;[ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | [UUID](#data-format) | The [ServiceID](/docs/api-reference/data-model#serviceid) of the transaction to cancel
+&emsp;[SaleID](/docs/api-reference/data-model#saleid)                            |  | [String(1,128)](#data-format) | The [SaleID](/docs/api-reference/data-model#saleid) of the transaction to cancel. Only required if different from the [SaleID](/docs/api-reference/data-model#saleid) provided in the `MessageHeader`
+&emsp;[POIID](/docs/api-reference/data-model#poiid)                              |  | [String(1,128)](#data-format) | The [POIID](/docs/api-reference/data-model#poiid) of the transaction to cancel. Only required if different from the [POIID](/docs/api-reference/data-model#poiid) provided in the `MessageHeader`
+[AbortReason](#abortreason)                   | ✔ | [String(1,256)](#data-format) | Any text describing the reason for cancelling the transaction. For example, "User Cancel"
 
 
 #### Abort transaction response
@@ -1167,9 +1186,9 @@ Abort transaction response
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
- [TimeStamp](/docs/api-reference/data-model#timestamp)                      | ✔ | String | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- [EventToNotify](/docs/api-reference/data-model#eventtonotify)              | ✔ | String | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
- [EventDetails](/docs/api-reference/data-model#eventdetails)                | ✔ | String | Extra detail on the reason for the event
+&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                      | ✔ | [ISO8601](#data-format) | Time of the event on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;[EventToNotify](/docs/api-reference/data-model#eventtonotify)              | ✔ | [Enum](#data-format) | "Reject" if the abort request cannot be accepted (e.g. message format error, `ServiceId` not found). "CompletedMessage" if payment has already completed.
+&emsp;[EventDetails](/docs/api-reference/data-model#eventdetails)                | ✔ | [String(1,1024)](#data-format) | Extra detail on the reason for the event
 
 
 ### Reconciliation
@@ -1195,8 +1214,8 @@ Reconciliation request
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-[ReconciliationType](#reconciliationtype)     | ✔ | String | "SaleReconciliation" to close the current period, "PreviousReconciliation" to request the result of a previous reconciliation
-[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |   | String | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
+[ReconciliationType](#reconciliationtype)     | ✔ | [Enum](#data-format) | "SaleReconciliation" to close the current period, "PreviousReconciliation" to request the result of a previous reconciliation
+[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |   | [String(1,128)](#data-format) | Present if ReconciliationType is "PreviousReconciliation". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
 
 
 #### Reconciliation response
@@ -1244,23 +1263,23 @@ Reconciliation response
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-*Response*                                    | ✔ | Object | Object indicating the result of the login
- [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
-[ReconciliationType](#reconciliationtype)     | ✔ | String | Mirrored from request
-[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |  | String | Present if `Result` is "Success". The `ReconciliationID` of the period requested
-*TransactionTotals*                           |  | Array | Present if `Result` is "Success". An array of totals grouped by card brand, then operator, then shift, then TotalsGroupID, then payment currency.
- [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)| ✔ | String | "Card" (card payment) or "Mobile" (phone/QR code payments)
- [CardBrand](/docs/api-reference/data-model#cardbrand)                      |  | String | A card brand used during this reconciliation period 
- [OperatorID](/docs/api-reference/data-model#operatorid)                    |  | String | An operator id used during this reconciliation period
- [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | String | A shift number used during the reconciliation period
- [TotalsGroupID](/docs/api-reference/data-model#totalsgroupid)              |  | String | A custom grouping of transactions as defined by the Sale System
- [PaymentCurrency](/docs/api-reference/data-model#paymentcurrency)          |  | String | "AUD"
- *PaymentTotals*                              |  | Array | An array [0..10] of totals grouped by transaction payment type. Present if both `TransactionCount` and `TransactionAmount` are not equal to zero
-  [TransactionType](/docs/api-reference/data-model#transactiontype)         |  | String | Transaction type for this payment. See [TransactionType](/docs/api-reference/data-model#transactiontype)
-  [TransactionCount](#transactioncount)       |  | String | The number of transactions for the transaction type for the current grouping of transactions
-  [TransactionAmount](#transactionamount)     |  | Number | The total amount of transactions for the transaction type for the current grouping of transactions
+*Response*                                    | ✔ | [Object](#data-format) | Object indicating the result of the login
+&emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+[ReconciliationType](#reconciliationtype)     | ✔ | [Enum](#data-format) | Mirrored from request
+[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |  | [String(1,128)](#data-format) | Present if `Result` is "Success". The `ReconciliationID` of the period requested
+*TransactionTotals*                           |  | [Array(Object)](#data-format) | Present if `Result` is "Success". An array of totals grouped by card brand, then operator, then shift, then TotalsGroupID, then payment currency.
+&emsp;[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)| ✔ | [Enum](#data-format) | "Card" (card payment) or "Mobile" (phone/QR code payments)
+&emsp;[CardBrand](/docs/api-reference/data-model#cardbrand)                      |  | [String(1,128)](#data-format) | A card brand used during this reconciliation period 
+&emsp;[OperatorID](/docs/api-reference/data-model#operatorid)                    |  | [String(1,128)](#data-format) | An operator id used during this reconciliation period
+&emsp;[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | [String(1,128)](#data-format) | A shift number used during the reconciliation period
+&emsp;[TotalsGroupID](/docs/api-reference/data-model#totalsgroupid)              |  | [String(1,128)](#data-format) | A custom grouping of transactions as defined by the Sale System
+&emsp;[PaymentCurrency](/docs/api-reference/data-model#paymentcurrency)          |  | [String(0,4)](#data-format) | "AUD"
+&emsp;*PaymentTotals*                              |  | Array | An array [0..10] of totals grouped by transaction payment type. Present if both `TransactionCount` and `TransactionAmount` are not equal to zero
+&emsp;&emsp;[TransactionType](/docs/api-reference/data-model#transactiontype)         |  | String | Transaction type for this payment. See [TransactionType](/docs/api-reference/data-model#transactiontype)
+&emsp;&emsp;[TransactionCount](#transactioncount)       |  | String | The number of transactions for the transaction type for the current grouping of transactions
+&emsp;&emsp;[TransactionAmount](#transactionamount)     |  | Number | The total amount of transactions for the transaction type for the current grouping of transactions
  
 
 ### Card acquisition
@@ -1313,21 +1332,21 @@ Card acquisition request
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-*SaleData*                                    | ✔ | Object | Object Sale System information attached to this payment
- [OperatorID](/docs/api-reference/data-model#operatorid)                    |  | String | Only required if different from Login Request
- [OperatorLanguage](#operatorlanguage)        |  | String | Set to "en"
- [ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | String | Only required if different from Login Request
- [CustomerLanguage](#customerlanguage)        |  | String | Set to "en" for English
- [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)    | ✔ | String | "Customer"
- *SaleTransactionID*                          |  | Object | 
-  [TransactionID](/docs/api-reference/data-model#transactionid)             | ✔ | String | Unique reference for this sale ticket
-  [TimeStamp](/docs/api-reference/data-model#timestamp)                     | ✔ | String | Time of initiating the request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
- *SaleTerminalData*                           |  | Object | Define Sale System configuration. Only include if elements within have different values to those in Login Request
-  [TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment) |  | String | "Attended", "SemiAttended", or "Unattended"
-  [SaleCapabilities](/docs/api-reference/data-model#salecapabilities)       |  | Array  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
-*CardAcquisitionTransaction*                  |  | Object | Present if any of the JSON elements within are present
-  [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
-  [ForceEntryMode](/docs/api-reference/data-model#forceentrymode)           |  | String| If present, restricts card presentment to the specified type. See [ForceEntryMode](/docs/api-reference/data-model#forceentrymode)
+*SaleData*                                    | ✔ | [Object](#data-format) | Object Sale System information attached to this payment
+&emsp;[OperatorID](/docs/api-reference/data-model#operatorid)                    |  | [String(1,128)](#data-format) | Only required if different from Login Request
+&emsp;[OperatorLanguage](#operatorlanguage)        |  | [String(2,8)](#data-format) | Set to "en"
+&emsp;[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | [String(1,128)](#data-format) | Only required if different from Login Request
+&emsp;[CustomerLanguage](#customerlanguage)        |  | [String(2,8)](#data-format) | Set to "en" for English
+&emsp;[TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)    | ✔ | [Enum](#data-format) | "Customer"
+&emsp;*SaleTransactionID*                          |  | [Object](#data-format) | 
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)             | ✔ | [String(1,128)](#data-format) | Unique reference for this sale ticket
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                     | ✔ | [ISO8601](#data-format) | Time of initiating the request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+&emsp;*SaleTerminalData*                           |  | [Object](#data-format) | Define Sale System configuration. Only include if elements within have different values to those in Login Request
+&emsp;&emsp;[TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment) |  | [Enum](#data-format) | "Attended", "SemiAttended", or "Unattended"
+&emsp;&emsp;[SaleCapabilities](/docs/api-reference/data-model#salecapabilities)       |  | [Array(Enum)](#data-format)  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
+*CardAcquisitionTransaction*                  |  | [Object](#data-format) | Present if any of the JSON elements within are present
+&emsp;&emsp;[AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | [Array(String)](#data-format)  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+&emsp;&emsp;[ForceEntryMode](/docs/api-reference/data-model#forceentrymode)           |  | [Enum](#data-format)| If present, restricts card presentment to the specified type. See [ForceEntryMode](/docs/api-reference/data-model#forceentrymode)
 
 #### Card acquisition response
 
@@ -1377,27 +1396,27 @@ Card acquisition response
 
 <div style={{width:'240px'}}>Attributes</div>      |Requ.| Format  | Description |
 -----------------                             |:----:| ------ | ----------- |
-**Response**                                    | ✔ | Object | Object indicating the result of the login
- [Result](/docs/api-reference/data-model#result)                            | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
- [ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
- [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
-**SaleData**                                 | ✔ | Object | 
- **SaleTransactionID**                       | ✔ | Object | 
-  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | Mirrored from the request
-  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Mirrored from the request
- [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | String | Mirrored from the request
-**POIData**                                  | ✔ | Object | 
- **POITransactionID**                        | ✔ | Object | 
-  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | A unique transaction id from the POI system
-  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
- **[PaymentInstrumentData](/docs/api-reference/data-model#paymentinstrumentdata)** |  | Object | Object with represents card details for token or manually enter card details. 
-[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)
-**CardData**                               |  | Object | 
- [EntryMode](/docs/api-reference/data-model#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
- [MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
- **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](/docs/api-reference/data-model#entrymode) is "File". Object with identifies the payment token. 
-  [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
-  [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
+**Response**                                    | ✔ | [Object](#data-format) | Object indicating the result of the login
+&emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+**SaleData**                                 | ✔ | [Object](#data-format) | 
+&emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Mirrored from the request
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Mirrored from the request
+&emsp;[SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | [String(1,128)](#data-format) | Mirrored from the request
+**POIData**                                  | ✔ | [Object](#data-format) | 
+&emsp;**POITransactionID**                        | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | A unique transaction id from the POI system
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;**[PaymentInstrumentData](/docs/api-reference/data-model#paymentinstrumentdata)** |  | [Object](#data-format) | Object with represents card details for token or manually enter card details. 
+[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)|  | [Enum](#data-format) | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype)
+**CardData**                               |  | [Object](#data-format) | 
+&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   |  | [Enum](#data-format) | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
+&emsp;[MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | [String(1,64)](#data-format) | PAN masked with dots, first 6 and last 4 digits visible
+&emsp;**PaymentToken**                          | ✔ | [Object](#data-format) | Only present if [EntryMode](/docs/api-reference/data-model#entrymode) is "File". Object with identifies the payment token. 
+&emsp;&emsp;[TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
+&emsp;&emsp;[TokenValue](#tokenvalue)                | ✔ | [String(1,128)](#data-format) | Token previously returned from the POI System in the payment, or card acquisition response 
 
 
 
@@ -1634,23 +1653,16 @@ Array of key/type/value objects containing additional information.
 
 CustomFields are defined under the *PaymentRequest* (for additional Payment information) or *SaleItem* (for additional Sale Item information).
 
-| <div style={{width:'180px'}}>Field Name</div> | Type | Description |
+|Field Name| Type | Description |
 -----------------  | ------ | ----------- |
-Key                | String | Defines a unique name for the `Value`.              |
-|                   |        | For Fuel, please refer to the [Fuel EFT Codes](#fuel-eft-codes).              |
-Type               | Enum   | The content of `Value` represented as a string. |
-                   |        | Available values:                               |
-                   |        |    - "integer": `Value` an integral number (represented as a string) |              
-                   |        |    - "number": `Value` contains any numeric type. Either integer or floating point. (represented as a string)|
-                   |        |    - "string": `Value` contains a string of characters |
-                   |        |    - "array": `Value` contains a json array of string  |
-                   |        |    - "object": `Value` contains a json object|
-`Value`            | String | The value represented as a string |
+Key                | [String(1,128)](#data-format) | Defines a unique name for the `Value`. <br/><br/>For Fuel, please refer to the [Fuel EFT Codes](#fuel-eft-codes).              |
+Type               | [Enum](#data-format)   | The content of `Value` represented as a string. Available values:<ul><li>"integer": `Value` an integral number (represented as a string)</li><li>"number": `Value` contains any numeric type. Either integer or floating point. (represented as a string)</li><li>"string": `Value` contains a string of characters</li><li>"array": `Value` contains a json array of string</li><li>"object": `Value` contains a json object</li></ul> |
+`Value`            | [String(0,1024)](#data-format) | The value represented as a string  |
 
 #### Fuel EFT Codes
 
 Available values: 
-- "FuelProductCode" //this is the BP Code
+- "FuelProductCode" 
 - "FuelProductCodeShellCard"
 - "FuelProductCodeCaltexStarCard"
 - "FuelProductCodeFleetCard"
@@ -1770,7 +1782,7 @@ Used to restrict card presentment to the specified type
 
 ### ForceOnlineFlag
 
-Boolean.
+[Boolean](#data-format).
 
 If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
 
@@ -2048,8 +2060,8 @@ Contains the following fields:
 
 <div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                        |:----:| ------ | ----------- |
-[TransactionID](#transactionid)          | ✔ | String | A unique transaction id from the POI system
-[TimeStamp](#timestamp)                  | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+[TransactionID](#transactionid)          | ✔ | [String(1,128)](#data-format) | A unique transaction id from the POI system
+[TimeStamp](#timestamp)                  | ✔ | [ISO8601](#data-format) | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
 
 
 ### ProductCode
@@ -2136,34 +2148,34 @@ Object with represents card details for token or manually enter card details.
 <div style={{width:'240px'}}>Attributes</div>   | Requ.  | Format | Description |
 -----------------                          | :------: | ------ | ----------- |
 [PaymentInstrumentType](#paymentinstrumenttype)|  | String | Defaults to "Card". Indicates the card source for the payment. See [PaymentInstrumentType](#paymentinstrumenttype)
-**CardData**                               |  | Object | 
- [EntryMode](#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
- **ProtectedCardData**                     |  | Object | Only present if `EntryMode` is "Keyed"
-  [ContentType](#contenttype)              | ✔ | String | Set to "id-envelopedData"
-  **EnvelopedData**                        | ✔ | Object |  
-   [Version](#version)                     | ✔ | String | Set to "v0"
-    **Recipient**                          | ✔ | Object | 
-     **KEK**                               | ✔ | Object | 
-      [Version](#version)                  | ✔ | String | Set to "v4"
-      **KEKIdentifier**                    | ✔ | Object |
-       [KeyIdentifier](#keyidentifier)     | ✔ | String | "SpecV2TestDATKey" for test environment, and "SpecV2ProdDATKey" for production
-       [KeyVersion](#keyversion)           | ✔ | String | An incrementing value. Either a counter or date formatted as YYYYMMDDHHmmss.mmm. See [KeyVersion](#keyversion)
-      **KeyEncryptionAlgorithm**           | ✔ | Object | 
-       [Algorithm](#algorithm)             | ✔ | String | Set to "des-ede3-cbc". 
-      [EncryptedKey](#encryptedkey)        | ✔ | String | A double length 3DES key. See [EncryptedKey](#encryptedkey)
-    **EncryptedContent**                   | ✔ | Object | 
-     ContentType                           | ✔ | String | Set to "id-data"
-     **ContentEncryptionAlgorithm**        | ✔ | Object | 
-      Algorithm                            | ✔ | String | Set to "des-ede3-cbc"
-      **Parameter**                        | ✔ | Object | 
-      InitialisationVector                 | ✔ | String | An Initial Vector to use for the des-ede3-cbc encryption of the content = SensitiveCardData
-     [EncryptedData](#encrypteddata)       | ✔ | String | Encrypted data. See [EncryptedData](#encrypteddata)
- **PaymentToken**                          | ✔ | Object | Only present if [EntryMode](#entrymode) is "File". Object with identifies the payment token. 
-  [TokenRequestedType](#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
-  [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
+**CardData**                               |  | [Object](#data-format) | 
+&emsp;[EntryMode](#entrymode)                   |  | String | Only present if `PaymentInstrumentType` is "Card". "File" if a Payment Token is used, and "Keyed" for a Card Not Present transaction. 
+&emsp;**ProtectedCardData**                     |  | [Object](#data-format) | Only present if `EntryMode` is "Keyed"
+&emsp;&emsp;[ContentType](#contenttype)              | ✔ | String | Set to "id-envelopedData"
+&emsp;&emsp;**EnvelopedData**                        | ✔ | [Object](#data-format) |  
+&emsp;&emsp;&emsp;[Version](#version)                     | ✔ | String | Set to "v0"
+&emsp;&emsp;&emsp;&emsp;**Recipient**                          | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;&emsp;&emsp;**KEK**                               | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[Version](#version)                  | ✔ | String | Set to "v4"
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**KEKIdentifier**                    | ✔ | [Object](#data-format) |
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[KeyIdentifier](#keyidentifier)     | ✔ | String | "SpecV2TestDATKey" for test environment, and "SpecV2ProdDATKey" for production
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[KeyVersion](#keyversion)           | ✔ | String | An incrementing value. Either a counter or date formatted as YYYYMMDDHHmmss.mmm. See [KeyVersion](#keyversion)
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**KeyEncryptionAlgorithm**           | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[Algorithm](#algorithm)             | ✔ | String | Set to "des-ede3-cbc". 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[EncryptedKey](#encryptedkey)        | ✔ | String | A double length 3DES key. See [EncryptedKey](#encryptedkey)
+&emsp;&emsp;&emsp;&emsp;**EncryptedContent**                   | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;&emsp;&emsp;ContentType                           | ✔ | String | Set to "id-data"
+&emsp;&emsp;&emsp;&emsp;&emsp;**ContentEncryptionAlgorithm**        | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Algorithm                            | ✔ | String | Set to "des-ede3-cbc"
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Parameter**                        | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;InitialisationVector                 | ✔ | String | An Initial Vector to use for the des-ede3-cbc encryption of the content = SensitiveCardData
+&emsp;&emsp;&emsp;&emsp;&emsp;[EncryptedData](#encrypteddata)       | ✔ | String | Encrypted data. See [EncryptedData](#encrypteddata)
+&emsp;**PaymentToken**                          | ✔ | [Object](#data-format) | Only present if [EntryMode](#entrymode) is "File". [Object](#data-format) with identifies the payment token. 
+&emsp;&emsp;[TokenRequestedType](#tokenrequestedtype)| ✔ | [Enum](#data-format) | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
+&emsp;&emsp;[TokenValue](#tokenvalue)                | ✔ | [String(1,128)](#data-format) | Token previously returned from the POI System in the payment, or card acquisition response 
 
 :::warning
-Never send the SensitiveCardData object in the clear. This represents the content to be encrypted and sent within the `ProtectedCardData` element
+Never send the SensitiveCardData [Object](#data-format) in the clear. This represents the content to be encrypted and sent within the `ProtectedCardData` element
 :::
 
 **SensitiveCardData**
@@ -2191,9 +2203,9 @@ An object representing a payment token. Consists of three fields:
 
 <div style={{width:'240px'}}>Attributes</div> | Requ.  | Format | Description |
 -----------------                        | :------: | ------ | ----------- |
-[TokenRequestedType](#tokenrequestedtype)| ✔ | String | Mirrored from the request
-[TokenValue](#tokenvalue)                | ✔ | String | The value of the token
-[ExpiryDateTime](#expirydatetime)        | ✔ | String | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+[TokenRequestedType](#tokenrequestedtype)| ✔ | [Enum](#data-format) | Mirrored from the request
+[TokenValue](#tokenvalue)                | ✔ | [String(1,128)](#data-format) | The value of the token
+[ExpiryDateTime](#expirydatetime)        | ✔ | [ISO8601](#data-format) | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
 
 
 ### ProductLabel
@@ -2215,7 +2227,7 @@ Total amount requested for authorization - (including any cash back amount and t
 
 ### ResponseRequiredFlag
 
-Boolean. 
+[Boolean](#data-format). 
 
 True if the Sale System needs to respond to this `DisplayRequest` with a `DisplayResponse`. 
 
@@ -2421,7 +2433,7 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
 [Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
 [QuantityInStock](#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
 [Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
-[Restricted](#restricted)                                  |  | Boolean| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
+[Restricted](#restricted)                                  |  | [Boolean](#data-format)| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
 [PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
 [ImageURLs](#productimageurls)                             |  | Array | String array of images URLs for this sale item
 [Style](#style)                                            |  | String | Style of the sale item
@@ -2626,8 +2638,8 @@ Contains the following fields:
 
 <div style={{width:'240px'}}>Attributes</div> |Requ.| Format | Description |
 -----------------                        |:----:| ------ | ----------- |
-[TransactionID](#transactionid)            | ✔ | String | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#transactionid)
-[TimeStamp](#timestamp)                    | ✔ | String | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+[TransactionID](#transactionid)            | ✔ | [String(1,128)](#data-format) | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](#transactionid)
+[TimeStamp](#timestamp)                    | ✔ | [ISO8601](#data-format) | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 
 
 

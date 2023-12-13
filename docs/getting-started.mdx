@@ -1079,16 +1079,16 @@ Fuel item details are below:
 
 Attribute   | Requ.  | Format | Description |
 -----------------                          | :------: | ------ | ----------- |
-[ItemID](#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-[ProductCode](#productcode)                | ✔ | String  | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-[UnitOfMeasure](#unitofmeasure)            | ✔ | String  | Unit of measure of the `Quantity`. Set to "Litre"
-[Quantity](#quantity)                      | ✔ | Decimal | Number of litres as read from the pump (decimal, maximum precision 6.8)
-[UnitPrice](#unitprice)                    | ✔ | Decimal | Price per litre from the pump (decimal, maximum precision 6.8)
-[ItemAmount](#itemamount)                  | ✔ | Decimal | The amount of the fuel as presented to the cardholder (decimal 9.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
-[ProductLabel](#productlabel)              | ✔ | String  | A short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-[Categories](#categories)                  |    | Array   | Array of categories. Top level "main" category at categories[0]. See [Categories](#categories) for more information.
-[Tags](#sale-item-tags)                    |    | Array   | String array with descriptive tags for the product
-[CustomFields](/docs/api-reference/data-model#customfields)              | ✔ | Array   | Array of key/type/value objects which define the [EFT codes](/docs/api-reference/data-model#fuel-eft-codes) for the item.
+[ItemID](#itemid)                          | ✔ | [Integer(0,9999)](/docs/api-reference/data-model#data-format) | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+[ProductCode](#productcode)                | ✔ | [String(0,128)](/docs/api-reference/data-model#data-format)  | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+[UnitOfMeasure](#unitofmeasure)            | ✔ | [Enum](/docs/api-reference/data-model#data-format)  | Unit of measure of the `Quantity`. Set to "Litre"
+[Quantity](#quantity)                      | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Number of litres as read from the pump (decimal, maximum precision 6.8)
+[UnitPrice](#unitprice)                    | ✔ | [Currency(0.01,999999.99)](/docs/api-reference/data-model#data-format) | Price per litre from the pump (decimal, maximum precision 6.8)
+[ItemAmount](#itemamount)                  | ✔ | [Currency(0.01,999999.99)](/docs/api-reference/data-model#data-format) | The amount of the fuel as presented to the cardholder (decimal 6.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
+[ProductLabel](#productlabel)              | ✔ | [String(0,1024)](/docs/api-reference/data-model#data-format)  | A short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+[Categories](#categories)                  |    | [Array(String)](/docs/api-reference/data-model#data-format)   | Array of categories. Top level "main" category at categories[0]. See [Categories](#categories) for more information.
+[Tags](#sale-item-tags)                    |    | [Array(String)](/docs/api-reference/data-model#data-format)   | String array with descriptive tags for the product
+[CustomFields](/docs/api-reference/data-model#customfields)              | ✔ | [Array(Object)](/docs/api-reference/data-model#data-format)   | Array of key/type/value objects which define the [EFT codes](/docs/api-reference/data-model#fuel-eft-codes) for the item.
 
 <details>
 
