@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 5
 ---
 
 # Data model
@@ -1658,20 +1658,6 @@ CustomFields are defined under the *PaymentRequest* (for additional Payment info
 Key                | [String(1,128)](#data-format) | Defines a unique name for the `Value`. <br/><br/>For Fuel, please refer to the [Fuel EFT Codes](#fuel-eft-codes).              |
 Type               | [Enum](#data-format)   | The content of `Value` represented as a string. Available values:<ul><li>"integer": `Value` an integral number (represented as a string)</li><li>"number": `Value` contains any numeric type. Either integer or floating point. (represented as a string)</li><li>"string": `Value` contains a string of characters</li><li>"array": `Value` contains a json array of string</li><li>"object": `Value` contains a json object</li></ul> |
 `Value`            | [String(0,1024)](#data-format) | The value represented as a string  |
-
-#### Fuel EFT Codes
-
-Available values: 
-- "FuelProductCode" 
-- "FuelProductCodeShellCard"
-- "FuelProductCodeCaltexStarCard"
-- "FuelProductCodeFleetCard"
-- "FuelProductCodeMotorpass"
-- "FuelProductCodeUnitedFuelCard"
-- "FuelProductCodeAmpolCard"
-- "FuelProductCodeTrinityFuelCard"
-- "FuelProductCodeFreedomFuelCard"
-- "FuelProductCodeLibertyCard"
 
 
 ### DateTime
