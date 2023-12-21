@@ -154,6 +154,146 @@ MessageHeader
 
 
 
+
+### Balance inquiry
+
+:::warning
+Balance inquiry request/response currently in DRAFT status
+:::
+
+The Sale System can send a balance inquiry to instruct the POI terminal to read a card and return the outstanding balance. 
+
+#### Balance inquiry request
+
+<details>
+<summary>
+Balance inquiry request
+</summary>
+<p>
+
+```json
+{
+	"BalanceInquiryRequest": {		
+	}
+}
+```
+</p>
+</details>
+
+#### Balance inquiry response
+
+<details>
+<summary>
+Balance inquiry response
+</summary>
+<p>
+
+```json
+{
+	"BalanceInquiryResponse": {	
+		"Response": {
+			"Result": "Success | Failure",
+			"ErrorCondition": "xxx",
+			"AdditionalResponse": "xxx"
+		},	
+		"PaymentAccountStatus": {
+			"PaymentInstrumentType": "Card",
+			"PaymentInstrumentData": {
+				"PaymentInstrumentType": "xxx",
+				"CardData": {
+					"EntryMode": "xxx",
+					"PaymentBrand": "xxx",
+					"PaymentBrandId": "xxx",
+					"PaymentBrandLabel": "xxx",
+					"Account": "xxx",
+					"MaskedPAN": "xxxxxx…xxxx",
+					"PaymentToken": {
+						"TokenRequestedType": "xxx",
+						"TokenValue": "xxx",
+						"ExpiryDateTime": "xxx"
+					}
+				},
+				"StoredValueAccountID": {
+					"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+					"StoredValueProvider": "",
+					"OwnerName": "",
+					"ExpiryDate": "MMYY",
+					"EntryMode": "",
+					"IdentificationType": "",
+					"StoredValueID": ""
+				}
+			},
+			"CurrentBalance": 0.00,
+			"Currency": "AUD",
+
+			"PaymentAcquirerData": {
+				"AcquirerID": "xxx",
+				"MerchantID": "xxx",
+				"AcquirerPOIID": "xxx",
+				"AcquirerTransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"ApprovalCode": "xxx",
+				"ResponseCode": "xxx",
+				"HostReconciliationID": "xxx"
+			},
+
+		}
+	}
+}
+```
+</p>
+</details>
+
+
+<div style={{width:'240px'}}>Attributes</div>                   |Requ.  | Format                                 | Description |
+--------------------------------------------------------------- |:----: | -------------------------------------- | ----------- |
+**Response**                                                    | ✔     | [Object](#data-format)                 | Object indicating the result of the login
+&emsp;[Result](/docs/api-reference/data-model#result)           | ✔     | [Enum](#data-format)                   | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition) | | [String(0,256)](#data-format)           | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse) | | [String(0,1024)](#data-format)  | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+**PaymentAccountStatus**      
+&emsp;**PaymentInstrumentData**                                 |       | [Object](#data-format) 
+&emsp;&emsp;[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype) |  | [String(1,128)](#data-format) | "Card" or "Mobile"
+&emsp;&emsp;**CardData**                               |  | [Object](#data-format)
+&emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | [Enum](#data-format) | Indicates how the card was presented.
+&emsp;&emsp;&emsp;[PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | [String(1,128)](#data-format) | Deprecated. Use [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
+&emsp;&emsp;&emsp;[PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)         | ✔ | [String(4,4)](#data-format)   | Indicates the payment type used. 
+&emsp;&emsp;&emsp;[PaymentBrandLabel](/docs/api-reference/data-model#paymentbrandlabel)   | ✔ | [String(0,256)](#data-format) | Descriptive label of the payment type used.
+&emsp;&emsp;&emsp;[MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | [String(1,64)](#data-format) | PAN masked with dots, first 6 and last 4 digits visible
+&emsp;&emsp;&emsp;[Account](/docs/api-reference/data-model#account)                       |  | [String(1,64)](#data-format) | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
+&emsp;&emsp;**StoredValueAccountID**                               |  | [Object](#data-format) | Present if the card presented was a gift card / stored value card
+&emsp;&emsp;&emsp;[StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype)    | ✔ | [Enum](#data-format) | Type of stored value account. GiftCard | PhoneCard | Other
+&emsp;&emsp;&emsp;[StoredValueProvider](/docs/api-reference/data-model#storedvalueprovider)          |   | [String(1,256)](#data-format) | Identification of the provider of the stored value account.
+&emsp;&emsp;&emsp;[OwnerName](/docs/api-reference/data-model#ownername)                   |   | [String(1,256)](#data-format) | If available, the name of the owner of a stored value account.
+&emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   |  | [Enum](#data-format) | Indicates how the payment type was presented.
+&emsp;&emsp;&emsp;[IdentificationType](/docs/api-reference/data-model#identificationtype) | ✔ | [Enum](#data-format) | Type of account identification contained in [StoredValueID](/docs/api-reference/data-model#storedvalueid). Values are PAN | ISOTrack2 | BarCode | AccountNumber | PhoneNumber
+&emsp;&emsp;&emsp;[StoredValueID](/docs/api-reference/data-model#storedvalueid)           | ✔ | [String(128)](#data-format) | Stored value account identification
+&emsp;[CurrentBalance](#currentbalance)                                             | ✔ | [Currency(0,999999.99)](#data-format) | Balance of an account.
+&emsp;[Currency](#currency)                                                         | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
+&emsp;**PaymentAcquirerData**                     |  | [Object](#data-format) | Data related to the response from the payment acquirer
+&emsp;&emsp;[AcquirerID](/docs/api-reference/data-model#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
+&emsp;&emsp;[MerchantID](#merchantid)                  | ✔ | [String(1,32)](#data-format) | The acquirer merchant ID (MID)
+&emsp;&emsp;[AcquirerPOIID](#acquirerPOIID)            | ✔ | [String(1,16)](#data-format) | The acquirer terminal ID (TID)
+&emsp;&emsp;**AcquirerTransactionID**                  | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | [String(1,128)](#data-format) | The acquirer transaction ID
+&emsp;&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | [ISO8601](#data-format) | Timestamp from the acquirer, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;&emsp;[ApprovalCode](#approvalcode)              | ✔ | [String(0,64)](#data-format) | The Acquirer Approval Code. Also referred to as the Authentication Code
+&emsp;&emsp;[ResponseCode](#responsecode)              | ✔ | [String(0,8)](#data-format) | The Acquirer Response Code. Also referred as the PINPad response code
+&emsp;&emsp;[STAN](#stan)                              |  | [String(1,32)](#data-format) | The Acquirer STAN if available
+&emsp;&emsp;[RRN](#rrn)                                |  | [String(1,32)](#data-format) | The Acquirer RRN if available
+&emsp;&emsp;[HostReconciliationID](#hostreconciliationid)|✔| [String(1,32)](#data-format) | Identifier of a reconciliation period with the acquirer. This normally has a date and time component in it
+&emsp;**PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
+&emsp;&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
+&emsp;&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
+&emsp;&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
+&emsp;&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
+&emsp;&emsp;[RequestedAmount](#requestedamount)        | ✔ | [Currency(0.01,999999.99)](#data-format)| The requested amount for the transaction sale items, including cash back and tip requested
+
+
 ### Login 
 
 The Sale System sends a Login request when it is ready to pair with a POI terminal. 
@@ -270,8 +410,8 @@ Login response
 -----------------                            | :--------: | ------ | ----------- |
 **Response**                                 | ✔ | [Object](#data-format) | Object indicating the result of the login
 &emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **POISystemData**                            |    | [Object](#data-format) | Only present when `Result` is "Success"
 &emsp;[DateTime](/docs/api-reference/data-model#datetime)                       | ✔ | [ISO8601](#data-format) | Time on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
 &emsp;[TokenRequestStatus](#tokenrequeststatus)   | ✔ | [Boolean](#data-format)| True if POI tokenisation of PANs is available and usable
@@ -345,8 +485,8 @@ Logout response
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | [Object](#data-format) | Object which represents the result of the response
 &emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when result is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information of possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when result is "Failure". Possible values are "MessageFormat", "Busy", "DeviceOut", "UnavailableService" and others. Note the Sale System should handle error conditions outside the ones documented in this specification.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when result is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information of possible values. 
 
 
 ### Payment 
@@ -464,9 +604,15 @@ Payment request
 				"PaymentInstrumentType": "xxx",
 				"CardData": {
 					"EntryMode": "xxx",
+					"PaymentBrand": "xxx",
+					"PaymentBrandId": "xxx",
+					"PaymentBrandLabel": "xxx",
+					"Account": "xxx",
+					"MaskedPAN": "xxxxxx…xxxx",
 					"PaymentToken": {
 						"TokenRequestedType": "xxx",
-						"TokenValue": "xxx"
+						"TokenValue": "xxx",
+						"ExpiryDateTime": "xxx"
 					}
 				}
 			}
@@ -501,7 +647,7 @@ Payment request
 &emsp;&emsp;[TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)            |  | [String(1,256)](#data-format) | Groups transactions in a login session
 **PaymentTransaction**                       | ✔ | [Object](#data-format) | 
 &emsp;**AmountsReq**                               | ✔ | [Object](#data-format) | Object which contains the various components which make up the payment amount
-&emsp;&emsp;[Currency](#currency)                      | ✔ | [String(2,8)](#data-format) | Three character currency code. Set to "AUD"
+&emsp;&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
 &emsp;&emsp;[RequestedAmount](#requestedamount)        | ✔ | [Currency(0.01,999999.99)](#data-format)| The requested amount for the transaction sale items, including cash back and tip requested
 &emsp;&emsp;[CashBackAmount](#cashbackamount)          |  | [Currency(0.01,999999.99)](#data-format) | The Cash back amount. Only if cash back is included in the transaction by the Sale System
 &emsp;&emsp;[TipAmount](#tipamount)                    |  | [Currency(0.01,999999.99)](#data-format) | The Tip amount. Only if tip is included in the transaction.  Setting TipAmount to 0 will display the Tip Entry screen in the POI Terminal.  Do not set TipAmount to 0 if you don't want the Tip Entry screen to be displayed in the POI terminal.
@@ -592,6 +738,8 @@ Payment response
 				"CardData": {
 					"EntryMode": "xxx",
 					"PaymentBrand": "xxx",
+					"PaymentBrandId": "xxx",
+					"PaymentBrandLabel": "xxx",
 					"Account": "xxx",
 					"MaskedPAN": "xxxxxx…xxxx",
 					"PaymentToken": {
@@ -649,8 +797,8 @@ Payment response
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | [Object](#data-format) | Object indicating the result of the payment
 &emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | [Object](#data-format) | 
 &emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) | 
 &emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Mirrored from the request
@@ -666,8 +814,10 @@ Payment response
 &emsp;**PaymentInstrumentData**                   |  | [Object](#data-format) 
 &emsp;&emsp;[PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype) |  | [String(1,128)](#data-format) | "Card" or "Mobile"
 &emsp;&emsp;**CardData**                               |  | [Object](#data-format)
-&emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | [String(1,128)](#data-format) | Indicates how the card was presented. See [EntryMode](/docs/api-reference/data-model#entrymode)
-&emsp;&emsp;&emsp;[PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | [String(1,128)](#data-format) | Indicates the card type used. See [PaymentBrand](/docs/api-reference/data-model#paymentbrand)
+&emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | [String(1,128)](#data-format) | Indicates how the card was presented.
+&emsp;&emsp;&emsp;[PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | [String(1,128)](#data-format) | Deprecated. Use [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
+&emsp;&emsp;&emsp;[PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)         | ✔ | [String(4,4)](#data-format)   | Indicates the payment type used. 
+&emsp;&emsp;&emsp;[PaymentBrandLabel](/docs/api-reference/data-model#paymentbrandlabel)   | ✔ | [String(0,256)](#data-format) | Descriptive label of the payment type used.
 &emsp;&emsp;&emsp;[MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | [String(1,64)](#data-format) | PAN masked with dots, first 6 and last 4 digits visible
 &emsp;&emsp;&emsp;[Account](/docs/api-reference/data-model#account)                       |  | [String(1,64)](#data-format) | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
 &emsp;&emsp;&emsp;**PaymentToken**                          |  | [Object](#data-format) | Object representing a token. Only present if token was requested
@@ -675,7 +825,7 @@ Payment response
 &emsp;&emsp;&emsp;&emsp;[TokenValue](#tokenvalue)                | ✔ | [String(1,128)](#data-format) | The value of the token
 &emsp;&emsp;&emsp;&emsp;[ExpiryDateTime](#expirydatetime)        | ✔ | [ISO8601](#data-format) | Expiry of the token, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
 &emsp;**AmountsResp**                             |  | [Object](#data-format) | Present if `Result` is "Success" or "Partial"
-&emsp;&emsp;[Currency](#currency)                      |  | [String(3,3)](#data-format) | "AUD"
+&emsp;&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
 &emsp;&emsp;[AuthorizedAmount](#authorizedamount)      | ✔ | Decimal| Authorised amount which could be more, or less than the requested amount
 &emsp;&emsp;[TotalFeesAmount](#totalfeesamount)        |  | Decimal| Total of financial fees associated with the payment transaction if known at time of transaction
 &emsp;&emsp;[CashBackAmount](#cashbackamount)          |  | Decimal| Cash back paid amount
@@ -784,8 +934,8 @@ The Sale System is expected to send a `DisplayResponse` if one or more displays 
 &emsp;[Device](#device)                            | ✔ | [String(1,128)](#data-format) | Mirrored from display request
 &emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [Enum](#data-format) | Mirrored from display request
 &emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 
 
 
@@ -926,15 +1076,15 @@ Input response
 &emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [String(1,128)](#data-format) | Mirrored from input request
 &emsp;*Response*                                   | ✔ | [Object](#data-format) | 
 &emsp;&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 *InputResult*                                 | ✔ | [Object](#data-format) | Information related to the result the input 
 &emsp;[Device](#device)                            | ✔ | [String(1,128)](#data-format) | Mirrored from input request
 &emsp;[InfoQualify](/docs/api-reference/data-model#infoqualify)                  | ✔ | [Enum](#data-format) | Mirrored from input request
 &emsp;*Response*                                   | ✔ | [Object](#data-format) | 
 &emsp;&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 &emsp;*Input*                                      | ✔ | [Object](#data-format) | 
 &emsp;&emsp;[InputCommand](/docs/api-reference/data-model#inputcommand)               |    | String | Mirrored from input request
 &emsp;&emsp;[ConfirmedFlag](#confirmedflag)             |    | [Boolean](#data-format)| Result of GetConfirmation input request. Present if [InputCommand](/docs/api-reference/data-model#inputcommand) = "GetConfirmation"
@@ -1020,8 +1170,8 @@ Print response
 [DocumentQualifier](#documentqualifier)       | ✔ | [Enum](#data-format) | Mirrored from print request
 &emsp;*Response*                                   | ✔ | [Object](#data-format) | 
 &emsp;&emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | "Success", "Partial", or "Failure". See [Result](/docs/api-reference/data-model#result).
-&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |    | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |    | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 
 
 
@@ -1100,8 +1250,8 @@ Transaction status response
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | [Object](#data-format) | Object indicating the result of the payment
 &emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 *MessageReference*                            |  | [Object](#data-format) | Identification of a previous POI transaction. Present if `Result` is "Success", or `Result` is "Failure" and `ErrorCondition` is "InProgress"
 &emsp;[MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | [Enum](#data-format) | Mirrored from request
 &emsp;[ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | [UUID](#data-format) | Mirrored from request, or `ServiceID` of last transaction if not present in request.
@@ -1265,8 +1415,8 @@ Reconciliation response
 -----------------                             |:----:| ------ | ----------- |
 *Response*                                    | ✔ | [Object](#data-format) | Object indicating the result of the login
 &emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 [ReconciliationType](#reconciliationtype)     | ✔ | [Enum](#data-format) | Mirrored from request
 [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)   |  | [String(1,128)](#data-format) | Present if `Result` is "Success". The `ReconciliationID` of the period requested
 *TransactionTotals*                           |  | [Array(Object)](#data-format) | Present if `Result` is "Success". An array of totals grouped by card brand, then operator, then shift, then TotalsGroupID, then payment currency.
@@ -1275,12 +1425,11 @@ Reconciliation response
 &emsp;[OperatorID](/docs/api-reference/data-model#operatorid)                    |  | [String(1,128)](#data-format) | An operator id used during this reconciliation period
 &emsp;[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                  |  | [String(1,128)](#data-format) | A shift number used during the reconciliation period
 &emsp;[TotalsGroupID](/docs/api-reference/data-model#totalsgroupid)              |  | [String(1,128)](#data-format) | A custom grouping of transactions as defined by the Sale System
-&emsp;[PaymentCurrency](/docs/api-reference/data-model#paymentcurrency)          |  | [String(0,4)](#data-format) | "AUD"
+&emsp;[PaymentCurrency](/docs/api-reference/data-model#paymentcurrency)          |  | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
 &emsp;*PaymentTotals*                              |  | Array | An array [0..10] of totals grouped by transaction payment type. Present if both `TransactionCount` and `TransactionAmount` are not equal to zero
 &emsp;&emsp;[TransactionType](/docs/api-reference/data-model#transactiontype)         |  | String | Transaction type for this payment. See [TransactionType](/docs/api-reference/data-model#transactiontype)
 &emsp;&emsp;[TransactionCount](#transactioncount)       |  | String | The number of transactions for the transaction type for the current grouping of transactions
 &emsp;&emsp;[TransactionAmount](#transactionamount)     |  | Number | The total amount of transactions for the transaction type for the current grouping of transactions
- 
 
 ### Card acquisition
 
@@ -1379,8 +1528,17 @@ Card acquisition response
 		"PaymentInstrumentData": {
 			"PaymentInstrumentType": "xxx",
 			"CardData": {
-				"MaskedPAN": "xxxxxx......xxxx",
-				"EntryMode": "xxx"
+				"EntryMode": "xxx",
+				"PaymentBrand": "xxx",
+				"PaymentBrandId": "xxx",
+				"PaymentBrandLabel": "xxx",
+				"Account": "xxx",
+				"MaskedPAN": "xxxxxx…xxxx",
+				"PaymentToken": {
+					"TokenRequestedType": "xxx",
+					"TokenValue": "xxx",
+					"ExpiryDateTime": "xxx"
+				}
 			},
 			"PaymentToken": {
 				"TokenRequestedType": "xxx",
@@ -1398,8 +1556,8 @@ Card acquisition response
 -----------------                             |:----:| ------ | ----------- |
 **Response**                                    | ✔ | [Object](#data-format) | Object indicating the result of the login
 &emsp;[Result](/docs/api-reference/data-model#result)                            | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(1,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
-&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(1,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)            |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)    |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | [Object](#data-format) | 
 &emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) | 
 &emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Mirrored from the request
@@ -1604,6 +1762,14 @@ Certification code for this Sale System.
 
 DataMesh will provide a `CertificationCode` to be used for the UAT environment. Once the Sale System is certified, DataMesh will provide a `CertificationCode` to be included in the production build of the Sale System. 
 
+## PaymentCurrency
+
+Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code.
+
+### CurrentBalance
+
+Balance of an account.
+
 ### CustomFields
 ```json
 
@@ -1753,6 +1919,12 @@ When `EventToNotify` is "CompletedMessage"
 - "Service Not Aborted - Reason: Completed – from: \{\{SaleID\}\} - MessageID: \{\{ServiceID\}\}"
 
 
+### ExpiryDate
+
+If present, the date after which the card cannot be used. 
+
+Format is MMYY.
+
 ### ForceEntryMode
 
 Used to restrict card presentment to the specified type
@@ -1771,6 +1943,22 @@ Used to restrict card presentment to the specified type
 [Boolean](#data-format).
 
 If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
+
+
+### IdentificationType
+
+Type of account identification
+
+In a request message, it informs the POI System the type of the account or card identification, when provided by the Sale Terminal. (e.g. because the card information are a bar-code read by the Cashier on a scanner device). In a response message, it informs the Sale System the type of the account or card identification. 
+
+Label                | Description       
+-------------------- | ----------------- 
+PAN                  | Standard card identification (card number)
+ISOTrack2            | ISO Track 2 including identification.
+BarCode              | Bar-code with a specific form of identification
+AccountNumber        | Account number
+PhoneNumber          | A phone number identifies the account on which the phone card is assigned.
+
 
 ### InfoQualify
 
@@ -1926,6 +2114,9 @@ Receipt format output. Always "XHTML"
   
 The payment receipt in XHTML format, coded in BASE64.
 
+### OwnerName
+
+If available, the name of the owner of a stored value account.
 
 ### PaymentAcquirerData.AcquirerID
 
@@ -1944,37 +2135,462 @@ Label                | Description
 
 ### PaymentBrand
 
+Identifies the payment brand used for a payment. Please note that this list may expand in the future as new payment types are added. 
+
+:::warning
+PaymentBrand is included for legacy support. The Sale System should use [PaymentBrandId](#paymentbrandid) to identify the payment brand. 
+:::
+
+<table>
+	<thead>
+		<tr>
+			<th>Category</th>
+			<th>Payment Brand</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td rowspan='9'>Schemes</td>
+		</tr>
+		<tr>
+			<td>Card</td>
+			<td>EFTPOS</td>
+		</tr>
+		<tr>
+			<td>MasterCard</td>
+			<td>MasterCard Credit or Debit</td>
+		</tr>
+		<tr>
+			<td>VISA</td>
+			<td>VISA Credit or Debit</td>
+		</tr>
+		<tr>
+			<td>American Express</td>
+			<td>American Express</td>
+		</tr>
+		<tr>
+			<td>JCB</td>
+			<td>JCB</td>
+		</tr>
+		<tr>
+			<td>Diners Club</td>
+			<td>Diners Club</td>
+		</tr>
+		<tr>
+			<td>UnionPay</td>
+			<td>Union Pay Credit</td>
+		</tr>
+		<tr>
+			<td>CUP Debit</td>
+			<td>Union Pay Debit</td>
+		</tr>		
+		<tr>
+			<td rowspan='13'>Fuel cards</td>
+		</tr>
+		<tr>
+			<td>BPGiftCard</td>
+			<td>BP Gift Card</td>
+		</tr>
+		<tr>
+			<td>BP Fuel Card</td>
+			<td>BP Card</td>
+		</tr>
+		<tr>
+			<td>Fleet Card</td>
+			<td>Fleet Card</td>
+		</tr>
+		<tr>
+			<td>Shell Card</td>
+			<td>Shell Card</td>
+		</tr>
+		<tr>
+			<td>Motorpass</td>
+			<td>Motorpass</td>
+		</tr>
+		<tr>
+			<td>Motorcharge</td>
+			<td>Motorcharge</td>
+		</tr>										
+		<tr>
+			<td>AmpolCard</td>
+			<td>Ampol card</td>
+		</tr>
+		<tr>
+			<td>Freedom Fuel Card</td>
+			<td>Freedom fuel card</td>
+		</tr>				
+		<tr>
+			<td>Trinity Fuel Card</td>
+			<td>Trinity fuel card</td>
+		</tr>
+		<tr>
+			<td>Liberty Card</td>
+			<td>Liberty Card</td>
+		</tr>	
+		<tr>
+			<td>Caltex StarCard</td>
+			<td>Caltex StarCard</td>
+		</tr>		
+		<tr>
+			<td>United Fuel Card</td>
+			<td>United Fuel Card</td>
+		</tr>	
+		<tr>
+			<td rowspan='11'>Transit cards</td>
+		</tr>
+		<tr>
+			<td>Fastcard</td>
+			<td>Fastcard</td>
+		</tr>	
+		<tr>
+			<td>eTicket</td>
+			<td>eTicket</td>
+		</tr>	
+		<tr>
+			<td>Digital Product</td>
+			<td>Digital Product</td>
+		</tr>	
+		<tr>
+			<td>ACT TSS</td>
+			<td>ACT TSS</td>
+		</tr>	
+		<tr>
+			<td>NSW TSS</td>
+			<td>NSW TSS</td>
+		</tr>	
+		<tr>
+			<td>NT TSS</td>
+			<td>NT TSS</td>
+		</tr>	
+		<tr>
+			<td>QLD TSS</td>
+			<td>QLD TSS</td>
+		</tr>	
+		<tr>
+			<td>TAS TSP</td>
+			<td>TAS TSP</td>
+		</tr>	
+		<tr>
+			<td>CPVV MPTP</td>
+			<td>CPVV MPTP</td>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>	
+		<tr>
+			<td rowspan='5'>Alternative payment</td>
+		</tr>
+		<tr>
+			<td>AliPay</td>
+			<td>AliPay</td>
+		</tr>	
+		<tr>
+			<td>WeChat Pay</td>
+			<td>WeChat Pay</td>
+		</tr>	
+		<tr>
+			<td>CryptoDotCom</td>
+			<td>Crypto.com</td>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>			
+		<tr>
+			<td rowspan='3'>Loyalty</td>
+		</tr>
+		<tr>
+			<td>Qantas Points</td>
+			<td>Qantas Points</td>
+		</tr>	
+		<tr>
+			<td>DRC</td>
+			<td>DRC</td>
+		</tr>	
+		<tr>
+			<td rowspan='3'>Other</td>
+		</tr>
+		<tr>
+			<td>Cash</td>
+			<td>Cash</td>
+		</tr>	
+		<tr>
+			<td>Unknown</td>
+			<td>Unknown payment brand</td>
+		</tr>					
+	</tbody>
+</table>
+
+### PaymentBrandId
+
 Identifies the payment brand used for a payment. 
 
 :::info
 Please note that this list may expand in the future as new payment types are added. 
 :::
 
-Available values:
+<table>
+	<thead>
+		<tr>
+			<th>Category</th>
+			<th>PaymentBrandId</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td rowspan='21'>Card schemes</td>
+		</tr>
+		<tr>
+			<td>0001</td>
+			<td>EFTPOS</td>
+		</tr>
+		<tr>
+			<td>0002</td>
+			<td>MasterCard Debit</td>
+		</tr>
+		<tr>
+			<td>0003</td>
+			<td>MasterCard Credit</td>
+		</tr>		
+		<tr>
+			<td>0004</td>
+			<td>VISA Debit</td>
+		</tr>
+		<tr>
+			<td>0005</td>
+			<td>VISA Credit</td>
+		</tr>		
+		<tr>
+			<td>0006</td>
+			<td>AMEX</td>
+		</tr>			
+		<tr>
+			<td>0007</td>
+			<td>JCB</td>
+		</tr>
+		<tr>
+			<td>0008</td>
+			<td>Diners Club</td>
+		</tr>
+		<tr>
+			<td>0009</td>
+			<td>Union Pay Credit</td>
+		</tr>
+		<tr>
+			<td>0010</td>
+			<td>Union Pay Debit</td>
+		</tr>		
+		<tr>
+			<td>0011</td>
+			<td>Cabcharge Gift Card</td>
+		</tr>	
+		<tr>
+			<td>0012</td>
+			<td>Discover</td>
+		</tr>	
+		<tr>
+			<td>0013</td>
+			<td>Amex International</td>
+		</tr>									
+		<tr>
+			<td>0014</td>
+			<td>Diners International</td>
+		</tr>			
+		<tr>
+			<td>0015</td>
+			<td>JCB  International</td>
+		</tr>		
+		<tr>
+			<td>0016</td>
+			<td>MasterCard International</td>
+		</tr>			
+		<tr>
+			<td>0017</td>
+			<td>VISA International</td>
+		</tr>		
+		<tr>
+			<td>0018</td>
+			<td>Union Pay International</td>
+		</tr>		
+		<tr>
+			<td>0019</td>
+			<td>Discover International</td>
+		</tr>																								
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>			
+		<tr>
+			<td rowspan='13'>Fuel</td>
+		</tr>
+		<tr>
+			<td>0100</td>
+			<td>BP Card</td>
+		</tr>
+		<tr>
+			<td>0101</td>
+			<td>BP Gift Card</td>
+		</tr>
+		<tr>
+			<td>0102</td>
+			<td>Fleet Card</td>
+		</tr>
+		<tr>
+			<td>0103</td>
+			<td>Shell Card</td>
+		</tr>
+		<tr>
+			<td>0104</td>
+			<td>Motorpass</td>
+		</tr>
+		<tr>
+			<td>0105</td>
+			<td>Motorcharge</td>
+		</tr>										
+		<tr>
+			<td>0106</td>
+			<td>Ampol card</td>
+		</tr>
+		<tr>
+			<td>0107</td>
+			<td>Freedom fuel card</td>
+		</tr>				
+		<tr>
+			<td>0108</td>
+			<td>Trinity fuel card</td>
+		</tr>
+		<tr>
+			<td>0109</td>
+			<td>Liberty Card</td>
+		</tr>	
+		<tr>
+			<td>0110</td>
+			<td>Caltex StarCard</td>
+		</tr>		
+		<tr>
+			<td>0111</td>
+			<td>United Fuel Card</td>
+		</tr>	
+		<tr>
+			<td rowspan='11'>Transit</td>
+		</tr>
+		<tr>
+			<td>0200</td>
+			<td>Fastcard</td>
+		</tr>	
+		<tr>
+			<td>0201</td>
+			<td>eTicket</td>
+		</tr>	
+		<tr>
+			<td>0202</td>
+			<td>Digital Product</td>
+		</tr>	
+		<tr>
+			<td>0202</td>
+			<td>ACT TSS</td>
+		</tr>	
+		<tr>
+			<td>0203</td>
+			<td>NSW TSS</td>
+		</tr>	
+		<tr>
+			<td>0204</td>
+			<td>NT TSS</td>
+		</tr>	
+		<tr>
+			<td>0205</td>
+			<td>QLD TSS</td>
+		</tr>	
+		<tr>
+			<td>0206</td>
+			<td>TAS TSP</td>
+		</tr>	
+		<tr>
+			<td>0207</td>
+			<td>CPVV MPTP</td>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>	
+		<tr>
+			<td rowspan='5'>Alternative payment</td>
+		</tr>
+		<tr>
+			<td>0300</td>
+			<td>Crypto.com</td>
+		</tr>	
+		<tr>
+			<td>0301</td>
+			<td>AliPay</td>
+		</tr>	
+		<tr>
+			<td>0302</td>
+			<td>WeChat Pay</td>
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>			
+		<tr>
+			<td rowspan='3'>Loyalty</td>
+		</tr>
+		<tr>
+			<td>0400</td>
+			<td>Qantas Points</td>
+		</tr>	
+		<tr>
+			<td>0401</td>
+			<td>DRC</td>
+		</tr>	
+		<tr>
+			<td rowspan='3'>Other</td>
+		</tr>
+		<tr>
+			<td>0500</td>
+			<td>Cash</td>
+		</tr>	
+		<tr>
+			<td>0501</td>
+			<td>Payment on other terminal</td>
+		</tr>	
+		<tr>
+			<td rowspan='6'>Gift card</td>
+		</tr>
+		<tr>
+			<td>0600</td>
+			<td>Blackhawk</td>
+		</tr>	
+		<tr>
+			<td>0601</td>
+			<td>ePay</td>
+		</tr>
+		<tr>
+			<td>0602</td>
+			<td>Incomm</td>
+		</tr>		
+		<tr>
+			<td>0603</td>
+			<td>Vii</td>
+		</tr>		
+		<tr>
+			<td>0604</td>
+			<td>WEX</td>
+		</tr>	
+	</tbody>
+</table>
 
-- "VISA"
-- "Mastercard"
-- "American Express"
-- "Diners Club"
-- "JCB"
-- "UnionPay"
-- "CUP Debit"
-- "Discover"
-- "Debit"
-- "AliPay"
-- "WeChat Pay"
-- "Card"
-- "BPGiftCard"
-- "BP Fuel Card"
-- "Fleet Card"
-- "Shell Card""
-- "Motorpass"
-- "AmpolCard"
-- "Freedom Fuel Card"
-- "Trinity Fuel Card"
-- "Liberty Card"
-- "Caltex StarCard"
-- "United Fuel Card"
+### PaymentBrandLabel
+
+Descriptive name of the payment brand used. 
+
+:::success
+This field is for display only. Use [PaymentBrandId](#paymentbrandid) to identify the payment brand. 
+:::
 
 ### PaymentCurrency
 
@@ -2657,6 +3273,27 @@ Must be the software version of the current Sale System build.
 ### SplitPaymentFlag
 
 Indicates if a payment is a split payment. Default to false. 
+
+
+### StoredValueAccountType
+Type of stored value account References. Allow the distinction of the stored value instrument to access the stored value account.
+
+Label                | Description       
+-------------------- | ----------------- 
+GiftCard             | Payment mean issued by retailers or banks as a substitute to a non-monetary gift.
+PhoneCard            | Stored value instrument used to pay telephone services (e.g. card or identifier).
+Other                | Other stored value instrument.
+
+
+### StoredValueID
+
+The identification of the stored value account conforming to the [IdentificationType](/docs/api-reference/data-model#identificationtype).
+
+### StoredValueProvider
+
+Identification of the provider of the stored value account load/reload References
+
+When the ProductCode is not sufficient to identify the provider host which deliver the load or reload of the stored value account.
 
 ### SurchargeAmount
 
