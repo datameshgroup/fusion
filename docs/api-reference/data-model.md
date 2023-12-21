@@ -3014,36 +3014,36 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
 
 
 
-<div style={{width:'240px'}}>Attributes</div>   | Requ.  | Format | Description |
------------------                          | :------: | ------ | ----------- |
-[ItemID](#itemid)                          | ✔ | Integer | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-[ProductCode](#productcode)                | ✔ | String | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
-[EanUpc](#eanupc)                          |  | String | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-[UnitOfMeasure](#unitofmeasure)            | ✔ | String | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
-[Quantity](#quantity)                      | ✔ | Decimal| Sale item quantity based on `UnitOfMeasure`.
-[UnitPrice](#unitprice)                    | ✔ | Decimal| Price per sale item unit. Present if `Quantity` is included.
-[ItemAmount](#itemamount)                  | ✔ | Decimal| Total amount of the sale item
-[TaxCode](#taxcode)                        |  | String | Type of tax associated with the sale item. Default = "GST"
-[SaleChannel](#salechannel)                |  | String | Commercial or distribution channel of the sale item. Default = "Unknown"
-[ProductLabel](#productlabel)              | ✔ | String | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
-[AdditionalProductInfo](#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
-[ParentItemID](#parentitemid)                              |  | Integer | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](#itemid) of the parent `SaleItem`
-[CostBase](#costbase)                                      |  | Decimal| Cost of the product to the merchant per unit
-[Discount](#discount)                                      |  | Decimal| If applied, the amount this sale item was discounted by
-[DiscountReason](#discount-reason)                         |  | String | Explains about the discount applied
-[Categories](#categories)                  |  | Array  | Array of categories. Top level "main" category at categories[0]. See [Categories](#categories) for more information.
-[Brand](#brand)                                            |  | String | Brand name - typically visible on the product packaging or label
-[QuantityInStock](#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
-[Tags](#sale-item-tags)                                    |  | Array  | String array with descriptive tags for the product
+<div style={{width:'240px'}}>Attributes</div>   | Requ.    | Format | Description |
+-----------------                               | :------: | ------ | ----------- |
+**[SaleItem](/docs/api-reference/data-model#saleitem)**                   | ✔ | [Array(Object)](#data-format)  | Array of [SaleItem](/docs/api-reference/data-model#s) objects which represent the product basket attached to this transaction. See [SaleItem](/docs/api-reference/data-model#saleitem) for examples.
+[ItemID](/docs/api-reference/data-model#itemid)                          | ✔ | [Integer(0,9999)](#data-format) | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
+[ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | [String(1,128)](#data-format) | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+[EanUpc](/docs/api-reference/data-model#eanupc)                          |  | [String(1,128)](#data-format) | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+[UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | [Enum](#data-format) | Unit of measure of the `Quantity`. If this item has no unit of measure, set to "Other"
+[Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | [Decimal(0,999999,8)](#data-format)| Sale item quantity based on `UnitOfMeasure`.
+[UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | [Decimal(0,999999,8)](#data-format)| Price per sale item unit. Present if `Quantity` is included.
+[ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | [Currency(0.01,999999.99)](#data-format)| Total amount of the sale item
+[TaxCode](/docs/api-reference/data-model#taxcode)                        |  | [String(1,32)](#data-format) | Type of tax associated with the sale item. Default = "GST"
+[SaleChannel](/docs/api-reference/data-model#salechannel)                |  | [String(1,128)](#data-format) | Commercial or distribution channel of the sale item. Default = "Unknown"
+[ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | [String(1,256)](#data-format) | a short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
+[AdditionalProductInfo](/docs/api-reference/data-model#additionalproductinfo)|  | String | Additional information, or more detailed description of the product item. 
+[ParentItemID](#parentitemid)                              |  | [Integer(0,9999)](#data-format) | *Required* if this item is a 'modifier' or sub-item. Contains the [ItemID](/docs/api-reference/data-model#itemid) of the parent `SaleItem`
+[CostBase](#costbase)                                      |  | [Currency(0.01,999999.99)]| Cost of the product to the merchant per unit
+[Discount](#discount)                                      |  | [Currency(0.01,999999.99)]| If applied, the amount this sale item was discounted by
+[Categories](/docs/api-reference/data-model#categories)                  |  | [Array(String)](#data-format)  | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
+[Brand](#brand)                                            |  | [String(1,256)](#data-format) | Brand name - typically visible on the product packaging or label
+[QuantityInStock](/docs/api-reference/data-model#quantityinstock)        |  | Decimal| Remaining number of this item in stock in same unit of measure as `Quantity`
+[Tags](#sale-item-tags)                                    |  | [Array(String)](#data-format)  | String array with descriptive tags for the product
 [Restricted](#restricted)                                  |  | [Boolean](#data-format)| `true` if this is a restricted item, `false` otherwise. Defaults to `false` when field is null.
-[PageURL](#productpageurl)                                 |  | String | URL link to the sale items product page
-[ImageURLs](#productimageurls)                             |  | Array | String array of images URLs for this sale item
-[Style](#style)                                            |  | String | Style of the sale item
-[Size](#size)                                            |  | String | Size of the sale item
-[Colour](#colour)                                          |  | String | Colour of the sale item
-[Weight](#weight)                                          |  | Decimal | Sale item weight, based on `WeightUnitOfMeasure`
-[WeightUnitOfMeasure](#unitofmeasure)      |  | String | Unit of measure of the `Weight`. 
-[CustomFields](#customfields)              |  | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
+[PageURL](#productpageurl)                                 |  | [String(1,512)](#data-format) | URL link to the sale items product page
+[ImageURLs](#productimageurls)                             |  | [Array(String)](#data-format) | String array of images URLs for this sale item
+[Style](#style)                                            |  | [String(1,256)](#data-format) | Style of the sale item
+[Size](#size)                                              |  | [String(1,64)](#data-format) | Size of the sale item
+[Colour](#colour)                                          |  | [String(1,64)](#data-format) | Colour of the sale item
+[Weight](#weight)                                          |  | [Decimal(0,999999,8)](#data-format) | Sale item weight, based on `WeightUnitOfMeasure`
+[WeightUnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)      |  | [Enum](#data-format) | Unit of measure of the `Weight`. 
+[CustomFields](#customfields)                   |          | Array  | Array of key/type/value objects containing additional information which may be used for sale processing
 
 ##### Sale items with a UPC/EAN/ISBN
 
