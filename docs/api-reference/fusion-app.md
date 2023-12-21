@@ -494,6 +494,8 @@ Payment response
 				"CardData": {
 					"EntryMode": "xxx",
 					"PaymentBrand": "xxx",
+					"PaymentBrandID": "xxx",
+					"PaymentBrandLabel": "xxx",
 					"Account": "xxx",
 					"MaskedPAN": "xxxxxx…xxxx",
 					"PaymentToken": {
@@ -675,6 +677,8 @@ Payment response
 					"CardData": {
 						"EntryMode": "xxx",
 						"PaymentBrand": "xxx",
+						"PaymentBrandID": "xxx",
+						"PaymentBrandLabel": "xxx",
 						"Account": "xxx",
 						"MaskedPAN": "xxxxxx…xxxx",
 						"PaymentToken": {

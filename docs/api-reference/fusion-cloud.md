@@ -947,6 +947,8 @@ Payment response
                "CardData":{
                   "EntryMode":"xxx",
                   "PaymentBrand":"xxx",
+                  "PaymentBrandID":"xxx",
+                  "PaymentBrandLabel":"xxx",
 				  "Account":"xxx",
                   "MaskedPAN":"xxxxxx…xxxx",
                   "PaymentToken":{
@@ -1035,7 +1037,9 @@ Payment response
   [PaymentInstrumentType](/docs/api-reference/data-model#paymentinstrumenttype) |  | String | "Card" or "Mobile"
   **CardData**                               |  | Object
    [EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | String | Indicates how the card was presented. See [EntryMode](/docs/api-reference/data-model#entrymode)
-   [PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | String | Indicates the card type used. See [PaymentBrand](/docs/api-reference/data-model#paymentbrand)
+&emsp;&emsp;&emsp;[PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | [String(1,128)](#data-format) | Deprecated. Use [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
+&emsp;&emsp;&emsp;[PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)         | ✔ | [String(4,4)](#data-format)   | Indicates the payment type used. 
+&emsp;&emsp;&emsp;[PaymentBrandLabel](/docs/api-reference/data-model#paymentbrandlabel)   | ✔ | [String(0,256)](#data-format) | Descriptive label of the payment type used.
    [MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | String | PAN masked with dots, first 6 and last 4 digits visible
    [Account](/docs/api-reference/data-model#account)                       |  | String | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
    **PaymentToken**                          |  | Object | Object representing a token. Only present if token was requested

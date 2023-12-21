@@ -264,8 +264,7 @@ To perform a fuel purchase:
 * Populate every **fuel** product in the SaleItem[] array with fuel product data
 * Fusion Cloud only; handle [display](/docs/api-reference/fusion-cloud#display), [input](/docs/api-reference/fusion-cloud#input), and [print](/docs/api-reference/fusion-cloud#print) requests.
 * Handle the payment response
-  * The [PaymentBrand](/docs/api-reference/data-model#paymentbrand) field indicates the card type used to complete the payment
-
+  * The [PaymentBrandID](/docs/api-reference/data-model#paymentbrandid) field indicates the card type used to complete the payment
 
 <details>
 
@@ -398,6 +397,8 @@ Fusion Fuel API purchase response
 					"CardData": {
 						"EntryMode": "MagStripe",
 						"PaymentBrand": "Shell Card",
+						"PaymentBrandID": "0103",
+						"PaymentBrandLabel": "Shell Card",
 						"Account": "Default",
 						"Expiry": "=720",
 						"MaskedPAN": "7034305XXXXX2521"
@@ -597,6 +598,8 @@ Fusion Fuel API refund response
 					"CardData": {
 						"EntryMode": "MagStripe",
 						"PaymentBrand": "Shell Card",
+						"PaymentBrandID": "0103",
+						"PaymentBrandLabel": "Shell Card",
 						"Account": "Default",
 						"Expiry": "=720",
 						"MaskedPAN": "7034305XXXXX2521"

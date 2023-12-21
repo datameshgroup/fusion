@@ -797,7 +797,7 @@ Payment response
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | [Object](#data-format) | Object indicating the result of the payment
 &emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[ErrorCondition](/docs/api-rePaymentBrandIDference/data-model#errorcondition)           |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
 &emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | [Object](#data-format) | 
 &emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) | 
@@ -816,7 +816,7 @@ Payment response
 &emsp;&emsp;**CardData**                               |  | [Object](#data-format)
 &emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   | ✔ | [String(1,128)](#data-format) | Indicates how the card was presented.
 &emsp;&emsp;&emsp;[PaymentBrand](/docs/api-reference/data-model#paymentbrand)             | ✔ | [String(1,128)](#data-format) | Deprecated. Use [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
-&emsp;&emsp;&emsp;[PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)         | ✔ | [String(4,4)](#data-format)   | Indicates the payment type used. 
+&emsp;&emsp;&emsp;[PaymentBrandID](/docs/api-reference/data-model#paymentbrandid)         | ✔ | [String(4,4)](#data-format)   | Indicates the payment type used. 
 &emsp;&emsp;&emsp;[PaymentBrandLabel](/docs/api-reference/data-model#paymentbrandlabel)   | ✔ | [String(0,256)](#data-format) | Descriptive label of the payment type used.
 &emsp;&emsp;&emsp;[MaskedPAN](/docs/api-reference/data-model#maskedpan)                   | ✔ | [String(1,64)](#data-format) | PAN masked with dots, first 6 and last 4 digits visible
 &emsp;&emsp;&emsp;[Account](/docs/api-reference/data-model#account)                       |  | [String(1,64)](#data-format) | Present if `EntryMode` is "MagStripe", "ICC", or "Tapped". Indicates the card account used. See [Account](/docs/api-reference/data-model#account)
@@ -1530,7 +1530,7 @@ Card acquisition response
 			"CardData": {
 				"EntryMode": "xxx",
 				"PaymentBrand": "xxx",
-				"PaymentBrandId": "xxx",
+				"PaymentBrandID": "xxx",
 				"PaymentBrandLabel": "xxx",
 				"Account": "xxx",
 				"MaskedPAN": "xxxxxx…xxxx",
@@ -2323,7 +2323,7 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 	</tbody>
 </table>
 
-### PaymentBrandId
+### PaymentBrandID
 
 Identifies the payment brand used for a payment. 
 
