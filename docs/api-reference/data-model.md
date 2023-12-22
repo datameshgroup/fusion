@@ -69,7 +69,9 @@ SaleToPOIRequest
 	"TransactionStatusRequest":{},
 	"AbortRequest":{},
 	"ReconciliationRequest":{},
-	"CardAcquisitionRequest":{}
+	"CardAcquisitionRequest":{},
+	"BalanceInquiryRequest":{},
+	"StoredValueRequest":{},
   }
 }
 
@@ -114,7 +116,9 @@ SaleToPOIResponse
 	"TransactionStatusResponse":{},
 	"AbortResponse":{},
 	"ReconciliationResponse":{},
-	"CardAcquisitionResponse":{}
+	"CardAcquisitionResponse":{},
+	"BalanceInquiryResponse":{},
+	"StoredValueResponse":{},	
   }
 }
 
@@ -179,6 +183,10 @@ Balance inquiry request
 ```
 </p>
 </details>
+
+:::note
+The `BalanceInquiryRequest` node is intentionally empty.
+:::
 
 #### Balance inquiry response
 
@@ -1576,6 +1584,228 @@ Card acquisition response
 &emsp;&emsp;[TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
 &emsp;&emsp;[TokenValue](#tokenvalue)                | ✔ | [String(1,128)](#data-format) | Token previously returned from the POI System in the payment, or card acquisition response 
 
+
+
+
+### Stored value
+
+:::warning
+Stored value request/response currently in DRAFT status
+:::
+
+The stored value request/response is used for managed stored value cards.
+
+#### Stored value request
+
+<details>
+<summary>
+Stored value request
+</summary>
+<p>
+
+```json
+{
+	"StoredValueRequest": {		
+		"SaleData": {
+			"OperatorID": "xxx",
+			"OperatorLanguage": "en",
+			"ShiftNumber": "xxx",
+			"SaleTransactionID": {
+				"TransactionID": "xxx",
+				"TimeStamp": "xxx"
+			},
+			"SaleReferenceID": "xxx",
+			"SaleTerminalData": {
+				"TerminalEnvironment": "xxx",
+				"SaleCapabilities": [
+					"xxx",
+					"xxx",
+					"xxx"
+				],
+				"TotalsGroupID": "xxx"
+			},
+			"TokenRequestedType": "Customer | Transaction"
+		},
+		"StoredValueData": [
+			{
+			"StoredValueProvider": "",
+			"StoredValueTransactionType":"Reserve | Activate | Load | Unload | Reverse | Duplicate",
+			"StoredValueAccountID": {
+				"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+				"StoredValueProvider": "",
+				"OwnerName": "",
+				"ExpiryDate": "MMYY",
+				"EntryMode": "",
+				"IdentificationType": "",
+				"StoredValueID": ""
+			},
+			"OriginalPOITransaction": {
+				"SaleID": "xxx",
+				"POIID": "xxx",
+				"POITransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"ReuseCardDataFlag": true,
+				"ApprovalCode": "xxx",
+				"LastTransactionFlag": true
+			},
+			"ProductCode": "xxx",
+			"EanUpc": "xxx",
+			"ItemAmount": "xx.x",			
+			"Currency": ""
+		}
+		]		
+	}
+}
+```
+</p>
+</details>
+
+
+
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
+-----------------                            |:----:| ------ | ----------- |
+**SaleData**                                 | ✔ | [Object](/docs/api-reference/data-model#data-format) | Sale System information attached to this payment
+&emsp;[OperatorID](/docs/api-reference/data-model#operatorid)                   |   | [String(1,128)](#data-format) | Only required if different from Login Request
+&emsp;[OperatorLanguage](#operatorlanguage)       |   | [String(2,8)](#data-format) | Set to "en"
+&emsp;[ShiftNumber](/docs/api-reference/data-model#shiftnumber)                 |   | [String(1,128)](#data-format) | Only required if different from Login Request
+&emsp;[SaleReferenceID](/docs/api-reference/data-model#salereferenceid)         |  | [String(1,128)](#data-format) | Mandatory for pre-authorisation and completion, otherwise optional. See [SaleReferenceID](/docs/api-reference/data-model#salereferenceid)
+&emsp;[TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)   |  | [Enum](#data-format) | If present, indicates which type of token should be created for this payment. See [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)
+&emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) |
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](/docs/api-reference/data-model#transactionid)
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+&emsp;**SaleTerminalData**                        |  | [Object](#data-format) | Define Sale System configuration. Only include if elements within have different values to those in Login Request
+&emsp;&emsp;[TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment)|  | [Enum](#data-format) | "Attended", "SemiAttended", or "Unattended"
+&emsp;&emsp;[SaleCapabilities](/docs/api-reference/data-model#salecapabilities)      |  | [Array(Enum)](#data-format)  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
+&emsp;&emsp;[TotalsGroupId](/docs/api-reference/data-model#totalsgroupid)            |  | [String(1,256)](#data-format) | Groups transactions in a login session
+**StoredValueData**                                                                            |✔  | [Array(Object)](#data-format) | Data related to the stored value card.
+&emsp;[StoredValueProvider](/docs/api-reference/data-model#storedvalueprovider)                |   | [String(1,256)](#data-format) | Identification of the provider of the stored value account.
+&emsp;[StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype)  | ✔ | [Enum](#data-format) | Identification of operation to proceed on the stored value account or the stored value card
+&emsp;**StoredValueAccountID**                                                                 |   | [Object](#data-format) | Present if the card presented was a gift card / stored value card
+&emsp;&emsp;[StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype)    | ✔ | [Enum](#data-format) | Type of stored value account. GiftCard | PhoneCard | Other
+&emsp;&emsp;[StoredValueProvider](/docs/api-reference/data-model#storedvalueprovider)          |   | [String(1,256)](#data-format) | Identification of the provider of the stored value account.
+&emsp;&emsp;[OwnerName](/docs/api-reference/data-model#ownername)                              |   | [String(1,256)](#data-format) | If available, the name of the owner of a stored value account.
+&emsp;&emsp;[ExpiryDate](/docs/api-reference/data-model#expirydate)                            |  | [String(4,4)](#data-format) | If present, the date after which the card cannot be used. Format is MMYY.
+&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                              |   | [Enum](#data-format) | Indicates how the payment type was presented.
+&emsp;&emsp;[IdentificationType](/docs/api-reference/data-model#identificationtype)            | ✔ | [Enum](#data-format) | Type of account identification contained in [StoredValueID](/docs/api-reference/data-model#storedvalueid). Values are PAN | ISOTrack2 | BarCode | AccountNumber | PhoneNumber
+&emsp;&emsp;[StoredValueID](/docs/api-reference/data-model#storedvalueid)                      | ✔ | [String(128)](#data-format) | Stored value account identification
+&emsp;**[OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)** |  | [Object](#data-format) | Identifies a previous POI transaction. Mandatory for Refund and Completion. See [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+&emsp;&emsp;[SaleID](/docs/api-reference/data-model#saleid)                          | ✔ | [String(1,128)](#data-format) | [SaleID](/docs/api-reference/data-model#saleid) which performed the original transaction
+&emsp;&emsp;[POIID](/docs/api-reference/data-model#poiid)                            | ✔ | [String(1,128)](#data-format) | [POIID](/docs/api-reference/data-model#poiid) which performed the original transaction
+&emsp;&emsp;**POITransactionID**                       | ✔ | [Object](#data-format) | 
+&emsp;&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | [String(1,128)](#data-format) | `TransactionID` from the original transaction
+&emsp;&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | [ISO8601](#data-format) | `TimeStamp` from the original transaction
+&emsp;&emsp;[ProductCode](/docs/api-reference/data-model#productcode)                |   | [String(1,128)](#data-format) | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+&emsp;&emsp;[EanUpc](/docs/api-reference/data-model#eanupc)                          |  | [String(1,128)](#data-format) | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+&emsp;&emsp;[ItemAmount](/docs/api-reference/data-model#itemamount)                  |   | [Currency(0.01,999999.99)](#data-format)| Total amount of the sale item
+&emsp;&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
+
+
+
+#### Stored value response
+
+<details>
+<summary>
+Stored value response
+</summary>
+<p>
+
+```json
+{
+	"StoredValueResponse": {	
+		"Response": {
+			"Result": "Success | Failure",
+			"ErrorCondition": "xxx",
+			"AdditionalResponse": "xxx"
+		},	
+		"SaleData": {
+			"SaleTransactionID": {
+				"TransactionID": "xxx",
+				"TimeStamp": "xxx"
+			},
+		},
+		"POIData": {
+			"POITransactionID": {
+				"TransactionID": "xxx",
+				"TimeStamp": "xxx"
+			},
+			"POIReconciliationID": "xxx"
+		},
+		"StoredValueResult": [
+			{
+				"StoredValueTransactionType":"Reserve | Activate | Load | Unload | Reverse | Duplicate",
+				"ProductCode": "xxx",
+				"EanUpc": "xxx",
+				"ItemAmount": "xx.x",			
+				"Currency": "",
+				"StoredValueAccountStatus": {
+					"StoredValueAccountID": {
+						"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+						"StoredValueProvider": "",
+						"OwnerName": "",
+						"ExpiryDate": "MMYY",
+						"EntryMode": "",
+						"IdentificationType": "",
+						"StoredValueID": ""
+					},
+					"CurrentBalance": 0.00,
+				},
+			}		
+		],
+		"PaymentReceipt": [
+			{
+				"DocumentQualifier": "xxx",
+				"RequiredSignatureFlag": true,
+				"OutputContent": {
+					"OutputFormat": "XHTML",
+					"OutputXHTML": "xxx"
+				}
+			}
+		]
+	}
+}
+```
+</p>
+</details>
+
+
+<div style={{width:'240px'}}>Attributes</div>                   |Requ.  | Format                                 | Description |
+--------------------------------------------------------------- |:----: | -------------------------------------- | ----------- |
+**Response**                                                    | ✔     | [Object](#data-format)                 | Object indicating the result of the login
+&emsp;[Result](/docs/api-reference/data-model#result)           | ✔     | [Enum](#data-format)                   | Indicates the result of the response. Possible values are "Success" and "Failure"
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition) | | [String(0,256)](#data-format)           | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse) | | [String(0,1024)](#data-format)  | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+**SaleData**                                 | ✔ | [Object](/docs/api-reference/data-model#data-format) | Sale System information attached to this payment
+&emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) |
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | Unique reference for this sale ticket. Not necessarily unique per payment request; for example a sale with split payments will have a number of payments with the same [TransactionID](/docs/api-reference/data-model#transactionid)
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Time of initiating the payment request on the POI System, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. e.g. "2019-09-02T09:13:51.0+01:00"   
+**POIData**                                  | ✔ | [Object](#data-format) | 
+&emsp;**POITransactionID**                        | ✔ | [Object](#data-format) | 
+&emsp;&emsp;[TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | [String(1,128)](#data-format) | A unique transaction id from the POI system
+&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | [ISO8601](#data-format) | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+&emsp;[POIReconciliationID](/docs/api-reference/data-model#poireconciliationid) |  | [String(1,128)](#data-format) | Present if `Result` is "Success" or "Partial". See [POIReconciliationID](/docs/api-reference/data-model#poireconciliationid)
+**StoredValueResult**                                                            | |  [Array(Object)](#data-format) | If StoredValueResponse.Result is “Success” or "Partial", one entry per StoredValueRequest.StoredValueData loaded or activated.
+&emsp;[ProductCode](/docs/api-reference/data-model#productcode)                |   | [String(1,128)](#data-format) | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+&emsp;[EanUpc](/docs/api-reference/data-model#eanupc)                          |  | [String(1,128)](#data-format) | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
+&emsp;[ItemAmount](/docs/api-reference/data-model#itemamount)                  |   | [Currency(0.01,999999.99)](#data-format)| Total amount of the sale item
+&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
+&emsp;[StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype)    | ✔ | [Enum](#data-format) | Type of stored value account. GiftCard | PhoneCard | Other
+&emsp;**StoredValueAccountStatus**                                                       | |  [Object](#data-format) | Present if Result = "Success"
+&emsp;&emsp;**StoredValueAccountID**                               |  | [Object](#data-format) | Present if the card presented was a gift card / stored value card
+&emsp;&emsp;&emsp;[StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype)    | ✔ | [Enum](#data-format) | Type of stored value account. GiftCard | PhoneCard | Other
+&emsp;&emsp;&emsp;[StoredValueProvider](/docs/api-reference/data-model#storedvalueprovider)          |   | [String(1,256)](#data-format) | Identification of the provider of the stored value account.
+&emsp;&emsp;&emsp;[OwnerName](/docs/api-reference/data-model#ownername)                   |   | [String(1,256)](#data-format) | If available, the name of the owner of a stored value account.
+&emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   |  | [Enum](#data-format) | Indicates how the payment type was presented.
+&emsp;&emsp;&emsp;[IdentificationType](/docs/api-reference/data-model#identificationtype) | ✔ | [Enum](#data-format) | Type of account identification contained in [StoredValueID](/docs/api-reference/data-model#storedvalueid). Values are PAN | ISOTrack2 | BarCode | AccountNumber | PhoneNumber
+&emsp;&emsp;&emsp;[StoredValueID](/docs/api-reference/data-model#storedvalueid)           | ✔ | [String(128)](#data-format) | Stored value account identification
+&emsp;&emsp;[CurrentBalance](#currentbalance)                                             |  | [Currency(0,999999.99)](#data-format) | if relevant and known
+**PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
+&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
+&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
+&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 
 
 ## Properties
@@ -3294,6 +3524,20 @@ The identification of the stored value account conforming to the [Identification
 Identification of the provider of the stored value account load/reload References
 
 When the ProductCode is not sufficient to identify the provider host which deliver the load or reload of the stored value account.
+
+
+### StoredValueTransactionType
+
+Identification of operation to proceed on the stored value account or the stored value card
+
+Label                | Description       
+-------------------- | ----------------- 
+Reserve              | Reserve the account (e.g. get an activation code)
+Activate             | Activate the account or the card
+Load                 | Load the account or the card with money
+Unload               | Unload the account
+Reverse              | Reverse an activation or loading.
+Duplicate            | Duplicate the code or number provided by the loading or activation
 
 ### SurchargeAmount
 
