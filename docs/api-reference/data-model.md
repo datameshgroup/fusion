@@ -805,7 +805,7 @@ Payment response
 -----------------                            |:----:| ------ | ----------- |
 **Response**                                 | ✔ | [Object](#data-format) | Object indicating the result of the payment
 &emsp;[Result](/docs/api-reference/data-model#result)                           | ✔ | [Enum](#data-format) | Indicates the result of the response. Possible values are "Success" and "Failure"
-&emsp;[ErrorCondition](/docs/api-rePaymentBrandIDference/data-model#errorcondition)           |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+&emsp;[ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | [String(0,256)](#data-format) | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
 &emsp;[AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | [String(0,1024)](#data-format) | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
 **SaleData**                                 | ✔ | [Object](#data-format) | 
 &emsp;**SaleTransactionID**                       | ✔ | [Object](#data-format) | 
