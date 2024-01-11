@@ -173,9 +173,6 @@ If refunding a previous purchase, the Sale System should include details of the 
   - On 404, enter error handling
 - If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
-
-
-
 ## Perform a refund (blocking mode)
 
 <!-- TODO need to add support here for matched refunds -->
@@ -207,6 +204,88 @@ If refunding a previous purchase, the Sale System should include details of the 
   - Print the receipt contained in `PaymentReceipt`
 - If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
+
+## Activate a gift card (events mode)
+
+To perform a gift card activation with events mode, the Sale System will need to POST a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload to the `http://localhost:4242/fusion/v1/storedvalue` endpoint.
+
+::: tip
+`ItemAmount` indicates the value to activate the card with. e.g. for a $100 giftcard with $5.95 activation fee `ItemAmount` will be $100, and `TotalFeesAmount` will be $5.95
+:::
+
+- Construct a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload including all required fields
+  - Create an object in StoredValueData[]
+  	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Activate"
+  	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
+	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
+	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the "activation barcode" read from the back of the gift card
+    - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
+	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the "activation barcode" read from the back of the gift card
+	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees)
+	- Set [TotalFeesAmount](#totalfeesamount) to the activation fee, if any, associated with this gift card
+	- Set [Currency](#currency) to "AUD". 
+  - Set [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system. This should be the same as `PaymentRequest` used to pay for the gift card (if paid for with card)
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the transaction and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}events=true`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload
+- Await the POST result (this should take under 5 seconds).
+  - On 4xx the request was invalid and the payment could not be processed
+  - On 5xx an error occured, the Sale System should enter error handling
+  - On 202 ACCEPTED, the Sale System should GET the payment result
+- Call `GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}/events` using the `SessionId` from the POST to get the next event in the transaction (this could take as long as 5 minutes). Fusion App will return a [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse) containing the [stored value response](/docs/api-reference/data-model#stored-value-response), or a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) containing the [Print request](/docs/api-reference/data-model#print-request)
+  - On [print request](/docs/api-reference/data-model#print-request), handle the print and call GET again 
+  - On [stored value response](/docs/api-reference/data-model#stored-value-response)
+    - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+    - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future account deactivation: [POITransactionID](/docs/api-reference/data-model#poitransactionid)
+    - Print the receipt contained in `PaymentReceipt`
+  - On 404, enter error handling
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
+
+## Deactivate a gift card (events mode)
+
+To perform a gift card deactivation with events mode, the Sale System will need to POST a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload to the `http://localhost:4242/fusion/v1/storedvalue` endpoint.
+
+::: tip
+To perform a deactivation, the Sale System will need to recall the [POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original activation.
+:::
+
+- Construct a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload including all required fields
+  - Create an object in StoredValueData[]
+  	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Reversal"
+  	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
+	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
+	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the "activation barcode" read from the back of the gift card
+    - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
+	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the "activation barcode" read from the back of the gift card
+	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees)
+	- Set [TotalFeesAmount](#totalfeesamount) to the activation fee, if any, associated with this gift card
+	- Set [Currency](#currency) to "AUD". 
+    - Set [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction) to the value returned in [StoredValueResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) of the original activation response
+  - Set [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system. This should be the same as `PaymentRequest` used to pay for the gift card (if paid for with card)
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the transaction and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}events=true`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload
+- Await the POST result (this should take under 5 seconds).
+  - On 4xx the request was invalid and the payment could not be processed
+  - On 5xx an error occured, the Sale System should enter error handling
+  - On 202 ACCEPTED, the Sale System should GET the payment result
+- Call `GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}/events` using the `SessionId` from the POST to get the next event in the transaction (this could take as long as 5 minutes). Fusion App will return a [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse) containing the [stored value response](/docs/api-reference/data-model#stored-value-response), or a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) containing the [Print request](/docs/api-reference/data-model#print-request)
+  - On [print request](/docs/api-reference/data-model#print-request), handle the print and call GET again 
+  - On [stored value response](/docs/api-reference/data-model#stored-value-response)
+    - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+    - Print the receipt contained in `PaymentReceipt`
+  - On 404, enter error handling
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
 ## Methods
 

@@ -1653,7 +1653,9 @@ Stored value request
 			"ProductCode": "xxx",
 			"EanUpc": "xxx",
 			"ItemAmount": "xx.x",			
-			"Currency": ""
+			"TotalFeesAmount": "xx.x",
+			"Currency": "",
+
 		}
 		]		
 	}
@@ -1698,7 +1700,8 @@ Stored value request
 &emsp;&emsp;&emsp;[TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | [ISO8601](#data-format) | `TimeStamp` from the original transaction
 &emsp;&emsp;[ProductCode](/docs/api-reference/data-model#productcode)                |   | [String(1,128)](#data-format) | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
 &emsp;&emsp;[EanUpc](/docs/api-reference/data-model#eanupc)                          |  | [String(1,128)](#data-format) | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
-&emsp;&emsp;[ItemAmount](/docs/api-reference/data-model#itemamount)                  |   | [Currency(0.01,999999.99)](#data-format)| Total amount of the sale item
+&emsp;&emsp;[ItemAmount](/docs/api-reference/data-model#itemamount)                  |  | [Currency(0.01,999999.99)](#data-format)| Indicates the amount to be loaded onto the account. Exclusive of fees. 
+&emsp;&emsp;[TotalFeesAmount](#totalfeesamount)                                      |  | Decimal| Total of fees associated with the transaction
 &emsp;&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
 
 
@@ -1737,7 +1740,8 @@ Stored value response
 				"StoredValueTransactionType":"Reserve | Activate | Load | Unload | Reverse | Duplicate",
 				"ProductCode": "xxx",
 				"EanUpc": "xxx",
-				"ItemAmount": "xx.x",			
+				"ItemAmount": "xx.x",		
+				"TotalFeesAmount": "xx.x",		
 				"Currency": "",
 				"StoredValueAccountStatus": {
 					"StoredValueAccountID": {
@@ -1789,6 +1793,7 @@ Stored value response
 &emsp;[ProductCode](/docs/api-reference/data-model#productcode)                |   | [String(1,128)](#data-format) | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
 &emsp;[EanUpc](/docs/api-reference/data-model#eanupc)                          |  | [String(1,128)](#data-format) | A standard unique identifier for the product. Either the UPC, EAN, or ISBN. Required for products with a UPC, EAN, or ISBN
 &emsp;[ItemAmount](/docs/api-reference/data-model#itemamount)                  |   | [Currency(0.01,999999.99)](#data-format)| Total amount of the sale item
+&emsp;[TotalFeesAmount](#totalfeesamount)        |  | Decimal| Total of financial fees associated with the payment transaction if known at time of transaction
 &emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
 &emsp;[StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype)    | ✔ | [Enum](#data-format) | Type of stored value account. GiftCard | PhoneCard | Other
 &emsp;**StoredValueAccountStatus**                                                       | |  [Object](#data-format) | Present if Result = "Success"
