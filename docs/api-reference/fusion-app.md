@@ -209,7 +209,7 @@ If refunding a previous purchase, the Sale System should include details of the 
 
 To perform a gift card activation with events mode, the Sale System will need to POST a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload to the `http://localhost:4242/fusion/v1/storedvalue` endpoint.
 
-::: tip
+:::tip
 `ItemAmount` indicates the value to activate the card with. e.g. for a $100 giftcard with $5.95 activation fee `ItemAmount` will be $100, and `TotalFeesAmount` will be $5.95
 :::
 
@@ -250,7 +250,7 @@ To perform a gift card activation with events mode, the Sale System will need to
 
 To perform a gift card deactivation with events mode, the Sale System will need to POST a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload to the `http://localhost:4242/fusion/v1/storedvalue` endpoint.
 
-::: tip
+:::tip
 To perform a deactivation, the Sale System will need to recall the [POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original activation.
 :::
 
