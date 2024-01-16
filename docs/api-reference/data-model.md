@@ -3133,7 +3133,13 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
 
 ##### SaleItem fields
 
-> Example sale item array
+<details>
+
+  <summary>
+    Example sale item array
+  </summary>
+
+  <p>
 
 ```json
 "SaleItem":[
@@ -3176,7 +3182,7 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
     "ItemAmount":"78.66",
     "ProductLabel":"Fuel Unleaded 91",
     "Discount":"0.0",
-    "Category":"Fuel"
+    "Categories":["Fuel", "Unleaded"]
   },  
   {
     "ItemID":3,
@@ -3194,6 +3200,7 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
     "UnitOfMeasure":"Other",
     "Quantity":"1",
     "ItemAmount":"0",
+	"ParentItemID": 3,
     "ProductLabel":"Pepper sauce",
     "Categories":["Food", "Mains"]
   },  
@@ -3203,6 +3210,7 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
     "UnitOfMeasure":"Other",
     "Quantity":"1",
     "ItemAmount":"0",
+	"ParentItemID": 3,
     "ProductLabel":"Side of fries",
     "Categories":["Food", "Sides"]
   },
@@ -3246,7 +3254,8 @@ Please contact the DataMesh integrations team at <a href="mailto:integrations@da
   }
 ]
 ```
-
+</p>
+</details>
 
 
 <div style={{width:'240px'}}>Attributes</div>   | Requ.    | Format | Description |
