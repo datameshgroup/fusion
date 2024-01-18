@@ -1036,6 +1036,9 @@ TODO
 :::
 -->
 
+
+
+
 ### Error handling
 
 When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](/docs/api-reference/fusion-cloud#payment), it will receive a [payment response](/docs/api-reference/fusion-cloud#payment-response).
@@ -1044,8 +1047,200 @@ However, in unusual scenarios wherein the Sale System sends a request but doesn'
 
 More information about how to handle such scenario can be found in the [Error handling section of the Cloud API](/docs/api-reference/fusion-cloud#error-handling)
 
+
+
+
 ### Fuel API
 
 The Fusion Fuel API is an extension to the Fusion Core API which adds support for current and future fuel payment types accepted by DataMesh. (e.g. FleetCard, Shell Card, MotorPass etc)
 
 For more information see the [Fusion Fuel API](/docs/api-reference/fusion-fuel-api)
+
+
+
+
+### Product level blocking (PLB)
+
+PLB is a program that automatically prevents enhanced income management cards from being used to purchase restricted items (alcohol, gambling services, tobacco products, cash-like products etc).
+
+PLB transaction example:
+
+1. When constructing a [Payment Request](/docs/api-reference/data-model#payment-request), the Sale System sets the [PaymentRequest.PaymentTransaction.SaleItem[].Restricted](/docs/api-reference/data-model#saleitem) flag to `true` for each sale item classified as "restricted" under the PLB scheme. 
+1. The cardholder presents their card on the POI Terminal. 
+1. If the card presented is an enhanced income management card, and either the  Sale System has flagged sale items as `Restricted`, or no sale items were provided in the request, then the POI terminal declines the sale 
+  1. PaymentResponse.AllowedProductCodes contains the `SaleItem.ProductCode` of items which were blocked
+  1. [PaymentResponse.Response.Result](/docs/api-reference/data-model#result) will be set to `Failure`
+  1. [PaymentResponse.Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) will be set to `PaymentRestriction`
+  1. [PaymentResponse.Response.AdditionalResponse](/docs/api-reference/data-model#additionalresponse) will contain "Restricted items" if the payment was declined due to restricted items, or "No Product Data" if the payment was declined due to no `SaleItem` data provided.
+
+
+
+
+### Restricted payment brands
+
+:::info
+This feature is only available to select merchants. Please discussion with the [integrations team](mailto:integrations@datameshgroup.com) before implementing. 
+:::
+
+The Sale System can restrict the payment request to specified payment brands by configuring [PaymentRequest.PaymentTransaction.TransactionConditions.AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands). 
+
+This can be used by the Sale System to implement business rules for restricted payment types per transaction. e.g. preventing the purchase of a gift card with another gift card, or preventing the use of loyalty cards when discounts have been provided. 
+
+#### Payment request
+
+The Sale System can configure the restricted payment brands behaviour in several ways: 
+* Allowing all payment brands
+* Specify allowed payment brands
+* Specify allowed payment brand categories
+* Specify allowed payment brands
+* Specify allowed payment brand categories
+
+:::tip
+Where possible, the Sale System should specify payment brand **categories** instead of specific payment brands. This will ensure the expected behaviour continues once payment brands are added in the future. 
+:::
+
+**Allowing all payment brands**
+
+The default behaviour by the POI Terminal is to accept all payment brands when [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands) is null or empty. 
+
+*Example - allow all payment brands*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": []
+      }
+    }
+  }
+}
+```
+
+**Specify allowed payment brands**
+
+To specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) to [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+
+When an allowed payment brand is specified, all other payment brands are blocked. 
+
+*Example - block all payment brands except VISA Debit and VISA Credit*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "0004", "0005" ]
+      }
+    }
+  }
+}
+```
+
+
+**Specify allowed payment brand categories**
+
+To specify which payment brand categories to allow, prefix `Category:` to a supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category in [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+
+When an allowed payment brand category is specified, all other payment brands outside the category are blocked.
+
+*Example - block all payment brands except card schemes*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "Category:Schemes" ]
+      }
+    }
+  }
+}
+```
+
+**Specify restricted payment brands** 
+
+To specify which payment brands to restrict, prefix a `!` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) in [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+
+When a restricted payment brand is specified, all other payment brands are allowed. 
+
+*Example - allow all payment brands except EFTPOS & Blackhawk*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "!0001", "!0600" ]
+      }
+    }
+  }
+}
+```
+
+
+**Specify restricted payment brand categories**
+
+To specify which payment brand categories to restrict, prefix a `!Category:` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category in [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+
+When a restricted payment brand category is specified, all other payment brands outside the category are blocked.
+
+*Example - allow all payment brands except gift cards and fuel cards*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "!Category:GiftCard", "!Category:Fuel" ]
+      }
+    }
+  }
+}
+```
+
+**Mixing allowed and restricted payment brands and categories**
+
+:::tip 
+The Sale System should take care when mixing allowed and restricted payment brands and categories
+:::
+
+Specifying a restricted payment brand category as well as a restricted payment brand is supported.
+
+*Example - allow all payment brands except fuel cards, gift cards, and Flybuys.
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "!Category:Fuel", "!Category:GiftCard", "!0402" ]
+      }
+    }
+  }
+}
+```
+
+Mixing allowed and restricted payment brands and categories is not recommended as it can lead to unexpected behaviour. 
+
+*Example - block all payment brands except fuel cards. The `!0001` entry will have no effect*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "!0001", "Category:Fuel" ]
+      }
+    }
+  }
+}
+```
+
+#### Payment response 
+
+If the cardholder presents a restricted payment brand, the POI Terminal will decline the payment request with the payment response set to:
+
+- [PaymentResponse.Response.Result](/docs/api-reference/data-model#result) will be set to `Failure`
+- [PaymentResponse.Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) will be set to `PaymentRestriction`
+- [PaymentResponse.Response.AdditionalResponse](/docs/api-reference/data-model#additionalresponse) will contain "Restricted payment brand"

@@ -341,3 +341,10 @@ Install through AxToolkit
 
 </p>
 </details>
+
+## Change log
+
+### 2024-01-18 
+* Added [Getting started → Product level blocking (PLB)](/docs/getting-started#product-level-blocking-plb)
+* Added [Getting started → Restricted payment brands](/docs/getting-started#restricted-payment-brands)
+* Updated [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)

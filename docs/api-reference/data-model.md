@@ -1923,30 +1923,34 @@ The data encryption session key = [EncryptedKey](#encryptedkey) is 3DES CBC encr
 
 Array of string.
 
-Restricts payment to specific card brands included in the array. If not present, all supported cards are allowed.
+Restricts a payment request to the specified payment brands. 
 
-Available values: 
+This can be used by the Sale System to implement business rules for restricted payment types per transaction. e.g. preventing the purchase of a gift card with another gift card, or preventing the use of loyalty cards when discounts have been provided. 
 
-- "VISA"
-- "MasterCard",
-- "American Express"
-- "Diners Club"
-- "JCB"
-- "UnionPay"
-- "CUP Debit"
-- "Discover"
-- "Card"
-- "BPGiftCard"
-- "BP Fuel Card"
-- "Fleet Card"
-- "Shell Card""
-- "Motorpass"
-- "AmpolCard"
-- "Freedom Fuel Card"
-- "Trinity Fuel Card"
-- "Liberty Card"
-- "Caltex StarCard"
-- "United Fuel Card"
+- The default behaviour by the POI Terminal is to accept all payment brands when `AllowedPaymentBrands` is null or empty. 
+- Specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
+- Specify which payment brand categories to allow, prefix `Category:` to a supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category
+- Specify which payment brands to restrict, prefix a `!` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
+- Specify which payment brand categories to restrict, prefix a `!Category:` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category
+
+
+:::tip 
+The Sale System should take care when mixing allowed and restricted payment brands and categories
+:::
+
+*Example - allow all payment brands except fuel cards, gift cards, and Flybuys*
+
+```json
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrands": [ "!Category:Fuel", "!Category:GiftCard", "!0402" ]
+      }
+    }
+  }
+}
+```
 
 ### ApplicationName
 
@@ -2129,7 +2133,7 @@ Label                | Description
 "Refusal"            | The transaction is refused by the host or the rules associated to the card, and cannot be repeated.
 "UnavailableDevice"  | The hardware is not available (absent, not configured...)
 "UnavailableService" | The service is not available (not implemented, not configured, protocol version too old...)
-"InvalidCard"        | The card entered by the card holder cannot be processed by the POI because this  card is not configured in the system
+"InvalidCard"        | The card entered by the card holder cannot be processed by the POI because this card is not configured in the system
 "UnreachableHost"    | Acquirer or any host is unreachable or has not answered to an online request, so is considered as temporary unavailable. Depending on the Sale context, the request could be repeated (to be compared with "Refusal").
 "WrongPIN"           | The user has entered the PIN on the PED keyboard and the verification fails
 
@@ -2782,6 +2786,10 @@ Please note that this list may expand in the future as new payment types are add
 			<td>0401</td>
 			<td>DRC</td>
 		</tr>	
+		<tr>
+			<td>0402</td>
+			<td>Flybuys</td>
+		</tr>			
 		<tr>
 			<td rowspan='3'>Other</td>
 		</tr>
