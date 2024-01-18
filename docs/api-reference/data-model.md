@@ -2425,7 +2425,7 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 			<td>Union Pay Debit</td>
 		</tr>		
 		<tr>
-			<td rowspan='13'>Fuel cards</td>
+			<td rowspan='13'>Fuel</td>
 		</tr>
 		<tr>
 			<td>BPGiftCard</td>
@@ -2476,7 +2476,7 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 			<td>United Fuel Card</td>
 		</tr>	
 		<tr>
-			<td rowspan='11'>Transit cards</td>
+			<td rowspan='11'>Transit</td>
 		</tr>
 		<tr>
 			<td>Fastcard</td>
@@ -2519,7 +2519,7 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 			<td></td>
 		</tr>	
 		<tr>
-			<td rowspan='5'>Alternative payment</td>
+			<td rowspan='5'>Alternative</td>
 		</tr>
 		<tr>
 			<td>AliPay</td>
@@ -2580,7 +2580,7 @@ Please note that this list may expand in the future as new payment types are add
 	</thead>
 	<tbody>
 		<tr>
-			<td rowspan='21'>Card schemes</td>
+			<td rowspan='21'>Schemes</td>
 		</tr>
 		<tr>
 			<td>0001</td>
@@ -2757,7 +2757,7 @@ Please note that this list may expand in the future as new payment types are add
 			<td></td>
 		</tr>	
 		<tr>
-			<td rowspan='5'>Alternative payment</td>
+			<td rowspan='5'>Alternative</td>
 		</tr>
 		<tr>
 			<td>0300</td>
@@ -2802,7 +2802,7 @@ Please note that this list may expand in the future as new payment types are add
 			<td>Payment on other terminal</td>
 		</tr>	
 		<tr>
-			<td rowspan='6'>Gift card</td>
+			<td rowspan='6'>GiftCard</td>
 		</tr>
 		<tr>
 			<td>0600</td>
