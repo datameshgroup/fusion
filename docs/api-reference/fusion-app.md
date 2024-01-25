@@ -15,6 +15,12 @@ There are two methods for processing a payment using Fusion App:
 
 In both methods, in case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
 
+## Reference code  
+
+| Description | Location |
+:-----------------:                        | -----------------                        |
+| Demo Application implementing the Fusion App | on [GitHub](https://github.com/datameshgroup/fusionapp-demo) |
+
 ## Getting started with Fusion App
 
 ### Install Fusion App
