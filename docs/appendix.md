@@ -346,6 +346,7 @@ Install through AxToolkit
 
 ### 2024-02-01
 * Added [Perform a balance inquiry (events mode)](/docs/api-reference/fusion-app#perform-a-balance-inquiry-events-mode)
+* Added Fusion App endpoints for [balance inquiry](/docs/api-reference/fusion-app#balance-inquiry) and [stored value](/docs/api-reference/fusion-app#stored-value) requests
 * Updated Fusion App [payments](/docs/api-reference/fusion-app#payments) endpoints
 
 ### 2024-01-18 

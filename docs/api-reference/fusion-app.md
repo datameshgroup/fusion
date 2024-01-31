@@ -852,16 +852,697 @@ Code | Description | Required action  |
 5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
 
 
- 
+
+
+
+
+
+
+
+
+<!-------------------------------------- BALANCE INQUIRY ---------------------------------------------->
+
+### Balance inquiry
+
+The `balance inquiry` endpoint is used to request the balance of an account. 
+
+**Endpoints**
+
+Name                    | Endpoint                                                                        | Description                                                                             | 
+----------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+Request (blocking mode) | `POST http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}`             | Initate a balance inquiry in blocking mode                                              |
+Request (events mode)   | `POST http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}?events=true` | Initate a balance inquiry in events mode                                                |
+Error handling          | `GET http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}`              | Called by the Sale System to enter error handling                                       |
+Get events              | `GET http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}/events`       | Get events for the request. See [balance inquiry events](#balance-inquiry-events)       |
+
+**Query Parameters**
+
+Parameter          | Value                                                  | 
+------------------ | ------------------------------------------------------ |
+SessionId          | A globally unique UUIDv4 which identifies this request |
+Events             | Set to true to enable events mode, false otherwise     | 
+
+**Headers**
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+**Request Body**
+
+A JSON payload based on [balance inquiry request](/docs/api-reference/data-model#balance-inquiry-request)
+
+<details>
+
+<summary>
+Balance inquiry request
+</summary>
+
+<p>
+
+```json
+{
+    "BalanceInquiryRequest": {
+    }
+}
+```
+</p>
+</details>
+
+:::note
+The `BalanceInquiryRequest` node is intentionally empty.
+:::
+
+
+**Response Body**
+
+:::info
+A response body is only returned when using blocking mode.
+:::
+
+A JSON payload based on [balance inquiry response](/docs/api-reference/data-model#balance-inquiry-response)
+
+<details>
+
+<summary>
+Balance inquiry response
+</summary>
+
+<p>
+
+```json
+{
+	"BalanceInquiryResponse": {	
+		"Response": {
+			"Result": "Success | Failure",
+			"ErrorCondition": "xxx",
+			"AdditionalResponse": "xxx"
+		},	
+		"PaymentAccountStatus": {
+			"PaymentInstrumentType": "Card",
+			"PaymentInstrumentData": {
+				"PaymentInstrumentType": "xxx",
+				"CardData": {
+					"EntryMode": "xxx",
+					"PaymentBrand": "xxx",
+					"PaymentBrandId": "xxx",
+					"PaymentBrandLabel": "xxx",
+					"Account": "xxx",
+					"MaskedPAN": "xxxxxx…xxxx",
+					"PaymentToken": {
+						"TokenRequestedType": "xxx",
+						"TokenValue": "xxx",
+						"ExpiryDateTime": "xxx"
+					}
+				},
+				"StoredValueAccountID": {
+					"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+					"StoredValueProvider": "",
+					"OwnerName": "",
+					"ExpiryDate": "MMYY",
+					"EntryMode": "",
+					"IdentificationType": "",
+					"StoredValueID": ""
+				}
+			},
+			"CurrentBalance": 0.00,
+			"Currency": "AUD",
+
+			"PaymentAcquirerData": {
+				"AcquirerID": "xxx",
+				"MerchantID": "xxx",
+				"AcquirerPOIID": "xxx",
+				"AcquirerTransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"ApprovalCode": "xxx",
+				"ResponseCode": "xxx",
+				"HostReconciliationID": "xxx"
+			},
+
+		}
+	}
+}
+```
+</p>
+</details>
+
+**Response HTTP Status Codes**
+
+Code | Description | Required action  | 
+---- | ----------- | ----------------- |
+200  | OK          | Fusion App processed the request. Check `BalanceInquiryResponse.Response.Result` for the result of the request.
+202  | Accepted    | Fusion App processed the request in events mode. Call the [balance inquiry events](#balance-inquiry-events) endpoint for the result.
+4xx  | Bad Request | Fusion App was unable to process the request. Check the required headers and request body and try again.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the result.
+
+
+### Balance inquiry events
+
+The `balance inquiry events` endpoint is used to request the events associated with an ongoing balance inquiry session. 
+
+:::tip 
+Use the `SessionId` used in the POST to initiate the transaction. 
+
+The `SessionId` is only valid during the lifetime of the transaction (i.e. when a transaction is initiated until `BalanceInquiryResponse` is returned to the Sale System). If 404 is returned, the Sale System should enter [error handling](#error-handling).
+:::
+
+**Endpoint**
+`GET http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}/events`
+
+**Query Parameters**
+
+Parameter          | Value                                                  | 
+------------------ | ------------------------------------------------------ |
+SessionId          | A globally unique UUIDv4 which identifies this request |
+
+**Headers**
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+**Request Body**
+
+Empty.
+
+**Response Body**
+
+A JSON payload containing either a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) or [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse). 
+
+
+
+<details>
+
+<summary>
+Print request
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIRequest": {
+		"MessageHeader": {
+			"MessageClass": "Device",
+			"MessageCategory": "Print",
+			"MessageType": "Request",
+			"ServiceID": "xxxx"
+		},
+		"PrintRequest": {
+			"PrintOutput": {
+				"DocumentQualifier": "Cashier | Customer",
+				"IntegratedPrintFlag": "true|false",
+				"RequiredSignatureFlag": "true|false",
+				"OutputContent": {
+					"OutputFormat": "XHTML",
+					"OutputXHTML": "xxx"
+				}
+			}
+		}
+	}
+}
+```
+
+</p>
+</details>
+
+<details>
+
+<summary>
+Balance inquiry response
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIResponse": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Response",
+			"ServiceID": "xxxx"
+		},
+		"BalanceInquiryResponse": {	
+				"Response": {
+					"Result": "Success | Failure",
+					"ErrorCondition": "xxx",
+					"AdditionalResponse": "xxx"
+				},	
+				"PaymentAccountStatus": {
+					"PaymentInstrumentType": "Card",
+					"PaymentInstrumentData": {
+						"PaymentInstrumentType": "xxx",
+						"CardData": {
+							"EntryMode": "xxx",
+							"PaymentBrand": "xxx",
+							"PaymentBrandId": "xxx",
+							"PaymentBrandLabel": "xxx",
+							"Account": "xxx",
+							"MaskedPAN": "xxxxxx…xxxx",
+							"PaymentToken": {
+								"TokenRequestedType": "xxx",
+								"TokenValue": "xxx",
+								"ExpiryDateTime": "xxx"
+							}
+						},
+						"StoredValueAccountID": {
+							"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+							"StoredValueProvider": "",
+							"OwnerName": "",
+							"ExpiryDate": "MMYY",
+							"EntryMode": "",
+							"IdentificationType": "",
+							"StoredValueID": ""
+						}
+					},
+					"CurrentBalance": 0.00,
+					"Currency": "AUD",
+
+					"PaymentAcquirerData": {
+						"AcquirerID": "xxx",
+						"MerchantID": "xxx",
+						"AcquirerPOIID": "xxx",
+						"AcquirerTransactionID": {
+							"TransactionID": "xxx",
+							"TimeStamp": "xxx"
+						},
+						"ApprovalCode": "xxx",
+						"ResponseCode": "xxx",
+						"HostReconciliationID": "xxx"
+					},
+
+				}
+			}
+	}
+}
+```
+</p>
+</details>
+
+**Response HTTP Status Codes**
+
+Code | Description | Required action  | 
+---- | ----------- | ----------------- |
+200  | OK          | Fusion App processed the request. If a print request, check `SaleToPOIRequest.PrintRequest` and process the print. If a payment response, check `SaleToPOIResponse.BalanceInquiryResponse.Response.Result` for the result of the transaction.
+404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
+
+
+
+
+
+
+
+
+<!-------------------------------------- STORED VALUE ---------------------------------------------->
+
+### Stored value
+
+The `stored value` endpoint is used to activate or deactivate a gift card. 
+
+**Endpoints**
+
+Name                    | Endpoint                                                                        | Description                                                                             | 
+----------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+Request (blocking mode) | `POST http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}`                | Initate a stored value request in blocking mode                                              |
+Request (events mode)   | `POST http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}?events=true`    | Initate a stored value request in events mode                                                |
+Error handling          | `GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}`                 | Called by the Sale System to enter error handling                                       |
+Get events              | `GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}/events`          | Get events for the request. See [stored value events](#stored-value-events)       |
+
+**Query Parameters**
+
+Parameter          | Value                                                  | 
+------------------ | ------------------------------------------------------ |
+SessionId          | A globally unique UUIDv4 which identifies this request |
+Events             | Set to true to enable events mode, false otherwise     | 
+
+**Headers**
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+**Request Body**
+
+A JSON payload based on [stored value request](/docs/api-reference/data-model#stored-value-request)
+
+<details>
+<summary>
+Stored value request
+</summary>
+<p>
+
+```json
+{
+	"StoredValueRequest": {		
+		"SaleData": {
+			"OperatorID": "xxx",
+			"OperatorLanguage": "en",
+			"ShiftNumber": "xxx",
+			"SaleTransactionID": {
+				"TransactionID": "xxx",
+				"TimeStamp": "xxx"
+			},
+			"SaleReferenceID": "xxx",
+			"SaleTerminalData": {
+				"TerminalEnvironment": "xxx",
+				"SaleCapabilities": [
+					"xxx",
+					"xxx",
+					"xxx"
+				],
+				"TotalsGroupID": "xxx"
+			},
+			"TokenRequestedType": "Customer | Transaction"
+		},
+		"StoredValueData": [
+			{
+			"StoredValueProvider": "",
+			"StoredValueTransactionType":"Reserve | Activate | Load | Unload | Reverse | Duplicate",
+			"StoredValueAccountID": {
+				"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+				"StoredValueProvider": "",
+				"OwnerName": "",
+				"ExpiryDate": "MMYY",
+				"EntryMode": "",
+				"IdentificationType": "",
+				"StoredValueID": ""
+			},
+			"OriginalPOITransaction": {
+				"SaleID": "xxx",
+				"POIID": "xxx",
+				"POITransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"ReuseCardDataFlag": true,
+				"ApprovalCode": "xxx",
+				"LastTransactionFlag": true
+			},
+			"ProductCode": "xxx",
+			"EanUpc": "xxx",
+			"ItemAmount": "xx.x",			
+			"TotalFeesAmount": "xx.x",
+			"Currency": "",
+
+		}
+		]		
+	}
+}
+```
+</p>
+</details>
+
+
+**Response Body**
+
+:::info
+A response body is only returned when using blocking mode.
+:::
+
+A JSON payload based on [stored value response](/docs/api-reference/data-model#stored-value-response)
+
+<details>
+<summary>
+Stored value response
+</summary>
+<p>
+
+```json
+{
+	"StoredValueResponse": {	
+		"Response": {
+			"Result": "Success | Failure",
+			"ErrorCondition": "xxx",
+			"AdditionalResponse": "xxx"
+		},	
+		"SaleData": {
+			"SaleTransactionID": {
+				"TransactionID": "xxx",
+				"TimeStamp": "xxx"
+			},
+		},
+		"POIData": {
+			"POITransactionID": {
+				"TransactionID": "xxx",
+				"TimeStamp": "xxx"
+			},
+			"POIReconciliationID": "xxx"
+		},
+		"StoredValueResult": [
+			{
+				"StoredValueTransactionType":"Reserve | Activate | Load | Unload | Reverse | Duplicate",
+				"ProductCode": "xxx",
+				"EanUpc": "xxx",
+				"ItemAmount": "xx.x",		
+				"TotalFeesAmount": "xx.x",		
+				"Currency": "",
+				"StoredValueAccountStatus": {
+					"StoredValueAccountID": {
+						"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+						"StoredValueProvider": "",
+						"OwnerName": "",
+						"ExpiryDate": "MMYY",
+						"EntryMode": "",
+						"IdentificationType": "",
+						"StoredValueID": ""
+					},
+					"CurrentBalance": 0.00,
+				},
+			}		
+		],
+		"PaymentReceipt": [
+			{
+				"DocumentQualifier": "xxx",
+				"RequiredSignatureFlag": true,
+				"OutputContent": {
+					"OutputFormat": "XHTML",
+					"OutputXHTML": "xxx"
+				}
+			}
+		]
+	}
+}
+```
+</p>
+</details>
+
+**Response HTTP Status Codes**
+
+Code | Description | Required action  | 
+---- | ----------- | ----------------- |
+200  | OK          | Fusion App processed the request. Check `StoredValueResponse.Response.Result` for the result of the request.
+202  | Accepted    | Fusion App processed the request in events mode. Call the [stored value events](#stored-value-events) endpoint for the result.
+4xx  | Bad Request | Fusion App was unable to process the request. Check the required headers and request body and try again.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the result.
+
+
+### Stored value events
+
+The `stored value events` endpoint is used to request the events associated with an ongoing stored value session. 
+
+:::tip 
+Use the `SessionId` used in the POST to initiate the transaction. 
+
+The `SessionId` is only valid during the lifetime of the transaction (i.e. when a transaction is initiated until `StoredValueResponse` is returned to the Sale System). If 404 is returned, the Sale System should enter [error handling](#error-handling).
+:::
+
+**Endpoint**
+`GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}/events`
+
+**Query Parameters**
+
+Parameter          | Value                                                  | 
+------------------ | ------------------------------------------------------ |
+SessionId          | A globally unique UUIDv4 which identifies this request |
+
+**Headers**
+
+Parameter          | Value                                    | 
+------------------ | ---------------------------------------- |
+Content-Type       | application/json                         |
+Accept             | application/json                         |
+X-Application-Name | The name of your Sale System             |
+X-Software-Version | The software version of your Sale System |
+
+**Request Body**
+
+Empty.
+
+**Response Body**
+
+A JSON payload containing either a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) or [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse). 
+
+
+
+<details>
+
+<summary>
+Print request
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIRequest": {
+		"MessageHeader": {
+			"MessageClass": "Device",
+			"MessageCategory": "Print",
+			"MessageType": "Request",
+			"ServiceID": "xxxx"
+		},
+		"PrintRequest": {
+			"PrintOutput": {
+				"DocumentQualifier": "Cashier | Customer",
+				"IntegratedPrintFlag": "true|false",
+				"RequiredSignatureFlag": "true|false",
+				"OutputContent": {
+					"OutputFormat": "XHTML",
+					"OutputXHTML": "xxx"
+				}
+			}
+		}
+	}
+}
+```
+
+</p>
+</details>
+
+<details>
+
+<summary>
+Stored value response
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIResponse": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Response",
+			"ServiceID": "xxxx"
+		},
+		"StoredValueResponse": {	
+			"Response": {
+				"Result": "Success | Failure",
+				"ErrorCondition": "xxx",
+				"AdditionalResponse": "xxx"
+			},	
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+			},
+			"POIData": {
+				"POITransactionID": {
+					"TransactionID": "xxx",
+					"TimeStamp": "xxx"
+				},
+				"POIReconciliationID": "xxx"
+			},
+			"StoredValueResult": [
+				{
+					"StoredValueTransactionType":"Reserve | Activate | Load | Unload | Reverse | Duplicate",
+					"ProductCode": "xxx",
+					"EanUpc": "xxx",
+					"ItemAmount": "xx.x",		
+					"TotalFeesAmount": "xx.x",		
+					"Currency": "",
+					"StoredValueAccountStatus": {
+						"StoredValueAccountID": {
+							"StoredValueAccountType": "GiftCard | PhoneCard | Other",
+							"StoredValueProvider": "",
+							"OwnerName": "",
+							"ExpiryDate": "MMYY",
+							"EntryMode": "",
+							"IdentificationType": "",
+							"StoredValueID": ""
+						},
+						"CurrentBalance": 0.00,
+					},
+				}		
+			],
+			"PaymentReceipt": [
+				{
+					"DocumentQualifier": "xxx",
+					"RequiredSignatureFlag": true,
+					"OutputContent": {
+						"OutputFormat": "XHTML",
+						"OutputXHTML": "xxx"
+					}
+				}
+			]
+		}
+	}
+}
+```
+</p>
+</details>
+
+**Response HTTP Status Codes**
+
+Code | Description | Required action  | 
+---- | ----------- | ----------------- |
+200  | OK          | Fusion App processed the request. If a print request, check `SaleToPOIRequest.PrintRequest` and process the print. If a payment response, check `SaleToPOIResponse.StoredValueResponse.Response.Result` for the result of the transaction.
+404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Error handling
 
-When the Sale System POSTs [payment request](#payment_request) it will receive a [payment response](#payment-response).
+When the Sale System POSTs a [payment](/docs/api-reference/data-model#payment-request), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-request), or [stored value](/docs/api-reference/data-model#stored-value-request) request, it will eventually receive a matching [payment](/docs/api-reference/data-model#payment-response), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-response), or [stored value](/docs/api-reference/data-model#stored-value-response) response, or via the `~/events` endpoint in events mode.
+ 
 
 The Sale System should verify the result of the transaction by checking the [Response.Result](/docs/api-reference/data-model#result) field in the response.
 
 - If the [Response.Result](/docs/api-reference/data-model#result) is "Success", the payment transaction was successful.
 - If the [Response.Result](/docs/api-reference/data-model#result) is "Failure", the payment transaction failed.  The Sale System may check for any errors specified in the [Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) field in the same response message and handle the error accordingly.
 
+:::tip 
 In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it must enter error handling.
+:::
 
-To perform error handling the Sale System should send a `GET` request to the [payments](#payments) endpoint using the `SessionId` of the failed request. Fusion App will return a [payment response](#payment-response) containing the result of the payment. 
+To perform error handling the Sale System should send a `GET` request to the error handling endpoint using the `SessionId` of the failed request. Fusion App will return a response containing the result of the payment. 
+
+
+**Base Uri**
+`http://localhost:4242/fusion/v1/`
+
+Request endpoint                                       | Error handling endpoint             | Response content
+------------------------------------------------------ | ----------------------------------- | ---------------------------------------------------
+`POST ~payments/{{SessionId}}`       | `GET ~payments/{{SessionId}}`       | [PaymentResponse](/docs/api-reference/data-model#payment-response)
+`POST ~balanceinquiry/{{SessionId}}` | `GET ~balanceinquiry/{{SessionId}}` | [BalanceInquiryResponse](/docs/api-reference/data-model#balance-inquiry-response) 
+`POST ~storedvalue/{{SessionId}}`    | `GET ~storedvalue/{{SessionId}}`    | [StoredValueResponse](/docs/api-reference/data-model#stored-value-response) 
