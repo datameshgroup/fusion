@@ -344,7 +344,12 @@ Install through AxToolkit
 
 ## Change log
 
+### 2024-02-01
+* Added [Perform a balance inquiry (events mode)](/docs/api-reference/fusion-app#perform-a-balance-inquiry-events-mode)
+* Updated Fusion App [payments](/docs/api-reference/fusion-app#payments) endpoints
+
 ### 2024-01-18 
 * Added [Getting started → Product level blocking (PLB)](/docs/getting-started#product-level-blocking-plb)
 * Added [Getting started → Restricted payment brands](/docs/getting-started#restricted-payment-brands)
 * Updated [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+

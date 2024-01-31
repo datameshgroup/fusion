@@ -293,6 +293,31 @@ To perform a deactivation, the Sale System will need to recall the [POITransacti
   - On 404, enter error handling
 - If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
+## Perform a balance inquiry (events mode)
+
+To perform a balance inquiry with events mode, the Sale System will need to POST a [balance inquiry request](/docs/api-reference/data-model#balance-inquiry-request) JSON payload to the `http://localhost:4242/fusion/v1/balanceinquiry` endpoint.
+
+- Construct a [balance inquiry request](/docs/api-reference/data-model#balance-inquiry-request) JSON payload including all required fields
+  - Note the `BalanceInquiryRequest` object can be left empty
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the transaction and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}events=true`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [balance inquiry request](/docs/api-reference/data-model#balance-inquiry-request) JSON payload
+- Await the POST result (this should take under 5 seconds).
+  - On 4xx the request was invalid and the request could not be processed
+  - On 5xx an error occured, the Sale System should enter error handling
+  - On 202 ACCEPTED, the Sale System should GET the result
+- Call `GET http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}/events` using the `SessionId` from the POST to get the next event in the transaction (this could take as long as 5 minutes). Fusion App will return a [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse) containing the [balance inquiry response](/docs/api-reference/data-model#balance-inquiry-response)
+  - On [balance inquiry response](/docs/api-reference/data-model#balance-inquiry-response)
+    - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+    - If [Response.Result](/docs/api-reference/data-model#result) is "Success", handle the remaining fields in the response
+  - On 404, enter error handling
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
+
+
+
 ## Methods
 
 ### Status
@@ -461,13 +486,14 @@ Code | Description | Required action  |
 
 The `Payments` endpoint is used to perform purchase, purchase + cash out, cash out only, and refund requests. 
 
-**Endpoint (blocking mode)**
+**Endpoints**
 
-`POST http://localhost:4242/fusion/v1/payments/{{SessionId}}`
-
-**Endpoint (events mode)**
-
-`POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true`
+Name                    | Endpoint                                                                  | Description                                                             | 
+----------------------- | ----------------------------------------------------------------------    | ----------------------------------------------------------------------- |
+Request (blocking mode) | `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}`             | Initate a payment in blocking mode                                      |
+Request (events mode)   | `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true` | Initate a payment in events mode                                        |
+Error handling          | `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}`              | Called by the Sale System to enter error handling                       |
+Get events              | `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events`       | Get events for the request. See [Payment events](#payment-events)       |
 
 **Query Parameters**
 
