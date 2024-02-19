@@ -378,7 +378,7 @@ Payment request
                "LastTransactionFlag":true
             },
             "TransactionConditions":{
-               "AllowedPaymentBrands":[
+               "AllowedPaymentBrand":[
                   "xxx",
                   "xxx",
                   "xxx"
@@ -526,7 +526,7 @@ Payment request
   [ApprovalCode](#approvalcode)              |  | String | Present if a referral code is obtained from an Acquirer
   [LastTransactionFlag](#lasttransactionflag)| ✔ | Boolean| Set to true to process the Last Transaction with a referral code
  **TransactionConditions**                   |  | Object | Optional transaction configuration. Present only if any of the JSON elements within are present.
-  [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+  [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)|  | Array  | Restricts the request to specified card brands. See [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)
   [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid) |  | Array  | Used to restrict the payment to specified acquirers. See [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid)
   [DebitPreferredFlag](#debitpreferredflag)  |  | Boolean| If present, debit processing is preferred to credit processing.
   [ForceOnlineFlag](/docs/api-reference/data-model#forceonlineflag)        |  | Boolean| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.

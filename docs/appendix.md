@@ -352,5 +352,7 @@ Install through AxToolkit
 ### 2024-01-18 
 * Added [Getting started → Product level blocking (PLB)](/docs/getting-started#product-level-blocking-plb)
 * Added [Getting started → Restricted payment brands](/docs/getting-started#restricted-payment-brands)
-* Updated [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+* Updated [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)
 
+### 2024-02-19
+* Updated AllowedPaymentBrands references to AllowedPaymentBrand

@@ -554,7 +554,7 @@ Payment request
 				"LastTransactionFlag": true
 			},
 			"TransactionConditions": {
-				"AllowedPaymentBrands": [
+				"AllowedPaymentBrand": [
 					"xxx",
 					"xxx",
 					"xxx"
@@ -672,7 +672,7 @@ Payment request
 &emsp;&emsp;[ApprovalCode](#approvalcode)              |  | [String(1,128)](#data-format) | Present if a referral code is obtained from an Acquirer
 &emsp;&emsp;[LastTransactionFlag](#lasttransactionflag)| ✔ | [Boolean](#data-format)| Set to true to process the Last Transaction with a referral code
 &emsp;**TransactionConditions**                   |  | [Object](#data-format) | Optional transaction configuration. Present only if any of the JSON elements within are present.
-&emsp;&emsp;[AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | [Array(String)](#data-format)  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+&emsp;&emsp;[AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)|  | [Array(String)](#data-format)  | Restricts the request to specified card brands. See [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)
 &emsp;&emsp;[AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid) |  | [String(1,128)](#data-format)  | Used to restrict the payment to specified acquirers. See [AcquirerID](/docs/api-reference/data-model#paymenttransaction.transactionconditions.acquirerid)
 &emsp;&emsp;[DebitPreferredFlag](#debitpreferredflag)  |  | [Boolean](#data-format)| If present, debit processing is preferred to credit processing.
 &emsp;&emsp;[ForceOnlineFlag](/docs/api-reference/data-model#forceonlineflag)        |  | [Boolean](#data-format)| If 'true' the transaction will only be processed in online mode, and will fail if there is no response from the Acquirer.
@@ -1502,7 +1502,7 @@ Card acquisition request
 &emsp;&emsp;[TerminalEnvironment](/docs/api-reference/data-model#terminalenvironment) |  | [Enum](#data-format) | "Attended", "SemiAttended", or "Unattended"
 &emsp;&emsp;[SaleCapabilities](/docs/api-reference/data-model#salecapabilities)       |  | [Array(Enum)](#data-format)  | Advises the POI System of the Sale System capabilities. See [SaleCapabilities](/docs/api-reference/data-model#salecapabilities) 
 *CardAcquisitionTransaction*                  |  | [Object](#data-format) | Present if any of the JSON elements within are present
-&emsp;&emsp;[AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)|  | [Array(String)](#data-format)  | Restricts the request to specified card brands. See [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands)
+&emsp;&emsp;[AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)|  | [Array(String)](#data-format)  | Restricts the request to specified card brands. See [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand)
 &emsp;&emsp;[ForceEntryMode](/docs/api-reference/data-model#forceentrymode)           |  | [Enum](#data-format)| If present, restricts card presentment to the specified type. See [ForceEntryMode](/docs/api-reference/data-model#forceentrymode)
 
 #### Card acquisition response
@@ -1919,7 +1919,7 @@ Set to "des-ede3-cbc"
 
 The data encryption session key = [EncryptedKey](#encryptedkey) is 3DES CBC encrypted by an agreed KEK 3DES key which should be unique per Sale Terminal or Sale System (To be agreed).
 
-### AllowedPaymentBrands
+### AllowedPaymentBrand
 
 Array of string.
 
@@ -1927,7 +1927,7 @@ Restricts a payment request to the specified payment brands.
 
 This can be used by the Sale System to implement business rules for restricted payment types per transaction. e.g. preventing the purchase of a gift card with another gift card, or preventing the use of loyalty cards when discounts have been provided. 
 
-- The default behaviour by the POI Terminal is to accept all payment brands when `AllowedPaymentBrands` is null or empty. 
+- The default behaviour by the POI Terminal is to accept all payment brands when `AllowedPaymentBrand` is null or empty. 
 - Specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
 - Specify which payment brand categories to allow, prefix `Category:` to a supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category
 - Specify which payment brands to restrict, prefix a `!` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid)
@@ -1945,7 +1945,7 @@ The Sale System should take care when mixing allowed and restricted payment bran
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "!Category:Fuel", "!Category:GiftCard", "!0402" ]
+        "AllowedPaymentBrand": [ "!Category:Fuel", "!Category:GiftCard", "!0402" ]
       }
     }
   }

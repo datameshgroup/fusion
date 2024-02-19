@@ -1082,7 +1082,7 @@ PLB transaction example:
 This feature is only available to select merchants. Please discussion with the [integrations team](mailto:integrations@datameshgroup.com) before implementing. 
 :::
 
-The Sale System can restrict the payment request to specified payment brands by configuring [PaymentRequest.PaymentTransaction.TransactionConditions.AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands). 
+The Sale System can restrict the payment request to specified payment brands by configuring [PaymentRequest.PaymentTransaction.TransactionConditions.AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand). 
 
 This can be used by the Sale System to implement business rules for restricted payment types per transaction. e.g. preventing the purchase of a gift card with another gift card, or preventing the use of loyalty cards when discounts have been provided. 
 
@@ -1101,7 +1101,7 @@ Where possible, the Sale System should specify payment brand **categories** inst
 
 **Allowing all payment brands**
 
-The default behaviour by the POI Terminal is to accept all payment brands when [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands) is null or empty. 
+The default behaviour by the POI Terminal is to accept all payment brands when [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand) is null or empty. 
 
 *Example - allow all payment brands*
 
@@ -1110,7 +1110,7 @@ The default behaviour by the POI Terminal is to accept all payment brands when [
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": []
+        "AllowedPaymentBrand": []
       }
     }
   }
@@ -1119,7 +1119,7 @@ The default behaviour by the POI Terminal is to accept all payment brands when [
 
 **Specify allowed payment brands**
 
-To specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) to [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+To specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) to [AllowedPaymentBrans](/docs/api-reference/data-model#allowedpaymentbrand).
 
 When an allowed payment brand is specified, all other payment brands are blocked. 
 
@@ -1130,7 +1130,7 @@ When an allowed payment brand is specified, all other payment brands are blocked
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "0004", "0005" ]
+        "AllowedPaymentBrand": [ "0004", "0005" ]
       }
     }
   }
@@ -1140,7 +1140,7 @@ When an allowed payment brand is specified, all other payment brands are blocked
 
 **Specify allowed payment brand categories**
 
-To specify which payment brand categories to allow, prefix `Category:` to a supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category in [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+To specify which payment brand categories to allow, prefix `Category:` to a supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category in [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand).
 
 When an allowed payment brand category is specified, all other payment brands outside the category are blocked.
 
@@ -1151,7 +1151,7 @@ When an allowed payment brand category is specified, all other payment brands ou
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "Category:Schemes" ]
+        "AllowedPaymentBrand": [ "Category:Schemes" ]
       }
     }
   }
@@ -1160,7 +1160,7 @@ When an allowed payment brand category is specified, all other payment brands ou
 
 **Specify restricted payment brands** 
 
-To specify which payment brands to restrict, prefix a `!` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) in [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+To specify which payment brands to restrict, prefix a `!` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) in [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand).
 
 When a restricted payment brand is specified, all other payment brands are allowed. 
 
@@ -1171,7 +1171,7 @@ When a restricted payment brand is specified, all other payment brands are allow
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "!0001", "!0600" ]
+        "AllowedPaymentBrand": [ "!0001", "!0600" ]
       }
     }
   }
@@ -1181,7 +1181,7 @@ When a restricted payment brand is specified, all other payment brands are allow
 
 **Specify restricted payment brand categories**
 
-To specify which payment brand categories to restrict, prefix a `!Category:` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category in [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrands).
+To specify which payment brand categories to restrict, prefix a `!Category:` to the restricted [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) category in [AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand).
 
 When a restricted payment brand category is specified, all other payment brands outside the category are blocked.
 
@@ -1192,7 +1192,7 @@ When a restricted payment brand category is specified, all other payment brands 
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "!Category:GiftCard", "!Category:Fuel" ]
+        "AllowedPaymentBrand": [ "!Category:GiftCard", "!Category:Fuel" ]
       }
     }
   }
@@ -1214,7 +1214,7 @@ Specifying a restricted payment brand category as well as a restricted payment b
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "!Category:Fuel", "!Category:GiftCard", "!0402" ]
+        "AllowedPaymentBrand": [ "!Category:Fuel", "!Category:GiftCard", "!0402" ]
       }
     }
   }
@@ -1230,7 +1230,7 @@ Mixing allowed and restricted payment brands and categories is not recommended a
   "PaymentRequest": {
     "PaymentTransaction": {
       "TransactionConditions": {
-        "AllowedPaymentBrands": [ "!0001", "Category:Fuel" ]
+        "AllowedPaymentBrand": [ "!0001", "Category:Fuel" ]
       }
     }
   }
