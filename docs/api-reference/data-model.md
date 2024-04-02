@@ -2776,7 +2776,7 @@ Please note that this list may expand in the future as new payment types are add
 			<td></td>
 		</tr>			
 		<tr>
-			<td rowspan='3'>Loyalty</td>
+			<td rowspan='4'>Loyalty</td>
 		</tr>
 		<tr>
 			<td>0400</td>
