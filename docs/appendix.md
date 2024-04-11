@@ -359,10 +359,11 @@ Please provide your terminal’s Serial Number when making a request.
 <details>
 
 <summary>
-Installing the Auth File via AxToolKit
+Install the Auth File via AxToolKit
 </summary>
 
 <p>
+Once you’ve received the Auth File from DataMesh, please install it using the instructions below:
   - Install the AxToolkit.
   - Make sure that your Ingenico device is connected to your PC but is turned OFF.
   - Open the AxToolkit.
@@ -373,6 +374,7 @@ Installing the Auth File via AxToolKit
   - Turn ON your Ingenico device.  
   - After ~60 seconds, once Device Setup has detected your device (indicated at the top of the window)
   - Scroll to the Switch to Dev Mode with Auth File, click on Browse and import the Auth File that DataMesh has provided, and click Start
+
     ![](/img/Ingenico-SwithToDevMode.png)
   - Wait for the device to be refreshed (~60 seconds)
     ![](/img/Ingenico-DeviceSetupRefresh.png)    
