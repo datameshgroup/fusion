@@ -342,6 +342,43 @@ Install through AxToolkit
 </p>
 </details>
 
+#### Device Renewal
+
+Development mode on Ingenico devices has a 3-month expiration. 
+
+Once your development device has expired or when required, you will need to request for another signed Auth file to continue using it.
+
+:::info
+Please contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> to request for :
+  - your device's Auth file and
+  - the AxToolkit installer, if you don't have it.
+
+Please provide your terminal’s Serial Number when making a request.  
+:::
+
+<details>
+
+<summary>
+Installing the Auth File via AxToolKit
+</summary>
+
+<p>
+  - Install the AxToolkit.
+  - Make sure that your Ingenico device is connected to your PC but is turned OFF.
+  - Open the AxToolkit.
+  - Navigate to the Tools section, find Device Setup and click Run
+    ![](/img/Ingenico-DeviceSetup.png)  
+  - Expand Development Mode with TECS Auth File
+    ![](/img/Ingenico-DevelopmentModeTECSFile.png)    
+  - Turn ON your Ingenico device.  
+  - After ~60 seconds, once Device Setup has detected your device (indicated at the top of the window)
+  - Scroll to the Switch to Dev Mode with Auth File, click on Browse and import the Auth File that DataMesh has provided, and click Start
+    ![](/img/Ingenico-SwithToDevMode.png)
+  - Wait for the device to be refreshed (~60 seconds)
+    ![](/img/Ingenico-DeviceSetupRefresh.png)    
+</p>
+</details>
+
 ## Change log
 
 ### 2024-02-01
@@ -356,3 +393,6 @@ Install through AxToolkit
 
 ### 2024-02-19
 * Updated AllowedPaymentBrands references to AllowedPaymentBrand
+
+### 2024-04-11
+* Added [Device Renewal](#device-renewal)
