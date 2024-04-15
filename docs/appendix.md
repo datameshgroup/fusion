@@ -342,6 +342,31 @@ Install through AxToolkit
 </p>
 </details>
 
+#### Accessing the terminal file(s)
+
+In certain scenarios, you might need to access files from the terminal (e.g. screenshots)
+
+<details>
+
+<summary>
+Access the terminal file(s)
+</summary>
+
+<p>
+  - Press the Home button
+  - Launch the "Settings" app (⚙icon)
+  - If it asks for a password, enter `350000`
+  - Select the _Connected devices_ option and then select _USB_
+  - Tap the _File Transfer_ under the _USE USB FOR_ section
+  - Then, tap on the back button  
+  - Connect the USB port on the side of the POI Terminal to your PC
+  - The terminal will appear as _DX8000_ in the PC file manager
+  - Navigate to _DX8000_ > _Internal shared storage_ and access/copy the file that you require from the terminal to your PC
+  ![](/img/Ingenico-DX8000Folder.png)  
+
+</p>
+</details>
+
 #### Device Renewal
 
 Development mode on Ingenico devices has a 3-month expiration. 
@@ -359,7 +384,7 @@ Please provide your terminal’s Serial Number when making a request.
 <details>
 
 <summary>
-Installing the Auth File via AxToolKit
+Install the Auth File via AxToolKit
 </summary>
 
 <p>
