@@ -359,7 +359,7 @@ Please provide your terminal’s Serial Number when making a request.
 <details>
 
 <summary>
-Install the Auth File via AxToolKit
+Installing the Auth File via AxToolKit
 </summary>
 
 <p>
@@ -378,6 +378,10 @@ Once you’ve received the Auth File from DataMesh, please install it using the 
     ![](/img/Ingenico-SwithToDevMode.png)
   - Wait for the device to be refreshed (~60 seconds)
     ![](/img/Ingenico-DeviceSetupRefresh.png)    
+  - Once update has been successful, you should see a _Development Mode_ text/logo on the main screen
+
+    ![](/img/Ingenico-DevelopmentMode.png)    
+
 </p>
 </details>
 
