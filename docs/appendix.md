@@ -331,6 +331,10 @@ Install through AxToolkit
 
 <p>
 
+  - Only on a _development_ terminal, uninstall any previous version of Satellite:
+    - Long press on the Satellite app and drag it to _Uninstall_
+
+      ![](/img/Ingenico-UninstallSatellite.png)        
   - Connect the USB port on the side of the POI Terminal to your PC
   - Install AxToolkit (Contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you don't have an AxToolkit)
   - Open the AxToolkit.
@@ -338,6 +342,12 @@ Install through AxToolkit
     ![](/img/Ingenico-AxToolkit.png)  
   - `Append` the file that you want to be installed and click on `Start`
     ![](/img/Ingenico-AppendAndStart.png)  
+  - After the Satellite APK has been installed successfully:
+    - Launch the Satellite application
+    - Follow the prompts
+    - Tap the "info" icon (ⓘ) at the top of the screen
+    - Restart your terminal
+
 
 </p>
 </details>
