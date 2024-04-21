@@ -138,7 +138,7 @@ The Fusion Cloud API allows the Sale System to communicate with a POI terminal v
 
 ![](/img/payment-lifecycle-fusion-cloud.png)
 
-### Mandatory Features Checklist
+### Mandatory features checklist
 
 The table below provides an overview of the mandatory integration requirements which are required for your selected integration type.
 
@@ -146,6 +146,8 @@ Integration Requirement  | Fusion App   | Fusion Satellite   | Fusion Cloud |
 -----------------                         | :----:  | :------: | :------: |
 Implement the payment lifecycle ([Fusion App](#fusion-app-payment-lifecycle), [Fusion Satellite](#fusion-satellite-payment-lifecycle), [Fusion Cloud](#fusion-cloud-payment-lifecycle))             | ✔ | ✔ | ✔ |
 Support for *purchase* and *refund* [payment types](#payment-types) | ✔ | ✔ | ✔ |
+Support for [Fusion Fuel API](/docs/api-reference/fusion-fuel-api) (for Sale Systems which support fuel payments) | ✔ |   | ✔ |
+Support for [Fusion Stored Value API](/docs/api-reference/fusion-stored-value-api) | ✔ |   | ✔ |
 Include [product data](#product-data) in each payment request| ✔ | ✔ | ✔ |
 Support for TLS and other [security requirements](/docs/api-reference/fusion-cloud#security-requirements) |   | ✔ | ✔ |
 Additional fields will be added to the message specification over time.<br />To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages.<br />This includes valid MAC handling in the SecurityTrailer.|   |   | ✔ |
@@ -199,8 +201,8 @@ The Sale System must store the <code>KEK</code> in a secure location.
 
 ### Sale System settings
 
-:::info
-Sale System settings are only required for the [Fusion Cloud](#fusion-cloud) integration type
+:::success
+Sale System settings are only required for the [Fusion Cloud](#fusion-cloud) integration type. If you are using **Fusion App** or **Fusion Satellite** you can skip this section.
 :::
 
 The Sale System must support configuration of settings to identify the Sale System to DataMesh, and to pair a POI Terminal to a Sale System.
@@ -389,34 +391,67 @@ Supported [payment](/docs/api-reference/fusion-cloud#payment) types are:
 
 The Sale System indicates the payment type in the payment request with the [PaymentType](/docs/api-reference/data-model#paymenttype) field.
 
+Supported gift card types are: 
+
+- Activation
+- Deactivation
+
+
+
 ### Payment identification 
 
-A sale is a transaction between two or more parties, typically a buyer and a seller, in which goods or services are exchanged for payment.  
-Each sale can have one or more transaction request and response messages.  
-Each transaction request and response message is identified by a `TransactionIdentification` object which contains following the fields: 
+#### Sale & payment identification 
 
-- [TransactionID](/docs/api-reference/data-model#transactionid)
-- [TimeStamp](/docs/api-reference/data-model#timestamp)
-
-| <div style={{width:'150px'}}>Message</div> | `TransactionIdentification` field | Description |
-:-----------------:                        | -----------------                        | ----------- |
-Payment Request | [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid) | This uniquely identifies a single sale.|
- | |The Sale System must ensure that the [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid) for each **sale** for a given [SaleID](/docs/api-reference/data-model#saleid) is unique. |
- | | A sale can have multiple payment requests (for example, in the case of split payments, where one sale is paid with multiple payments).  |
-  | | The <a href="/docs/api-reference/data-model#saletransactionid">SaleTransactionID</a> is the same for each payment request sent for the same sale and from the same <a href="/docs/api-reference/data-model#saleid">SaleID</a>. |
-Payment Response | [SaleData.POITransactionID](/docs/api-reference/data-model#poitransactionid) | This uniquely identifies a specific payment. |
- | | The POI System will ensure the [SaleData.POITransactionID](/docs/api-reference/data-model#poitransactionid) uniquely identifies a **payment** for a given [POIID](/docs/api-reference/data-model#poiid). |
- | | A sale can have multiple payment responses (for example, in the case of split payments, where one sale is paid with multiple payments).  |
- | | The <a href="/docs/api-reference/data-model#poitransactionid">POITransactionID</a> returned in each payment response is guaranteed to be unique (even for the same sale) for a given <a href="/docs/api-reference/data-model#poiid">POIID</a>. |
+- In the Fusion API, a **sale** is a transaction between a buyer and a seller, in which goods or services are exchanged for payment.
+- Each **sale** can be pair for by one or more **payment** requests.  
+- Each **payment** request and response message is identified by a `TransactionIdentification` object which contains following the fields: 
+  - [TransactionID](/docs/api-reference/data-model#transactionid)
+  - [TimeStamp](/docs/api-reference/data-model#timestamp)
 
 
-The [ServiceID](/docs/api-reference/data-model#serviceid) field uniquely identifies a specific payment transaction in a sale.
+<table>
+	<thead>
+		<tr>
+			<th>Message</th>
+			<th>`TransactionIdentification` field</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Payment Request</td>
+      <td>[SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)</td>
+      <td>
+        <ul>
+          <li>Must uniquely identify a sale</li>
+          <li>The Sale System must ensure that the [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid) for each **sale** for a given [SaleID](/docs/api-reference/data-model#saleid) is unique.</li>
+          <li>A sale can have multiple payment requests (for example, in the case of split payments, where one sale is paid with multiple payments).</li>
+          <li>The <a href="/docs/api-reference/data-model#saletransactionid">SaleTransactionID</a> is the same for each payment request sent for the same sale and from the same <a href="/docs/api-reference/data-model#saleid">SaleID</a></li>
+          <li></li>
+        </ul>
+      </td>
+		</tr>
+		<tr>
+			<td>Payment Response</td>
+      <td>[SaleData.POITransactionID](/docs/api-reference/data-model#poitransactionid)</td>
+      <td>
+        <ul>
+          <li>This uniquely identifies a specific payment</li>
+          <li>The POI System will ensure the [SaleData.POITransactionID](/docs/api-reference/data-model#poitransactionid) uniquely identifies a **payment** for a given [POIID](/docs/api-reference/data-model#poiid).</li>
+          <li>A sale can have multiple payment responses (for example, in the case of split payments, where one sale is paid with multiple payments).</li>
+          <li>The <a href="/docs/api-reference/data-model#poitransactionid">POITransactionID</a> returned in each payment response is guaranteed to be unique (even for the same sale) for a given <a href="/docs/api-reference/data-model#poiid">POIID</a>.</li>
+        </ul>
+      </td>
+		</tr>
+	</tbody>
+</table>
 
-Each payment request and response message are linked via the [ServiceID](/docs/api-reference/data-model#serviceid) field.  
+#### Request/response identification
 
-When processing a response message, the Sale System should verify that the [ServiceID](/docs/api-reference/data-model#serviceid) in the payment response or transaction status response message matches the exact [ServiceID](/docs/api-reference/data-model#serviceid) value in the payment request message before processing the response message.
-
-The [ServiceID](/docs/api-reference/data-model#serviceid) is also used by the Sale System in the [abort transaction request](/docs/api-reference/fusion-cloud#abort-transaction) to cancel a specific payment transaction.  This means that the exact [ServiceID](/docs/api-reference/data-model#serviceid) value in the payment request must be provided as the [ServiceID](/docs/api-reference/data-model#serviceid) in the  [abort transaction request](/docs/api-reference/fusion-cloud#abort-transaction) when attempting to cancel that specific payment request.
+- The [ServiceID](/docs/api-reference/data-model#serviceid) field uniquely identifies a specific transaction request in a sale.
+- Each transaction request and response message are linked via the [ServiceID](/docs/api-reference/data-model#serviceid) field.  
+- When processing a response message, the Sale System should verify that the [ServiceID](/docs/api-reference/data-model#serviceid) in the payment response or transaction status response message matches the exact [ServiceID](/docs/api-reference/data-model#serviceid) value in the payment request message before processing the response message.
+- The [ServiceID](/docs/api-reference/data-model#serviceid) is also used by the Sale System in the [abort transaction request](/docs/api-reference/fusion-cloud#abort-transaction) to cancel a specific payment transaction.  This means that the exact [ServiceID](/docs/api-reference/data-model#serviceid) value in the payment request must be provided as the [ServiceID](/docs/api-reference/data-model#serviceid) in the  [abort transaction request](/docs/api-reference/fusion-cloud#abort-transaction) when attempting to cancel that specific payment request.
 
 ![](/img/payment-identification.png)
 
@@ -469,9 +504,15 @@ TVR: 000000000000                <br />
 ARQC: XXXXXXXXXXXXXXXX           <br /> 
 </div>
 
+
 ### Payment user interface
 
-:::warning
+:::success
+The payment user interface settings are only required for the [Fusion Cloud](#fusion-cloud) integration type. If you are using **Fusion App** or **Fusion Satellite** you can skip this section.
+:::
+
+
+:::info
 The Sale System should implement <code>Initial UI</code>, <code>Final UI</code>, <code>Display UI</code> and the ability to <code>cancel a sale in progress</code>. 
 
 The <code>Input UI</code> elements are not currently available, and will be supported by a future Unify release. Support for these elements by the Sale System is optional.
@@ -685,6 +726,10 @@ There are a number of instances where the Terminal may be unable to cancel a pay
 
 
 ### Product data
+
+:::success
+Product data is mandatory for all requests. 
+:::
 
 The Sale System must include product information about the sale items attached to each purchase request. 
 
@@ -1055,6 +1100,13 @@ More information about how to handle such scenario can be found in the [Error ha
 The Fusion Fuel API is an extension to the Fusion Core API which adds support for current and future fuel payment types accepted by DataMesh. (e.g. FleetCard, Shell Card, MotorPass etc)
 
 For more information see the [Fusion Fuel API](/docs/api-reference/fusion-fuel-api)
+
+
+### Stored Value API
+
+The Fusion Stored Value API is an extension to the Fusion Core API which adds support for gift card payments.
+
+For more information see the [Fusion Stored Value API](/docs/api-reference/fusion-stored-value-api)
 
 
 

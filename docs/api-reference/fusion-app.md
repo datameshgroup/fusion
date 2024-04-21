@@ -1505,22 +1505,6 @@ Code | Description | Required action  |
 404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
 5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Error handling
 
 When the Sale System POSTs a [payment](/docs/api-reference/data-model#payment-request), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-request), or [stored value](/docs/api-reference/data-model#stored-value-request) request, it will eventually receive a matching [payment](/docs/api-reference/data-model#payment-response), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-response), or [stored value](/docs/api-reference/data-model#stored-value-response) response, or via the `~/events` endpoint in events mode.

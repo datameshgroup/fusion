@@ -1589,10 +1589,6 @@ Card acquisition response
 
 ### Stored value
 
-:::warning
-Stored value request/response currently in DRAFT status
-:::
-
 The stored value request/response is used for managed stored value cards.
 
 #### Stored value request
