@@ -76,7 +76,8 @@ DataMesh may ask for log files to diagnose issues during development.
 
 ### Next steps
 
-- Ensure you've read [Getting Started](../getting-started) and scoped your integration requirements
+- Ensure you've read [Getting Started](docs/getting-started) and scoped your integration requirements
+  - Make note of the [mandatory features checklist](/docs/getting-started#mandatory-features-checklist)
 - Read [Perform a purchase](#perform-a-purchase) and [Perform a refund](#perform-a-refund) and implement this functionality in your Sale System
 - Implement other required features based on this API specification
 - On the PC you've installed Fusion App, you can also view the locally installed [Swagger docs](http://localhost:4242/swagger)
