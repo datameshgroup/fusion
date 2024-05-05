@@ -437,3 +437,6 @@ Once you’ve received the Auth File from DataMesh, please install it using the 
 
 ### 2024-04-11
 * Added [Device Renewal](#device-renewal)
+
+### 2024-05-06
+* Added CurrentBalance and Currency to [PaymentResponse](/docs/api-reference/data-model#payment-response)
