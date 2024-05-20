@@ -134,8 +134,11 @@ The terminal will periodically connect to the host and download updated settings
 
 To force a settings update:
 
+- Make sure that your terminal has internet/mobile data connection
 - Launch the Satellite payment app
 - Tap the "info" icon (ⓘ) at the top of the screen
+
+![](/img/satellite-i.png)
 - The terminal will update settings from the host
 - Then current software version, terminal ID, merchant ID, and the list of POS paired with the terminal will be displayed on the screen
 
