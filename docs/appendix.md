@@ -243,7 +243,7 @@ To capture logs from your POI Terminal:
 - Extract the contents of the downloaded Zip file into an easily accessible folder (e.g. C:\Android-Tools).
 
 :::info
-If your testing with a POS, which is _paired to the POI Terminal through <b>USB</b>_, please download and extract the standalone Android SDK Platform Tools _<b>in the same PC where your POS is located</b>_.
+If you're testing with a POS, which is _paired to the POI Terminal through <b>USB</b>_, please download and extract the standalone Android SDK Platform Tools _<b>in the same PC where your POS is located</b>_.
 :::
 
 - Open the File Explorer and browse to where you extracted the contents of the Zip file and copy the full path.
