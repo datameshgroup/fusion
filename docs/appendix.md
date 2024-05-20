@@ -236,11 +236,16 @@ If you are unable to see the <code>Pair With POS</code> option on your Satellite
 During development, DataMesh may request device logs from your development POI Terminal using the Android Debug Bridge (ADB).  
 
 To capture logs from your POI Terminal:
-- Download and install the standalone [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools) package:
+- Download the standalone [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools) package:
   - [Windows](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
   - [Mac](https://dl.google.com/android/repository/platform-tools-latest-darwin.zip)
   - [Linux](https://dl.google.com/android/repository/platform-tools-latest-linux.zip)
 - Extract the contents of the downloaded Zip file into an easily accessible folder (e.g. C:\Android-Tools).
+
+:::info
+If your testing with a POS, which is _paired to the POI Terminal through <b>USB</b>_, please download and extract the standalone Android SDK Platform Tools _<b>in the same PC where your POS is located</b>_.
+:::
+
 - Open the File Explorer and browse to where you extracted the contents of the Zip file and copy the full path.
 
 ![](/img/adb-location.png)
@@ -265,7 +270,7 @@ _If not, ensure USB debugging is enabled and that your POI Terminal is connected
 adb logcat > android-logs.txt
 ```
 _This command tells ADB to capture the device logs and save them to a file named "android-logs.txt” in the current directory._
-- Once logging has been enabled, you may now start interacting and performing the specific test case(s) in your POI Terminal.
+- Once logging has been enabled, you may now start performing your specific test case(s).
 - Once you’ve replicated the issue or captured enough data, stop capturing logs by pressing _Ctrl + C_ in the Command Prompt or Terminal window where ADB is running.
 
 ![](/img/adb-stop-logging.png)
