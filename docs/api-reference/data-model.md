@@ -777,7 +777,9 @@ Payment response
 				"ApprovalCode": "xxx",
 				"ResponseCode": "xxx",
 				"HostReconciliationID": "xxx"
-			}
+			},
+			"CurrentBalance": "x.xx",
+			"Currency": "AUD"			
 		},
 		"AllowedProductCodes": [
 			"1",
@@ -852,6 +854,8 @@ Payment response
 &emsp;&emsp;[STAN](#stan)                              |  | [String(1,32)](#data-format) | The Acquirer STAN if available
 &emsp;&emsp;[RRN](#rrn)                                |  | [String(1,32)](#data-format) | The Acquirer RRN if available
 &emsp;&emsp;[HostReconciliationID](#hostreconciliationid)|✔| [String(1,32)](#data-format) | Identifier of a reconciliation period with the acquirer. This normally has a date and time component in it
+&emsp;[CurrentBalance](#currentbalance)                                             |  | [Currency(0,999999.99)](#data-format) | If relevant and known
+&emsp;[Currency](#currency)                      |  | [String(3,3)](#data-format) | If CurrentBalance is relevant and known, the three character [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted currency code. Set to "AUD".
 &emsp;[AllowedProductCodes](#allowedproductcodes)  |  | [Array(String)](#data-format) | Present if `ErrorCondition` is "PaymentRestriction". Consists of a list of product codes corresponding to products that are purchasable with the given card. Items that exist in the basket but do not belong to this list corresponds to restricted items
 &emsp;**PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
 &emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
@@ -1800,7 +1804,7 @@ Stored value response
 &emsp;&emsp;&emsp;[EntryMode](/docs/api-reference/data-model#entrymode)                   |  | [Enum](#data-format) | Indicates how the payment type was presented.
 &emsp;&emsp;&emsp;[IdentificationType](/docs/api-reference/data-model#identificationtype) | ✔ | [Enum](#data-format) | Type of account identification contained in [StoredValueID](/docs/api-reference/data-model#storedvalueid). Values are PAN | ISOTrack2 | BarCode | AccountNumber | PhoneNumber
 &emsp;&emsp;&emsp;[StoredValueID](/docs/api-reference/data-model#storedvalueid)           | ✔ | [String(128)](#data-format) | Stored value account identification
-&emsp;&emsp;[CurrentBalance](#currentbalance)                                             |  | [Currency(0,999999.99)](#data-format) | if relevant and known
+&emsp;&emsp;[CurrentBalance](#currentbalance)                                             |  | [Currency(0,999999.99)](#data-format) | If relevant and known
 **PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
 &emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
 &emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.

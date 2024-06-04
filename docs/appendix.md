@@ -134,8 +134,11 @@ The terminal will periodically connect to the host and download updated settings
 
 To force a settings update:
 
+- Make sure that your terminal has internet/mobile data connection
 - Launch the Satellite payment app
 - Tap the "info" icon (ⓘ) at the top of the screen
+
+![](/img/satellite-i.png)
 - The terminal will update settings from the host
 - Then current software version, terminal ID, merchant ID, and the list of POS paired with the terminal will be displayed on the screen
 
@@ -230,6 +233,54 @@ If you are unable to see the <code>Pair With POS</code> option on your Satellite
     -   Please contact your Sale System provider and inform them about the error.
   - Terminal Config Error (and all other errors)
     -   Please contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
+
+### Device Logs
+
+During development, DataMesh may request device logs from your development POI Terminal using the Android Debug Bridge (ADB).  
+
+To capture logs from your POI Terminal:
+- Download the standalone [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools) package:
+  - [Windows](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
+  - [Mac](https://dl.google.com/android/repository/platform-tools-latest-darwin.zip)
+  - [Linux](https://dl.google.com/android/repository/platform-tools-latest-linux.zip)
+- Extract the contents of the downloaded Zip file into an easily accessible folder (e.g. C:\Android-Tools).
+
+:::info
+If you're testing with a POS, which is _paired to the POI Terminal through <b>USB</b>_, please download and extract the standalone Android SDK Platform Tools _<b>in the same PC where your POS is located</b>_.
+:::
+
+- Open the File Explorer and browse to where you extracted the contents of the Zip file and copy the full path.
+
+![](/img/adb-location.png)
+
+_This path will also be the location of your ADB log file._
+- Use a USB cable to connect your POI Terminal to your PC.
+- Make sure that your POI Terminal is the only Android device connected to your PC.
+- Open the Command Prompt (Windows) or Terminal (macOS/Linux).
+- Navigate to the location where you extracted the contents of the Zip file.
+- Verify the POI Terminal connection by typing the following command and pressing Enter:
+```js
+adb devices
+```
+
+_This command lists all connected Android devices. Make sure your POI Terminal is listed, and its status is “device.”_
+_If not, ensure USB debugging is enabled and that your POI Terminal is connected properly._
+
+![](/img/adb-devices.png)
+
+- If you see your POI Terminal's serial number and its status is _device_, run the following command to start capturing logs:
+```js
+adb logcat > android-logs.txt
+```
+_This command tells ADB to capture the device logs and save them to a file named "android-logs.txt” in the current directory._
+- Once logging has been enabled, you may now start performing your specific test case(s).
+- Once you’ve replicated the issue or captured enough data, stop capturing logs by pressing _Ctrl + C_ in the Command Prompt or Terminal window where ADB is running.
+
+![](/img/adb-stop-logging.png)
+- Open the File Explorer and browse to the location of your ADB log file.
+
+![](/img/adb-log-file.png)
+- Zip (if the size is too big), copy, and share the ADB log file to DataMesh.
 
 ### PAX
 
@@ -437,3 +488,9 @@ Once you’ve received the Auth File from DataMesh, please install it using the 
 
 ### 2024-04-11
 * Added [Device Renewal](#device-renewal)
+
+### 2024-05-06
+* Added CurrentBalance and Currency to [PaymentResponse](/docs/api-reference/data-model#payment-response)
+
+### 2024-05-20
+* Added [Device Logs](#device-logs)
