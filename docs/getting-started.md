@@ -1171,7 +1171,7 @@ The default behaviour by the POI Terminal is to accept all payment brands when [
 
 **Specify allowed payment brands**
 
-To specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) to [AllowedPaymentBrans](/docs/api-reference/data-model#allowedpaymentbrand).
+To specify which payment brands to allow, add the supported [PaymentBrandId](/docs/api-reference/data-model#paymentbrandid) to [AllowedPaymentBrands](/docs/api-reference/data-model#allowedpaymentbrand).
 
 When an allowed payment brand is specified, all other payment brands are blocked. 
 
