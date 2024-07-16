@@ -146,8 +146,8 @@ Integration Requirement  | Fusion App   | Fusion Satellite   | Fusion Cloud |
 -----------------                         | :----:  | :------: | :------: |
 Implement the payment lifecycle ([Fusion App](#fusion-app-payment-lifecycle), [Fusion Satellite](#fusion-satellite-payment-lifecycle), [Fusion Cloud](#fusion-cloud-payment-lifecycle))             | ✔ | ✔ | ✔ |
 Support for *purchase* and *refund* [payment types](#payment-types) | ✔ | ✔ | ✔ |
-Support for [Fusion Fuel API](/docs/api-reference/fusion-fuel-api) (for Sale Systems which support fuel payments) | ✔ |   | ✔ |
-Support for [Fusion Stored Value API](/docs/api-reference/fusion-stored-value-api) | ✔ |   | ✔ |
+Support for [Fusion Fuel API](/docs/api-reference/fusion-api-fuel-extension) (for Sale Systems which support fuel payments) | ✔ |   | ✔ |
+Support for [Fusion Stored Value API](/docs/api-reference/fusion-api-stored-value-extension) | ✔ |   | ✔ |
 Include [product data](#product-data) in each payment request| ✔ | ✔ | ✔ |
 Support for TLS and other [security requirements](/docs/api-reference/fusion-cloud#security-requirements) |   | ✔ | ✔ |
 Additional fields will be added to the message specification over time.<br />To ensure forwards compatibility the Sale System must ignore when extra objects and fields are present in response messages.<br />This includes valid MAC handling in the SecurityTrailer.|   |   | ✔ |
@@ -1099,14 +1099,14 @@ More information about how to handle such scenario can be found in the [Error ha
 
 The Fusion Fuel API is an extension to the Fusion Core API which adds support for current and future fuel payment types accepted by DataMesh. (e.g. FleetCard, Shell Card, MotorPass etc)
 
-For more information see the [Fusion Fuel API](/docs/api-reference/fusion-fuel-api)
+For more information see the [Fusion API Fuel Extension](/docs/api-reference/fusion-api-fuel-extension)
 
 
 ### Stored Value API
 
 The Fusion Stored Value API is an extension to the Fusion Core API which adds support for gift card payments.
 
-For more information see the [Fusion Stored Value API](/docs/api-reference/fusion-stored-value-api)
+For more information see the [Fusion API Stored Value Extension](/docs/api-reference/fusion-api-stored-value-extension)
 
 
 

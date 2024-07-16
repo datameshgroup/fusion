@@ -2,20 +2,20 @@
 sidebar_position: 4
 ---
 
-# Fusion Fuel API
+# Fusion API Fuel Extension
 
-The Fusion Fuel API is an extension to the Fusion Core API which adds support for current and future fuel payment types accepted by DataMesh. (e.g. FleetCard, Shell Card, MotorPass etc)
+The Fusion API Fuel Extension is of features and requirements which extend the Fusion API Core which adds support for current and future fuel payment types accepted by DataMesh. (e.g. FleetCard, Shell Card, MotorPass etc)
 
 ## Mandatory features 
 
-The table below provides an overview of the mandatory integration requirements for the Fusion Fuel API which are required for your selected integration type.
+The table below provides an overview of the mandatory integration requirements for the Fusion API Fuel Extension which are required for your selected integration type.
 
 Feature                                   						| Fusion App |  Fusion Satellite | Fusion Cloud |
 -----------------                         						|   :----:   |      :------:     |   :------:   |
 Purchase                                  						| ✔          | ✔                 | ✔            |  
 Refund                                    						| ✔          | ✔                 | ✔            |
 Cashout (not supported on fuel cards)     						|            |                   |              |
-[Fuel SaleItem](/docs/api-reference/fusion-fuel-api#saleitem) fields | ✔          | ✔                 | ✔
+Extended [SaleItem](/docs/api-reference/fusion-api-fuel-extension#saleitem) fuel product fields  | ✔          | ✔                 | ✔
 [Dynamic surcharge](/docs/getting-started#dynamic-surcharge)	| ✔          | ✔                 | ✔            |
 [Split-payment](/docs/getting-started#split-payments) 			| ✔          | ✔                 | ✔            |
 [Matched refund](/docs/getting-started#matched-refund) 			| ✔          | ✔                 | ✔            |
@@ -27,11 +27,11 @@ Cashout (not supported on fuel cards)     						|            |                  
 ## SaleItem
 
 :::info
-A payment through the Fusion Fuel API expands the mandatory fields for a `SaleItem`.
+A payment through the Fusion API Fuel Extension expands the mandatory fields for a `SaleItem`.
 :::
 
 For every payment, the Sale System must populate the [SaleItem](/docs/api-reference/data-model#saleitem) with:
-* For **every** item, the FuelProductCode fields within CustomFields
+* For **every** item, the supported fuel product codes within CustomFields
 * For fuel sale items only, the `UnitOfMeasure`, `Quantity`, `UnitPrice`, and `ItemAmount` representing the number of litres, price per litre, and total fuel price
 
 Fuel sale item details:
@@ -42,166 +42,161 @@ Attribute   | Requ.  | Format | Description |
 [ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | [String(0,128)](/docs/api-reference/data-model#data-format)  | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
 [UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | [Enum](/docs/api-reference/data-model#data-format)  | Unit of measure of the `Quantity`. Set to "Litre"
 [Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Number of litres as read from the pump (decimal, maximum precision 6.8)
-[UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | [Currency(0.01,999999.99)](/docs/api-reference/data-model#data-format) | Price per litre from the pump (decimal, maximum precision 6.8)
-[ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | [Currency(0.01,999999.99)](/docs/api-reference/data-model#data-format) | The amount of the fuel as presented to the cardholder (decimal 6.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
+[UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Price per litre from the pump (decimal, maximum precision 6.8)
+[ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | [Currency(0.01,99999.99)](/docs/api-reference/data-model#data-format) | The amount of the fuel as presented to the cardholder (decimal 6.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
 [ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | [String(0,1024)](/docs/api-reference/data-model#data-format)  | A short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
 [Categories](/docs/api-reference/data-model#categories)                  |    | [Array(String)](/docs/api-reference/data-model#data-format)   | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
 [Tags](/docs/api-reference/data-model#sale-item-tags)                    |    | [Array(String)](/docs/api-reference/data-model#data-format)   | String array with descriptive tags for the product
 [CustomFields](/docs/api-reference/data-model#customfields)              | ✔ | [Array(Object)](/docs/api-reference/data-model#data-format)   | Array of key/type/value objects which define the EFT code for the item.
 
 
-### CustomFields
+### Fuel product code 
 
-The Sale System must populate the [CustomFields](/docs/api-reference/data-model#customfields) array with a fuel "eft/product" code for the supported card types.
+The Sale System must populate the [CustomFields](/docs/api-reference/data-model#customfields) array with at least one *fuel product code* value for every sale item. 
+
+If the Sale System is capable of providing more than one fuel product code, DataMesh will select the most appropriate code based on the fuel card presented.
+
+The Sale System *must* set either `FuelProductCode` or `FuelProductCodeShellCard`. DataMesh will perform the required mapping from these codes to support all other card types.
+
+:::success
+If the Sale System only supports setting one code, it should set `FuelProductCodeShellCard`
+:::
 
 Supported CustomFields product codes: 
 
-Product code                    | Fuel card              |
-------------------------------- | ------                 |
-FuelProductCode                 | Generic / BP           |
-FuelProductCodeShellCard        | Shell Card             |
-FuelProductCodeCaltexStarCard   | Caltex StarCard        |
-FuelProductCodeFleetCard        | Fleet Card             | 
-FuelProductCodeMotorpass        | Motorpass              |
-FuelProductCodeUnitedFuelCard   | United Fuel Card       |
-FuelProductCodeAmpolCard        | Ampol Card             |
-FuelProductCodeTrinityFuelCard  | Trinity Fuel Card      |
-FuelProductCodeFreedomFuelCard  | Freedom Fuel Card      |
-FuelProductCodeLibertyCard      | Liberty Card           |
+<table>
+  <thead>
+    <tr>
+      <th>Product code</th>
+      <th>Fuel card support</th>
+      <th>Supported codes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>FuelProductCode</td>
+      <td>BP, Shell Card, Fleet Card, Motorpass</td>
+      <td>
+        <details>
+          <summary>
+            FuelProductCode codes
+          </summary>
+          Code | Description              |
+          ---- | ------------------------ |
+          1    | Tobacco
+          2    | Lottery
+          3    | Premium ULP
+          4    | Auto Gas
+          5    | Unleaded
+          6    | AdBlue Packaged
+          7    | Oils
+          8    | Services
+          9    | Parts
+          10   | Tyres
+          11   | Battery
+          12   | Repairs and Maintenance
+          13   | Shop
+          14   | Car Wash
+          15   | Accident and Damage
+          16   | Diner
+          17   | Diesel G50
+          18   | Premium Ethnl
+          19   | ULP Ethnl
+          20   | Opal
+          21   | Bottle
+          22   | No GST
+          23   | Coffee
+          24   | Ultimate
+          25   | Diesel 5
+          26   | AdBlue Pump
+          27   | Weigh Bridge
+          28   | N/A
+          29   | 10 Diesel
+          30   | ULT Diesel
+          99   | Cashout
+        </details>
+      </td>
+    </tr>
+    <tr>
+      <td>FuelProductCodeShellCard</td>
+      <td>BP, Shell Card, Fleet Card, Motorpass</td>
+      <td>
+        <details>
+          <summary>
+            FuelProductCodeShellCard codes
+          </summary>
+          Code | Description              |
+          ---- | ------------------------ |
+          1    | Unleaded E10
+          2    | Unleaded Petrol
+          3    | Premium Unleaded
+          4    | Diesel
+          5    | Gogas
+          6    | AdBlue
+          7    | Premium Unleaded 98
+          8    | V-Power
+          9    | Unleaded 95
+          10   | Premium Diesel
+          11   | Car Parts
+          12   | Car Service Labour
+          13   | Auto Care Oils
+          14   | Franchised Car Service
+          17   | Car Tyres
+          18   | Car Batteries
+          19   | Car Service Opp
+          20   | Car Service Other
+          31   | Car Wash & Detail
+          40   | GST-Free Products
+          42   | Car Accessories
+          43   | Car Care
+          45   | Tobacco
+          46   | Confectionery
+          47   | Dairy & Deli
+          48   | Drinks
+          49   | Take Away Food
+          50   | Groceries
+          52   | Ice Products
+          54   | Newsagency
+          55   | Auto Oils
+          56   | Rentals & Deposits
+          57   | Travel & Leisure
+          59   | Hardware
+          60   | Lp Gas Bottles
+          65   | Services
+          66   | Kerosene
+          67   | Premix
+          71   | Bakery
+        </details>
+      </td>
+    </tr>
+    <tr>
+      <td>FuelProductCodeCaltexStarCard</td>
+	  <td>Caltex StarCard</td>
+	  <td></td>
+    </tr>
+	<tr>
+      <td>FuelProductCodeUnitedFuelCard</td>
+	  <td>United Fuel Card</td>
+	  <td></td>
+    </tr>
+  </tbody>
+</table>
 
 
-<!--
 
-<details>
-<summary>
-FuelProductCode codes
-</summary>
+<!-- Product code                    | Fuel card         |
+------------------------------- | ------            |
+FuelProductCode                 | Generic / BP      |
+FuelProductCodeShellCard        | Shell Card        |
+FuelProductCodeCaltexStarCard   | Caltex StarCard   |
+FuelProductCodeFleetCard        | Fleet Card        | 
+FuelProductCodeMotorpass        | Motorpass         |
+FuelProductCodeUnitedFuelCard   | United Fuel Card  |
+FuelProductCodeAmpolCard        | Ampol Card        |
+FuelProductCodeTrinityFuelCard  | Trinity Fuel Card |
+FuelProductCodeFreedomFuelCard  | Freedom Fuel Card |
+FuelProductCodeLibertyCard      | Liberty Card      | -->
 
-Code | Description              |
----- | ------------------------ |
-1    | Tobacco
-2    | Lottery
-3    | Premium ULP
-4    | Auto Gas
-5    | Unleaded
-6    | AdBlue Packaged
-7    | Oils
-8    | Services
-9    | Parts
-10   | Tyres
-11   | Battery
-12   | Repairs and Maintenance
-13   | Shop
-14   | Car Wash
-15   | Accident and Damage
-16   | Diner
-17   | Diesel G50
-18   | Premium Ethnl
-19   | ULP Ethnl
-20   | Opal
-21   | Bottle
-22   | No GST
-23   | Coffee
-24   | Ultimate
-25   | Diesel 5
-26   | AdBlue Pump
-27   | Weigh Bridge
-28   | N/A
-29   | 10 Diesel
-30   | ULT Diesel
-99   | Cashout
-</details>
-
-
-<details>
-<summary>
-FuelProductCodeShellCard codes
-</summary>
-
-Code | Description              |
----- | ------------------------ |
-1    | UNLEADED E10
-2    | UNLEADED PETROL
-4    | DIESEL
-5    | GOGAS
-6    | AdBlue
-8    | PREMIUM UNLEADED 98
-9    | UNLEADED 95
-10   | PREMIUM DIESEL
-11   | CAR PARTS
-12   | CAR SERVICE LABOUR
-13   | AUTO CARE OILS
-14   | FRANCHISED CAR SERVICE
-17   | CAR TYRES
-18   | CAR BATTERIES
-19   | CAR SERVICE OPP
-20   | CAR SERVICE OTHER
-31   | CAR WASH & DETAIL
-40   | GST-FREE PRODUCTS
-42   | CAR ACCESSORIES
-43   | CAR CARE
-45   | TOBACCO
-46   | CONFECTIONERY
-47   | DAIRY & DELI
-48   | DRINKS
-49   | TAKE AWAY FOOD
-50   | GROCERIES
-52   | ICE PRODUCTS
-54   | NEWSAGENCY
-55   | AUTO OILS
-56   | RENTALS & DEPOSITS
-57   | TRAVEL & LEISURE
-59   | HARDWARE
-60   | LP GAS BOTTLES
-65   | SERVICES
-66   | KEROSENE
-67   | PREMIX
-71   | BAKERY
-
-</details>
-
-
-<details>
-<summary>
-FuelProductCodeFleetCard codes
-</summary>
-
-Code | Description              |
----- | ------------------------ |
-1    | Tobacco
-2    | Lottery
-3    | Premium ULP
-4    | Auto Gas
-5    | Unleaded
-6    | AdBlue Packaged
-7    | Oils
-8    | Services
-9    | Parts
-10   | Tyres
-11   | Battery
-12   | Repairs and Maintenance
-13   | Shop
-14   | Car Wash
-15   | Accident and Damage
-16   | Diner
-17   | Diesel G50
-18   | Premium Ethnl
-19   | ULP Ethnl
-20   | Opal
-21   | Bottle
-22   | No GST
-23   | Coffee
-24   | Ultimate
-25   | Diesel 5
-26   | AdBlue Pump
-27   | Weigh Bridge
-28   | N/A
-29   | 10 Diesel
-30   | ULT Diesel
-99   | Cashout
-</details>
-
--->
 
 <details>
 <summary>
@@ -231,17 +226,7 @@ Example fuel API sale item
         "Key": "FuelProductCodeShellCard",
 	    "Type": "String",
         "Value": "35"
-      },
-      {
-        "Key": "FuelProductCodeFleetCard",
-	    "Type": "String",
-        "Value": "21"
-      },
-      {
-        "Key": "FuelProductCodeMotorpass",
-	    "Type": "String",
-        "Value": "4"
-      }	  
+      }
     ]
   }
 }
@@ -269,7 +254,7 @@ To perform a fuel purchase:
 <details>
 
 <summary>
-Fusion Fuel API purchase request
+Fusion API Fuel Extension purchase request
 </summary>
 
 <p>
@@ -357,7 +342,7 @@ Fusion Fuel API purchase request
 
 <details>
 <summary>
-Fusion Fuel API purchase response
+Fusion API Fuel Extension purchase response
 </summary>
 
 <p>
@@ -464,7 +449,7 @@ To perform a fuel refund:
 <details>
 
 <summary>
-Fusion Fuel API refund request
+Fusion API Fuel Extension refund request
 </summary>
 
 <p>
@@ -558,7 +543,7 @@ Fusion Fuel API refund request
 
 <details>
 <summary>
-Fusion Fuel API refund response
+Fusion API Fuel Extension refund response
 </summary>
 
 <p>
@@ -650,6 +635,6 @@ Fusion Fuel API refund response
 
 ## Accreditation
 
-There are an expanded set of test cases in the Fusion [accreditation](/docs/testing) to support payments via the Fusion Fuel API. 
+There are an expanded set of test cases in the Fusion [accreditation](/docs/testing) to support payments via the Fusion API Fuel Extension. 
 
 [Contact the DataMesh Integrations Team](mailto:integrations@datameshgroup.com) to discuss the accreditation process. 

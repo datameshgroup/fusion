@@ -13,7 +13,12 @@ There are two methods for processing a payment using Fusion App:
 * Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
 * Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
 
+
 In both methods, in case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
+
+:::success
+When possible, events mode should *always* be used over blocking mode as it enables more flexible transaction event handling. 
+:::
 
 ## Reference code  
 
@@ -76,7 +81,7 @@ DataMesh may ask for log files to diagnose issues during development.
 
 ### Next steps
 
-- Ensure you've read [Getting Started](docs/getting-started) and scoped your integration requirements
+- Ensure you've read [Getting Started](/docs/getting-started) and scoped your integration requirements
   - Make note of the [mandatory features checklist](/docs/getting-started#mandatory-features-checklist)
 - Read [Perform a purchase](#perform-a-purchase) and [Perform a refund](#perform-a-refund) and implement this functionality in your Sale System
 - Implement other required features based on this API specification

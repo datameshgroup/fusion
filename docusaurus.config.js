@@ -21,7 +21,7 @@ const config = {
   projectName: 'Fusion', // Usually your repo name.
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
 
   trailingSlash: false,
 

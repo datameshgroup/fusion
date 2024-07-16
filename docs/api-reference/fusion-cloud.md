@@ -36,9 +36,8 @@ Unify utilises secure websockets for communication between Sale System and POI S
   - TLS_CHACHA20_POLY1305_SHA256 (TLS v1.3)
   - TLS_AES_256_GCM_SHA384 (TLS v1.3)
 - The Sale System must ensure the connection to Unify is trusted by validating the server-side certificate chain
-  - Unify utilises a self-signed root CA provided by DataMesh which can be downloaded from [here](files/rootca.datameshgroup.io.zip)
-  - Intermediate certificates in the chain will be provided by the TLS session
-  - Contact [integrations@datameshgroup.com](mailto:integrations@datameshgroup.com) for alternative connection methods if the supporting the DataMesh root CA is unmanageable (for example, in a browser-based POS)
+  - Unify utilises standard, public Root CA
+  - Contact [integrations@datameshgroup.com](mailto:integrations@datameshgroup.com) for alternative connection methods if required
   - If certificate validation fails the Sale System must display an error and drop the connection.
 - The Sale System must resolve the DNS address before each connection attempt, and never hard code IP addresses
 - The Sale System should manage SSL certificate revocation lists and ensure OS security updates are applied

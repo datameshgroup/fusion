@@ -2,16 +2,16 @@
 sidebar_position: 4
 ---
 
-# Fusion Stored Value API
+# Fusion API Stored Value Extension
 
-The Fusion Stored Value API is an extension to the Fusion API which adds support for "gift card" transactions.
+The Fusion API Stored Value Extension is an extension to the Fusion API which adds support for "gift card" transactions.
 
 A "gift card" is a financial instrument that allows customers to store funds for future purchases.
 
 
 ## Gift card overview
 
-Below is an overview of supported gift cards. If you are familiar with gift cards please skip ahead to [mandatory features](/docs/api-reference/fusion-stored-value-api#mandatory-features)
+Below is an overview of supported gift cards. If you are familiar with gift cards please skip ahead to [mandatory features](/docs/api-reference/fusion-api-stored-value-extension#mandatory-features)
 
 
 ### Physical gift card format
@@ -99,7 +99,7 @@ A plastic card with a magnetic stripe, attached to a cardboard backing with an a
 - POS includes the transaction receipt in the sale receipt, and optionally prints sale receipt including all payments associated with this sale. 
 
 
-#### Account recharge
+<!-- #### Account recharge
 
 * **Example** - Optus recharge Telstra recharge
 * **Supported transaction types** - Activation, Deactivation*
@@ -126,7 +126,7 @@ There is no physical card for an account recharge. The POS contains a database o
 - Once payment is complete, the cashier initiates the gift card activation request.
 - The amount, along with the pre-configured UPC and card number scanned from the customer phone, provide all the fields required for DataMesh to complete a card activation.
 - DataMesh completes activation, and returns result and receipt to the POS.
-- POS includes the transaction receipt in the sale receipt, and optionally prints sale receipt including all payments associated with this sale. 
+- POS includes the transaction receipt in the sale receipt, and optionally prints sale receipt including all payments associated with this sale.  -->
 
 
 #### Digital account reservation
