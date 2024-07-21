@@ -145,9 +145,66 @@ To perform a purchase, the Sale System will need to POST a [Payment request](/do
 - If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
 
 
+## Perform a cash out (events mode)
+
+To perform a cash out with events mode, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
+
+- Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
+  - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "CashAdvance"
+  - Set the cash out amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - Set the same cash out amount in [PaymentTransaction.AmountsReq.CashBackAmount](/docs/api-reference/data-model#cashbackamount)
+  - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+  - If possible, populate the [SaleItem](/docs/api-reference/data-model#saleitem) array with the product basket for the cash out. Otherwise leave as empty.
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the payment and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/payments/{{SessionId}}events=true`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [Payment request](/docs/api-reference/data-model#payment-request) JSON payload
+- Await the POST result (this should take under 5 seconds).
+  - On 4xx the request was invalid and the payment could not be processed
+  - On 5xx an error occured, the Sale System should enter error handling
+  - On 202 ACCEPTED, the Sale System should GET the payment result
+- Call `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events` using the `SessionId` from the POST payment to get the next event in the payment (this could take as long as 5 minutes). Fusion App will return a [SaleToPOIResponse](/docs/api-reference/data-model#saletopoiresponse) containing the [Payment response](/docs/api-reference/data-model#payment-response), or a [SaleToPOIRequest](/docs/api-reference/data-model#saletopoirequest) containing the [Print request](/docs/api-reference/data-model#print-request)
+  - On [print request](/docs/api-reference/data-model#print-request), handle the print and call GET again 
+  - On [payment response](/docs/api-reference/data-model#payment-response)
+    - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+    - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future matched refunds: [POITransactionID](/docs/api-reference/data-model#poitransactionid)
+    - Check [PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
+    - Print the receipt contained in `PaymentReceipt`
+  - On 404, enter error handling
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
+
+## Perform a cash out (blocking mode)
+
+To perform a cash out, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
+
+- Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
+  - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "CashAdvance"
+  - Set the cash out amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - Set the same cash out amount in [PaymentTransaction.AmountsReq.CashBackAmount](/docs/api-reference/data-model#cashbackamount)
+  - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+  - If possible, populate the [SaleItem](/docs/api-reference/data-model#saleitem) array with the product basket for the cash out. Otherwise leave as empty.
+- Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the payment and perform error recovery.
+- POST the JSON payload to `http://localhost:4242/fusion/v1/payments/{{SessionId}}`
+  - Set the `Content-Type` header to `application/json`
+  - Set the `X-Application-Name` header to the name of your Sale System
+  - Set the `X-Software-Version` header to the software version of your Sale System
+  - Set the message body to the [Payment request](/docs/api-reference/data-model#payment-request) JSON payload
+- Await the POST result (this could take as long as 5 minutes). Fusion App will return a [Payment response](/docs/api-reference/data-model#payment-response) in the message body
+  - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
+  - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future matched refunds: [POITransactionID](/docs/api-reference/data-model#poitransactionid)
+  - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
+  - Print the receipt contained in `PaymentReceipt`
+- If the Sale System does not receive a POST result (i.e. timeout, socket dropped, system crash etc) implement error handling outlined in [error handling](#error-handling)
+
+
 ## Perform a refund (events mode)
 
-<!-- TODO need to add support here for matched refunds -->
 
 To perform a refund with events mode, the Sale System will need to POST a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload to the `http://localhost:4242/fusion/v1/payments` endpoint.
 
@@ -161,7 +218,7 @@ If refunding a previous purchase, the Sale System should include details of the 
   - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
     - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
     - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
-  - If refunding a previous purchase, set the following fields in [PaymentTransaction.OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+  - If refunding a previous purchase (**matched refund**), set the following fields in [PaymentTransaction.OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
 	- Set [POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) of the original purchase payment response 
   - Follow the refund rules outlined in the [Sale Item](/docs/api-reference/data-model#refunds) documentation to populate the Sale Item array
 - Create a globally unique UUIDv4 `SessionId`. This will be used to uniquely identify the payment and perform error recovery.
