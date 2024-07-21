@@ -120,7 +120,7 @@ The Fusion Cloud API allows the Sale System to communicate with a POI terminal v
 
 1. Merchant launches the Sale System.
 1. Sale System opens the websocket connection.
-1. Sale System has the option to [link](#terminal-linking) with a POI Terminal by performing a [login request](/docs/api-reference/fusion-cloud#error-handling) either: 
+1. Sale System has the option to link with a POI Terminal by performing a [login request](/docs/api-reference/fusion-cloud#login-request) either: 
   1. When the Sale System launches or
   1. Before the first payment request is sent
 1. Sale System receives a successful login response.
@@ -144,7 +144,7 @@ The table below provides an overview of the mandatory integration requirements w
 
 Integration Requirement  | Fusion App   | Fusion Satellite   | Fusion Cloud |
 -----------------                         | :----:  | :------: | :------: |
-Implement the payment lifecycle ([Fusion App](#fusion-app-payment-lifecycle), [Fusion Satellite](#fusion-satellite-payment-lifecycle), [Fusion Cloud](#fusion-cloud-payment-lifecycle))             | ✔ | ✔ | ✔ |
+Implement the payment lifecycle ([Fusion App](#fusion-app-payment-lifecycle-events-mode), [Fusion Satellite](#fusion-satellite-payment-lifecycle), [Fusion Cloud](#fusion-cloud-payment-lifecycle))             | ✔ | ✔ | ✔ |
 Support for *purchase* and *refund* [payment types](#payment-types) | ✔ | ✔ | ✔ |
 Support for [Fusion Fuel API](/docs/api-reference/fusion-api-fuel-extension) (for Sale Systems which support fuel payments) | ✔ |   | ✔ |
 Support for [Fusion Stored Value API](/docs/api-reference/fusion-api-stored-value-extension) | ✔ |   | ✔ |

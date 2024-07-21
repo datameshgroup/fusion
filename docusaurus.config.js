@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'DataMesh Fusion API',  
+  title: 'DataMesh Fusion API',
   favicon: 'img/logo.png',
 
   // Set the production url of your site here
@@ -44,7 +44,7 @@ const config = {
         blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
-        },        
+        },
       }),
     ],
   ],
@@ -55,7 +55,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/logo.png',
       navbar: {
-        title: 'Overview',
+        title: 'DataMesh Group',
         logo: {
           alt: '',
           src: 'img/logo.png',
@@ -65,8 +65,8 @@ const config = {
             type: 'doc',
             docId: 'getting-started',
             position: 'left',
-            label: 'Documentation',
-          },        
+            label: 'Fusion API',
+          },
           {
             href: 'https://github.com/datameshgroup',
             label: 'GitHub',
@@ -82,7 +82,7 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: '2024-05-20',
+            title: '2024-07-21',
           },
           {
             title: 'Useful Links',
@@ -114,15 +114,17 @@ const config = {
         darkTheme: darkCodeTheme,
       }
     }),
-    plugins: [
-      [
-        require.resolve("@cmfcmf/docusaurus-search-local"),
-        {
-          indexBlog: false,
-          indexDocSidebarParentCategories: 8,
-        },
-      ],
-    ],
+  // Bug in docusaurus-search-local prevents it from working with Docusaurus v3.4. Wait until it is fixed before enabling.
+  // plugins: [
+  //   [
+  //     require.resolve("@cmfcmf/docusaurus-search-local"),
+  //     {
+  //       // whether to index docs pages
+  //       indexBlog: false,
+  //       indexDocSidebarParentCategories: 8,
+  //     },
+  //   ],
+  // ],
 };
 
 module.exports = config;

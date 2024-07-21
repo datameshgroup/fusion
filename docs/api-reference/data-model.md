@@ -46,7 +46,7 @@ MessageHeader                        | ✔ | [Object](#data-format) | Message he
 [InputRequest](/docs/api-reference/data-model#input-request)  |  |[Object](#data-format) | If input request
 [PrintRequest](/docs/api-reference/data-model#print-request)  |  |[Object](#data-format) | If print request
 [TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |[Object](#data-format) | If transaction status request
-[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |[Object](#data-format) | If abort request
+[AbortRequest](/docs/api-reference/data-model#abort-transaction-request)  |  |[Object](#data-format) | If abort request
 [ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |[Object](#data-format) | If reconciliation request
 [CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |[Object](#data-format) | If card acquisition request
 
@@ -92,7 +92,7 @@ MessageHeader                        | ✔ | [Object](#data-format) | Message he
 [InputRequest](/docs/api-reference/data-model#input-request)  |  |[Object](#data-format) | If input request
 [PrintRequest](/docs/api-reference/data-model#print-request)  |  |[Object](#data-format) | If print request
 [TransactionStatusRequest](/docs/api-reference/data-model#transaction-status-request)  |  |[Object](#data-format) | If transaction status request
-[AbortRequest](/docs/api-reference/data-model#abort-request)  |  |[Object](#data-format) | If abort request
+[AbortRequest](/docs/api-reference/data-model#abort-transaction-request)  |  |[Object](#data-format) | If abort request
 [ReconciliationRequest](/docs/api-reference/data-model#reconciliation-request)  |  |[Object](#data-format) | If reconciliation request
 [CardAcquisitionRequest](/docs/api-reference/data-model#card-acquisition-request)  |  |[Object](#data-format) | If card acquisition request
 
@@ -281,7 +281,7 @@ Balance inquiry response
 &emsp;[CurrentBalance](#currentbalance)                                             | ✔ | [Currency(0,999999.99)](#data-format) | Balance of an account.
 &emsp;[Currency](#currency)                                                         | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
 &emsp;**PaymentAcquirerData**                     |  | [Object](#data-format) | Data related to the response from the payment acquirer
-&emsp;&emsp;[AcquirerID](/docs/api-reference/data-model#paymentacquirerdata.acquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
+&emsp;&emsp;[AcquirerID](/docs/api-reference/data-model#paymentacquirerdataacquirerid) | ✔ | String | The ID of the acquirer which processed the transaction
 &emsp;&emsp;[MerchantID](#merchantid)                  | ✔ | [String(1,32)](#data-format) | The acquirer merchant ID (MID)
 &emsp;&emsp;[AcquirerPOIID](#acquirerPOIID)            | ✔ | [String(1,16)](#data-format) | The acquirer terminal ID (TID)
 &emsp;&emsp;**AcquirerTransactionID**                  | ✔ | [Object](#data-format) | 
@@ -2001,6 +2001,12 @@ Certification code for this Sale System.
 
 DataMesh will provide a `CertificationCode` to be used for the UAT environment. Once the Sale System is certified, DataMesh will provide a `CertificationCode` to be included in the production build of the Sale System. 
 
+### Currency
+
+Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code.
+
+Set to "AUD" for Australian currency.
+
 ## PaymentCurrency
 
 Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code.
@@ -2069,6 +2075,13 @@ Type               | [Enum](#data-format)   | The content of `Value` represented
 
 Current Sale System time, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) DateTime. This will be included in receipts. e.g. "2019-09-02T09:13:51.0+01:00" 
 
+### Discount
+
+Currency amount. For a `SaleItem` which has been discounted, reflects the discounted amount of the item.
+
+### DiscountReason
+
+String. For a `SaleItem` which has been discounted, reflects the reason the item was discounted
 
 ### EanUpc
 
@@ -3440,8 +3453,14 @@ Any `SaleItem` discounts associated with the "item bundle" should be included in
 
 Discounts applied to the basket should be reflected by the `SaleItem` array based on how the Sale System handles discounts: 
 
-* For discounts applied across the basket or to an individual item:
-  * Set `UnitPrice` to the original item price
+* For fuel item discounts:
+  * Set `UnitPrice` to the discounted unit price
+  * Update `ItemAmount` to reflect the discounted amount
+  * Set `Discount` to reflect the discounted amount per item 
+  * Set `DiscountReason` to the reason the item was discounted
+  * Ensure `ItemAmount` equals `Quantity` multiplied by `UnitPrice`
+* For non-fuel discounts applied across the basket or to an individual item:
+  * Set `UnitPrice` to the original unit price
   * Update `ItemAmount` to reflect the discounted amount
   * Set `Discount` to reflect the discounted amount per item 
   * Set `DiscountReason` to the reason the item was discounted
@@ -3468,6 +3487,10 @@ For example:
 * The fields marked as mandatory are still mandatory  
 * Each `ItemAmount` is a positive amount which reflects the amount being refunded
 * The `Quantity` reflects the number of the sale item being refunded
+
+### Sale Item Tags
+
+String array with descriptive tags for the product.
 
 ### SaleChannel
 

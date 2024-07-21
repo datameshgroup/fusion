@@ -4,15 +4,17 @@ import styles from './index.module.css';
 
 <header className={clsx('hero hero--primary', styles.heroBanner)}>
 <div className="container">
-<h1 style={{textAlign:'center'}}>DataMesh Fusion API</h1>
+<h1 style={{textAlign:'center'}}>DataMesh</h1>
 </div>
 </header>
 
 <br />
 
-The DataMesh Fusion API enables a POS (the *Sale System*) to take payments using a DataMesh Satellite terminal (the *POI terminal*). 
+<h2 style={{textAlign:'center'}}>Fusion API</h2>
 
-The API data model is a JSON message interface which is based on and guided by the open, industry standard [documentation](https://www.nexo-standards.org/) V3.1.
+The Fusion API is DataMesh's card present API. It enables a POS (the *Sale System*) to take payments using a DataMesh Satellite terminal (the *POI terminal*). 
+
+The API data model is a JSON message interface which is based on and guided by the open, industry standard [Nexo V3.1](https://www.nexo-standards.org/).
 
 Both POI Terminal and Sale System connect to Unify (the POI System) - a high-performance, resilient, financial switching platform created by DataMesh.
 
@@ -23,9 +25,5 @@ Unify orchestrates the message flow between Sale System and terminal, and assist
 <br />
 
 <div className={styles.buttons}>
-<Link
-className="button button--secondary button--lg"
-to="/docs/getting-started">
-DataMesh Fusion API Documentation 📝
-</Link>
+  <Link className="button button--secondary button--lg" to="/docs/getting-started">Get Started</Link>
 </div>

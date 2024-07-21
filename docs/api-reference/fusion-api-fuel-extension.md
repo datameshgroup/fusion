@@ -6,6 +6,14 @@ sidebar_position: 4
 
 The Fusion API Fuel Extension is of features and requirements which extend the Fusion API Core which adds support for current and future fuel payment types accepted by DataMesh. (e.g. FleetCard, Shell Card, MotorPass etc)
 
+## What is a fuel card
+
+A fuel card is a payment card specifically designed for drivers of business vehicles to pay for their fuel. 
+
+They can be configured to allow the purchase of only certain product categories, making it easier for business owners to track and manage fuel expenses. Fuel cards also reduce paper work, and can offer volume discounts.
+
+Service stations accepting fuel card payments can attract more customers, especially those using company vehicles.
+
 ## Mandatory features 
 
 The table below provides an overview of the mandatory integration requirements for the Fusion API Fuel Extension which are required for your selected integration type.
@@ -15,24 +23,30 @@ Feature                                   						| Fusion App |  Fusion Satellite
 Purchase                                  						| ✔          | ✔                 | ✔            |  
 Refund                                    						| ✔          | ✔                 | ✔            |
 Cashout (not supported on fuel cards)     						|            |                   |              |
-Extended [SaleItem](/docs/api-reference/fusion-api-fuel-extension#saleitem) fuel product fields  | ✔          | ✔                 | ✔
+[Extended SaleItem](/docs/api-reference/fusion-api-fuel-extension#extended-saleitem) fuel product fields  | ✔          | ✔                 | ✔
 [Dynamic surcharge](/docs/getting-started#dynamic-surcharge)	| ✔          | ✔                 | ✔            |
-[Split-payment](/docs/getting-started#split-payments) 			| ✔          | ✔                 | ✔            |
+[Split payments](/docs/api-reference/fusion-api-fuel-extension#split-payments) 			| ✔          | ✔                 | ✔            |
 [Matched refund](/docs/getting-started#matched-refund) 			| ✔          | ✔                 | ✔            |
 [QR code pairing](/docs/getting-started#qr-code-pairing)								|            |                   | ✔            |
 [Display request handling](/docs/api-reference/fusion-cloud#display)	|            |                   | ✔            |
 [Input request handling](/docs/api-reference/fusion-cloud#input)		|            |                   | ✔            |
 [Print request handling](/docs/api-reference/fusion-cloud#print)		|            |                   | ✔            |
 
-## SaleItem
+## Extended SaleItem
 
 :::info
 A payment through the Fusion API Fuel Extension expands the mandatory fields for a `SaleItem`.
 :::
 
-For every payment, the Sale System must populate the [SaleItem](/docs/api-reference/data-model#saleitem) with:
-* For **every** item, the supported fuel product codes within CustomFields
-* For fuel sale items only, the `UnitOfMeasure`, `Quantity`, `UnitPrice`, and `ItemAmount` representing the number of litres, price per litre, and total fuel price
+The Fusion API requires the Sale System to provide the basket items for every payment. The Fusion API Fuel Extension expands the mandatory fields required to enable fuel card purchases. 
+
+The extra [SaleItem](/docs/api-reference/data-model#saleitem) fields required for the Fusion API Fuel Extension are as follows:
+- For **every** basket item, the Sale System must populate the fuel product code(s) within CustomFields
+- For fuel sale items only, the Sale System must populate  `UnitOfMeasure`, `Quantity`, `UnitPrice`, and `ItemAmount` representing the number of litres, price per litre, and total fuel price
+
+:::success
+For fuel sale items, `ItemAmount` must equal `Quantity` multiplied by `UnitPrice`, rounded up, or to the nearest cent.
+:::
 
 Fuel sale item details:
 
@@ -47,22 +61,30 @@ Attribute   | Requ.  | Format | Description |
 [ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | [String(0,1024)](/docs/api-reference/data-model#data-format)  | A short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
 [Categories](/docs/api-reference/data-model#categories)                  |    | [Array(String)](/docs/api-reference/data-model#data-format)   | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
 [Tags](/docs/api-reference/data-model#sale-item-tags)                    |    | [Array(String)](/docs/api-reference/data-model#data-format)   | String array with descriptive tags for the product
-[CustomFields](/docs/api-reference/data-model#customfields)              | ✔ | [Array(Object)](/docs/api-reference/data-model#data-format)   | Array of key/type/value objects which define the EFT code for the item.
+[CustomFields](/docs/api-reference/data-model#customfields)              | ✔ | [Array(Object)](/docs/api-reference/data-model#data-format)   | Array of key/type/value objects which define the fuel product code for the item.
 
 
-### Fuel product code 
+### Fuel product code
 
-The Sale System must populate the [CustomFields](/docs/api-reference/data-model#customfields) array with at least one *fuel product code* value for every sale item. 
+#### What is a fuel product code
 
-If the Sale System is capable of providing more than one fuel product code, DataMesh will select the most appropriate code based on the fuel card presented.
+A fuel card may be configured by the fuel card provider to allow the purchase of specific product categories (e.g. only fuel, or fuel + services, or fuel + services + shop items) 
 
-The Sale System *must* set either `FuelProductCode` or `FuelProductCodeShellCard`. DataMesh will perform the required mapping from these codes to support all other card types.
+For each item in the basket the Sale System must include a *fuel product code* which defines the product category the sale item belongs to.
+
+This enables the fuel card provider to determine if the basket should be accepted for the fuel card presented. 
+
+#### Setting the fuel product code
+
+Currently, DataMesh supports the Sale System setting either `FuelProductCodeShellCard` or `FuelProductCode`. DataMesh will perform the required mapping from these codes to handle all other supported fuel card types.
+
+The Sale System **must** populate the [CustomFields](/docs/api-reference/data-model#customfields) array with at least one *fuel product code* value for every sale item. 
 
 :::success
-If the Sale System only supports setting one code, it should set `FuelProductCodeShellCard`
+**If the Sale System only supports setting one code, it should set `FuelProductCodeShellCard`**
 :::
 
-Supported CustomFields product codes: 
+Supported product codes: 
 
 <table>
   <thead>
@@ -169,33 +191,90 @@ Supported CustomFields product codes:
         </details>
       </td>
     </tr>
-    <tr>
-      <td>FuelProductCodeCaltexStarCard</td>
-	  <td>Caltex StarCard</td>
-	  <td></td>
-    </tr>
-	<tr>
-      <td>FuelProductCodeUnitedFuelCard</td>
-	  <td>United Fuel Card</td>
-	  <td></td>
-    </tr>
   </tbody>
 </table>
 
 
+#### Supporting multiple fuel product codes
 
-<!-- Product code                    | Fuel card         |
+:::info
+This is optional. If the Sale System only supports setting one code, it should set `FuelProductCodeShellCard`
+:::
+
+DataMesh supports the Sale System providing multiple fuel product codes for each sale item. 
+
+If multiple fuel product codes are provided and a fuel card is presented, DataMesh will first attempt to use the fuel product codes for the card brand. If not provided, DataMesh will map from `FuelProductCodeShellCard` or `FuelProductCode`.
+
+For example; if an Caltex StarCard is presented, DataMesh will attempt to load the fuel product code from `FuelProductCodeCaltexStarCard`. If not provied by the Sale System, DataMesh will map from `FuelProductCodeShellCard` or `FuelProductCode`.
+
+All supported fuel product code types:
+
+Product code                    | Fuel card         |
 ------------------------------- | ------            |
-FuelProductCode                 | Generic / BP      |
-FuelProductCodeShellCard        | Shell Card        |
+FuelProductCodeAmpolCard        | Ampol Card        |
+FuelProductCode                 | BP Card           |
 FuelProductCodeCaltexStarCard   | Caltex StarCard   |
 FuelProductCodeFleetCard        | Fleet Card        | 
-FuelProductCodeMotorpass        | Motorpass         |
-FuelProductCodeUnitedFuelCard   | United Fuel Card  |
-FuelProductCodeAmpolCard        | Ampol Card        |
-FuelProductCodeTrinityFuelCard  | Trinity Fuel Card |
 FuelProductCodeFreedomFuelCard  | Freedom Fuel Card |
-FuelProductCodeLibertyCard      | Liberty Card      | -->
+FuelProductCodeLibertyCard      | Liberty Card      |
+FuelProductCodeMotorpass        | Motorpass         |
+FuelProductCodeShellCard        | Shell Card        |
+FuelProductCodeTrinityFuelCard  | Trinity Fuel Card |
+FuelProductCodeUnitedFuelCard   | United Fuel Card  |
+
+
+### Discounts and surcharges
+
+:::success
+Fuel card payments require the amount requested to always match the sum of the items in the basket. 
+:::
+
+The Sale System must ensure that after the discount or surcharge has been applied; 
+1. The amount requested matches the sum of the items in the basket.
+2. `ItemAmount` equals `Quantity` multiplied by `UnitPrice`, rounded up, or to the nearest cent.
+
+To apply a surcharge:
+* Adjust the `Quantity` and/or `UnitPrice` to reflect the surcharged price, ensuring `ItemAmount` equals `Quantity` multiplied by `UnitPrice`
+* Send the payment request
+
+To apply a fuel item discount:
+* Adjust the `Quantity` and/or `UnitPrice` to reflect the discounted price, ensuring `ItemAmount` equals `Quantity` multiplied by `UnitPrice`
+* In the SaleItem, populate `Discount` with the discounted amount
+* In the SaleItem, populate `DiscountReason` with the reason the discount was applied
+* Send the payment request
+
+<details>
+	<summary> Example discounted fuel item </summary>
+	<p>
+	```json
+	{ 
+	"SaleItem": [
+		{
+			"ItemID": 0,
+			"ProductCode": "ABX123",
+			"UnitOfMeasure": "Litre",
+			"Quantity": 42.252,
+			"UnitPrice": 2.00,
+			"ItemAmount": 84.50,
+			"Discount": 6.34,
+			"Discount": "Cafe + fuel discount",
+			"ProductLabel": "Premium ULP",
+			"Categories": ["Fuel"],
+			"CustomFields": [
+			{
+				"Key": "FuelProductCodeShellCard",
+				"Type": "String",
+				"Value": "35"
+			}
+			]
+		}
+	}
+	```
+	</p>
+</details>
+
+
+### Example fuel API sale item
 
 
 <details>
@@ -235,6 +314,24 @@ Example fuel API sale item
 </details>
 
 
+## Split payments
+
+:::success
+For fuel card payments, the amount requested must match the sum of the items in the basket. 
+:::
+
+For cash and scheme cards, the standard split payments user flow (described [here](/docs/getting-started#split-payments)) applies.
+
+However, fuel card payments have unique split payment requirements:
+
+1. **No Split for Single Fuel Purchase:** A single fuel purchase cannot be split between a fuel card and another payment option. For instance, a $100 fuel purchase cannot be split into $50 cash and $50 fuel card payments.
+2. **Mandatory Basket Split for Unsupported Items:** If a fuel card is used to purchase fuel along with items not supported by the card (e.g. tobacco), the Sale System must split the basket. For example, a purchase of $100 fuel and $50 tobacco would require the Sale System to send two transactions with separate baskets. The fuel sale, with the fuel item in the basket followed by and a second sale, with the tobacco item in the basket. 
+
+Fuel card holders are typically familiar with these operational processes. Cashiers need to understand this flow for correct POS processing.
+
+:::info
+Refer [here](/docs/getting-started#split-payments) for details on performing a split payment.
+:::
 
 
 ## Purchase 
@@ -293,7 +390,7 @@ Fusion API Fuel Extension purchase request
 						"ProductLabel": "BP Unleaded 91",
 						"CustomFields": [
 							{
-								"Key": "FuelProductCode",
+								"Key": "FuelProductCode", 
 								"Type": "String",
 								"Value": "21"
 							},
@@ -301,11 +398,6 @@ Fusion API Fuel Extension purchase request
 								"Key": "FuelProductCodeShellCard",
 								"Type": "String",
 								"Value": "35"
-							},
-							{
-								"Key": "FuelProductCodeFleetcore",
-								"Type": "String",
-								"Value": "21"
 							}
 						]
 					},
@@ -433,18 +525,20 @@ Fusion API Fuel Extension purchase response
 
 ## Refund
 
+:::success
+All fuel card refunds must be "matched refunds". To perform a matched refund, include the `POITransactionID` from the original purchase request.
+:::
+
 To perform a fuel refund:
 
 * Construct a refund request based on the Sale System integration type:
   * Fusion App - [perform a purchase](/docs/api-reference/fusion-app#perform-a-refund-events-mode)
   * Fusion Cloud - [perform a purchase](/docs/api-reference/fusion-cloud#perform-a-refund)
   * Fusion Satellite - [perform a purchase](/docs/api-reference/fusion-satellite#payment)
-* When possible, populate the [matched refund](/docs/getting-started#matched-refund) fields
-  * Not all fuel cards support unmatched refunds
-* Populate the SaleItem[] array with fuel product data of the items being refunded
+* Populate the [matched refund](/docs/getting-started#matched-refund) fields
+* Populate the `SaleItem[]` array with fuel product data of the items being refunded
 * Fusion Cloud only; handle [display](/docs/api-reference/fusion-cloud#display), [input](/docs/api-reference/fusion-cloud#input), and [print](/docs/api-reference/fusion-cloud#print) requests.
 * Handle the payment response
-
 
 <details>
 

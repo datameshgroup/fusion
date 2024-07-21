@@ -50,7 +50,7 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
 
 - The _Status_ tab displays the terminal pairing status.
   
-  - You can pair a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/appendix#qr-pos-pairing).
+  - You can pair a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/getting-started#qr-code-pairing).
 
     ![](/img/fusion-app-settings-not-paired.png)
 
@@ -59,7 +59,7 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
     ![](/img/fusion-app-settings-paired.png)
 
 - The _Util_ tab will allow you to:
-  - update the POS Name (which is used during [QR POS Pairing](/docs/getting-started#qr-pos-pairing)).     
+  - update the POS Name (which is used during [QR Code Pairing](/docs/getting-started#qr-code-pairing)).     
     - If the Fusion App has been paired with a terminal _before_ the POS name was updated, you'll need to unpair from the terminal and then, pair with the terminal again to use the updated POS name.
   - perform a login
   - access log files 
@@ -83,7 +83,7 @@ DataMesh may ask for log files to diagnose issues during development.
 
 - Ensure you've read [Getting Started](/docs/getting-started) and scoped your integration requirements
   - Make note of the [mandatory features checklist](/docs/getting-started#mandatory-features-checklist)
-- Read [Perform a purchase](#perform-a-purchase) and [Perform a refund](#perform-a-refund) and implement this functionality in your Sale System
+- Read [Perform a purchase](#perform-a-purchase-events-mode) and [Perform a refund](#perform-a-refund-events-mode) and implement this functionality in your Sale System
 - Implement other required features based on this API specification
 - On the PC you've installed Fusion App, you can also view the locally installed [Swagger docs](http://localhost:4242/swagger)
 
@@ -113,7 +113,7 @@ To perform a purchase with events mode, the Sale System will need to POST a [Pay
   - On [payment response](/docs/api-reference/data-model#payment-response)
     - Check [Response.Result](/docs/api-reference/data-model#result) for the transaction result 
     - If [Response.Result](/docs/api-reference/data-model#result) is "Success", record the following to enable future matched refunds: [POITransactionID](/docs/api-reference/data-model#poitransactionid)
-    - Check [PaymentResult.AmountsResp.AuthorizedAmount](#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
+    - Check [PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) (it may not equal the `RequestedAmount` in the payment request)
     - If the Sale System is handling tipping or surcharge, check the [PaymentResult.AmountsResp.TipAmount](/docs/api-reference/data-model#tipamount), and [PaymentResult.AmountsResp.SurchargeAmount](/docs/api-reference/data-model#surchargeamount)
     - Print the receipt contained in `PaymentReceipt`
   - On 404, enter error handling
@@ -234,7 +234,7 @@ To perform a gift card activation with events mode, the Sale System will need to
     - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
 	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the "activation barcode" read from the back of the gift card
 	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees)
-	- Set [TotalFeesAmount](#totalfeesamount) to the activation fee, if any, associated with this gift card
+	- Set [TotalFeesAmount](/docs/api-reference/data-model#totalfeesamount) to the activation fee, if any, associated with this gift card
 	- Set [Currency](#currency) to "AUD". 
   - Set [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
     - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system. This should be the same as `PaymentRequest` used to pay for the gift card (if paid for with card)

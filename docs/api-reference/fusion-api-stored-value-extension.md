@@ -19,6 +19,7 @@ Below is an overview of supported gift cards. If you are familiar with gift card
 - Physical gift cards are sold on a “hang-sell”, a branded cardboard sheet with a UPC, activation barcode, and notch at the top for hanging in the gift card display. 
 - The UPC barcode represents an 11-digit UPC, followed by a check digit
 - The activation barcode contains the 11-digit UPC (no check digit) followed by the 19-digit card number (PAN) left-padded with zero. 
+- The redmeption code is located behind a privacy scratch panel
 - Some card types may have a plastic credit card embedded on the hang-sell.
 
 ![gift-card-layout](/img/giftcard-layout.png)  
@@ -184,13 +185,50 @@ The table below provides an overview of the mandatory integration requirements f
 
 Feature                                                              | Fusion App | Fusion Satellite | Fusion Cloud |
 -------------------------------------------------------------------  |   :----:   |     :------:     |   :------:   |
-Activate                                                             | ✔          | ✔               | ✔            |  
-Deactivate                                                           |             |                  |              |  
+Closed loop, and third-party physical - Activate                     | ✔          | ✔               | ✔            |  
+Closed loop, and third-party physical - Deactivate                   |            |                 |              |  
+Digital account reservation - Activate                               | ✔          | ✔               | ✔            |  
+Digital account reservation - Deactivate                             |            |                 |              |  
 Purchase                                                             | ✔          | ✔               | ✔            |  
+Purchase [product restrictions](#product-restrictions)               | ✔          | ✔               | ✔            |  
 [QR code pairing](/docs/getting-started#qr-code-pairing)             |            |                  | ✔            |
 [Display request handling](/docs/api-reference/fusion-cloud#display) |            |                  | ✔            |
 [Input request handling](/docs/api-reference/fusion-cloud#input)     |            |                  | ✔            |
 [Print request handling](/docs/api-reference/fusion-cloud#print)     |            |                  | ✔            |
+
+
+## Product restrictions
+
+A closed-loop gift card cannot be used to buy another gift card.
+
+The Sale System must indicate when the basket for a purchase request contains a gift card. If a closed-loop gift card is presented as the payment method for such a purchase, DataMesh will decline the transaction.
+
+Merchants may also restrict other products and product categories (like lotto, tobacco items, etc.). The Sale System should have the flexibility to mark items as "restricted on gift card" in the product database, based on the merchant's specifications.
+
+The Sale System can implement these restrictions using the [restricted payment brands](/docs/getting-started#restricted-payment-brands) API. This is done by adding `!Category:GiftCard` to the `AllowedPaymentBrand` array.
+
+Here's an example of how it works:
+- The cashier creates a sale, adds a gift card to the basket, and initiates payment to DataMesh.
+- As a gift card has been added to the basket, the Sale System adds `!Category:GiftCard` to the `AllowedPaymentBrand` array in the purchase request and sends the request.
+- If the cardholder tries to pay with a gift card, DataMesh will decline the payment
+
+Example `PaymentRequest` JSON showing `AllowedPaymentBrand`:
+
+```json 
+{	
+  "PaymentRequest": {
+    "PaymentTransaction": {
+      "TransactionConditions": {
+        "AllowedPaymentBrand": [ "!Category:GiftCard" ]
+      }
+    }
+  }
+}
+```
+
+:::info 
+For more details on this API, see [restricted payment brands](/docs/getting-started#restricted-payment-brands).
+:::
 
 
 ## Purchase 
