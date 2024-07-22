@@ -2007,7 +2007,7 @@ Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) c
 
 Set to "AUD" for Australian currency.
 
-## PaymentCurrency
+### PaymentCurrency
 
 Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code.
 
@@ -2593,7 +2593,7 @@ Please note that this list may expand in the future as new payment types are add
 	</thead>
 	<tbody>
 		<tr>
-			<td rowspan='21'>Schemes</td>
+			<td rowspan='20'>Schemes</td>
 		</tr>
 		<tr>
 			<td>0001</td>
@@ -2670,13 +2670,9 @@ Please note that this list may expand in the future as new payment types are add
 		<tr>
 			<td>0019</td>
 			<td>Discover International</td>
-		</tr>																								
+		</tr>																										
 		<tr>
-			<td></td>
-			<td></td>
-		</tr>			
-		<tr>
-			<td rowspan='13'>Fuel</td>
+			<td rowspan='7'>Fuel</td>
 		</tr>
 		<tr>
 			<td>0100</td>
@@ -2698,6 +2694,7 @@ Please note that this list may expand in the future as new payment types are add
 			<td>0104</td>
 			<td>Motorpass</td>
 		</tr>
+		<!--
 		<tr>
 			<td>0105</td>
 			<td>Motorcharge</td>
@@ -2726,8 +2723,13 @@ Please note that this list may expand in the future as new payment types are add
 			<td>0111</td>
 			<td>United Fuel Card</td>
 		</tr>	
+		-->
 		<tr>
-			<td rowspan='11'>Transit</td>
+			<td>0112</td>
+			<td>OTR Card</td>
+		</tr>
+		<tr>
+			<td rowspan='10'>Transit</td>
 		</tr>
 		<tr>
 			<td>0200</td>
@@ -2742,35 +2744,31 @@ Please note that this list may expand in the future as new payment types are add
 			<td>Digital Product</td>
 		</tr>	
 		<tr>
-			<td>0202</td>
+			<td>0204</td>
 			<td>ACT TSS</td>
 		</tr>	
 		<tr>
-			<td>0203</td>
+			<td>0205</td>
 			<td>NSW TSS</td>
 		</tr>	
 		<tr>
-			<td>0204</td>
+			<td>0206</td>
 			<td>NT TSS</td>
 		</tr>	
 		<tr>
-			<td>0205</td>
+			<td>0207</td>
 			<td>QLD TSS</td>
 		</tr>	
 		<tr>
-			<td>0206</td>
+			<td>0208</td>
 			<td>TAS TSP</td>
 		</tr>	
 		<tr>
-			<td>0207</td>
+			<td>0209</td>
 			<td>CPVV MPTP</td>
-		</tr>	
+		</tr>				
 		<tr>
-			<td></td>
-			<td></td>
-		</tr>	
-		<tr>
-			<td rowspan='5'>Alternative</td>
+			<td rowspan='4'>Alternative</td>
 		</tr>
 		<tr>
 			<td>0300</td>
@@ -2783,10 +2781,6 @@ Please note that this list may expand in the future as new payment types are add
 		<tr>
 			<td>0302</td>
 			<td>WeChat Pay</td>
-		</tr>	
-		<tr>
-			<td></td>
-			<td></td>
 		</tr>			
 		<tr>
 			<td rowspan='4'>Loyalty</td>
@@ -2815,7 +2809,7 @@ Please note that this list may expand in the future as new payment types are add
 			<td>Payment on other terminal</td>
 		</tr>	
 		<tr>
-			<td rowspan='6'>GiftCard</td>
+			<td rowspan='9'>GiftCard</td>
 		</tr>
 		<tr>
 			<td>0600</td>
@@ -2836,6 +2830,18 @@ Please note that this list may expand in the future as new payment types are add
 		<tr>
 			<td>0604</td>
 			<td>WEX</td>
+		</tr>	
+		<tr>
+			<td>0700</td>
+			<td>Coles Group & Myer Gift Card</td>
+		</tr>	
+		<tr>
+			<td>0701</td>
+			<td>Coles Express Gift Card</td>
+		</tr>	
+		<tr>
+			<td>0702</td>
+			<td>Shell Gift Card</td>
 		</tr>	
 	</tbody>
 </table>

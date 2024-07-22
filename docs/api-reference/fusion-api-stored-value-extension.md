@@ -195,6 +195,7 @@ Purchase [product restrictions](#product-restrictions)               | ✔      
 [Display request handling](/docs/api-reference/fusion-cloud#display) |            |                  | ✔            |
 [Input request handling](/docs/api-reference/fusion-cloud#input)     |            |                  | ✔            |
 [Print request handling](/docs/api-reference/fusion-cloud#print)     |            |                  | ✔            |
+Closed loop - [Balance inquiry handling](/docs/api-reference/data-model#balance-inquiry)     |            |                  | ✔            |
 
 
 ## Product restrictions

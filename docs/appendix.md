@@ -234,41 +234,51 @@ If you are unable to see the <code>Pair With POS</code> option on your Satellite
   - Terminal Config Error (and all other errors)
     -   Please contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>.
 
-### Device Logs
+### Android Debug Bridge (ADB)
 
-During development, DataMesh may request device logs from your development POI Terminal using the Android Debug Bridge (ADB).  
+:::warning
+This section is only applicable to _debug development_ POI terminals.
+:::
 
-To capture logs from your POI Terminal:
-- Download the standalone [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools) package:
+To execute ADB commands, download the Android SDK Platform Tools:
+1. If you have not done this previously, download the standalone [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools) package:
   - [Windows](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
   - [Mac](https://dl.google.com/android/repository/platform-tools-latest-darwin.zip)
   - [Linux](https://dl.google.com/android/repository/platform-tools-latest-linux.zip)
-- Extract the contents of the downloaded Zip file into an easily accessible folder (e.g. C:\Android-Tools).
+2. Extract the contents of the downloaded Zip file into an easily accessible folder (e.g. C:\Android-Tools).
 
-:::info
-If you're testing with a POS, which is _paired to the POI Terminal through <b>USB</b>_, please download and extract the standalone Android SDK Platform Tools _<b>in the same PC where your POS is located</b>_.
-:::
-
-- Open the File Explorer and browse to where you extracted the contents of the Zip file and copy the full path.
+3. Open the File Explorer and browse to where you extracted the contents of the Zip file and copy the full path.
 
 ![](/img/adb-location.png)
 
 _This path will also be the location of your ADB log file._
-- Use a USB cable to connect your POI Terminal to your PC.
-- Make sure that your POI Terminal is the only Android device connected to your PC.
-- Open the Command Prompt (Windows) or Terminal (macOS/Linux).
-- Navigate to the location where you extracted the contents of the Zip file.
-- Verify the POI Terminal connection by typing the following command and pressing Enter:
+
+4. Use a USB cable to connect your POI Terminal to your PC.
+
+5. Make sure that your POI Terminal is the only Android device connected to your PC.
+
+6. Open the Command Prompt (Windows) or Terminal (macOS/Linux).
+
+7. Navigate to the location where you extracted the contents of the Zip file.
+
+8. Verify the POI Terminal connection by typing the following command and pressing Enter:
 ```js
 adb devices
 ```
 
 _This command lists all connected Android devices. Make sure your POI Terminal is listed, and its status is “device.”_
-_If not, ensure USB debugging is enabled and that your POI Terminal is connected properly._
+
+_**If not**, ensure USB debugging is enabled and that your POI Terminal is connected properly._
 
 ![](/img/adb-devices.png)
 
-- If you see your POI Terminal's serial number and its status is _device_, run the following command to start capturing logs:
+### Device Logs
+
+During development, DataMesh may request device logs from your development POI Terminal using the Android Debug Bridge (ADB).  
+
+To capture logs from your POI Terminal, please refer to **Steps 1 to 8** in the [Android Debug Bridge](#android-debug-bridge-adb) section and then, proceed with the steps listed below.
+
+9. If you see your POI Terminal's serial number and its status is _device_ (when running the _adb devices_ command), run the following command (in the same Command Prompt (Windows) or Terminal (macOS/Linux) window where you executed the _adb devices_ command) to start capturing logs:
 ```js
 adb logcat > android-logs.txt
 ```
@@ -281,6 +291,24 @@ _This command tells ADB to capture the device logs and save them to a file named
 
 ![](/img/adb-log-file.png)
 - Zip (if the size is too big), copy, and share the ADB log file to DataMesh.
+
+### Loading a custom APK using the Android Debug Bridge (ADB)
+
+To install the Satellite APK (or a custom APK) on your development POI Terminal using the Android Debug Bridge (ADB), please refer to **Steps 1 to 8** in the [Android Debug Bridge](#android-debug-bridge-adb) section and then, proceed with the steps listed below.
+
+9. If you see your POI Terminal's serial number and its status is _device_ (when running the _adb devices_ command), run the following command (in the same Command Prompt (Windows) or Terminal (macOS/Linux) window where you executed the _adb devices_ command) to install the Satellite APK or custom APK:
+```js
+adb -s DeviceSerialNumber install "APKFullFilePath"
+```
+- Replace:
+  - _DeviceSerialNumber_ with your POI Terminal's serial number listed in the _adb devices_ result
+  - _APKFullFilePath_ with the full APK file path (e.g. C:\Android-tools\Satellite.apk)  
+- Please wait until installation is complete before accessing the installed application on your POI Terminal.
+- Only if you're installing the Satellite APK **and** after the Satellite APK has been installed successfully:
+    - Launch the Satellite application
+    - Follow the prompts
+    - Tap the "info" icon (ⓘ) at the top of the Satellite screen
+    - Restart your terminal
 
 ### PAX
 
@@ -300,24 +328,26 @@ The terminal can be connected to Wi-Fi where cellular access isn't avaiable.
 
 #### Loading a custom APK
 
-For Fusion Satellite integrations, the DataMesh debug development POI terminals are configured to allow loading of custom APK's.
+For Fusion Satellite integrations, the DataMesh _debug development_ POI terminals are configured to allow loading of custom APKs.
 
-There are two methods for completing this process: 
+If Satellite was installed previously on your _debug development_ POI terminal, you'll need to unistall the old version before installing the updated version of Satellite.
 
 <details>
 
 <summary>
-Connect the terminal to Android Development Studio
+Uninstall previous version of Satellite
 </summary>
 
 <p>
 
-  - Connect the USB port on the side of the POI Terminal to your PC
-  - The terminal will appear in the list of connected devices in Android Development Studio
-  - You can choose to either deploy or debug your custom APK on the terminal
+  - Only on a _debug development_ POI terminal and if you require to install a different version of Satellite, you'll need to uninstall any previous version of Satellite:
+    - Long press on the Satellite application and drag it to _Remove_
 
+      ![](/img/Pax-UninstallSatellite.png)        
 </p>
 </details>
+
+There are two methods for installing an APK: 
 
 <details>
 
@@ -339,6 +369,19 @@ Copy the APK to the terminal
 </p>
 </details>
 
+<details>
+
+<summary>
+Install using the Android Debug Bridge (ADB)
+</summary>
+
+<p>
+
+  - Please refer to the [Loading a custom APK using the Android Debug Bridge (ADB)](#loading-a-custom-apk-using-the-android-debug-bridge-adb) section.
+
+</p>
+</details>
+
 ### Ingenico
 
 #### Connect to Wi-Fi
@@ -355,24 +398,26 @@ The terminal can be connected to Wi-Fi where cellular access isn't avaiable.
 
 #### Loading a custom APK
 
-For Fusion Satellite integrations, the DataMesh debug development POI terminals are configured to allow loading of custom APK's.
+For Fusion Satellite integrations, the DataMesh _debug development_ POI terminals are configured to allow loading of custom APKs.
 
-There are two methods for completing this process: 
+If Satellite was installed previously on your _debug development_ POI terminal, you'll need to unistall the old version before installing the updated version of Satellite.
 
 <details>
 
 <summary>
-Connect the terminal to Android Development Studio
+Uninstall previous version of Satellite
 </summary>
 
 <p>
 
-  - Connect the USB port on the side of the POI Terminal to your PC
-  - The terminal will appear in the list of connected devices in Android Development Studio
-  - You can choose to either deploy or debug your custom APK on the terminal
+  - Only on a _debug development_ POI terminal, uninstall any previous version of Satellite:
+    - Long press on the Satellite application and drag it to _Uninstall_
 
+      ![](/img/Ingenico-UninstallSatellite.png)        
 </p>
 </details>
+
+There are two methods for installing an APK: 
 
 <details>
 
@@ -382,10 +427,7 @@ Install through AxToolkit
 
 <p>
 
-  - Only on a _development_ terminal, uninstall any previous version of Satellite:
-    - Long press on the Satellite app and drag it to _Uninstall_
-
-      ![](/img/Ingenico-UninstallSatellite.png)        
+  - Uninstall Satellite.
   - Connect the USB port on the side of the POI Terminal to your PC
   - Install AxToolkit (Contact the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you don't have an AxToolkit)
   - Open the AxToolkit.
@@ -402,6 +444,20 @@ Install through AxToolkit
 
 </p>
 </details>
+
+<details>
+
+<summary>
+Install using the Android Debug Bridge (ADB)
+</summary>
+
+<p>
+
+  - Please refer to the [Loading a custom APK using the Android Debug Bridge (ADB)](#loading-a-custom-apk-using-the-android-debug-bridge-adb) section.
+
+</p>
+</details>
+
 
 #### Accessing the terminal file(s)
 
