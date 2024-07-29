@@ -189,13 +189,13 @@ Closed loop, and third-party physical - Activate                     | ✔      
 Closed loop, and third-party physical - Deactivate                   |            |                 |              |  
 Digital account reservation - Activate                               | ✔          | ✔               | ✔            |  
 Digital account reservation - Deactivate                             |            |                 |              |  
+Closed loop - [Balance inquiry](/docs/api-reference/data-model#balance-inquiry)     | ✔            |                  | ✔            |
 Purchase                                                             | ✔          | ✔               | ✔            |  
 Purchase [product restrictions](#product-restrictions)               | ✔          | ✔               | ✔            |  
 [QR code pairing](/docs/getting-started#qr-code-pairing)             |            |                  | ✔            |
 [Display request handling](/docs/api-reference/fusion-cloud#display) |            |                  | ✔            |
 [Input request handling](/docs/api-reference/fusion-cloud#input)     |            |                  | ✔            |
 [Print request handling](/docs/api-reference/fusion-cloud#print)     |            |                  | ✔            |
-Closed loop - [Balance inquiry handling](/docs/api-reference/data-model#balance-inquiry)     |            |                  | ✔            |
 
 
 ## Product restrictions
@@ -246,7 +246,11 @@ To perform a gift card purchase (redemption):
 ## Activate 
 
 :::info
-Only one card can be activation per request. To activate multiple cards, the Sale System must send multiple activation requets sequentially.
+Only one card can be activated per request. To activate multiple cards, the Sale System must send multiple activation requests sequentially.
+:::
+
+:::tip
+`ItemAmount` indicates the value to activate the card with. e.g. for a $100 giftcard with $5.95 activation fee `ItemAmount` will be $100, and `TotalFeesAmount` will be $5.95
 :::
 
 To perform a gift card activation:
@@ -254,16 +258,21 @@ To perform a gift card activation:
 - Based on the gift card type, read the "activation barcode", and/or UPC
   - Third-party physical - scan the "activation barcode"
   - Closed-loop physical - scan the "activation barcode"
-  - Account recharge - scan the cardholder account, and append, left zero padded to 19 digits, to the UPC. This becomes the "activation barcode"
   - Digital account reservation - record product UPC selected by the cashier
 - Construct a [stored value](/docs/api-reference/data-model#stored-value) request
-  - Set `StoredValueData[].StoredValueTransactionType` to `Activate`
-  - Set `StoredValueData[].StoredValueAccountID.StoredValueAccountType` to `GiftCard`
-  - Set `StoredValueData[].StoredValueAccountID.IdentificationType` to `Barcode`
-  - Set `StoredValueData[].StoredValueAccountID.StoredValueID` to the UPC or "activation barcode"
-  - Set `StoredValueData[].EanUpc` to the product UPC
-  - Set `StoredValueData[].ItemAmount` to the activation amount (note this is required even for fixed-amount cards)
-  - If applicable, set `StoredValueData[].TotalFeesAmount` to the fee associated with the card.
+  - Create an object in StoredValueData[]
+  	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Activate"
+  	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
+	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
+	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the UPC (digital account reservation) or "activation barcode" scanned from the card (physical card activation)
+    - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
+	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the product UPC
+	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees). Note this is required even for fixed-amount cards.
+	- Set [TotalFeesAmount](/docs/api-reference/data-model#totalfeesamount) to the activation fee, if any, associated with this gift card
+	- Set [Currency](#currency) to "AUD". 
+  - Set [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
+    - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system. This should be the same as `PaymentRequest` used to pay for the gift card (if paid for with card)
+    - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)    
 - Fusion Cloud only; handle [display](/docs/api-reference/fusion-cloud#display), [input](/docs/api-reference/fusion-cloud#input), and [print](/docs/api-reference/fusion-cloud#print) requests.
 - Handle the [stored value](/docs/api-reference/data-model#stored-value) response
   - The `PaymentReceipt` **MUST** be printed for a digital account reservation as it contains the redemption code

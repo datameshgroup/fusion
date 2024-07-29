@@ -276,21 +276,29 @@ If refunding a previous purchase, the Sale System should include details of the 
 
 ## Activate a gift card (events mode)
 
+:::info
+Only one card can be activated per request. To activate multiple cards, the Sale System must send multiple activation requests sequentially.
+:::
+
 To perform a gift card activation with events mode, the Sale System will need to POST a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload to the `http://localhost:4242/fusion/v1/storedvalue` endpoint.
 
 :::tip
 `ItemAmount` indicates the value to activate the card with. e.g. for a $100 giftcard with $5.95 activation fee `ItemAmount` will be $100, and `TotalFeesAmount` will be $5.95
 :::
 
+- Based on the gift card type, read the "activation barcode", and/or UPC
+  - Third-party physical - scan the "activation barcode"
+  - Closed-loop physical - scan the "activation barcode"
+  - Digital account reservation - record product UPC selected by the cashier
 - Construct a [Stored value request](/docs/api-reference/data-model#stored-value-request) JSON payload including all required fields
   - Create an object in StoredValueData[]
   	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Activate"
   	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
 	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
-	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the "activation barcode" read from the back of the gift card
+	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the UPC (digital account reservation) or "activation barcode" scanned from the card (physical card activation)
     - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
-	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the "activation barcode" read from the back of the gift card
-	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees)
+	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the product UPC
+	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees). Note this is required even for fixed-amount cards.
 	- Set [TotalFeesAmount](/docs/api-reference/data-model#totalfeesamount) to the activation fee, if any, associated with this gift card
 	- Set [Currency](#currency) to "AUD". 
   - Set [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
@@ -328,11 +336,11 @@ To perform a deactivation, the Sale System will need to recall the [POITransacti
   	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Reversal"
   	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
 	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
-	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the "activation barcode" read from the back of the gift card
+	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the UPC (digital account reservation) or "activation barcode" scanned from the card (physical card activation)
     - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
-	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the "activation barcode" read from the back of the gift card
-	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees)
-	- Set [TotalFeesAmount](#totalfeesamount) to the activation fee, if any, associated with this gift card
+	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the product UPC
+	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees). Note this is required even for fixed-amount cards.
+	- Set [TotalFeesAmount](/docs/api-reference/data-model#totalfeesamount) to the activation fee, if any, associated with this gift card
 	- Set [Currency](#currency) to "AUD". 
     - Set [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction) to the value returned in [StoredValueResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) of the original activation response
   - Set [SaleData.SaleTransactionID](/docs/api-reference/data-model#saletransactionid)

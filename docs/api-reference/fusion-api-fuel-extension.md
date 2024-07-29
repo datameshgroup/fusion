@@ -76,9 +76,31 @@ This enables the fuel card provider to determine if the basket should be accepte
 
 #### Setting the fuel product code
 
-Currently, DataMesh supports the Sale System setting either `FuelProductCodeShellCard` or `FuelProductCode`. DataMesh will perform the required mapping from these codes to handle all other supported fuel card types.
+The Sale System **must** add at least one fuel product code into **every** sale item. 
 
-The Sale System **must** populate the [CustomFields](/docs/api-reference/data-model#customfields) array with at least one *fuel product code* value for every sale item. 
+The Sale System sets a fuel product code in each sale item by adding a key/value/type entry to the [CustomFields](/docs/api-reference/data-model#customfields) array, where: 
+
+- **Key** is the product code type (e.g. `FuelProductCodeShellCard` or `FuelProductCode`)
+- **Type** is "String"
+- **Value** is the value of the product code
+
+For example, the follow `CustomFields` JSON sets `FuelProductCodeShellCard` to `2`.
+
+```json
+{
+  "CustomFields": [
+    {
+      "Key": "FuelProductCodeShellCard",
+      "Type": "String",
+      "Value": "2"
+    }
+  ]
+}
+```
+
+See [example fuel api basket](#example-fuel-api-basket) for an example basket.
+
+Currently, DataMesh supports the Sale System setting either `FuelProductCodeShellCard` or `FuelProductCode`. DataMesh will perform the required mapping from these codes to handle all other supported fuel card types.
 
 :::success
 **If the Sale System only supports setting one code, it should set `FuelProductCodeShellCard`**
@@ -89,9 +111,9 @@ Supported product codes:
 <table>
   <thead>
     <tr>
-      <th>Product code</th>
+      <th>Product code type (Key)</th>
       <th>Fuel card support</th>
-      <th>Supported codes</th>
+      <th>Product codes (Value)</th>
     </tr>
   </thead>
   <tbody>
@@ -183,7 +205,7 @@ Supported product codes:
           56   | Rentals & Deposits
           57   | Travel & Leisure
           59   | Hardware
-          60   | Lp Gas Bottles
+          60   | LP Gas Bottles
           65   | Services
           66   | Kerosene
           67   | Premix
@@ -246,6 +268,7 @@ To apply a fuel item discount:
 <details>
 	<summary> Example discounted fuel item </summary>
 	<p>
+
 	```json
 	{ 
 	"SaleItem": [
@@ -258,23 +281,24 @@ To apply a fuel item discount:
 			"ItemAmount": 84.50,
 			"Discount": 6.34,
 			"Discount": "Cafe + fuel discount",
-			"ProductLabel": "Premium ULP",
+			"ProductLabel": "Unleaded Petrol",
 			"Categories": ["Fuel"],
 			"CustomFields": [
 			{
 				"Key": "FuelProductCodeShellCard",
 				"Type": "String",
-				"Value": "35"
+				"Value": "2"
 			}
 			]
 		}
 	}
 	```
+
 	</p>
 </details>
 
 
-### Example fuel API sale item
+### Example fuel API basket
 
 
 <details>
@@ -283,33 +307,49 @@ Example fuel API sale item
 </summary>
 
 <p>
+
 ```json
-{ 
-  "SaleItem": [
-  {
-    "ItemID": 0,
-	"ProductCode": "ABX123",
-	"UnitOfMeasure": "Litre",
-	"Quantity": 42.252,
-	"UnitPrice": 2.15,
-	"ItemAmount": 90.84,
-	"ProductLabel": "Premium ULP",
-	"Categories": ["Fuel"],
-    "CustomFields": [
-      {
-        "Key": "FuelProductCode", 
-	    "Type": "String",
-        "Value": "21"
-      },
-      {
-        "Key": "FuelProductCodeShellCard",
-	    "Type": "String",
-        "Value": "35"
-      }
+{
+    "SaleItem": [{
+            "ItemID": 0,
+            "ProductCode": "ABX123",
+            "UnitOfMeasure": "Litre",
+            "Quantity": 42.252,
+            "UnitPrice": 2.15,
+            "ItemAmount": 90.84,
+            "ProductLabel": "Unleaded Petrol",
+            "Categories": ["Fuel"],
+            "CustomFields": [{
+                    "Key": "FuelProductCodeShellCard",
+                    "Type": "String",
+                    "Value": "2"
+                }
+            ]
+        }, {
+            "ItemID": 1,
+            "ProductCode": "5000112576009",
+            "EanUpc": "5000112576009",
+            "UnitOfMeasure": "Other",
+            "Quantity": "2",
+            "UnitPrice": "1.95",
+            "ItemAmount": "3.90",
+            "ProductLabel": "Coca-Cola No Sugar 1.25L",
+            "CostBase": "0.75",
+            "Categories": ["Drinks", "Soft Drink"],
+            "Brand": "Coca-Cola",
+            "QuantityInStock": "42",
+            "CustomFields": [{
+                    "Key": "FuelProductCodeShellCard",
+                    "Type": "String",
+                    "Value": "48"
+                }
+            ]
+        }
     ]
-  }
 }
+
 ```
+
 </p>
 </details>
 
@@ -387,17 +427,17 @@ Fusion API Fuel Extension purchase request
 						"Quantity": 57.62,
 						"UnitPrice": 1.97,
 						"ItemAmount": 113.51,
-						"ProductLabel": "BP Unleaded 91",
+						"ProductLabel": "Unleaded Petrol",
 						"CustomFields": [
 							{
 								"Key": "FuelProductCode", 
 								"Type": "String",
-								"Value": "21"
+								"Value": "5"
 							},
 							{
 								"Key": "FuelProductCodeShellCard",
 								"Type": "String",
-								"Value": "35"
+								"Value": "2"
 							}
 						]
 					},
@@ -416,7 +456,19 @@ Fusion API Fuel Extension purchase request
 							"Soft Drink"
 						],
 						"Brand": "Coca-Cola",
-						"QuantityInStock": "42"
+						"QuantityInStock": "42",
+						"CustomFields": [
+							{
+								"Key": "FuelProductCode", 
+								"Type": "String",
+								"Value": "13"
+							},
+							{
+								"Key": "FuelProductCodeShellCard",
+								"Type": "String",
+								"Value": "48"
+							}
+						]
 					}
 				]
 			},
@@ -585,22 +637,17 @@ Fusion API Fuel Extension refund request
 						"Quantity": 57.62,
 						"UnitPrice": 1.97,
 						"ItemAmount": 113.51,
-						"ProductLabel": "BP Unleaded 91",
+						"ProductLabel": "Unleaded Petrol",
 						"CustomFields": [
 							{
 								"Key": "FuelProductCode",
 								"Type": "String",
-								"Value": "21"
+								"Value": "5"
 							},
 							{
 								"Key": "FuelProductCodeShellCard",
 								"Type": "String",
-								"Value": "35"
-							},
-							{
-								"Key": "FuelProductCodeFleetcore",
-								"Type": "String",
-								"Value": "21"
+								"Value": "2"
 							}
 						]
 					},
@@ -619,7 +666,19 @@ Fusion API Fuel Extension refund request
 							"Soft Drink"
 						],
 						"Brand": "Coca-Cola",
-						"QuantityInStock": "42"
+						"QuantityInStock": "42",
+						"CustomFields": [
+							{
+								"Key": "FuelProductCode", 
+								"Type": "String",
+								"Value": "13"
+							},
+							{
+								"Key": "FuelProductCodeShellCard",
+								"Type": "String",
+								"Value": "48"
+							}
+						]
 					}
 				]
 			},
