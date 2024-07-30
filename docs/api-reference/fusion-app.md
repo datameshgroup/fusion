@@ -1579,15 +1579,18 @@ Code | Description | Required action  |
 ## Error handling
 
 When the Sale System POSTs a [payment](/docs/api-reference/data-model#payment-request), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-request), or [stored value](/docs/api-reference/data-model#stored-value-request) request, it will eventually receive a matching [payment](/docs/api-reference/data-model#payment-response), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-response), or [stored value](/docs/api-reference/data-model#stored-value-response) response, or via the `~/events` endpoint in events mode.
- 
+
+:::info
+The Sale System timeout value should be set to at least 180 seconds. 
+:::
 
 The Sale System should verify the result of the transaction by checking the [Response.Result](/docs/api-reference/data-model#result) field in the response.
 
 - If the [Response.Result](/docs/api-reference/data-model#result) is "Success", the payment transaction was successful.
 - If the [Response.Result](/docs/api-reference/data-model#result) is "Failure", the payment transaction failed.  The Sale System may check for any errors specified in the [Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) field in the same response message and handle the error accordingly.
 
-:::tip 
-In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it must enter error handling.
+:::success 
+In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it **must** enter error handling.
 :::
 
 To perform error handling the Sale System should send a `GET` request to the error handling endpoint using the `SessionId` of the failed request. Fusion App will return a response containing the result of the payment. 
