@@ -1580,8 +1580,12 @@ Code | Description | Required action  |
 
 When the Sale System POSTs a [payment](/docs/api-reference/data-model#payment-request), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-request), or [stored value](/docs/api-reference/data-model#stored-value-request) request, it will eventually receive a matching [payment](/docs/api-reference/data-model#payment-response), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-response), or [stored value](/docs/api-reference/data-model#stored-value-response) response, or via the `~/events` endpoint in events mode.
 
-:::info
-The Sale System timeout value should be set to at least 180 seconds. 
+:::success
+The Sale System hard timeout value should be set to 300 seconds before entering error handling. 
+
+The Sale System may attempt to cancel the transaction at any point prior to the 300 second timeout by sending a `POST ~/fusion/v1/payments/{{SessionId}}/abort`.
+
+As the `abort` request may not be successful (e.g. the POI Terminal is temporarily offline) the Sale System **must** continue to wait for the full timeout before entering error recovery.
 :::
 
 The Sale System should verify the result of the transaction by checking the [Response.Result](/docs/api-reference/data-model#result) field in the response.
