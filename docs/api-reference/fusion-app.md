@@ -737,7 +737,7 @@ Code | Description | Required action  |
 200  | OK          | Fusion App processed the request. Check `PaymentResponse.Response.Result` for the result of the payment request |
 202  | Accepted    | Fusion App processed the request in events mode. Call the [payment events](#payment-events) endpoint for the payment result |
 4xx  | Bad Request | Fusion App was unable to process the request. Check the required headers and request body and try again.
-5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retrieve the payment result.
 
 
 ### Payment events
@@ -919,8 +919,8 @@ Payment response
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |
 200  | OK          | Fusion App processed the request. If a print request, check `SaleToPOIRequest.PrintRequest` and process the print. If a payment response, check `SaleToPOIResponse.PaymentResponse.Response.Result` for the result of the payment request 
-404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
-5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the payment result.
+404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retrieve the payment result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retrieve the payment result.
 
 
 
@@ -1069,7 +1069,7 @@ Code | Description | Required action  |
 200  | OK          | Fusion App processed the request. Check `BalanceInquiryResponse.Response.Result` for the result of the request.
 202  | Accepted    | Fusion App processed the request in events mode. Call the [balance inquiry events](#balance-inquiry-events) endpoint for the result.
 4xx  | Bad Request | Fusion App was unable to process the request. Check the required headers and request body and try again.
-5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retrieve the result.
 
 
 ### Balance inquiry events
@@ -1224,8 +1224,8 @@ Balance inquiry response
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |
 200  | OK          | Fusion App processed the request. If a print request, check `SaleToPOIRequest.PrintRequest` and process the print. If a payment response, check `SaleToPOIResponse.BalanceInquiryResponse.Response.Result` for the result of the transaction.
-404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
-5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
+404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retrieve the transaction result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retrieve the transaction result.
 
 
 
@@ -1417,7 +1417,7 @@ Code | Description | Required action  |
 200  | OK          | Fusion App processed the request. Check `StoredValueResponse.Response.Result` for the result of the request.
 202  | Accepted    | Fusion App processed the request in events mode. Call the [stored value events](#stored-value-events) endpoint for the result.
 4xx  | Bad Request | Fusion App was unable to process the request. Check the required headers and request body and try again.
-5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retrieve the result.
 
 
 ### Stored value events
@@ -1573,20 +1573,18 @@ Stored value response
 Code | Description | Required action  | 
 ---- | ----------- | ----------------- |
 200  | OK          | Fusion App processed the request. If a print request, check `SaleToPOIRequest.PrintRequest` and process the print. If a payment response, check `SaleToPOIResponse.StoredValueResponse.Response.Result` for the result of the transaction.
-404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
-5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retreive the transaction result.
+404  | Not found   | Fusion App was unable to find the session. The Sale System should perform [error handling](#error-handling) to retrieve the transaction result.
+5xx  | Error       | Fusion App was unable to process the request. The Sale System should perform [error handling](#error-handling) to retrieve the transaction result.
 
 ## Error handling
 
 When the Sale System POSTs a [payment](/docs/api-reference/data-model#payment-request), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-request), or [stored value](/docs/api-reference/data-model#stored-value-request) request, it will eventually receive a matching [payment](/docs/api-reference/data-model#payment-response), [balance inquiry](/docs/api-reference/data-model#balance-inquiry-response), or [stored value](/docs/api-reference/data-model#stored-value-response) response, or via the `~/events` endpoint in events mode.
 
-:::success
-The Sale System hard timeout value should be set to 300 seconds before entering error handling. 
-
-The Sale System may attempt to cancel the transaction at any point prior to the 300 second timeout by sending a `POST ~/fusion/v1/payments/{{SessionId}}/abort`.
-
-As the `abort` request may not be successful (e.g. the POI Terminal is temporarily offline) the Sale System **must** continue to wait for the full timeout before entering error recovery.
+:::info
+The Sale System hard timeout should be set to 300 seconds before entering error handling. 
 :::
+
+The Sale System may attempt to cancel the transaction at any point prior to the 300 second timeout by sending a `POST ~/fusion/v1/payments/{{SessionId}}/abort`. As the `abort` request may not be successful (e.g. the POI Terminal is temporarily offline) the Sale System **must** continue to wait for the full timeout before entering error recovery.
 
 The Sale System should verify the result of the transaction by checking the [Response.Result](/docs/api-reference/data-model#result) field in the response.
 
@@ -1594,10 +1592,14 @@ The Sale System should verify the result of the transaction by checking the [Res
 - If the [Response.Result](/docs/api-reference/data-model#result) is "Failure", the payment transaction failed.  The Sale System may check for any errors specified in the [Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) field in the same response message and handle the error accordingly.
 
 :::success 
-In the event the Sale System does not receive a response (for example, due to network error, timeout, or any other unexpected error) it **must** enter error handling.
+In the event the Sale System does not receive a response (for example, due to network error, timeout, HTTP 5xx, or any other unexpected error) it **must** enter error handling.
 :::
 
 To perform error handling the Sale System should send a `GET` request to the error handling endpoint using the `SessionId` of the failed request. Fusion App will return a response containing the result of the payment. 
+
+:::info 
+The Sale System timeout for the error handling endpoint GET request should be set to 95 seconds.
+:::
 
 
 **Base Uri**
