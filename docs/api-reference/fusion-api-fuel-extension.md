@@ -578,7 +578,11 @@ Fusion API Fuel Extension purchase response
 ## Refund
 
 :::success
-All fuel card refunds must be "matched refunds". To perform a matched refund, include the `POITransactionID` from the original purchase request.
+To perform a fuel card refund, some fuel card providers require that the refund be matched to an original purchase.
+
+To ensure that all fuel card refunds can be completed successfully; refunds must be "matched refunds".
+
+We recommend that the Sale System implements matched refunds by including the POITransactionID from the original purchase request.  However, if the Sale System doesn’t provide this information (POITransactionID), the Satellite application will request for it.
 :::
 
 To perform a fuel refund:
