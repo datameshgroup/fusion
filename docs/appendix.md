@@ -550,3 +550,6 @@ Once you’ve received the Auth File from DataMesh, please install it using the 
 
 ### 2024-05-20
 * Added [Device Logs](#device-logs)
+
+### 2024-08-23
+* Added references to USB Connection under Fusion App sections

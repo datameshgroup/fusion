@@ -8,6 +8,13 @@ Fusion App is a DataMesh middleware that is installed in the PC as the Sale Syst
 
 Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
 
+There are two ways on how the Fusion App communicates with the POI terminal:
+* Cloud - Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.
+
+* USB Connection
+  * Base Connection- Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
+  * Terminal Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
+
 There are two methods for processing a payment using Fusion App: 
 
 * Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
@@ -53,6 +60,19 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
   - You can pair a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/getting-started#qr-code-pairing).
 
     ![](/img/fusion-app-settings-not-paired.png)
+
+  - When prompted, please select the appropriate _pairing mode_ to be used and make sure that the connections required for the specific _pairing mode_ have been set-up.
+
+    ![](/img/fusion-app-terminal-pairing.png)
+
+
+| Pairing Mode                     | Description |
+|      :------:     |  --------------------- |
+| USB (Base)            | Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.|
+| USB (Terminal)        | Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.|
+| Cloud                 | Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.|
+  	
+  	_If none of these options are presented on your version of Fusion App, Fusion App will use **Cloud** as the default pairing mode._
 
   - When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  You can unpair from the terminal by clicking on the _Unpair from terminal_ option.
 
