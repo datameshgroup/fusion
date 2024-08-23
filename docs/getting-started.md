@@ -52,20 +52,20 @@ Fusion App is a DataMesh middleware that is installed in the PC as the Sale Syst
 Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
 
 There are two ways on how the Fusion App communicates with the POI terminal:
-* Cloud - Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.
+- Cloud - Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.
 
 ![](/img/POS-fusion-app.png)
 
-* USB Connection
-  * Base Connection- Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
-  * Terminal Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
+- USB Connection
+  - Base Connection- Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
+  - Terminal Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
 
 ![](/img/POS-fusion-app-usb.png)
 
 There are two methods for processing a payment using Fusion App: 
 
-* Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
-* Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
+- Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
+- Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
 
 In both methods, in case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
 

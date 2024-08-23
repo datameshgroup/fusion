@@ -9,16 +9,16 @@ Fusion App is a DataMesh middleware that is installed in the PC as the Sale Syst
 Fusion App wraps the Fusion Cloud API and handles many of the interactions between the Sale System and the POI terminal (web socket, security, pairing, error handling, UI etc).
 
 There are two ways on how the Fusion App communicates with the POI terminal:
-* Cloud - Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.
+- Cloud - Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.
 
-* USB Connection
-  * Base Connection- Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
-  * Terminal Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
+- USB Connection
+  - Base Connection- Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
+  - Terminal Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
 
 There are two methods for processing a payment using Fusion App: 
 
-* Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
-* Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
+- Events mode - the Sale System sends a HTTP POST to a local endpoint, and if valid receives 202 ACCEPTED. The Sale System polls Fusion App, processing events received until the payment response is returned. 
+- Blocking - the Sale System sends a HTTP POST to a local endpoint, and waits for a response. If successful (200 OK) the response will contain the payment response details.
 
 
 In both methods, in case of an error (timeout, system crash etc), the Sale System sends a HTTP GET request to request the status of the payment.
@@ -41,7 +41,9 @@ When possible, events mode should *always* be used over blocking mode as it enab
 The latest dev release Fusion App installer can be downloaded from this [link](https://cloudposintegration.io/fusion/fusionapp/releases/FusionAppSetup_vDev.exe).
 :::
 
-- Run the installer and select the _Development_ install type. (For installation in _Production_ environment, select _Production_)
+- Run the installer and select the _Development_ install type. 
+  
+  (For installation in _Production_ environment, select _Production_.)
 
   ![](/img/fusion-app-install-1.png)
 
@@ -57,11 +59,11 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
 
 - The _Status_ tab displays the terminal pairing status.
   
-  - You can pair a terminal by clicking on the _Pair with terminal_ button.  Doing this will launch the pairing dialog, which will ask you to [scan a pairing QR Code using the DataMesh terminal](/docs/getting-started#qr-code-pairing).
+  - You can pair a terminal by clicking on the _Pair with terminal_ button.
 
     ![](/img/fusion-app-settings-not-paired.png)
 
-  - When prompted, please select the appropriate _pairing mode_ to be used and make sure that the connections required for the specific _pairing mode_ have been set-up.
+  - _Before_ selecting the _pairing mode_ to be used, please make sure that the connection required for the specific _pairing mode_ has been set-up.
 
     ![](/img/fusion-app-terminal-pairing.png)
 
@@ -72,11 +74,23 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
 | USB (Terminal)        | Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.|
 | Cloud                 | Fusion App communicates with the POI terminal via a Websocket connected to the DataMesh Unify switch.|
   	
-  	_If none of these options are presented on your version of Fusion App, Fusion App will use **Cloud** as the default pairing mode._
+  	_If the version of Fusion App that you're using doesn't display a prompt to select the pairing mode, Fusion App will use **Cloud** as the default pairing mode._
 
-  - When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  You can unpair from the terminal by clicking on the _Unpair from terminal_ option.
+   - The main pairing dialog will then ask you to [scan the pairing QR Code using the DataMesh terminal](/docs/appendix#qr-code-pairing).
+   
+  - When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  Only when necessary, you can unpair from the terminal by clicking on the _Unpair from terminal_ option.
+  
+	- **USB (Base)**
 
-    ![](/img/fusion-app-settings-paired.png)
+	![](/img/fusion-app-settings-paired-base.png)
+
+	- **USB (Terminal)**
+
+	![](/img/fusion-app-settings-paired-terminal.png)
+
+	- **Cloud**
+
+	![](/img/fusion-app-settings-paired.png)
 
 - The _Util_ tab will allow you to:
   - update the POS Name (which is used during [QR Code Pairing](/docs/getting-started#qr-code-pairing)).     
