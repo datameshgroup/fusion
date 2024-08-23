@@ -59,11 +59,11 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
 
 - The _Status_ tab displays the terminal pairing status.
   
-  - You can pair a terminal by clicking on the _Pair with terminal_ button.
+- You can pair a terminal by clicking on the _Pair with terminal_ button.
 
     ![](/img/fusion-app-settings-not-paired.png)
 
-  - _Before_ selecting the _pairing mode_ to be used, please make sure that the connection required for the specific _pairing mode_ has been set-up.
+- _Before_ selecting the _pairing mode_ to be used, please make sure that the connection required for the specific _pairing mode_ has been set-up.
 
     ![](/img/fusion-app-terminal-pairing.png)
 
@@ -76,9 +76,9 @@ The latest dev release Fusion App installer can be downloaded from this [link](h
   	
   	_If the version of Fusion App that you're using doesn't display a prompt to select the pairing mode, Fusion App will use **Cloud** as the default pairing mode._
 
-   - The main pairing dialog will then ask you to [scan the pairing QR Code using the DataMesh terminal](/docs/appendix#qr-code-pairing).
+- The main pairing dialog will then ask you to [scan the pairing QR Code using the DataMesh terminal](/docs/appendix#qr-code-pairing).
    
-  - When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  Only when necessary, you can unpair from the terminal by clicking on the _Unpair from terminal_ option.
+- When the Fusion App has been paired with a terminal, the paired terminal's POI ID will be displayed.  Only when necessary, you can unpair from the terminal by clicking on the _Unpair from terminal_ option.
   
 	- **USB (Base)**
 
