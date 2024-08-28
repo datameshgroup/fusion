@@ -57,8 +57,8 @@ There are two ways on how the Fusion App communicates with the POI terminal:
 ![](/img/POS-fusion-app.png)
 
 - USB Connection
-  - Base Connection- Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
-  - Terminal Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
+  - Base USB Connection - Fusion App communicates with the POI terminal through a USB cable connected to the POI terminal’s Base/Dock device.  The POI terminal must be paired with its Base/Dock device.
+  - Terminal USB Connection - Fusion App communicates with the POI terminal through a USB cable connected directly to the POI terminal.
 
 ![](/img/POS-fusion-app-usb.png)
 
