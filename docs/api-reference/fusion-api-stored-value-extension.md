@@ -24,6 +24,10 @@ Below is an overview of supported gift cards. If you are familiar with gift card
 
 ![gift-card-layout](/img/giftcard-layout.png)  
 
+#### Sample Gift Card Data
+UPC Barcode  (11-digit + 1 check digit)       | Activation Barcode (11-digit UPC + 19-digit PAN) |
+----------------- | ----------------- |
+![upc-barcode](/img/barcode-upc-ShellVGC$20-$500.png)  | ![upc-activation](/img/barcode-activation-ShellVGC$20-$500.png) |
 
 ### Supported gift card types
 
@@ -279,37 +283,37 @@ To perform a gift card activation:
 
 <details>
 <summary>
-Stored value request - activate
+Stored value request - activate (using the [sample gift card data](/docs/api-reference/fusion-api-stored-value-extension#sample-gift-card-data))
 </summary>
 <p>
 
 ```json
 {
-	"StoredValueRequest": {		
-		"SaleData": {
-			"SaleTransactionID": {
-                "TransactionID": "03b22d77-f050-478a-b9a8-10295bc7a957",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
-			}
-		},
-		"StoredValueData": [
-			{
-			"StoredValueProvider": "",
-			"StoredValueTransactionType":"Activate",
-			"StoredValueAccountID": {
-				"StoredValueAccountType": "GiftCard",
-				"EntryMode": "Scanned",
-				"IdentificationType": "BarCode",
-				"StoredValueID": "111111111112222222222222222222"
-			},
-			"ProductCode": "001",
-			"EanUpc": "11111111111",
-			"ItemAmount": 100.00,			
-			"TotalFeesAmount": 4.95,
-			"Currency": "AUD"
-			}
-		]		
-	}
+    "StoredValueRequest": {
+        "SaleData": {
+            "SaleTransactionID": {
+                "TransactionID": "0fabfa1a-937e-4c4f-a49c-78fec0f26e8f",
+                "TimeStamp": "2024-09-02T12:20:11+10:00"
+            }
+        },
+        "StoredValueData": [
+            {
+                "StoredValueProvider": "",
+                "StoredValueTransactionType": "Activate",
+                "StoredValueAccountID": {
+                    "StoredValueAccountType": "GiftCard",
+                    "EntryMode": "Scanned",
+                    "IdentificationType": "BarCode",
+                    "StoredValueID": "196742057941234567890123456789"
+                },
+                "ProductCode": "001",
+                "EanUpc": "19674205794",
+                "ItemAmount": 100.00,
+                "TotalFeesAmount": 4.95,
+                "Currency": "AUD"
+            }
+        ]
+    }
 }
 ```
 </p>
@@ -318,7 +322,7 @@ Stored value request - activate
 
 <details>
 <summary>
-Stored value response - deactivate
+Stored value response - activate
 </summary>
 <p>
 
@@ -329,15 +333,15 @@ Stored value response - deactivate
             "Result": "Success"
         },
         "SaleData": {
-			"SaleTransactionID": {
-                "TransactionID": "03b22d77-f050-478a-b9a8-10295bc7a957",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
-			}
+            "SaleTransactionID": {
+                "TransactionID": "0fabfa1a-937e-4c4f-a49c-78fec0f26e8f",
+                "TimeStamp": "2024-09-02T12:20:11+10:00"
+            }
         },
         "POIData": {
             "POITransactionID": {
-                "TransactionID": "66251a5e4a74ef253c7bb9e1",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
+                "TransactionID": "66d520dd1ce4fb622fb4d6de",
+                "TimeStamp": "2024-09-02T12:20:13.437+10:00"
             }
         },
         "StoredValueResult": [
@@ -347,14 +351,14 @@ Stored value response - deactivate
                         "StoredValueAccountType": "GiftCard",
                         "EntryMode": "Scanned",
                         "IdentificationType": "BarCode",
-                        "StoredValueID": "111111111112222222222222222222"
+                        "StoredValueID": "196742057941234567890123456789"
                     },
                     "CurrentBalance": 0
                 },
                 "StoredValueTransactionType": "Activate",
                 "ProductCode": "001",
-                "EanUpc": "11111111111",
-                "ItemAmount": 100.00,
+                "EanUpc": "19674205794",
+                "ItemAmount": 100,
                 "Currency": "AUD"
             }
         ],
@@ -364,8 +368,8 @@ Stored value response - deactivate
                 "RequiredSignatureFlag": false,
                 "OutputContent": {
                     "OutputFormat": "XHTML",
-                    "OutputXHTML": "PHA+IDwvcD4KPHA+PGI+ClRvd2VyIE9uZTwvYj48L3A+CjxwPjxpPjEwMCBCYXJhbmdhcm9vPC9pPjwvcD4KPHA+PGk+QmFyYW5nYXJvbyBOU1cgMjAwMDwvaT48L3A+CjxwPjxiPgoqKiogQ1VTVE9NRVIgQ09QWSAqKio8L2I+PC9wPgo8cD4KMjEvMDQvMjAyNCAyMzo1MzozNDwvcD4KPHA+TWVyY2hhbnQgSUQ6IFBPU01lcmNoYW50PC9wPgo8cD5UZXJtaW5hbCBJRDogSU5HQ0QwMDEKPC9wPgo8cD48Yj5HaWZ0IENhcmQgQWN0aXZhdGlvbjwvYj48L3A+CjxwPkFtb3VudDokNS4wMDwvcD4KPHA+SW5jb21tOiA2Mzc1MDk3MjQ5MjY2MjQ4IChNYW51YWwpPC9wPgo8cD5EZWZhdWx0IEFjY291bnQ8L3A+CjxwPjxiPgpBcHByb3ZlZDwvYj48L3A+CjxwPlJlZmVyZW5jZTogMDAwMDAwMTYwMTc0PC9wPgo8cD5BdXRoIENvZGU6IDkxMDA4NzwvcD4KPHA+UlJOIDogMDE2NDgwNTQ5NTg1ODQyPC9wPgo8cD4KCgo8L3A+Cg==",
-                    "ContentAsPlainText": "Tower One\r\n\r\n100 Barangaroo\r\n\r\nBarangaroo NSW 2000\r\n\r\n*** CUSTOMER COPY ***\r\n\r\n21/04/2024 23:53:34\r\n\r\nMerchant ID: POSMerchant\r\n\r\nTerminal ID: XXXXXXXX\r\n\r\nGift Card Activation\r\n\r\nAmount:$100.00\r\n\r\nIncomm: 2222222222222222222 (Manual)\r\n\r\nDefault Account\r\n\r\nApproved\r\n\r\nReference: 000000160174\r\n\r\nAuth Code: 910087\r\n\r\nRRN : 016480549585842\r\n\r\n\r\n"
+                    "OutputXHTML": "PGh0bWw+IDxoZWFkPjwvaGVhZD4gPGJvZHk+ICA8ZGl2PiAgIDxwPjAyLzA5LzIwMjQgMTI6MjA8L3A+ICAgPHA+VVJOOiBVbmF2YWlsYWJsZTwvcD4gICA8cD5EZWFsZXIgSUQ6IFVuYXZhaWxhYmxlPC9wPiAgICAgICA8cD5NZXJjaGFudCBJZDogTTAwMDAwMDI1PC9wPiAgIDxwPlRlcm1pbmFsIElkOiBETUdJTlRJMTwvcD4gPGI+R2lmdCBDYXJkIEFjdGl2YXRpb248L2I+ICAgPHA+VG90YWwgQW1vdW50IChpbmNsIEdTVCk6ICQxMDAuMDA8L3A+ICAgPHA+ICAgIDwvcD4gICAgICAgICAgIDxkaXY+ICAgIDxwPkFVIFNoZWxsIFZHQyAkMjAtJDUwMDwvcD4gICAgPHA+MTIzNDU2WFhYWFhYWFhYNjc4OTwvcD4gICA8L2Rpdj4gICAgICAgIDxkaXY+ICAgIDxwPkluY29tbTwvcD4gICAgPHA+MTIzNDU2WFhYWFhYWFhYNjc4OSAoTWFudWFsKTwvcD4gICA8L2Rpdj4gICAgICAgIDxkaXY+ICAgIDxwPkFwcHJvdmVkPC9wPiAgICA8cD5SQzogMDA8L3A+ICAgPC9kaXY+ICAgICAgIDxkaXY+ICAgIDxwPlJSTjogMDAwMDAwMzE3NDM1PC9wPiAgIDwvZGl2PiAgICAgICA8cD48L3A+ICAgPHA+ICAgIDwvcD4gICAgICAgICAgICAgICAgICA8cD48L3A+ICA8L2Rpdj4gPC9ib2R5PjwvaHRtbD4=",
+                    "ContentAsPlainText": "02/09/2024 12:20\r\n\r\nURN: Unavailable\r\n\r\nDealer ID: Unavailable\r\n\r\nMerchant Id: M00000025\r\n\r\nTerminal Id: DMGINTI1\r\nGift Card Activation\r\nTotal Amount (incl GST): $100.00\r\n\r\n\r\n\r\nAU Shell VGC $20-$500\r\n\r\n123456XXXXXXXXX6789\r\n\r\nIncomm\r\n\r\n123456XXXXXXXXX6789 (Manual)\r\n\r\nApproved\r\n\r\nRC: 00\r\n\r\nRRN: 000000317435\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
                 }
             }
         ]
@@ -396,55 +400,38 @@ To perform a gift card deactivation:
 
 <details>
 <summary>
-Stored value request - deactivate
+Stored value request - deactivate (using the [sample gift card data](/docs/api-reference/fusion-api-stored-value-extension#sample-gift-card-data))
 </summary>
 <p>
 
 ```json
 {
-    "StoredValueResponse": {
-        "Response": {
-            "Result": "Success"
-        },
+    "StoredValueRequest": {
         "SaleData": {
-			"SaleTransactionID": {
-                "TransactionID": "03b22d77-f050-478a-b9a8-10295bc7a957",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
-			}
-        },
-        "POIData": {
-            "POITransactionID": {
-                "TransactionID": "66251a5e4a74ef253c7bb9e1",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
+            "SaleTransactionID": {
+                "TransactionID": "5fc2ebd6-b1dc-4c5c-8671-0124f013f095",
+                "TimeStamp": "2024-09-02T13:11:27+10:00"
             }
         },
-        "StoredValueResult": [
+        "StoredValueData": [
             {
-                "StoredValueAccountStatus": {
-                    "StoredValueAccountID": {
-                        "StoredValueAccountType": "GiftCard",
-                        "EntryMode": "Scanned",
-                        "IdentificationType": "BarCode",
-                        "StoredValueID": "111111111112222222222222222222"
-                    },
-                    "CurrentBalance": 0
+                "OriginalPOITransaction": {
+                    "POITransactionID": {
+                        "TransactionID": "66d520dd1ce4fb622fb4d6de",
+                        "TimeStamp": "2024-09-02T12:20:13.437+10:00"                                                
+                    }
+                },
+                "StoredValueAccountID": {
+                    "StoredValueAccountType": "GiftCard",
+                    "EntryMode": "Scanned",
+                    "IdentificationType": "BarCode",
+                    "StoredValueID": "196742057941234567890123456789"
                 },
                 "StoredValueTransactionType": "Reverse",
                 "ProductCode": "001",
-                "EanUpc": "11111111111",
-                "ItemAmount": 100.00,
+                "EanUpc": "19674205794",
+                "ItemAmount": 100,
                 "Currency": "AUD"
-            }
-        ],
-        "PaymentReceipt": [
-            {
-                "DocumentQualifier": "SaleReceipt",
-                "RequiredSignatureFlag": false,
-                "OutputContent": {
-                    "OutputFormat": "XHTML",
-                    "OutputXHTML": "PHA+IDwvcD4KPHA+PGI+ClRvd2VyIE9uZTwvYj48L3A+CjxwPjxpPjEwMCBCYXJhbmdhcm9vPC9pPjwvcD4KPHA+PGk+QmFyYW5nYXJvbyBOU1cgMjAwMDwvaT48L3A+CjxwPjxiPgoqKiogQ1VTVE9NRVIgQ09QWSAqKio8L2I+PC9wPgo8cD4KMjEvMDQvMjAyNCAyMzo1MzozNDwvcD4KPHA+TWVyY2hhbnQgSUQ6IFBPU01lcmNoYW50PC9wPgo8cD5UZXJtaW5hbCBJRDogSU5HQ0QwMDEKPC9wPgo8cD48Yj5HaWZ0IENhcmQgQWN0aXZhdGlvbjwvYj48L3A+CjxwPkFtb3VudDokNS4wMDwvcD4KPHA+SW5jb21tOiA2Mzc1MDk3MjQ5MjY2MjQ4IChNYW51YWwpPC9wPgo8cD5EZWZhdWx0IEFjY291bnQ8L3A+CjxwPjxiPgpBcHByb3ZlZDwvYj48L3A+CjxwPlJlZmVyZW5jZTogMDAwMDAwMTYwMTc0PC9wPgo8cD5BdXRoIENvZGU6IDkxMDA4NzwvcD4KPHA+UlJOIDogMDE2NDgwNTQ5NTg1ODQyPC9wPgo8cD4KCgo8L3A+Cg==",
-                    "ContentAsPlainText": "Tower One\r\n\r\n100 Barangaroo\r\n\r\nBarangaroo NSW 2000\r\n\r\n*** CUSTOMER COPY ***\r\n\r\n21/04/2024 23:53:34\r\n\r\nMerchant ID: POSMerchant\r\n\r\nTerminal ID: XXXXXXXX\r\n\r\nGift Card Activation\r\n\r\nAmount:$100.00\r\n\r\nIncomm: 2222222222222222222 (Manual)\r\n\r\nDefault Account\r\n\r\nApproved\r\n\r\nReference: 000000160174\r\n\r\nAuth Code: 910087\r\n\r\nRRN : 016480549585842\r\n\r\n\r\n"
-                }
             }
         ]
     }
@@ -467,15 +454,15 @@ Stored value response - deactivate
             "Result": "Success"
         },
         "SaleData": {
-			"SaleTransactionID": {
-                "TransactionID": "03b22d77-f050-478a-b9a8-10295bc7a957",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
-			}
+            "SaleTransactionID": {
+                "TransactionID": "5fc2ebd6-b1dc-4c5c-8671-0124f013f095",
+                "TimeStamp": "2024-09-02T13:11:27+10:00"
+            }
         },
         "POIData": {
             "POITransactionID": {
-                "TransactionID": "66251a5e4a74ef253c7bb9e1",
-                "TimeStamp": "2024-06-12T00:00:00+10:00"
+                "TransactionID": "66d52ce31ce4fb622fb4dbd2",
+                "TimeStamp": "2024-09-02T13:11:31.176+10:00"
             }
         },
         "StoredValueResult": [
@@ -485,14 +472,14 @@ Stored value response - deactivate
                         "StoredValueAccountType": "GiftCard",
                         "EntryMode": "Scanned",
                         "IdentificationType": "BarCode",
-                        "StoredValueID": "111111111112222222222222222222"
+                        "StoredValueID": "196742057941234567890123456789"
                     },
                     "CurrentBalance": 0
                 },
-                "StoredValueTransactionType": "Activate",
+                "StoredValueTransactionType": "Reverse",
                 "ProductCode": "001",
-                "EanUpc": "11111111111",
-                "ItemAmount": 100.00,
+                "EanUpc": "19674205794",
+                "ItemAmount": 100,
                 "Currency": "AUD"
             }
         ],
@@ -502,8 +489,8 @@ Stored value response - deactivate
                 "RequiredSignatureFlag": false,
                 "OutputContent": {
                     "OutputFormat": "XHTML",
-                    "OutputXHTML": "PHA+IDwvcD4KPHA+PGI+ClRvd2VyIE9uZTwvYj48L3A+CjxwPjxpPjEwMCBCYXJhbmdhcm9vPC9pPjwvcD4KPHA+PGk+QmFyYW5nYXJvbyBOU1cgMjAwMDwvaT48L3A+CjxwPjxiPgoqKiogQ1VTVE9NRVIgQ09QWSAqKio8L2I+PC9wPgo8cD4KMjEvMDQvMjAyNCAyMzo1MzozNDwvcD4KPHA+TWVyY2hhbnQgSUQ6IFBPU01lcmNoYW50PC9wPgo8cD5UZXJtaW5hbCBJRDogSU5HQ0QwMDEKPC9wPgo8cD48Yj5HaWZ0IENhcmQgQWN0aXZhdGlvbjwvYj48L3A+CjxwPkFtb3VudDokNS4wMDwvcD4KPHA+SW5jb21tOiA2Mzc1MDk3MjQ5MjY2MjQ4IChNYW51YWwpPC9wPgo8cD5EZWZhdWx0IEFjY291bnQ8L3A+CjxwPjxiPgpBcHByb3ZlZDwvYj48L3A+CjxwPlJlZmVyZW5jZTogMDAwMDAwMTYwMTc0PC9wPgo8cD5BdXRoIENvZGU6IDkxMDA4NzwvcD4KPHA+UlJOIDogMDE2NDgwNTQ5NTg1ODQyPC9wPgo8cD4KCgo8L3A+Cg==",
-                    "ContentAsPlainText": "Tower One\r\n\r\n100 Barangaroo\r\n\r\nBarangaroo NSW 2000\r\n\r\n*** CUSTOMER COPY ***\r\n\r\n21/04/2024 23:53:34\r\n\r\nMerchant ID: POSMerchant\r\n\r\nTerminal ID: XXXXXXXX\r\n\r\nGift Card Activation\r\n\r\nAmount:$100.00\r\n\r\nIncomm: 2222222222222222222 (Manual)\r\n\r\nDefault Account\r\n\r\nApproved\r\n\r\nReference: 000000160174\r\n\r\nAuth Code: 910087\r\n\r\nRRN : 016480549585842\r\n\r\n\r\n"
+                    "OutputXHTML": "PGh0bWw+IDxoZWFkPjwvaGVhZD4gPGJvZHk+ICA8ZGl2PiAgIDxwPjAyLzA5LzIwMjQgMTM6MTE8L3A+ICAgPHA+VVJOOiBVbmF2YWlsYWJsZTwvcD4gICA8cD5EZWFsZXIgSUQ6IFVuYXZhaWxhYmxlPC9wPiAgICAgICA8cD5NZXJjaGFudCBJZDogTTAwMDAwMDI1PC9wPiAgIDxwPlRlcm1pbmFsIElkOiBETUdJTlRJMTwvcD4gPGI+R2lmdCBDYXJkIERlYWN0aXZhdGlvbjwvYj4gICA8cD5Ub3RhbCBBbW91bnQgKGluY2wgR1NUKTogJDEwMC4wMDwvcD4gICA8cD4gICAgPC9wPiAgICAgICAgICAgPGRpdj4gICAgPHA+QVUgU2hlbGwgVkdDICQyMC0kNTAwPC9wPiAgICA8cD4xMjM0NTZYWFhYWFhYWFg2Nzg5PC9wPiAgIDwvZGl2PiAgICAgICAgPGRpdj4gICAgPHA+SW5jb21tPC9wPiAgICA8cD4xMjM0NTZYWFhYWFhYWFg2Nzg5IChNYW51YWwpPC9wPiAgIDwvZGl2PiAgICAgICAgPGRpdj4gICAgPHA+QXBwcm92ZWQ8L3A+ICAgIDxwPlJDOiAwMDwvcD4gICA8L2Rpdj4gICAgICAgPGRpdj4gICAgPHA+UlJOOiAwMDAwMDAzMTc0Mzg8L3A+ICAgPC9kaXY+ICAgICAgIDxwPjwvcD4gICA8cD4gICAgPC9wPiAgICAgICAgICAgICAgICAgIDxwPjwvcD4gIDwvZGl2PiA8L2JvZHk+PC9odG1sPg==",
+                    "ContentAsPlainText": "02/09/2024 13:11\r\n\r\nURN: Unavailable\r\n\r\nDealer ID: Unavailable\r\n\r\nMerchant Id: M00000025\r\n\r\nTerminal Id: DMGINTI1\r\nGift Card Deactivation\r\nTotal Amount (incl GST): $100.00\r\n\r\n\r\n\r\nAU Shell VGC $20-$500\r\n\r\n123456XXXXXXXXX6789\r\n\r\nIncomm\r\n\r\n123456XXXXXXXXX6789 (Manual)\r\n\r\nApproved\r\n\r\nRC: 00\r\n\r\nRRN: 000000317438\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
                 }
             }
         ]
@@ -512,8 +499,6 @@ Stored value response - deactivate
 ```
 </p>
 </details>
-
-
 
 ## Accreditation
 
