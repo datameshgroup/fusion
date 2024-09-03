@@ -268,7 +268,9 @@ To perform a gift card activation:
   	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Activate"
   	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
 	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
-	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) to the UPC (digital account reservation) or "activation barcode" scanned from the card (physical card activation)
+	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) 
+        - For physical card activation, set to the "activation barcode" scanned from the card
+        - For digital account reservation, set to the UPC             
     - Set [ProductCode](/docs/api-reference/data-model#productcode) to the product code used to identify the product in the Sale System
 	- Set [EanUpc](/docs/api-reference/data-model#eanupc) to the product UPC
 	- Set [ItemAmount](/docs/api-reference/data-model#itemamount) to the amount to be loaded onto the card (exclusive of any fees). Note this is required even for fixed-amount cards.
