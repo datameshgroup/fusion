@@ -38,7 +38,7 @@ Cashout (not supported on fuel cards)     						|            |                  
 A payment through the Fusion API Fuel Extension expands the mandatory fields for a `SaleItem`.
 :::
 
-The Fusion API requires the Sale System to provide the basket items for every payment. The Fusion API Fuel Extension expands the mandatory fields required to enable fuel card purchases. 
+The Fusion API requires the Sale System populate the [SaleItem](/docs/api-reference/data-model#saleitem) array with the basket items for every payment. The Fusion API Fuel Extension expands the mandatory fields required in each item to enable fuel card purchases.
 
 The extra [SaleItem](/docs/api-reference/data-model#saleitem) fields required for the Fusion API Fuel Extension are as follows:
 - For **every** basket item, the Sale System must populate the fuel product code(s) within CustomFields
@@ -48,7 +48,19 @@ The extra [SaleItem](/docs/api-reference/data-model#saleitem) fields required fo
 For fuel sale items, `ItemAmount` must equal `Quantity` multiplied by `UnitPrice`, rounded up, or to the nearest cent.
 :::
 
-Fuel sale item details:
+
+#### Consolidation of items
+
+The Sale System must consolodate any items in the `SaleItem[]` array with the same `ProductCode`. 
+
+When non-fuel items are combined, `Quantity` indicates the total count of the product in the sale and `UnitPrice` is the price per product, and `ItemAmount` is the total amount of the product in the sale (e.g. `Quantity` * `UnitPrice` rounded up to the nearest cent)
+
+When fuel items are combined, `Quantity` indicates the total combined litres, `UnitPrice` indicates the price per litre, and `ItemAmount` is the total amount of the product in the sale (e.g. `Quantity` * `UnitPrice` rounded up to the nearest cent).
+
+As they are combined, fuel products with the same fuel product code must have the same `UnitPrice` (price per litre) value. 
+
+
+#### Fuel sale item details
 
 Attribute   | Requ.  | Format | Description |
 -----------------                          | :------: | ------ | ----------- |
@@ -57,7 +69,7 @@ Attribute   | Requ.  | Format | Description |
 [UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | [Enum](/docs/api-reference/data-model#data-format)  | Unit of measure of the `Quantity`. Set to "Litre"
 [Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Number of litres as read from the pump (decimal, maximum precision 6.8)
 [UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Price per litre from the pump (decimal, maximum precision 6.8)
-[ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | [Currency(0.01,99999.99)](/docs/api-reference/data-model#data-format) | The amount of the fuel as presented to the cardholder (decimal 6.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
+[ItemAmount](/docs/api-reference/data-model#itemamount)                  | ✔ | [Currency(0.01,99999.99)](/docs/api-reference/data-model#data-format) | The amount of the fuel product as presented to the cardholder (decimal 6.2 rounded to the nearest cent). This must equal Quantity * UnitPrice rounded up, or to the nearest cent.
 [ProductLabel](/docs/api-reference/data-model#productlabel)              | ✔ | [String(0,1024)](/docs/api-reference/data-model#data-format)  | A short, human readable, descriptive name of the product.  For example, `ProductLabel` could contain the product name typically printed on the customer receipt. 
 [Categories](/docs/api-reference/data-model#categories)                  |    | [Array(String)](/docs/api-reference/data-model#data-format)   | Array of categories. Top level "main" category at categories[0]. See [Categories](/docs/api-reference/data-model#categories) for more information.
 [Tags](/docs/api-reference/data-model#sale-item-tags)                    |    | [Array(String)](/docs/api-reference/data-model#data-format)   | String array with descriptive tags for the product
@@ -216,6 +228,19 @@ Supported product codes:
   </tbody>
 </table>
 
+
+#### Maximum number of product codes
+
+  - There is no limit on the number of individual product entries in the `SaleItem[]` array.
+  - A single sale can include up to **5 unique** fuel product codes.
+  - A single sale can include up to **12 unique** product codes in total (both fuel and non-fuel).
+
+
+Example: If a purchase includes 15 grocery items and E10 petrol:
+  - The `SaleItem[]` array will have 16 entries
+  - There will be two unique product codes: one for groceries/shop and one for E10 petrol.
+
+This is a valid request.
 
 #### Supporting multiple fuel product codes
 
