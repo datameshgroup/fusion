@@ -1069,7 +1069,7 @@ Fusion API Fuel Extension pre-authorisation response
 
 
 
-#### Completion 
+### Completion 
 
 
 :::success
