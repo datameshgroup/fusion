@@ -815,6 +815,555 @@ Fusion API Fuel Extension refund response
 </details>
 
 
+
+
+## Pre-authorisation payment flow 
+
+:::warning
+Pre-authorisation payment flow is only available from [Fusion Satellite](/docs/api-reference/fusion-satellite) API. 
+:::
+
+The pre-authorisation payment flow allows the Sale System to reserve funds on a customer's card, enabling the payment to be completed at a later time. This is commonly used in situations where funds need to be reserved before the cardholder can dispense fuel (e.g., pay-at-the-pump).
+
+In the pre-authorisation payment flow:
+
+- The Sale System sends a pre-authorisation request, specifying the requested products and the amount to reserve on the card.
+- The cardholder presents their fuel card at the POI Terminal, which then completes the authorisation.
+- The Sale System receives a pre-authorisation response, including the authorisation result and, if a fuel card was used, the products allowed on the card.
+- Based on the allowed products, the Sale System unlocks the pump, allowing the cardholder to dispense fuel.
+- After the fuel is dispensed, the Sale System sends a completion request with the full fuel product information.
+- If the cardholder cancels the payment, the Sale System sends a pre-authorisation cancel request instead of a completion request.
+
+### Pre-authorisation
+
+:::success
+A pre-authorisation must be followed by a completion or pre-authorisation cancel. 
+:::
+
+The pre-authorisation allows the Sale System to reserve funds on a customers card, enabling the payment to be completed at a later time.
+
+The Sale System should follow the [extended SaleItem](/docs/api-reference/fusion-api-fuel-extension#extended-saleitem) rules to ensure the `SaleItem[]` array is populated with valid **requested** fuel products, with the following exceptions: 
+ - `SaleItem.ItemAmount` is set to 0
+ - `SaleItem.Quantity` is set to 0
+ - Sum of the items in the basket will not match the `RequestedAmount`
+
+To perform a pre-authorisation:
+
+- Construct a [payment request](/docs/api-reference/fusion-satellite#payment)
+- Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "FirstReservation"
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) to the amount to reserve 
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to a unique [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier). Note this value must be included in the matching completion.
+- Populate SaleItem[] with the **requested** products. Ensure that:
+  - A fuel code is set in `CustomFields` for **every** item
+  - Fuel product data is set in every **fuel** product, with both `ItemAmount` and `Quantity` set to 0.
+- Handle the payment response
+  - The [PaymentBrandID](/docs/api-reference/data-model#paymentbrandid) field indicates the card type used
+  - If a fuel card has been presented, the [PaymentResponse.AllowedProductCodes](/docs/api-reference/data-model#salereferenceid) is populated with the `SaleItem.ProductCode` of items which are allowed on the card
+- Ensure the following are recorded:
+  - [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid)
+  - [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid)
+
+
+If no **requested** products are allowed on the card presented, the POI Terminal will decline the payment request with the payment response set to:
+
+- [PaymentResponse.Response.Result](/docs/api-reference/data-model#result) will be set to `Failure`
+- [PaymentResponse.Response.ErrorCondition](/docs/api-reference/data-model#errorcondition) will be set to `PaymentRestriction`
+- [PaymentResponse.Response.AdditionalResponse](/docs/api-reference/data-model#additionalresponse) will contain "None of the requested products are allowed"
+
+
+:::info
+In the example provided below, the Sale System has been requested a $200 pre-authorisation with the requested products "Unleaded Petrol", "Premium Unleaded 98", and "Diesel". The POI Terminal has approved the pre-authorisation, indicating that the allowed products for the card presented are "Unleaded Petrol" and "Premium Unleaded 98".
+:::
+
+
+<details>
+
+<summary>
+Fusion API Fuel Extension pre-authorisation request
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIRequest": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Request",
+			"ServiceID": "dac2d360-ade3-4a20-a724-ddae65188058",
+			"SaleID": "INT POS",
+			"POIID": "INTP9205"
+		},
+		"PaymentRequest": {
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "422543aba9fc4e9a9a6512517961513c",
+					"TimeStamp": "2023-11-28T04:33:56.8703432Z"
+				},
+				"SaleReferenceID": "8c583b0d-f1dc-4b7d-a13f-adb8bf0c761d"
+			},
+			"PaymentTransaction": {
+				"AmountsReq": {
+					"Currency": "AUD",
+					"RequestedAmount": 200.00
+				},
+				"SaleItem": [
+					{
+						"ItemID": 0,
+						"ProductCode": "XXXXXX123456",
+						"UnitOfMeasure": "Litre",
+						"Quantity": 0,
+						"UnitPrice": 1.97,
+						"ItemAmount": 0,
+						"ProductLabel": "Unleaded Petrol",
+						"CustomFields": [
+							{
+								"Key": "FuelProductCodeShellCard",
+								"Type": "String",
+								"Value": "2"
+							}
+						]
+					},
+					{
+						"ItemID": 1,
+						"ProductCode": "YYYYYY123456",
+						"UnitOfMeasure": "Litre",
+						"Quantity": 0,
+						"UnitPrice": 2.45,
+						"ItemAmount": 0,
+						"ProductLabel": "Premium Unleaded 98",
+						"CustomFields": [
+							{
+								"Key": "FuelProductCodeShellCard",
+								"Type": "String",
+								"Value": "7"
+							}
+						]
+					},		
+					{
+						"ItemID": 2,
+						"ProductCode": "ZZZZZZ123456",
+						"UnitOfMeasure": "Litre",
+						"Quantity": 0,
+						"UnitPrice": 2.20,
+						"ItemAmount": 0,
+						"ProductLabel": "Diesel",
+						"CustomFields": [
+							{
+								"Key": "FuelProductCodeShellCard",
+								"Type": "String",
+								"Value": "4"
+							}
+						]
+					},				
+				]
+			},
+			"PaymentData": {
+				"PaymentType": "FirstReservation"
+			}
+		},
+		"SecurityTrailer": {}
+	}
+}
+```
+</p>
+</details>
+
+
+<details>
+<summary>
+Fusion API Fuel Extension pre-authorisation response
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIResponse": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Response",
+			"ServiceID": "ec6b7b5f7330484eb533cd26a1306bb0",
+			"SaleID": "INT POS",
+			"POIID": "INTP9205"
+		},
+		"PaymentResponse": {
+			"Response": {
+				"Result": "Success"
+			},
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "422543aba9fc4e9a9a6512517961513c",
+					"TimeStamp": "2023-11-28T04:33:56.8703432Z"
+				},
+				"SaleReferenceID": "8c583b0d-f1dc-4b7d-a13f-adb8bf0c761d"
+			},
+			"POIData": {
+				"POITransactionID": {
+					"TransactionID": "65656db57a54cb8f801069ee",
+					"TimeStamp": "2023-11-28T15:34:10.16+11:00"
+				},
+				"POIReconciliationID": "64f7f88bd677b0362581bbb5"
+			},
+			"PaymentResult": {
+				"PaymentType": "FirstReservation",
+				"PaymentInstrumentData": {
+					"PaymentInstrumentType": "Card",
+					"CardData": {
+						"EntryMode": "MagStripe",
+						"PaymentBrand": "Shell Card",
+						"PaymentBrandID": "0103",
+						"PaymentBrandLabel": "Shell Card",
+						"Account": "Default",
+						"Expiry": "=720",
+						"MaskedPAN": "7034305XXXXX2521"
+					}
+				},
+				"AmountsResp": {
+					"Currency": "AUD",
+					"AuthorizedAmount": 200.00,
+					"TotalFeesAmount": 0,
+					"CashBackAmount": 0,
+					"SurchargeAmount": 0,
+					"TipAmount": 0
+				},
+				"OnlineFlag": true,
+				"PaymentAcquirerData": {
+					"AcquirerID": "560251",
+					"MerchantID": "33435368",
+					"AcquirerPOIID": "M3AU41",
+					"AcquirerTransactionID": {
+						"TransactionID": "5de73ec1454dde9d70124b5d",
+						"TimeStamp": "2023-11-28T04:34:10.320Z"
+					},
+					"ApprovalCode": "554004",
+					"ResponseCode": "00",
+					"HostReconciliationID": "20231129",
+					"RRN": "328132214339126"
+				}
+			},
+			"AllowedProductCodes": [
+						"XXXXXX123456",
+						"YYYYYY123456"
+			],			
+			"PaymentReceipt": [
+				{
+					"DocumentQualifier": "SaleReceipt",
+					"IntegratedPrintFlag": true,
+					"RequiredSignatureFlag": false,
+					"OutputContent": {
+						"OutputFormat": "XHTML",
+						"OutputXHTML": "PHAgaWQ9InJlY2VpcHQtaW5mbyI+MjgvMTEvMjAyMyAxNTozNDoxMDxici8+TWVyY2hhbnQgSUQ6IFBPU01lcmNoYW50PGJyLz5UZXJtaW5hbCBJRDogSU5UUDkyMDU8L3A+PHAgaWQ9InJlY2VpcHQtZGV0YWlscyI+PGI+UHVyY2hhc2UgVHJhbnNhY3Rpb248L2I+PGJyLz5BbW91bnQ6ICQxNS4wODxici8+U2hlbGwgQ2FyZDogNDc2MTczWFhYWFhYMDExOSAoVCk8YnIvPkNyZWRpdCBBY2NvdW50PC9wPjxwIGlkPSJyZWNlaXB0LXJlc3VsdCI+PGI+QXBwcm92ZWQ8L2I+PGJyLz5SZWZlcmVuY2U6IDAwMDAgMDAxMyA0NTk4PGJyLz5BdXRoIENvZGU6IDU1NDAwNDxici8+QUlEOiBBMDAwMDAwMDAzMTAxMDxici8+QVRDOiAwMDAxPGJyLz5UVlI6IDAwMDAwMDAwMDA8YnIvPkFSUUM6IEQ5Mzc2MDIwMDgzOEQwNzM8L3A+"
+					}
+				}
+			]
+		},
+		"SecurityTrailer": {}
+	}
+}
+```
+</p>
+</details>
+
+
+
+#### Completion 
+
+
+:::success
+A `RequestedAmount` of a completion must be equal, or less than pre-authorisation `RequestedAmount`.
+:::
+
+Completion captures payment of the amount previously reserved through pre-authorisation.
+
+The Sale System should follow the [extended SaleItem](/docs/api-reference/fusion-api-fuel-extension#extended-saleitem) rules to ensure the `SaleItem[]` array is populated with with valid fuel product information. 
+
+All products included in a completion must have previously been returned in `AllowedProductCodes` of the pre-authorisation.
+
+
+
+To perform a completion:
+
+- Construct a [payment request](/docs/api-reference/fusion-satellite#payment)
+- Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Completion"
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to reserved amount.
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
+- Populate `SaleItem[]` array with the purchased products, following [extended SaleItem](/docs/api-reference/fusion-api-fuel-extension#extended-saleitem) rules
+  - Set a fuel code in `CustomFields` for **every** item
+  - Set fuel product data in every **fuel** product
+
+
+<details>
+
+<summary>
+Fusion API Fuel Extension completion request
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIRequest": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Request",
+			"ServiceID": "ec6b7b5f7330484eb533cd26a1306bb0",
+			"SaleID": "INT POS",
+			"POIID": "INTP9205"
+		},
+		"PaymentRequest": {
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "422543aba9fc4e9a9a6512517961513c",
+					"TimeStamp": "2023-11-28T04:33:56.8703432Z"
+				},
+				"SaleReferenceID": "8c583b0d-f1dc-4b7d-a13f-adb8bf0c761d"
+			},
+			"PaymentTransaction": {
+				"AmountsReq": {
+					"Currency": "AUD",
+					"RequestedAmount": 83.71
+				},
+				"OriginalPOITransaction": {
+					"POITransactionID": {
+						"TransactionID": "65656db57a54cb8f801069ee",
+						"TimeStamp": "2023-11-28T15:34:10.16+11:00"
+					},
+				},				
+				"SaleItem": [
+					{
+						"ItemID": 0,
+						"ProductCode": "XXXXXX123456",
+						"UnitOfMeasure": "Litre",
+						"Quantity": 42.49,
+						"UnitPrice": 1.97,
+						"ItemAmount": 83.71,
+						"ProductLabel": "Unleaded Petrol",
+						"CustomFields": [
+							{
+								"Key": "FuelProductCodeShellCard",
+								"Type": "String",
+								"Value": "2"
+							}
+						]
+					}		
+				]
+			},
+			"PaymentData": {
+				"PaymentType": "Completion"
+			}
+		},
+		"SecurityTrailer": {}
+	}
+}
+```
+</p>
+</details>
+
+
+<details>
+<summary>
+Fusion API Fuel Extension completion response
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIResponse": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Payment",
+			"MessageType": "Response",
+			"ServiceID": "ec6b7b5f7330484eb533cd26a1306bb0",
+			"SaleID": "INT POS",
+			"POIID": "INTP9205"
+		},
+		"PaymentResponse": {
+			"Response": {
+				"Result": "Success"
+			},
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "422543aba9fc4e9a9a6512517961513c",
+					"TimeStamp": "2023-11-28T04:33:56.8703432Z"
+				},
+				"SaleReferenceID": "8c583b0d-f1dc-4b7d-a13f-adb8bf0c761d"
+			},
+			"POIData": {
+				"POITransactionID": {
+					"TransactionID": "982309876239870423987",
+					"TimeStamp": "2023-11-28T15:34:10.16+11:00"
+				},
+				"POIReconciliationID": "64f7f88bd677b0362581bbb5"
+			},
+			"PaymentResult": {
+				"PaymentType": "Completion",
+				"PaymentInstrumentData": {
+					"PaymentInstrumentType": "Card",
+					"CardData": {
+						"EntryMode": "MagStripe",
+						"PaymentBrand": "Shell Card",
+						"PaymentBrandID": "0103",
+						"PaymentBrandLabel": "Shell Card",
+						"Account": "Default",
+						"Expiry": "=720",
+						"MaskedPAN": "7034305XXXXX2521"
+					}
+				},
+				"AmountsResp": {
+					"Currency": "AUD",
+					"AuthorizedAmount": 83.71,
+					"TotalFeesAmount": 0,
+					"CashBackAmount": 0,
+					"SurchargeAmount": 0,
+					"TipAmount": 0
+				},
+				"OnlineFlag": true,
+				"PaymentAcquirerData": {
+					"AcquirerID": "560251",
+					"MerchantID": "33435368",
+					"AcquirerPOIID": "M3AU41",
+					"AcquirerTransactionID": {
+						"TransactionID": "5de73ec1454dde9d70124b5d",
+						"TimeStamp": "2023-11-28T04:34:10.320Z"
+					},
+					"ApprovalCode": "554004",
+					"ResponseCode": "00",
+					"HostReconciliationID": "20231129",
+					"RRN": "328132214339126"
+				}
+			},
+			"PaymentReceipt": [
+				{
+					"DocumentQualifier": "SaleReceipt",
+					"IntegratedPrintFlag": true,
+					"RequiredSignatureFlag": false,
+					"OutputContent": {
+						"OutputFormat": "XHTML",
+						"OutputXHTML": "PHAgaWQ9InJlY2VpcHQtaW5mbyI+MjgvMTEvMjAyMyAxNTozNDoxMDxici8+TWVyY2hhbnQgSUQ6IFBPU01lcmNoYW50PGJyLz5UZXJtaW5hbCBJRDogSU5UUDkyMDU8L3A+PHAgaWQ9InJlY2VpcHQtZGV0YWlscyI+PGI+UHVyY2hhc2UgVHJhbnNhY3Rpb248L2I+PGJyLz5BbW91bnQ6ICQxNS4wODxici8+U2hlbGwgQ2FyZDogNDc2MTczWFhYWFhYMDExOSAoVCk8YnIvPkNyZWRpdCBBY2NvdW50PC9wPjxwIGlkPSJyZWNlaXB0LXJlc3VsdCI+PGI+QXBwcm92ZWQ8L2I+PGJyLz5SZWZlcmVuY2U6IDAwMDAgMDAxMyA0NTk4PGJyLz5BdXRoIENvZGU6IDU1NDAwNDxici8+QUlEOiBBMDAwMDAwMDAzMTAxMDxici8+QVRDOiAwMDAxPGJyLz5UVlI6IDAwMDAwMDAwMDA8YnIvPkFSUUM6IEQ5Mzc2MDIwMDgzOEQwNzM8L3A+"
+					}
+				}
+			]
+		},
+		"SecurityTrailer": {}
+	}
+}
+```
+</p>
+</details>
+
+
+
+
+### Pre-authorisation cancel
+
+A successful pre-authorisation must be either completed, or cancelled. To cancel a pre-authorisation, the Sale System sends a `ReversalRequest`.
+
+To perform a pre-authorisation cancel:
+
+- Construct a [reversal request](/docs/api-reference/fusion-satellite#voidreversal)
+- Set [ReversalRequest.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
+- Set [ReversalRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set `ReversalReason` to `"MerchantCancel"`.
+
+
+<details>
+
+<summary>
+Fusion API Fuel Extension reversal request
+</summary>
+
+<p>
+
+```json
+
+{
+	"SaleToPOIRequest": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Reversal",
+			"MessageType": "Request",
+			"ServiceID": "ec6b7b5f7330484eb533cd26a1306bb0",
+			"SaleID": "INT POS",
+			"POIID": "INTP9205"
+		},
+		"ReversalRequest": {
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "422543aba9fc4e9a9a6512517961513c",
+					"TimeStamp": "2023-11-28T04:33:56.8703432Z"
+				},
+				"SaleReferenceID": "8c583b0d-f1dc-4b7d-a13f-adb8bf0c761d"
+			},			
+			"OriginalPOITransaction": {
+				"POITransactionID": {
+					"TransactionID": "65656db57a54cb8f801069ee",
+					"TimeStamp": "2023-11-28T15:34:10.16+11:00"
+				},
+			},
+			"ReversalReason": "MerchantCancel" 
+		}
+	}
+}
+```
+</p>
+</details>
+
+<details>
+
+<summary>
+Fusion API Fuel Extension reversal response
+</summary>
+
+<p>
+
+```json
+{
+	"SaleToPOIResponse": {
+		"MessageHeader": {
+			"MessageClass": "Service",
+			"MessageCategory": "Reversal",
+			"MessageType": "Response",
+			"ServiceID": "ec6b7b5f7330484eb533cd26a1306bb0",
+			"SaleID": "INT POS",
+			"POIID": "INTP9205"
+		},
+		"ReversalResponse": {
+			"POIData": {
+				"POITransactionID": {
+					"TransactionID": "982309876239870423987",
+					"TimeStamp": "2023-11-28T15:34:10.16+11:00"
+				},
+				"POIReconciliationID": "64f7f88bd677b0362581bbb5"
+			},
+			"PaymentReceipt": [
+				{
+					"DocumentQualifier": "SaleReceipt",
+					"IntegratedPrintFlag": true,
+					"RequiredSignatureFlag": false,
+					"OutputContent": {
+						"OutputFormat": "XHTML",
+						"OutputXHTML": "PHAgaWQ9InJlY2VpcHQtaW5mbyI+MjgvMTEvMjAyMyAxNTozNDoxMDxici8+TWVyY2hhbnQgSUQ6IFBPU01lcmNoYW50PGJyLz5UZXJtaW5hbCBJRDogSU5UUDkyMDU8L3A+PHAgaWQ9InJlY2VpcHQtZGV0YWlscyI+PGI+UHVyY2hhc2UgVHJhbnNhY3Rpb248L2I+PGJyLz5BbW91bnQ6ICQxNS4wODxici8+U2hlbGwgQ2FyZDogNDc2MTczWFhYWFhYMDExOSAoVCk8YnIvPkNyZWRpdCBBY2NvdW50PC9wPjxwIGlkPSJyZWNlaXB0LXJlc3VsdCI+PGI+QXBwcm92ZWQ8L2I+PGJyLz5SZWZlcmVuY2U6IDAwMDAgMDAxMyA0NTk4PGJyLz5BdXRoIENvZGU6IDU1NDAwNDxici8+QUlEOiBBMDAwMDAwMDAzMTAxMDxici8+QVRDOiAwMDAxPGJyLz5UVlI6IDAwMDAwMDAwMDA8YnIvPkFSUUM6IEQ5Mzc2MDIwMDgzOEQwNzM8L3A+"
+					}
+				}
+			],
+			"Response": {
+				"Result": "Success"
+			}
+		}
+	}
+}
+```
+</p>
+</details>
+
+
+
 ## Accreditation
 
 There are an expanded set of test cases in the Fusion [accreditation](/docs/testing) to support payments via the Fusion API Fuel Extension. 

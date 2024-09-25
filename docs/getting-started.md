@@ -861,6 +861,7 @@ On pre-authorisation response, the POS should record:
 - [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the response
 - [PaymentResponse.PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) from the response (the reserved amount)
 
+
 #### Completion
 
 Completion captures/settles payment of the amount previously reserved through pre-authorisation.
