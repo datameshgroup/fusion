@@ -128,6 +128,7 @@ To perform a purchase with events mode, the Sale System will need to POST a [Pay
 - Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
   - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Normal"
   - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - For purchase with cash out, set the cash out amount in [PaymentTransaction.AmountsReq.CashBackAmount](/docs/api-reference/data-model#cashbackamount).  This amount must be included in the purchase amount.
   - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
     - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
     - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
@@ -160,6 +161,7 @@ To perform a purchase, the Sale System will need to POST a [Payment request](/do
 - Construct a [Payment request](/docs/api-reference/data-model#payment-request) JSON payload including all required fields
   - Set [PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Normal"
   - Set the purchase amount in [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount)
+  - For purchase with cash out, set the cash out amount in [PaymentTransaction.AmountsReq.CashBackAmount](/docs/api-reference/data-model#cashbackamount).  This amount must be included in the purchase amount.
   - Set [SaleTransactionID](/docs/api-reference/data-model#saletransactionid)
     - `SaleTransactionID.TransactionID` should be the ID which identifies the sale on your system
     - `SaleTransactionID.Timestamp` should be the current time formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
