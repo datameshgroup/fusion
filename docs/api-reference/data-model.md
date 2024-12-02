@@ -295,7 +295,7 @@ Balance inquiry response
 &emsp;**PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
 &emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
 &emsp;&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
-&emsp;&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;**OutputContent**                           |  | [Object](#data-format) | Payment receipt object which represents the receipt that needs to be printed
 &emsp;&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
 &emsp;&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 &emsp;&emsp;[Currency](#currency)                      | ✔ | [String(3,3)](#data-format) | Three character ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatted) currency code. Set to "AUD". 
@@ -860,7 +860,7 @@ Payment response
 &emsp;**PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
 &emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
 &emsp;&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
-&emsp;&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;**OutputContent**                           |  | [Object](#data-format) | Payment receipt object which represents the receipt that needs to be printed
 &emsp;&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
 &emsp;&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 
@@ -1149,7 +1149,7 @@ Print request
 &emsp;&emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
 &emsp;&emsp;[IntegratedPrintFlag](#integratedprintflag) |  |[Boolean](#data-format)| True if the receipt should be included with the Sale receipt, false if the receipt should be printed now and paper cut (e.g. for a signature receipt)
 &emsp;&emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
-&emsp;&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;&emsp;**OutputContent**                           |  | [Object](#data-format) | Payment receipt object which represents the receipt that needs to be printed
 &emsp;&emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
 &emsp;&emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 
@@ -1808,7 +1808,7 @@ Stored value response
 **PaymentReceipt**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
 &emsp;[DocumentQualifier](#documentqualifier)     | ✔ | [Enum](#data-format) | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
 &emsp;[RequiredSignatureFlag](#requiredsignatureflag) | ✔|[Boolean](#data-format)| If true, the card holder signature is required on the merchant CashierReceipt.
-&emsp;**OutputContent**                           |  | [Array(Object)](#data-format) | Array of payment receipt objects which represent receipts to be printed
+&emsp;**OutputContent**                           |  | [Object](#data-format) | Payment receipt object which represents the receipt that needs to be printed
 &emsp;&emsp;[OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | [String(0,32)](#data-format) | "XHTML"  
 &emsp;&emsp;[OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | [String(0,4096)](#data-format) | The payment receipt in XHTML format but coded in BASE64 
 

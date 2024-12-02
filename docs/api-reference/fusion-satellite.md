@@ -725,7 +725,7 @@ Payment response
  **PaymentReceipt**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
-  **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
+  **OutputContent**                           |  | Object | Payment receipt object which represents the receipt that needs to be printed
    [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
    [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
 
@@ -1007,6 +1007,6 @@ Reversal response
  **PaymentReceipt**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
   [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
   [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
-  **OutputContent**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
+  **OutputContent**                           |  | Object | Payment receipt object which represents the receipt that needs to be printed
    [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
    [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
