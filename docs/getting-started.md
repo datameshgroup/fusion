@@ -187,7 +187,7 @@ Depending on your Sale System design, other features may be required.
 - [Tokenisation](#tokenisation)
 - [Tipping](#tipping)
 - [Dynamic surcharge](#dynamic-surcharge)
-- [Pre-authorisation / completion](#pre-auth-completion)
+- [Pre-authorisation / completion](#pre-authorisation--completion)
 
 :::tip
 For help on scoping your development work, or to discuss integration requirements, please contact the DataMesh integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a>
@@ -388,13 +388,12 @@ Supported [payment](/docs/api-reference/fusion-cloud#payment) types are:
 - Cash-Out
 - Purchase with Cash-Out
 - Refund
-- Pre-Authorisation (for Satellite API)
-- Completion (for Satellite API)
+- Pre-authorisation
+- Pre-authorisation cancel
+- Completion
 
 <!--
-- Pre-authorisation
 - Pre-authorisation top-up
-- Pre-authorisation cancel
 - Pre-authorisation extend
 -->
 
@@ -836,43 +835,71 @@ A cash out sale can be cash out only, or cash out + purchase.
   - The [PaymentTransaction.AmountsReq.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) field in the payment response will include the cash back amount entered by the card holder
 -->
 
-### Pre-auth / completion
+### Pre-authorisation / completion 
 
-The Sale System can optionally support pre-authorisation and completion payments on the POI Terminal.
+The pre-authorisation payment flow allows the Sale System to reserve funds on a customer's card, enabling the payment to be completed at a later time.
 
-:::warning
-The Pre-authorisation and Completion transactions are currently available only for the Satellite API.
+:::info
+Pre-auth / completion have specific requirements. Talk to the DataMesh integrations team before implementing. 
 :::
 
 #### Pre-authorisation
 
-Pre-authorisation holds funds in reserve on a customers card and allows the payment to be completed at a later date.
+:::success
+A pre-authorisation must be followed by a completion or pre-authorisation cancel. 
+:::
+
+The pre-authorisation allows the Sale System to reserve funds on a customers card, enabling the payment to be completed at a later time.
 
 To perform a pre-authorisation:
 
-- Build a standard [payment request](/docs/api-reference/fusion-satellite#payment)
+- Construct a [payment request](/docs/api-reference/fusion-cloud#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "FirstReservation"
 - Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) to the amount to reserve 
-- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to a unique [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to a unique [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier). Note this value must be included in the matching completion.
+- Set [PaymentRequest.SaleData.TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype) in the payment request to "Customer".
+-  Populate SaleItem[] with the products
 
-On pre-authorisation response, the POS should record: 
+On pre-authorisation response, the POS must record: 
 
 - [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) from the request
 - [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the response
 - [PaymentResponse.PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) from the response (the reserved amount)
+- [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the response
 
 
 #### Completion
 
-Completion captures/settles payment of the amount previously reserved through pre-authorisation.
+:::success
+A `RequestedAmount` of a completion must be equal, or less than pre-authorisation `AuthorizedAmount`.
+:::
+
+Completion captures payment of the amount previously reserved through pre-authorisation.
 
 To perform a completion:
 
-- Build a standard [payment request](/docs/api-reference/fusion-satellite#payment)
+- Construct a [payment request](/docs/api-reference/fusion-cloud#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Completion"
-- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to reserved amount
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to `AuthorizedAmount` from the pre-authorisation
 - Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
 - Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
+- Set [PaymentRequest.PaymentInstrumentData.CardData.EntryMode](/docs/api-reference/data-model#entrymode) to "File"
+- Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype) to "Customer"
+- Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) to the value returned in [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the original pre-authorisation response
+
+
+
+#### Pre-authorisation cancel
+
+A successful pre-authorisation must be either completed, or cancelled. To cancel a pre-authorisation, the Sale System sends a `ReversalRequest`.
+
+To perform a pre-authorisation cancel:
+
+- Construct a [reversal request](/docs/api-reference/fusion-cloud#voidreversal)
+- Set [ReversalRequest.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
+- Set [ReversalRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set `ReversalReason` to `"MerchantCancel"`.
+
 
 
 ### Settlement

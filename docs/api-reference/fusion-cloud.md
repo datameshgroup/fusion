@@ -2142,6 +2142,184 @@ Card acquisition response
   [TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype)| ✔ | String | "Transaction" or "Customer". Must match the type of token recorded in the POI System.
   [TokenValue](#tokenvalue)                | ✔ | String | Token previously returned from the POI System in the payment, or card acquisition response 
  
+
+
+
+
+
+
+### Void/Reversal
+
+A successful payment transaction can be voided/reversed by sending a reversal request message. 
+
+:::warning
+There are only specific cases where the reversal request is supported (such as a pre-authorisation cancel).  In most cases, refund request message should be sent instead.  
+
+Please discuss first with the DataMesh Integrations team at <a href="mailto:integrations@datameshgroup.com">integrations@datameshgroup.com</a> if you plan to implement any void/reversal processing.
+:::
+
+
+#### Reversal request
+
+The reversal message is used to perform void/reversal request. 
+
+<details>
+
+<summary>
+Reversal request
+</summary>
+
+<p>
+
+```json
+
+{
+   "SaleToPOIRequest": {
+      "MessageHeader": {
+         "MessageCategory": "Reversal",
+         "MessageClass": "Service",
+         "MessageType": "Request",
+         "ProtocolVersion": "3.1-dmg",
+         "ServiceID": "xxx",
+			"SaleID": "xxx",
+			"POIID": "xxx"         
+      },
+      "ReversalRequest": {
+			"SaleData": {
+				"SaleTransactionID": {
+					"TransactionID": "422543aba9fc4e9a9a6512517961513c",
+					"TimeStamp": "2023-11-28T04:33:56.8703432Z"
+				},
+				"SaleReferenceID": "8c583b0d-f1dc-4b7d-a13f-adb8bf0c761d"
+			},	         
+         "OriginalPOITransaction": {
+				"POITransactionID": {
+					"TransactionID": "65656db57a54cb8f801069ee",
+					"TimeStamp": "2023-11-28T15:34:10.16+11:00"
+				}
+         },
+         "ReversalReason": "MerchantCancel"// (e.g. CustCancel, MerchantCancel, Malfunction, Unable2Compl, SignatureDeclined, Unknown)
+      }
+   }
+}
+```
+</p>
+</details>
+
+**MessageHeader**
+
+<div style={{width:'240px'}}>Attributes</div>  |Requ.| Format | Description |
+-----------------                         |:----:| ------ | ----------- |
+[MessageClass](/docs/api-reference/data-model#messageclass)             | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)       | ✔ | String | "Reversal"
+[MessageType](/docs/api-reference/data-model#messagetype)               | ✔ | String | "Request"
+[ProtocolVersion](/docs/api-reference/data-model#protocolversion)       | ✔ | String | "3.1-dmg"
+[ServiceID](/docs/api-reference/data-model#serviceid)                   | ✔ | String | A unique value which will be mirrored in the response. See [ServiceID](/docs/api-reference/data-model#serviceid).
+
+**ReversalRequest**
+
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
+-----------------                            |:----:| ------ | ----------- |
+ **[OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)** | ✔ | Object | Identifies a previous POI transaction. See [OriginalPOITransaction](/docs/api-reference/data-model#originalpoitransaction)
+  [SaleID](/docs/api-reference/data-model#saleid)                          | ✔ | String | [SaleID](/docs/api-reference/data-model#saleid) which performed the original transaction
+  [POIID](/docs/api-reference/data-model#poiid)                            | ✔ | String | [POIID](/docs/api-reference/data-model#poiid) which performed the original transaction
+  [ReuseCardDataFlag](#reusecarddataflag)    |  | Boolean| If 'true' the POI Terminal will retrieve the card data from file based on the `PaymentToken` included in the request. Otherwise the POI Terminal will read the same card again.
+  **POITransactionID**                       | ✔ | Object | 
+   [TransactionID](/docs/api-reference/data-model#transactionid)           | ✔ | String | `TransactionID` from the original transaction
+   [TimeStamp](/docs/api-reference/data-model#timestamp)                   | ✔ | String | `TimeStamp` from the original transaction
+ **[ReversalReason](/docs/api-reference/data-model#reversal-reason)** | ✔ | Object | Reason for cancelling the successful payment transaction.  See [ReversalReason](/docs/api-reference/data-model#reversalreason)
+
+#### Reversal response
+
+<details>
+
+<summary>
+Reversal response
+</summary>
+
+<p>
+
+```json
+{
+   "SaleToPOIResponse": {
+      "MessageHeader": {
+         "MessageCategory": "Reversal",
+         "MessageClass": "Service",
+         "MessageType": "Response",
+         "ProtocolVersion": "3.1-dmg",
+         "ServiceID": "xxx",
+			"SaleID": "xxx",
+			"POIID": "xxx"         
+      },
+      "ReversalResponse": {
+         "POIData": {
+            "POITransactionID": {
+               "TimeStamp": "xxx",
+               "TransactionID": "xxxx"
+            }
+         },
+         "PaymentReceipt": [
+            {
+               "DocumentQualifier": "SaleReceipt",
+               "OutputContent": {
+                  "OutputFormat": "XHTML",
+                  "OutputXHTML": "xxx"
+               },
+               "RequiredSignatureFlag": false
+            },
+            {
+               "DocumentQualifier": "CashierReceipt",
+               "OutputContent": {
+                  "OutputFormat": "XHTML",
+                  "OutputXHTML": "xxx"
+               },
+               "RequiredSignatureFlag": false
+            }
+         ],
+         "Response": {
+            "Result": "Success"
+         }
+      }
+   }
+}
+```
+</p>
+</details>
+
+**MessageHeader**
+
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
+-----------------                            |:----:| ------ | ----------- |
+[MessageClass](/docs/api-reference/data-model#messageclass)                | ✔ | String | "Service"
+[MessageCategory](/docs/api-reference/data-model#messagecategory)          | ✔ | String | "Reversal"
+[MessageType](/docs/api-reference/data-model#messagetype)                  | ✔ | String | "Response"
+[ProtocolVersion](/docs/api-reference/data-model#protocolversion)       | ✔ | String | "3.1-dmg"
+[ServiceID](/docs/api-reference/data-model#serviceid)                      | ✔ | String | Mirrored from the request
+
+**ReversalResponse**
+
+<div style={{width:'240px'}}>Attributes</div>     |Requ.| Format | Description |
+-----------------                            |:----:| ------ | ----------- |
+**Response**                                 | ✔ | Object | Object indicating the result of the payment
+ [Result](/docs/api-reference/data-model#result)                           | ✔ | String | Indicates the result of the response. Possible values are "Success" and "Failure"
+ [ErrorCondition](/docs/api-reference/data-model#errorcondition)           |  | String | Indicates the reason an error occurred. Only present when `Result` is "Failure". See [ErrorCondition](/docs/api-reference/data-model#errorcondition) for more information on possible values.
+ [AdditionalResponse](/docs/api-reference/data-model#additionalresponse)   |  | String | Provides additional error information. Only present when `Result` is "Failure". See [AdditionalResponse](/docs/api-reference/data-model#additionalresponse) for more information on possible values. 
+**POIData**                                  | ✔ | Object | 
+ **POITransactionID**                        | ✔ | Object | 
+  [TransactionID](/docs/api-reference/data-model#transactionid)            | ✔ | String | A unique transaction id from the POI system
+  [TimeStamp](/docs/api-reference/data-model#timestamp)                    | ✔ | String | Time on the POI system, formatted as [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+ **PaymentReceipt**                           |  | Array | Array of payment receipt objects which represent receipts to be printed
+  [DocumentQualifier](#documentqualifier)     | ✔ | String | "CashierReceipt" for a merchant receipt, otherwise "SaleReceipt"
+  [RequiredSignatureFlag](#requiredsignatureflag) | ✔|Boolean| If true, the card holder signature is required on the merchant CashierReceipt.
+  **OutputContent**                           |  | Object | Payment receipt object which represents the receipt that needs to be printed
+   [OutputFormat](/docs/api-reference/data-model#outputformat)              | ✔ | String | "XHTML"  
+   [OutputXHTML](/docs/api-reference/data-model#outputxhtml)                | ✔ | String | The payment receipt in XHTML format but coded in BASE64 
+
+
+
+
+
+
 ## Error handling
 
 When the Sale System sends a request, it will receive a matching response. For example, if the Sale System sends a [payment request](#payment_request) it will receive a [payment response](#payment-response).

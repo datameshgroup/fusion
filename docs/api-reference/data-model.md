@@ -2879,16 +2879,10 @@ Label                | Description
 
 Indicates the type of payment to process. If not present in the payment request the value will default to "Normal". 
 
-Fusion App and Cloud API - PaymentType available values: 
+PaymentType available values: 
 
 - "Normal" a purchase transaction or purchase with cash-out transaction
 - "Refund" a refund transaction
-- "CashAdvance" a cash-out only transaction
-
-Satellite API - PaymentType available values: 
-
-- "Normal" a purchase transaction or purchase with cash-out transaction
-- "Refund" a refund
 - "CashAdvance" a cash-out only transaction
 - "FirstReservation" a pre-authorisation transaction
 - "Completion" a completion transaction
