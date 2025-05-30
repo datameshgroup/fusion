@@ -287,7 +287,7 @@ To minimise the size of the data in the QR code, a abbreviated JSON fields forma
 | JSON property | Name                                            | Format                                                                      |
 | ------------- | ----------------------------------------------- | --------------------------------------------------------------------------- |
 | s             | [SaleID](/docs/api-reference/data-model#saleid) | String. Random UUID v4. 8-4-4-4-12 format.                                  | 
-| p             | PairingPOIIDString.                             | String. Random UUID v4. 8-4-4-4-12 format.                                  | 
+| p             | PairingPOIID                             | String. Random UUID v4. 8-4-4-4-12 format.                                  | 
 | k             | [KEK](/docs/api-reference/data-model#kek)       | String. Random. 48-character string populated with characters 0-9, and A-F. Please refer to the [sample KEK generation](#sample-kek-generation) |
 | c             | [CertificationCode](/docs/api-reference/data-model#certificationcode) | String. Certification code provided by DataMesh.      |
 | n             | POSName                                         | String. POS display name with at most 30 characters. This can be the Work Station name or any name that you prefer. Name displayed on the report and on the Satellite app (e.g. during a POS payment transaction). |
