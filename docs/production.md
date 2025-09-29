@@ -21,9 +21,9 @@ After testing and accreditation are complete, follow the production readiness ch
 
 - If the Sale System is using a DataMesh library, ensure it is updated to the latest version
 - Update the Sale System "static" settings to the production values provided by DataMesh. Settings to be updated are listed below. See [Sale System settings](./getting-started#design-your-integration) for more information.
-  - `ProviderIdentification`, the name of the busniess which creates the Sale System.
+  - `ProviderIdentification`, the name of the business which creates the Sale System.
   - `ApplicationName`, the name of the Sale System.
-  - `CertificationCode`, a GUID which uniquly identifies the Sale System. 
+  - `CertificationCode`, a GUID which uniquely identifies the Sale System. 
   - `SoftwareVersion`, the internal build version of this Sale System. DataMesh must configure this value on Unify. 
 - Ensure the Sale System is connecting to the [DataMesh production endpoint](/docs/api-reference/fusion-cloud#endpoints).
   - The production endpoint uses a different [SSL certificate](/docs/api-reference/fusion-cloud#security-requirements).
@@ -35,7 +35,7 @@ After testing and accreditation are complete, follow the production readiness ch
 
 ## Complete PVT
 
-[Contact the DataMesh Integrations Team](mailto:integrations@datameshgroup.com) to orgainse a production verification testing window.
+[Contact the DataMesh Integrations Team](mailto:integrations@datameshgroup.com) to organise a production verification testing window.
 
 This process involves working with a DataMesh representative to pair your production Sale System build with a production POI Terminal, and running through some basic tests.
 

@@ -18,7 +18,7 @@ The steps outlined below will guide you through creating a dev account, scoping 
 1. [Create a test account](#create-a-test-account)
 1. [Determine your integration type](#determine-your-integration-type)
 1. [Design your integration](#design-your-integration)
-1. [Code your POS integration](./category/api-reference/)
+1. [Code your POS integration](./api-reference/)
 1. [POS accreditation](./testing)
 1. [Production deployment](./production)
 
@@ -727,7 +727,7 @@ If the cashier initiates a payment cancellation, the Sale System sends an [abort
 The Sale System may allow the cashier to continue to request cancellation of the payment until a payment result has been received.
 
 :::tip
-There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must peform <a href="/docs/api-reference/fusion-cloud#error-handling">error handling</a>.
+There are a number of instances where the Terminal may be unable to cancel a payment in progress upon receiving a <a href="#abort-transaction">abort transaction request</a>. The Sale System must <b>always</b> await a payment response after sending an abort transaction request.  If no response is received or an error has occurred before a response is received, the Sale System must perform <a href="/docs/api-reference/fusion-cloud#error-handling">error handling</a>.
 :::
 
 ![](/img/payment-cancellation.png)
@@ -756,7 +756,7 @@ Each [SaleItem](/docs/api-reference/data-model#saleitem) record contains the fol
 See [SaleItem](/docs/api-reference/data-model#saleitem) for all available fields and examples. 
 
 :::tip
-Including all available product information in each payment request will improve the merchant experiance. See <a href="/docs/api-reference/data-model#saleitem">SaleItem</a> for a full list of available fields. 
+Including all available product information in each payment request will improve the merchant experience. See <a href="/docs/api-reference/data-model#saleitem">SaleItem</a> for a full list of available fields. 
 :::
 
 ### Refunds
@@ -799,7 +799,7 @@ The Sale System can optionally support cash out payments on the POI Terminal. Th
 
 #### Cash out on Sale System
 
-When perfoming cash out on the Sale System, the cash out amount is entered by the cashier on the Sale System before the purchase is sent. 
+When performing cash out on the Sale System, the cash out amount is entered by the cashier on the Sale System before the purchase is sent. 
 
 A cash out sale can be cash out only, or cash out + purchase. 
 
@@ -881,7 +881,7 @@ To perform a pre-authorisation top-up:
 - Construct a [payment request](/docs/api-reference/fusion-cloud#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "UpdateReservation"
 - Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) to the new amount to reserve. Must be equal or greater than the `AuthorizedAmount` from the preceding pre-authorisation or top-up response
-- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authorisation request
 - Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the preceding authorisation response. This can be either from the original pre-authorisation, or from the previous pre-authorisation top-up when multiple top-ups have been performed.
 - Set [PaymentRequest.PaymentInstrumentData.CardData.EntryMode](/docs/api-reference/data-model#entrymode) to "File"
 - Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype) to "Customer"
@@ -1121,7 +1121,7 @@ Dynamic surcharge example:
 1. Cashier opens $100 sale on the Sale System and initiates payment
 1. Sale System sends a [payment request](/docs/api-reference/fusion-cloud#payment) request to the POI Terminal and sets [PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) to $100
 1. Card holder presents their Amex card
-1. POI Terminal calcualtes new total based on the card type and processes a payment of $101.90 
+1. POI Terminal calculates new total based on the card type and processes a payment of $101.90 
 1. POI Terminal approves payment and returns the result to the Sale System with 
   - A receipt containing lines with the requested amount, surcharge percentage, surcharge amount, and new total amount
   - [PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) set to $101.90
@@ -1195,7 +1195,7 @@ PLB transaction example:
 ### Restricted payment brands
 
 :::info
-This feature is only available to select merchants. Please discussion with the [integrations team](mailto:integrations@datameshgroup.com) before implementing. 
+This feature is only available to select merchants. Please discuss with the [integrations team](mailto:integrations@datameshgroup.com) before implementing. 
 :::
 
 The Sale System can restrict the payment request to specified payment brands by configuring [PaymentRequest.PaymentTransaction.TransactionConditions.AllowedPaymentBrand](/docs/api-reference/data-model#allowedpaymentbrand). 

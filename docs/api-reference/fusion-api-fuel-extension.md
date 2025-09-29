@@ -65,7 +65,7 @@ As they are combined, fuel products with the same fuel product code must have th
 Attribute   | Requ.  | Format | Description |
 -----------------                          | :------: | ------ | ----------- |
 [ItemID](/docs/api-reference/data-model#itemid)                          | ✔ | [Integer(0,9999)](/docs/api-reference/data-model#data-format) | A unique identifier for the sale item within the context of this payment. e.g. a 0..n integer which increments by one for each sale item.
-[ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | [String(0,128)](/docs/api-reference/data-model#data-format)  | A unique identifier for the product within the merchant, such as the SKU. For example if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
+[ProductCode](/docs/api-reference/data-model#productcode)                | ✔ | [String(0,128)](/docs/api-reference/data-model#data-format)  | A unique identifier for the product within the merchant, such as the SKU. For example, if two customers purchase the same product at two different stores owned by the merchant, both purchases should contain the same `ProductCode`.
 [UnitOfMeasure](/docs/api-reference/data-model#unitofmeasure)            | ✔ | [Enum](/docs/api-reference/data-model#data-format)  | Unit of measure of the `Quantity`. Set to "Litre"
 [Quantity](/docs/api-reference/data-model#quantity)                      | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Number of litres as read from the pump (decimal, maximum precision 6.8)
 [UnitPrice](/docs/api-reference/data-model#unitprice)                    | ✔ | [Decimal(0,999999,8)](/docs/api-reference/data-model#data-format) | Price per litre from the pump (decimal, maximum precision 6.8)
@@ -1089,7 +1089,7 @@ To perform a completion:
 - Construct a [payment request](/docs/api-reference/fusion-satellite#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Completion"
 - Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to reserved amount.
-- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authorisation request
 - Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
 - Populate `SaleItem[]` array with the purchased products, following [extended SaleItem](/docs/api-reference/fusion-api-fuel-extension#extended-saleitem) rules
   - Set a fuel code in `CustomFields` for **every** item

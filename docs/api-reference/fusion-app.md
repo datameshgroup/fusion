@@ -330,7 +330,7 @@ To perform a gift card activation with events mode, the Sale System will need to
   - Create an object in StoredValueData[]
   	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Activate"
   	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
-	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
+	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "Barcode"
 	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid)
 		- For physical card activation, set to the "activation barcode" scanned from the card
 		- For digital account reservation, set to the UPC	
@@ -373,7 +373,7 @@ To perform a deactivation, the Sale System will need to recall the [POITransacti
   - Create an object in StoredValueData[]
   	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Reversal"
   	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
-	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
+	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "Barcode"
 	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) 
 		- For physical card activation, set to the "activation barcode" scanned from the card
 		- For digital account reservation, set to the UPC
@@ -601,8 +601,8 @@ The `Payments` endpoint is used to perform purchase, purchase + cash out, cash o
 
 Name                    | Endpoint                                                                  | Description                                                             | 
 ----------------------- | ----------------------------------------------------------------------    | ----------------------------------------------------------------------- |
-Request (blocking mode) | `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}`             | Initate a payment in blocking mode                                      |
-Request (events mode)   | `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true` | Initate a payment in events mode                                        |
+Request (blocking mode) | `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}`             | Initiate a payment in blocking mode                                      |
+Request (events mode)   | `POST http://localhost:4242/fusion/v1/payments/{{SessionId}}?events=true` | Initiate a payment in events mode                                        |
 Error handling          | `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}`              | Called by the Sale System to enter error handling                       |
 Get events              | `GET http://localhost:4242/fusion/v1/payments/{{SessionId}}/events`       | Get events for the request. See [Payment events](#payment-events)       |
 
@@ -981,8 +981,8 @@ The `balance inquiry` endpoint is used to request the balance of an account.
 
 Name                    | Endpoint                                                                        | Description                                                                             | 
 ----------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-Request (blocking mode) | `POST http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}`             | Initate a balance inquiry in blocking mode                                              |
-Request (events mode)   | `POST http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}?events=true` | Initate a balance inquiry in events mode                                                |
+Request (blocking mode) | `POST http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}`             | Initiate a balance inquiry in blocking mode                                              |
+Request (events mode)   | `POST http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}?events=true` | Initiate a balance inquiry in events mode                                                |
 Error handling          | `GET http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}`              | Called by the Sale System to enter error handling                                       |
 Get events              | `GET http://localhost:4242/fusion/v1/balanceinquiry/{{SessionId}}/events`       | Get events for the request. See [balance inquiry events](#balance-inquiry-events)       |
 
@@ -1284,8 +1284,8 @@ The `stored value` endpoint is used to activate or deactivate a gift card.
 
 Name                    | Endpoint                                                                        | Description                                                                             | 
 ----------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-Request (blocking mode) | `POST http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}`                | Initate a stored value request in blocking mode                                              |
-Request (events mode)   | `POST http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}?events=true`    | Initate a stored value request in events mode                                                |
+Request (blocking mode) | `POST http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}`                | Initiate a stored value request in blocking mode                                              |
+Request (events mode)   | `POST http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}?events=true`    | Initiate a stored value request in events mode                                                |
 Error handling          | `GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}`                 | Called by the Sale System to enter error handling                                       |
 Get events              | `GET http://localhost:4242/fusion/v1/storedvalue/{{SessionId}}/events`          | Get events for the request. See [stored value events](#stored-value-events)       |
 

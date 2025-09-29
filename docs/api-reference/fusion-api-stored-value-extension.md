@@ -19,7 +19,7 @@ Below is an overview of supported gift cards. If you are familiar with gift card
 - Physical gift cards are sold on a “hang-sell”, a branded cardboard sheet with a UPC, activation barcode, and notch at the top for hanging in the gift card display. 
 - The UPC barcode represents an 11-digit UPC, followed by a check digit
 - The activation barcode contains the 11-digit UPC (no check digit) followed by the 19-digit card number (PAN) left-padded with zero. 
-- The redmeption code is located behind a privacy scratch panel
+- The redemption code is located behind a privacy scratch panel
 - Some card types may have a plastic credit card embedded on the hang-sell.
 
 ![gift-card-layout](/img/giftcard-layout.png)  
@@ -267,7 +267,7 @@ To perform a gift card activation:
   - Create an object in StoredValueData[]
   	- Set [StoredValueTransactionType](/docs/api-reference/data-model#storedvaluetransactiontype) to "Activate"
   	- Set [StoredValueAccountID.StoredValueAccountType](/docs/api-reference/data-model#storedvalueaccounttype) to "GiftCard"
-	- Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "BarCode"
+    - Set [StoredValueAccountID.IdentificationType](/docs/api-reference/data-model#identificationtype) to "Barcode"
 	- Set [StoredValueAccountID.StoredValueID](/docs/api-reference/data-model#storedvalueid) 
         - For physical card activation, set to the "activation barcode" scanned from the card
         - For digital account reservation, set to the UPC             
@@ -305,7 +305,7 @@ Stored value request - activate (using the [sample gift card data](/docs/api-ref
                 "StoredValueAccountID": {
                     "StoredValueAccountType": "GiftCard",
                     "EntryMode": "Scanned",
-                    "IdentificationType": "BarCode",
+                    "IdentificationType": "Barcode",
                     "StoredValueID": "196742057941234567890123456789"
                 },
                 "ProductCode": "001",
@@ -352,7 +352,7 @@ Stored value response - activate
                     "StoredValueAccountID": {
                         "StoredValueAccountType": "GiftCard",
                         "EntryMode": "Scanned",
-                        "IdentificationType": "BarCode",
+                        "IdentificationType": "Barcode",
                         "StoredValueID": "196742057941234567890123456789"
                     },
                     "CurrentBalance": 0
@@ -426,7 +426,7 @@ Stored value request - deactivate (using the [sample gift card data](/docs/api-r
                 "StoredValueAccountID": {
                     "StoredValueAccountType": "GiftCard",
                     "EntryMode": "Scanned",
-                    "IdentificationType": "BarCode",
+                    "IdentificationType": "Barcode",
                     "StoredValueID": "196742057941234567890123456789"
                 },
                 "StoredValueTransactionType": "Reverse",
@@ -473,7 +473,7 @@ Stored value response - deactivate
                     "StoredValueAccountID": {
                         "StoredValueAccountType": "GiftCard",
                         "EntryMode": "Scanned",
-                        "IdentificationType": "BarCode",
+                        "IdentificationType": "Barcode",
                         "StoredValueID": "196742057941234567890123456789"
                     },
                     "CurrentBalance": 0
