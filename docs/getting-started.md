@@ -840,13 +840,13 @@ A cash out sale can be cash out only, or cash out + purchase.
 The pre-authorisation payment flow allows the Sale System to reserve funds on a customer's card, enabling the payment to be completed at a later time.
 
 :::info
-Pre-auth / completion have specific requirements. Talk to the DataMesh integrations team before implementing. 
+Pre-authorisation, pre-authorisation top-up, and completion have specific implementation requirements and limitations. Please task to the DataMesh integrations team before implementing this feature. 
 :::
 
 #### Pre-authorisation
 
 :::success
-A pre-authorisation must be followed by a completion or pre-authorisation cancel. 
+A pre-authorisation must be finalised by a completion or pre-authorisation cancel. 
 :::
 
 The pre-authorisation allows the Sale System to reserve funds on a customers card, enabling the payment to be completed at a later time.
@@ -868,10 +868,37 @@ On pre-authorisation response, the POS must record:
 - [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the response
 
 
+#### Pre-authorisation top-up
+
+:::success
+The value of `RequestedAmount` in a pre-authorisation top-up request must be greater than or equal to the `AuthorizedAmount` returned in the preceding pre-authorisation or top-up response.
+:::
+
+The pre-authorisation top-up allows the Sale System to increase the value of a pre-authorisation request.
+
+To perform a pre-authorisation top-up:
+
+- Construct a [payment request](/docs/api-reference/fusion-cloud#payment)
+- Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "UpdateReservation"
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) to the new amount to reserve. Must be equal or greater than the `AuthorizedAmount` from the preceding pre-authorisation or top-up response
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
+- Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the preceding authorisation response. This can be either from the original pre-authorisation, or from the previous pre-authorisation top-up when multiple top-ups have been performed.
+- Set [PaymentRequest.PaymentInstrumentData.CardData.EntryMode](/docs/api-reference/data-model#entrymode) to "File"
+- Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype) to "Customer"
+- Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) to the value returned in [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the preceding pre-authorisation or top-up response
+
+On pre-authorisation top-up response, the POS must record: 
+
+- [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) from the request
+- [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the response
+- [PaymentResponse.PaymentResult.AmountsResp.AuthorizedAmount](/docs/api-reference/data-model#authorizedamount) from the response (the reserved amount)
+- [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the response
+
+
 #### Completion
 
 :::success
-A `RequestedAmount` of a completion must be equal, or less than pre-authorisation `AuthorizedAmount`.
+The value of `RequestedAmount` in a completion request must be less than or equal to the `AuthorizedAmount` returned in the preceding pre-authorisation or top-up response.
 :::
 
 Completion captures payment of the amount previously reserved through pre-authorisation.
@@ -880,12 +907,12 @@ To perform a completion:
 
 - Construct a [payment request](/docs/api-reference/fusion-cloud#payment)
 - Set [PaymentRequest.PaymentData.PaymentType](/docs/api-reference/data-model#paymenttype) to "Completion"
-- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to `AuthorizedAmount` from the pre-authorisation
-- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
-- Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
+- Set [PaymentRequest.PaymentTransaction.AmountsReq.RequestedAmount](/docs/api-reference/data-model#requestedamount) the completion amount. Must be less than or equal to the `AuthorizedAmount` from the preceding pre-authorisation or top-up response
+- Set [PaymentRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the original pre-authoristaion request
+- Set [PaymentRequest.PaymentTransaction.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the preceding pre-authorisation or pre-authorisation top-up response
 - Set [PaymentRequest.PaymentInstrumentData.CardData.EntryMode](/docs/api-reference/data-model#entrymode) to "File"
 - Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenRequestedType](/docs/api-reference/data-model#tokenrequestedtype) to "Customer"
-- Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) to the value returned in [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the original pre-authorisation response
+- Set [PaymentRequest.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) to the value returned in [PaymentResponse.PaymentInstrumentData.CardData.PaymentToken.TokenValue](/docs/api-reference/data-model#paymenttoken) from the preceding pre-authorisation or top-up response
 
 
 
@@ -896,7 +923,7 @@ A successful pre-authorisation must be either completed, or cancelled. To cancel
 To perform a pre-authorisation cancel:
 
 - Construct a [reversal request](/docs/api-reference/fusion-cloud#voidreversal)
-- Set [ReversalRequest.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the original pre-authorisation response
+- Set [ReversalRequest.OriginalPOITransaction.POITransactionID](/docs/api-reference/data-model#poitransactionid) to the value returned in [PaymentResponse.POIData.POITransactionID](/docs/api-reference/data-model#poitransactionid) from the preceding pre-authorisation or pre-authorisation top-up response
 - Set [ReversalRequest.SaleData.SaleReferenceID](/docs/api-reference/data-model#salereferenceid) to the same `SaleReferenceID` as used in the pre-authoristaion request
 - Set `ReversalReason` to `"MerchantCancel"`.
 
