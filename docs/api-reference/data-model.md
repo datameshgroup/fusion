@@ -2438,7 +2438,7 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 			<td>Union Pay Debit</td>
 		</tr>		
 		<tr>
-			<td rowspan='13'>Fuel</td>
+			<td rowspan='15'>Fuel</td>
 		</tr>
 		<tr>
 			<td>BPGiftCard</td>
@@ -2488,6 +2488,14 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 			<td>United Fuel Card</td>
 			<td>United Fuel Card</td>
 		</tr>	
+		<tr>
+			<td>OTR Card</td>
+			<td>OTR Card</td>
+		</tr>	
+		<tr>
+			<td>Mobil Fuel Card</td>
+			<td>Mobil Fuel Card</td>
+		</tr>					
 		<tr>
 			<td rowspan='11'>Transit</td>
 		</tr>
@@ -2672,7 +2680,7 @@ Please note that this list may expand in the future as new payment types are add
 			<td>Discover International</td>
 		</tr>																										
 		<tr>
-			<td rowspan='7'>Fuel</td>
+			<td rowspan='8'>Fuel</td>
 		</tr>
 		<tr>
 			<td>0100</td>
@@ -2728,6 +2736,10 @@ Please note that this list may expand in the future as new payment types are add
 			<td>0112</td>
 			<td>OTR Card</td>
 		</tr>
+		<tr>
+			<td>0113</td>
+			<td>Mobil Fuel Card</td>
+		</tr>		
 		<tr>
 			<td rowspan='10'>Transit</td>
 		</tr>
