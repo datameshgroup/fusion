@@ -2497,8 +2497,8 @@ PaymentBrand is included for legacy support. The Sale System should use [Payment
 			<td>Mobil Fuel Card</td>
 		</tr>					
 		<tr>
-			<td>TT Fuel Whitecard</td>
-			<td>TT Fuel Whitecard</td>
+			<td>Perrys Fuel Card</td>
+			<td>Perrys Fuel Card</td>
 		</tr>			
 		<tr>
 			<td rowspan='11'>Transit</td>
@@ -2746,7 +2746,7 @@ Please note that this list may expand in the future as new payment types are add
 		</tr>	
 		<tr>
 			<td>0114</td>
-			<td>TT Fuel Whitecard</td>
+			<td>Perrys Fuel Card</td>
 		</tr>				
 		<tr>
 			<td rowspan='10'>Transit</td>
